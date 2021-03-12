@@ -46,7 +46,7 @@ namespace conscious
             dataHolderComDataHolderCombineItem.PositionX  = Position.X;
             dataHolderComDataHolderCombineItem.PositionY = Position.Y;
             dataHolderComDataHolderCombineItem.Rotation = Rotation;
-            dataHolderComDataHolderCombineItem.texturePath = entityTexture.ToString(); //ComDataHolderCombineItemTexture.Name;
+            dataHolderComDataHolderCombineItem.texturePath = EntityTexture.ToString(); //ComDataHolderCombineItemTexture.Name;
             // Item
             dataHolderComDataHolderCombineItem.Id = Id;
             dataHolderComDataHolderCombineItem.PickUpAble = PickUpAble;

@@ -60,7 +60,7 @@ namespace conscious
             dataHolderDoor.PositionX  = Position.X;
             dataHolderDoor.PositionY = Position.Y;
             dataHolderDoor.Rotation = Rotation;
-            dataHolderDoor.texturePath = entityTexture.ToString(); //DoorTexture.Name;
+            dataHolderDoor.texturePath = EntityTexture.ToString(); //DoorTexture.Name;
             // Item
             dataHolderDoor.Id = Id;
             dataHolderDoor.PickUpAble = PickUpAble;

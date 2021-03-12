@@ -89,7 +89,7 @@ namespace conscious
                     mousePosition = _cursor.MouseCoordinates;
             }
             
-            // Check what type current clicked entity is and call appropriate interaction funciton
+            // Check what type current clicked entity is and call appropriate interaction function
             if(entityHovered != null)
             {
                 if(IsSameOrSubclass(typeof(UIVerb), entityHovered.GetType()))

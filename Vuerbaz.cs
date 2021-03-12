@@ -142,7 +142,7 @@ namespace conscious
             IsMouseVisible = false;
             _currentScreen = _gameScreen;
             _currentScreen.EnteredScreen = true;
-            _gameScreen.LoadGame(newGame:true);
+            // _gameScreen.LoadGame(newGame:true);
             _titleScreen.GameLoaded = true;
         }
         

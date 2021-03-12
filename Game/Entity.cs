@@ -7,19 +7,19 @@ namespace conscious
     {
         protected Sprite _sprite;
 
-        public Texture2D entityTexture { get; }
+        public Texture2D EntityTexture { get; set; }
         public int DrawOrder { get; set; }
         public Vector2 Position;
-        public string Name { get; }
+        public string Name { get; set; }
         public bool FixedDrawPosition { get; set; }
         public float Rotation { get; set; }
         public virtual int Width 
         {
-            get { return entityTexture.Width; }
+            get { return EntityTexture.Width; }
         }
         public virtual int Height 
         {
-            get { return entityTexture.Height; }
+            get { return EntityTexture.Height; }
         }
         public bool Collidable { get; set; } 
         public virtual Rectangle BoundingBox
@@ -34,9 +34,9 @@ namespace conscious
 
         public Entity(string name, Texture2D texture, Vector2 position)
         {
-            entityTexture = texture;
+            EntityTexture = texture;
             Rotation = 0f;
-            _sprite = new Sprite(entityTexture, Width, Height, Rotation);
+            _sprite = new Sprite(EntityTexture, Width, Height, Rotation);
             Position = position;
             Name = name;
             FixedDrawPosition = false;
@@ -57,7 +57,7 @@ namespace conscious
             dataHolderEntity.PositionX  = Position.X;
             dataHolderEntity.PositionY = Position.Y;
             dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = entityTexture.ToString(); //entityTexture.Name;
+            dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             return dataHolderEntity;
         }
     }

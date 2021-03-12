@@ -21,6 +21,7 @@ namespace conscious
         private DialogManager _dialogManager;
         private InteractionManager _interactionManager;
         private SequenceManager _sequenceManager;
+        private MoodStateManager _moodStateManager;
         private Player _player;
         private Cursor _cursor;
         private int _preferredBackBufferWidth;
@@ -62,7 +63,8 @@ namespace conscious
             _inventoryManager.LoadContent(content.Load<Texture2D>("Inventory/debug/inventory_background"));
             _dialogManager = new DialogManager(_entityManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
             _sequenceManager = new SequenceManager();
-            _roomManager = new RoomManager(content, _player, _cursor, entityManager, _dialogManager, _sequenceManager, _preferredBackBufferWidth, _preferredBackBufferHeight);
+            _moodStateManager = new MoodStateManager();
+            _roomManager = new RoomManager(content, _player, _cursor, entityManager, _dialogManager, _sequenceManager, _moodStateManager, _preferredBackBufferWidth, _preferredBackBufferHeight);
             _interactionManager = new InteractionManager(_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager);
         }
 
@@ -71,6 +73,21 @@ namespace conscious
             if(Keyboard.GetState().IsKeyUp(Keys.Escape) && _lastKeyboardState.IsKeyDown(Keys.Escape))
             {
                 _screenEvent.Invoke(this, new EventArgs());
+            }
+
+            if(Keyboard.GetState().IsKeyUp(Keys.U) && _lastKeyboardState.IsKeyDown(Keys.U))
+            {
+                if(_moodStateManager.moodState == MoodState.depressed)
+                {
+                    _moodStateManager.StateChange = MoodState.regular;
+                }
+                else
+                {
+                    _moodStateManager.StateChange = MoodState.depressed;
+                }
+                _roomManager.UpdateMorphingWorld();
+                Console.WriteLine("changed mood");
+                Console.WriteLine(_moodStateManager.moodState);
             }
 
             _verbManager.Update(gameTime);
@@ -82,6 +99,7 @@ namespace conscious
             }
             _dialogManager.Update(gameTime);
             _roomManager.Update(gameTime);
+            _moodStateManager.Update(gameTime);
             if(_sequenceManager.SequenceActive)
             {
                 _sequenceManager.Update(gameTime);

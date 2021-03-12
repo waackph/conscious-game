@@ -37,7 +37,7 @@ namespace conscious
             dataHolderKey.PositionX  = Position.X;
             dataHolderKey.PositionY = Position.Y;
             dataHolderKey.Rotation = Rotation;
-            dataHolderKey.texturePath = entityTexture.ToString(); //KeyTexture.Name;
+            dataHolderKey.texturePath = EntityTexture.ToString(); //KeyTexture.Name;
             // Item
             dataHolderKey.Id = Id;
             dataHolderKey.PickUpAble = PickUpAble;

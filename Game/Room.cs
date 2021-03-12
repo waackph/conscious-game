@@ -83,6 +83,12 @@ namespace conscious
             _things.Add(npc);
         }
 
+        public void addMorphingItem(int id, string name, bool pickUpAble, bool useAble, bool combineAble, bool giveAble, bool useWith, string examineText,
+                                    Texture2D itemTexture, Vector2 itemPosition, MoodStateManager moodStateManager, Dictionary<MoodState, Item> _items){
+            MorphingItem item = new MorphingItem(moodStateManager, _items, id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, itemTexture, itemPosition);
+            _things.Add(item);
+        }
+
         public void RemoveThing(Thing thing){
             if(_things.Contains(thing))
             {

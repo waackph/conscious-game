@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
 using System.Collections.Generic;
-using System;
 
 using conscious.Sequences;
 
@@ -15,6 +14,7 @@ namespace conscious
         private EntityManager _entityManager;
         private DialogManager _dialogManager;
         private SequenceManager _sequenceManager;
+        private MoodStateManager _moodStateManager;
         private ContentManager _content;
         private int _preferredBackBufferWidth;
         private int _preferredBackBufferHeight;
@@ -31,6 +31,7 @@ namespace conscious
                            EntityManager entityManager,
                            DialogManager dialogManager,
                            SequenceManager sequenceManager,
+                           MoodStateManager moodStateManager,
                            int preferredBackBufferWidth, 
                            int preferredBackBufferHeight)
         {
@@ -45,13 +46,14 @@ namespace conscious
             _entityManager = entityManager;
             _dialogManager = dialogManager;
             _sequenceManager = sequenceManager;
+            _moodStateManager = moodStateManager;
 
             _player = player;
             _cursor = cursor;
 
             _currentRoomIndex = 2;
 
-            // LoadRooms();
+            LoadRooms();
         }
         
         public void LoadRooms(){
@@ -72,6 +74,18 @@ namespace conscious
             itemPosition = new Vector2(200, 786+4);
             room.addCombinable(3, "Oil Bottle", true, false, true, false, false, "It's a bottle", 
                         _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition, 2, null);
+            // --------------------------- Morphing Item ---------------------------
+            itemPosition = new Vector2(1058, 800);
+            Dictionary<MoodState, Item> morphItems = new Dictionary<MoodState, Item>();
+            Key morphItem1 = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", 1, 
+                                       _content.Load<Texture2D>("Objects/debug/key_oily"), itemPosition);
+            Key morphItem2 = new Key(4, "Oil Bottle", true, true, false, false, true, "The key is smooth now", 1, 
+                                       _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
+            morphItems[MoodState.regular] = morphItem1;
+            morphItems[MoodState.depressed] = morphItem2;
+            room.addMorphingItem(6, "Morph", false, true, false, false, true, "It's morphing", 
+                                 _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition, _moodStateManager, morphItems);
+
             _rooms.Add(1, room);
 
             // room 2
@@ -117,6 +131,14 @@ namespace conscious
             room.addItem(1, "Ball", true, false, false, false, false, "It's a ball", 
                         _content.Load<Texture2D>("Objects/ball"), itemPosition);
             _rooms.Add(3, room);
+        }
+
+        public void UpdateMorphingWorld()
+        {
+            foreach(MorphingItem item in _entityManager.GetEntitiesOfType<MorphingItem>())
+            {
+                item.setCurrentItem();
+            }
         }
 
         public void changeRoom(int roomId)
