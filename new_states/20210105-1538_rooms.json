@@ -1,0 +1,207 @@
+{
+  "1": {
+    "RoomWidth": 1920,
+    "Things": [
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "texturePath": "Backgrounds/debug/background",
+        "Rotation": 0.0,
+        "PositionX": 960.0,
+        "PositionY": 540.0,
+        "Name": "Background"
+      },
+      {
+        "$type": "conscious.DataHolderDoor, conscious",
+        "ItemDependency": 4,
+        "IsUnlocked": false,
+        "RoomId": 2,
+        "Id": 1,
+        "PickUpAble": false,
+        "UseAble": true,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": true,
+        "ExamineText": "It's a door",
+        "texturePath": "Objects/debug/door_closed",
+        "Rotation": 0.0,
+        "PositionX": 1058.0,
+        "PositionY": 570.0,
+        "Name": "Door"
+      },
+      {
+        "$type": "conscious.DataHolderCombineItem, conscious",
+        "ItemDependency": 3,
+        "CombineItem": {
+          "$type": "conscious.DataHolderKey, conscious",
+          "ItemDependency": 1,
+          "Id": 4,
+          "PickUpAble": true,
+          "UseAble": true,
+          "CombineAble": false,
+          "GiveAble": false,
+          "UseWith": true,
+          "ExamineText": "The key is smooth now",
+          "texturePath": "Objects/debug/key_oily",
+          "Rotation": 0.0,
+          "PositionX": 0.0,
+          "PositionY": 0.0,
+          "Name": "Oily Key"
+        },
+        "Id": 2,
+        "PickUpAble": true,
+        "UseAble": false,
+        "CombineAble": true,
+        "GiveAble": true,
+        "UseWith": false,
+        "ExamineText": "It's a key",
+        "texturePath": "Objects/debug/key",
+        "Rotation": 0.0,
+        "PositionX": 448.0,
+        "PositionY": 790.0,
+        "Name": "Key"
+      },
+      {
+        "$type": "conscious.DataHolderCombineItem, conscious",
+        "ItemDependency": 2,
+        "CombineItem": null,
+        "Id": 3,
+        "PickUpAble": true,
+        "UseAble": false,
+        "CombineAble": true,
+        "GiveAble": false,
+        "UseWith": false,
+        "ExamineText": "It's a bottle",
+        "texturePath": "Objects/debug/oil_bottle",
+        "Rotation": 0.0,
+        "PositionX": 200.0,
+        "PositionY": 790.0,
+        "Name": "Oil Bottle"
+      }
+    ]
+  },
+  "2": {
+    "RoomWidth": 7680,
+    "Things": [
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "texturePath": "Backgrounds/debug/background_double",
+        "Rotation": 0.0,
+        "PositionX": 3840.0,
+        "PositionY": 540.0,
+        "Name": "Background"
+      },
+      {
+        "$type": "conscious.DataHolderDoor, conscious",
+        "ItemDependency": 2,
+        "IsUnlocked": true,
+        "RoomId": 1,
+        "Id": 1,
+        "PickUpAble": false,
+        "UseAble": true,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ExamineText": "It's a door",
+        "texturePath": "Objects/debug/door_opened",
+        "Rotation": 0.0,
+        "PositionX": 1058.0,
+        "PositionY": 579.0,
+        "Name": "Door"
+      },
+      {
+        "$type": "conscious.DataHolderCharacter, conscious",
+        "Id": 5,
+        "TreeStructure": [
+          {
+            "_edges": [
+              {
+                "_nextNodeId": 2,
+                "_dialogLine": "True dat!"
+              },
+              {
+                "_nextNodeId": 3,
+                "_dialogLine": "Whatever."
+              }
+            ],
+            "_dialogLine": "Bib bup bip",
+            "_id": 1
+          },
+          {
+            "_edges": [
+              {
+                "_nextNodeId": 4,
+                "_dialogLine": "Tell me more"
+              }
+            ],
+            "_dialogLine": "Bab bip",
+            "_id": 2
+          },
+          {
+            "_edges": [
+              {
+                "_nextNodeId": 4,
+                "_dialogLine": "Like I said, whatever."
+              }
+            ],
+            "_dialogLine": "Bub bap",
+            "_id": 3
+          },
+          {
+            "_edges": [
+              {
+                "_nextNodeId": 0,
+                "_dialogLine": "It was nice to talk to you too Sir."
+              }
+            ],
+            "_dialogLine": "Bib bip bup bip",
+            "_id": 4
+          }
+        ],
+        "Pronoun": "Hen",
+        "CatchPhrase": "Bib bup bip",
+        "GiveAble": true,
+        "texturePath": "NPCs/debug/npc",
+        "Rotation": 0.0,
+        "PositionX": 1400.0,
+        "PositionY": 790.0,
+        "Name": "Robo"
+      }
+    ]
+  },
+  "3": {
+    "RoomWidth": 800,
+    "Things": [
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "texturePath": "Backgrounds/Layer0_0",
+        "Rotation": 0.0,
+        "PositionX": 0.0,
+        "PositionY": 0.0,
+        "Name": "Background 1"
+      },
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "texturePath": "Backgrounds/Layer1_0",
+        "Rotation": 0.0,
+        "PositionX": 0.0,
+        "PositionY": 0.0,
+        "Name": "Background 2"
+      },
+      {
+        "$type": "conscious.DataHolderItem, conscious",
+        "Id": 1,
+        "PickUpAble": true,
+        "UseAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ExamineText": "It's a ball",
+        "texturePath": "Objects/ball",
+        "Rotation": 0.0,
+        "PositionX": 1230.0,
+        "PositionY": 810.0,
+        "Name": "Ball"
+      }
+    ]
+  }
+}
