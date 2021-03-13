@@ -85,9 +85,9 @@ namespace conscious
                 {
                     _moodStateManager.StateChange = MoodState.depressed;
                 }
-                _roomManager.UpdateMorphingWorld();
                 Console.WriteLine("changed mood");
                 Console.WriteLine(_moodStateManager.moodState);
+                _roomManager.UpdateMorphingWorld();
             }
 
             _verbManager.Update(gameTime);

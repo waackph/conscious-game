@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using System.Collections.Generic;
-
+using System;
 namespace conscious
 {
     public class MorphingItem : Item
@@ -32,15 +32,20 @@ namespace conscious
             if(_items.ContainsKey(_moodStateManager.moodState))
             {
                 Item item = _items[_moodStateManager.moodState];
+                _currentItem = item;
                 this.Name = item.Name;
                 this.PickUpAble = item.PickUpAble;
                 this.UseAble = item.UseAble;
                 this.CombineAble = item.CombineAble;
                 this.GiveAble = item.GiveAble;
                 this.UseWith = item.UseWith;
-                this.EntityTexture = item.EntityTexture;
                 this.Position = item.Position;
+                this.EntityTexture = item.EntityTexture;
+                this.UpdateTexture(this.EntityTexture);
             }
+            Console.WriteLine("morph item");
+            Console.WriteLine(this.EntityTexture);
+            Console.WriteLine(this.Name);
         }
 
         public Item getCurrentItem()

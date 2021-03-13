@@ -50,6 +50,11 @@ namespace conscious
             _sprite.Draw(spriteBatch, Position, SpriteEffects.None);
         }
 
+        public void UpdateTexture(Texture2D texture)
+        {
+            _sprite.Texture = texture;
+        }
+
         public virtual DataHolderEntity GetDataHolderEntity()
         {
             DataHolderEntity dataHolderEntity = new DataHolderEntity();
