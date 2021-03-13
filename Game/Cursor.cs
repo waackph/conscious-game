@@ -21,7 +21,7 @@ namespace conscious
             DrawOrder = 3;
             FixedDrawPosition = true;
             Rotation = 90f;
-            _sprite = new Sprite(entityTexture, Width, Height, Rotation);
+            _sprite = new Sprite(EntityTexture, Width, Height, Rotation);
         }
 
         public override void Update(GameTime gameTime)
@@ -32,7 +32,7 @@ namespace conscious
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(entityTexture, 
+            spriteBatch.Draw(EntityTexture, 
                              Position, 
                              null, 
                              Color.White, 

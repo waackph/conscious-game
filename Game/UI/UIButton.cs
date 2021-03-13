@@ -64,7 +64,7 @@ namespace conscious
                 color = Color.Gray;
             }
 
-            spriteBatch.Draw(entityTexture, BoundingBox, color);
+            spriteBatch.Draw(EntityTexture, BoundingBox, color);
             
             if(!string.IsNullOrEmpty(_text))
             {

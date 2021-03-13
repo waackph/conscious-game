@@ -52,7 +52,7 @@ namespace conscious
             dataHolderEntity.PositionX  = Position.X;
             dataHolderEntity.PositionY = Position.Y;
             dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = entityTexture.ToString();
+            dataHolderEntity.texturePath = EntityTexture.ToString();
             // Character
             dataHolderEntity.Id = Id;
             dataHolderEntity.TreeStructure = _treeStructure;

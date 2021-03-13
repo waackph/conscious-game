@@ -54,7 +54,7 @@ namespace conscious
             {
                 if(!entity.FixedDrawPosition)
                     entity.Draw(spriteBatch);
-
+                    
                     if(_debuggingMode && entity.Name != "Background")
                         spriteBatch.Draw(_pixel, entity.BoundingBox, Color.White);
             }

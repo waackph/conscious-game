@@ -14,7 +14,7 @@ namespace conscious
 
         public override void Draw(SpriteBatch spriteBatch){
             // base.Draw(spriteBatch);
-            spriteBatch.Draw(entityTexture, 
+            spriteBatch.Draw(EntityTexture, 
                             Position,
                             null, Color.White, 0f, 
                             new Vector2(Width/2, Height/2),
@@ -24,7 +24,7 @@ namespace conscious
 
             // If a texture is assigned to the inventory place
             if(InventoryItem != null){
-                spriteBatch.Draw(InventoryItem.entityTexture, 
+                spriteBatch.Draw(InventoryItem.EntityTexture, 
                                 Position,
                                 null, Color.White, 0f, 
                                 new Vector2(InventoryItem.Width/2, InventoryItem.Height/2),

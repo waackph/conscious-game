@@ -14,6 +14,7 @@ namespace conscious
         private InventoryManager _inventoryManager;
         private RoomManager _roomManager;
         private DialogManager _dialogManager;
+        private MoodStateManager _moodStateManager;
         private Entity _lastEntityClicked;
         private Verb _verbClicked;
         private ButtonState _lastButtonState;
@@ -24,7 +25,7 @@ namespace conscious
         public InteractionManager(Player player, Cursor cursor, 
                                   ControlsManager controlsManager, EntityManager entityManager, 
                                   InventoryManager inventoryManager, RoomManager roomManager,
-                                  DialogManager dialogManager){
+                                  DialogManager dialogManager, MoodStateManager moodStateManager){
             _interactionActive = false;
             _itemInInventory = false;
             _dialogActive = false;
@@ -40,6 +41,7 @@ namespace conscious
             _inventoryManager = inventoryManager;
             _roomManager = roomManager;
             _dialogManager = dialogManager;
+            _moodStateManager = moodStateManager;
         }
 
         public void Update(GameTime gameTime)
@@ -89,7 +91,7 @@ namespace conscious
                     mousePosition = _cursor.MouseCoordinates;
             }
             
-            // Check what type current clicked entity is and call appropriate interaction funciton
+            // Check what type current clicked entity is and call appropriate interaction function
             if(entityHovered != null)
             {
                 if(IsSameOrSubclass(typeof(UIVerb), entityHovered.GetType()))
@@ -217,11 +219,13 @@ namespace conscious
             // TODO: handle dialog texts (separate into single line of player and dialog between character and player)
             // TODO: separate interaction code into tasks (especially what happens in the world and what in the game/progress logic and what in the item)
             bool isAble = false;
+            bool interactionSuccess = false;
             switch(_verbClicked)
             {
                 case Verb.Examine:
                     _interactionActive = false;
                     string text = item.Examine();
+                    interactionSuccess = true;
                     _dialogManager.DoDisplayText(text);
                     break;
                 case Verb.PickUp:
@@ -234,6 +238,7 @@ namespace conscious
                             item.PickUp();
                             _roomManager.currentRoom.RemoveThing(item);
                             _inventoryManager.AddItem(item);
+                            interactionSuccess = true;
                         }
                         else{
                             _dialogManager.DoDisplayText("That's already in my inventory.");
@@ -247,6 +252,7 @@ namespace conscious
                     isAble = item.UseAble;
                     if(isAble)
                     {
+                        interactionSuccess = true;
                         if(item.UseWith)
                         {
                             if(_lastEntityClicked != null)
@@ -304,6 +310,7 @@ namespace conscious
                                     bool isSuccess = character.Give(item);
                                     if(isSuccess == true)
                                     {
+                                        interactionSuccess = true;
                                         RemoveItemFromWorld(_roomManager.currentRoom, item);
                                     }
                                 }
@@ -322,6 +329,10 @@ namespace conscious
                     _interactionActive = false;
                     _dialogManager.DoDisplayText("I can't do that.");
                     break;
+            }
+            if(interactionSuccess && item.MoodChange != MoodState.None)
+            {
+                _moodStateManager.StateChange = item.MoodChange;
             }
         }
 

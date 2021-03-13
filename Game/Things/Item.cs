@@ -9,11 +9,12 @@ namespace conscious
         protected string _examineText;
 
         public int Id;
-        public bool PickUpAble { get; }
-        public bool UseAble { get; }
-        public bool CombineAble { get; }
-        public bool GiveAble { get; }
+        public bool PickUpAble { get; set; }
+        public bool UseAble { get; set; }
+        public bool CombineAble { get; set; }
+        public bool GiveAble { get; set; }
         public bool UseWith { get; set; }
+        public MoodState MoodChange { get; set; }
 
         public Item(int id,
                     string name, 
@@ -23,6 +24,7 @@ namespace conscious
                     bool giveAble, 
                     bool useWith, 
                     string examineText,
+                    MoodState moodChange,
                     Texture2D texture, Vector2 position) : base(name, texture, position){
             Id = id;
             
@@ -31,16 +33,17 @@ namespace conscious
             CombineAble = combineAble;
             GiveAble = giveAble;
             UseWith = useWith;
+            MoodChange = moodChange;
             _examineText = examineText;
 
             Collidable = true;
         }
 
-        public string Examine(){
+        public virtual string Examine(){
             return _examineText;
         }
 
-        public bool PickUp(){
+        public virtual bool PickUp(){
             return PickUpAble;
         }
 
@@ -63,7 +66,7 @@ namespace conscious
             dataHolderItem.PositionX  = Position.X;
             dataHolderItem.PositionY = Position.Y;
             dataHolderItem.Rotation = Rotation;
-            dataHolderItem.texturePath = entityTexture.ToString(); //ItemTexture.Name;
+            dataHolderItem.texturePath = EntityTexture.ToString(); //ItemTexture.Name;
             // Item
             dataHolderItem.Id = Id;
             dataHolderItem.PickUpAble = PickUpAble;
@@ -72,6 +75,7 @@ namespace conscious
             dataHolderItem.CombineAble = CombineAble;
             dataHolderItem.GiveAble = GiveAble;
             dataHolderItem.ExamineText = _examineText;
+            dataHolderItem.MoodChange = MoodChange;
             return dataHolderItem;
         }
     }

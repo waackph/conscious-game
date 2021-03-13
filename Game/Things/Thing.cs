@@ -18,7 +18,7 @@ namespace conscious
             dataHolderEntity.PositionX  = Position.X;
             dataHolderEntity.PositionY = Position.Y;
             dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = entityTexture.ToString();
+            dataHolderEntity.texturePath = EntityTexture.ToString();
             return dataHolderEntity;
         }
     }
