@@ -16,10 +16,11 @@ namespace conscious
                            bool giveAble, 
                            bool useWith, 
                            string examineText,
+                           MoodState moodChange,
                            Item combinedItem,
                            int itemDependency,
                            Texture2D texture, Vector2 position)
-                :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, texture, position){
+                :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, texture, position){
             _combinedItem = combinedItem;
             _itemDependency = itemDependency;
         }
@@ -55,6 +56,7 @@ namespace conscious
             dataHolderComDataHolderCombineItem.CombineAble = CombineAble;
             dataHolderComDataHolderCombineItem.GiveAble = GiveAble;
             dataHolderComDataHolderCombineItem.ExamineText = _examineText;
+            dataHolderComDataHolderCombineItem.MoodChange = MoodChange;
             // ComDataHolderCombineItem
             dataHolderComDataHolderCombineItem.ItemDependency = _itemDependency;
             if(_combinedItem == null)

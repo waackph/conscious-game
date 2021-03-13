@@ -15,9 +15,10 @@ namespace conscious
                   bool giveAble, 
                   bool useWith, 
                   string examineText,
+                  MoodState moodChange,
                   int itemDependency,
                   Texture2D texture, Vector2 position) 
-                : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, texture, position){
+                : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, texture, position){
             _itemDependency = itemDependency;
         }
 
@@ -46,6 +47,7 @@ namespace conscious
             dataHolderKey.CombineAble = CombineAble;
             dataHolderKey.GiveAble = GiveAble;
             dataHolderKey.ExamineText = _examineText;
+            dataHolderKey.MoodChange = MoodChange;
             // Key
             dataHolderKey.ItemDependency = _itemDependency;
             return dataHolderKey;

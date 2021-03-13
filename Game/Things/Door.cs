@@ -20,11 +20,12 @@ namespace conscious
                     bool giveAble, 
                     bool useWith, 
                     string examineText,
+                    MoodState moodChange,
                     int itemDependency,
                     int roomId,
                     bool isUnlocked,
                     Texture2D texture, Vector2 position)
-                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, texture, position){
+                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, texture, position){
             _itemDependency = itemDependency;
             RoomId = roomId;
             IsUnlocked = isUnlocked;
@@ -69,6 +70,7 @@ namespace conscious
             dataHolderDoor.CombineAble = CombineAble;
             dataHolderDoor.GiveAble = GiveAble;
             dataHolderDoor.ExamineText = _examineText;
+            dataHolderDoor.MoodChange = MoodChange;
             // Door
             dataHolderDoor.ItemDependency = _itemDependency;
             dataHolderDoor.IsUnlocked = IsUnlocked;

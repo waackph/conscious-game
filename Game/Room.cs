@@ -38,55 +38,9 @@ namespace conscious
             return false;
         }
 
-        public void addThing(string name, Texture2D thingTexture, Vector2 thingPosition){
-            Thing thing = new Thing(name, thingTexture, thingPosition);
+        public void addThing(Thing thing)
+        {
             _things.Add(thing);
-        }
-
-        public void addItem(int id, string name, bool pickUpAble, bool useAble, bool combineAble, bool giveAble, bool useWith, string examineText,
-                            Texture2D itemTexture, Vector2 itemPosition){
-            Item item = new Item(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, itemTexture, itemPosition);
-            _things.Add(item);
-        }
-
-        public void addCombinable(int id, string name, bool pickUpAble, bool useAble, bool combineAble, bool giveAble, bool useWith, string examineText,
-                            Texture2D itemTexture, Vector2 itemPosition, int itemDependency, Item cItem){
-            CombineItem item = new CombineItem(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, cItem, itemDependency, itemTexture, itemPosition);
-            _things.Add(item);
-        }
-
-        public void addDoor(int id, string name, bool pickUpAble, bool useAble, bool combineAble, bool giveAble, bool useWith, string examineText,
-                            Texture2D itemTexture, Vector2 itemPosition, int itemDependency, int roomId, bool unlocked){
-            Door door = new Door(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, itemDependency, roomId, unlocked, itemTexture, itemPosition);
-            _things.Add(door);
-            // Doors.Add(door);
-        }
-
-        public void addKey(int id, string name, bool pickUpAble, bool useAble, bool combineAble, bool giveAble, bool useWith, string examineText,
-                            Texture2D itemTexture, Vector2 itemPosition, int itemDependency){
-            Key key = new Key(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, itemDependency, itemTexture, itemPosition);
-            _things.Add(key);
-        }
-
-        public void addCharacter(int id, string name, string pronoun, string catchPhrase, bool giveAble,
-                                 Texture2D characterTexture, Vector2 characterPosition, List<Node> treeStructure, DialogManager dialogManager){
-            Character npc = new Character(id, name, pronoun, catchPhrase, giveAble, 
-                                          treeStructure, dialogManager, characterTexture, characterPosition);
-            _things.Add(npc);
-        }
-
-        public void addPuzzleCharacter(int id, string name, string pronoun, string catchPhrase, bool giveAble,
-                                 Texture2D characterTexture, Vector2 characterPosition, int itemDependency, bool dialogUnlocked,
-                                 List<Node> treeStructure, DialogManager dialogManager){
-            PuzzleCharacter npc = new PuzzleCharacter(id, name, pronoun, catchPhrase, giveAble, itemDependency, dialogUnlocked, 
-                                                      treeStructure, dialogManager, characterTexture, characterPosition);
-            _things.Add(npc);
-        }
-
-        public void addMorphingItem(int id, string name, bool pickUpAble, bool useAble, bool combineAble, bool giveAble, bool useWith, string examineText,
-                                    Texture2D itemTexture, Vector2 itemPosition, MoodStateManager moodStateManager, Dictionary<MoodState, Item> _items){
-            MorphingItem item = new MorphingItem(moodStateManager, _items, id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, itemTexture, itemPosition);
-            _things.Add(item);
         }
 
         public void RemoveThing(Thing thing){

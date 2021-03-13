@@ -2,8 +2,9 @@ namespace conscious
 {
     public enum MoodState
     {
-        depressed,
-        regular,
-        manic
+        None,
+        Depressed,
+        Regular,
+        Manic
     }
 }

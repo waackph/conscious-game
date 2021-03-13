@@ -63,9 +63,9 @@ namespace conscious
             _inventoryManager.LoadContent(content.Load<Texture2D>("Inventory/debug/inventory_background"));
             _dialogManager = new DialogManager(_entityManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
             _sequenceManager = new SequenceManager();
-            _moodStateManager = new MoodStateManager();
+            _moodStateManager = new MoodStateManager(_entityManager);
             _roomManager = new RoomManager(content, _player, _cursor, entityManager, _dialogManager, _sequenceManager, _moodStateManager, _preferredBackBufferWidth, _preferredBackBufferHeight);
-            _interactionManager = new InteractionManager(_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager);
+            _interactionManager = new InteractionManager(_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager, _moodStateManager);
         }
 
         public override void Update(GameTime gameTime)
@@ -73,21 +73,6 @@ namespace conscious
             if(Keyboard.GetState().IsKeyUp(Keys.Escape) && _lastKeyboardState.IsKeyDown(Keys.Escape))
             {
                 _screenEvent.Invoke(this, new EventArgs());
-            }
-
-            if(Keyboard.GetState().IsKeyUp(Keys.U) && _lastKeyboardState.IsKeyDown(Keys.U))
-            {
-                if(_moodStateManager.moodState == MoodState.depressed)
-                {
-                    _moodStateManager.StateChange = MoodState.regular;
-                }
-                else
-                {
-                    _moodStateManager.StateChange = MoodState.depressed;
-                }
-                Console.WriteLine("changed mood");
-                Console.WriteLine(_moodStateManager.moodState);
-                _roomManager.UpdateMorphingWorld();
             }
 
             _verbManager.Update(gameTime);
@@ -149,11 +134,11 @@ namespace conscious
             string savePath;
             if(newGame)
             {
-                savePath = "new_states/20210105-1538";
+                savePath = "new_states/20210313-2101";
             }
             else
             {
-                savePath = "save_states/20210105-1538";
+                savePath = "save_states/20210313-2110";
             }
 
             // Clear Data
@@ -207,9 +192,25 @@ namespace conscious
                 entity = new Item(dhItem.Id, dhItem.Name, 
                                   dhItem.PickUpAble, dhItem.UseAble, 
                                   dhItem.CombineAble, dhItem.GiveAble, 
-                                  dhItem.UseWith, dhItem.ExamineText, 
-                                  _content.Load<Texture2D>(dh.texturePath), 
+                                  dhItem.UseWith, dhItem.ExamineText, dhItem.MoodChange,
+                                  _content.Load<Texture2D>(dhItem.texturePath), 
                                   new Vector2(dhItem.PositionX, dhItem.PositionY));
+            }
+            else if(dh.GetType() == typeof(DataHolderMorphingItem))
+            {
+                DataHolderMorphingItem dhMorph = (DataHolderMorphingItem)dh;
+                Dictionary<MoodState, Item> items = new Dictionary<MoodState, Item>();
+                foreach(KeyValuePair<MoodState, DataHolderEntity> entry in dhMorph.Items)
+                {
+                    items.Add(entry.Key, (Item)InstatiateEntity(entry.Value));
+                }
+                entity = new MorphingItem(_moodStateManager, items,
+                                          dhMorph.Id, dhMorph.Name, dhMorph.PickUpAble,
+                                          dhMorph.UseAble, dhMorph.CombineAble,
+                                          dhMorph.GiveAble, dhMorph.UseWith, 
+                                          dhMorph.ExamineText, dhMorph.MoodChange,
+                                  _content.Load<Texture2D>(dhMorph.texturePath), 
+                                  new Vector2(dhMorph.PositionX, dhMorph.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderDoor))
             {
@@ -217,10 +218,10 @@ namespace conscious
                 entity = new Door(dhDoor.Id, dhDoor.Name, 
                                   dhDoor.PickUpAble, dhDoor.UseAble, 
                                   dhDoor.CombineAble, dhDoor.GiveAble, 
-                                  dhDoor.UseWith, dhDoor.ExamineText, 
+                                  dhDoor.UseWith, dhDoor.ExamineText, dhDoor.MoodChange,
                                   dhDoor.ItemDependency, dhDoor.RoomId, 
                                   dhDoor.IsUnlocked, 
-                                  _content.Load<Texture2D>(dh.texturePath), 
+                                  _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderKey))
@@ -229,9 +230,9 @@ namespace conscious
                 entity = new Key(dhKey.Id, dhKey.Name, 
                                  dhKey.PickUpAble, dhKey.UseAble, 
                                  dhKey.CombineAble, dhKey.GiveAble, 
-                                 dhKey.UseWith, dhKey.ExamineText, 
+                                 dhKey.UseWith, dhKey.ExamineText, dhKey.MoodChange,
                                  dhKey.ItemDependency, 
-                                 _content.Load<Texture2D>(dh.texturePath), 
+                                 _content.Load<Texture2D>(dhKey.texturePath), 
                                  new Vector2(dhKey.PositionX, dhKey.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderCombineItem))
@@ -249,9 +250,9 @@ namespace conscious
                 entity = new CombineItem(dhCombinable.Id, dhCombinable.Name, 
                                          dhCombinable.PickUpAble, dhCombinable.UseAble, 
                                          dhCombinable.CombineAble, dhCombinable.GiveAble, 
-                                         dhCombinable.UseWith, dhCombinable.ExamineText, 
+                                         dhCombinable.UseWith, dhCombinable.ExamineText, dhCombinable.MoodChange,
                                          combinedItem, dhCombinable.ItemDependency, 
-                                         _content.Load<Texture2D>(dh.texturePath), 
+                                         _content.Load<Texture2D>(dhCombinable.texturePath), 
                                          new Vector2(dhCombinable.PositionX, dhCombinable.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderCharacter))
@@ -261,7 +262,7 @@ namespace conscious
                                        dhCharacter.Pronoun, dhCharacter.CatchPhrase, 
                                        dhCharacter.GiveAble, dhCharacter.TreeStructure, 
                                        _dialogManager, 
-                                       _content.Load<Texture2D>(dh.texturePath), 
+                                       _content.Load<Texture2D>(dhCharacter.texturePath), 
                                        new Vector2(dhCharacter.PositionX, dhCharacter.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderPuzzleCharacter))
