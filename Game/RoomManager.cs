@@ -132,6 +132,7 @@ namespace conscious
             dialogTree.Add(node4);
             // End Initilizing dialog tree
             Thing character = new Character(5, "Robo", "Hen", "Bib bup bip", true, dialogTree, _dialogManager, 
+                                            MoodState.None,
                                             _content.Load<Texture2D>("NPCs/debug/npc"), itemPosition);
             room.addThing(character);
 

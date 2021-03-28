@@ -9,5 +9,6 @@ namespace conscious
         public string Pronoun { get; set; }
         public string CatchPhrase { get; set; }
         public bool GiveAble { get; set; }
+        public MoodState MoodChange { get; set; }
     }
 }

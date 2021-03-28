@@ -261,7 +261,7 @@ namespace conscious
                 entity = new Character(dhCharacter.Id, dhCharacter.Name, 
                                        dhCharacter.Pronoun, dhCharacter.CatchPhrase, 
                                        dhCharacter.GiveAble, dhCharacter.TreeStructure, 
-                                       _dialogManager, 
+                                       _dialogManager, dhCharacter.MoodChange,
                                        _content.Load<Texture2D>(dhCharacter.texturePath), 
                                        new Vector2(dhCharacter.PositionX, dhCharacter.PositionY));
             }
@@ -272,7 +272,7 @@ namespace conscious
                                              dhPuzzleCharacter.Pronoun, dhPuzzleCharacter.CatchPhrase, 
                                              dhPuzzleCharacter.GiveAble, dhPuzzleCharacter.ItemDependency,
                                              dhPuzzleCharacter.DialogUnlocked, dhPuzzleCharacter.TreeStructure, 
-                                             _dialogManager, 
+                                             _dialogManager, dhPuzzleCharacter.MoodChange,
                                              _content.Load<Texture2D>(dhPuzzleCharacter.texturePath), 
                                              new Vector2(dhPuzzleCharacter.PositionX, dhPuzzleCharacter.PositionY));
             }

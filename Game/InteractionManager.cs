@@ -338,6 +338,7 @@ namespace conscious
 
         public void DoInteraction(Character character)
         {
+            bool interactionSuccess = false;
             switch(_verbClicked)
             {
                 case Verb.Give:
@@ -352,6 +353,7 @@ namespace conscious
                                 bool isSuccess = character.Give(item);
                                 if(isSuccess == true)
                                 {
+                                    interactionSuccess = true;
                                     RemoveItemFromWorld(_roomManager.currentRoom, item);
                                 }
                             }
@@ -360,6 +362,7 @@ namespace conscious
                     break;
                 case Verb.TalkTo:
                     _interactionActive = false;
+                    interactionSuccess = true;
                     character.TalkTo();
                     _dialogActive = true;
                     break;
@@ -369,6 +372,10 @@ namespace conscious
                     _interactionActive = false;
                     _dialogManager.DoDisplayText(character.Name + " would not like that.");
                     break;
+            }
+            if(interactionSuccess && character.MoodChange != MoodState.None)
+            {
+                _moodStateManager.StateChange = character.MoodChange;
             }
         }
 

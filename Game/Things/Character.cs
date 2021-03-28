@@ -14,16 +14,26 @@ namespace conscious
         protected string _catchPhrase;
 
         public bool GiveAble { get; }
+        public MoodState MoodChange { get; set; }
 
-        public Character(int id, string name, string pronoun, string catchPhrase, bool giveAble, 
-                         List<Node> treeStructure, DialogManager dialogManager,
+        public Character(int id, 
+                         string name, 
+                         string pronoun, 
+                         string catchPhrase, 
+                         bool giveAble, 
+                         List<Node> treeStructure, 
+                         DialogManager dialogManager,
+                         MoodState moodChange,
                          Texture2D texture, Vector2 position)
                         : base(name, texture, position)
         {
             Id = id;
             _pronoun = pronoun;
             _catchPhrase = catchPhrase;
+
             GiveAble = giveAble;
+
+            MoodChange = moodChange;
 
             _treeStructure = treeStructure;
             _dialogManager = dialogManager;
@@ -59,6 +69,7 @@ namespace conscious
             dataHolderEntity.Pronoun = _pronoun;
             dataHolderEntity.CatchPhrase = _catchPhrase;
             dataHolderEntity.GiveAble = GiveAble;
+            dataHolderEntity.MoodChange = MoodChange;
             return dataHolderEntity;
         }
     }

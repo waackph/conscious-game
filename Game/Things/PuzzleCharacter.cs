@@ -18,8 +18,9 @@ namespace conscious
                                bool dialogUnlocked,
                                List<Node> treeStructure,
                                DialogManager dialogManager,
+                               MoodState moodChange,
                                Texture2D texture, Vector2 position)
-                            : base(id, name, pronoun, catchPhrase, giveAble, treeStructure, dialogManager, texture, position)
+                            : base(id, name, pronoun, catchPhrase, giveAble, treeStructure, dialogManager, moodChange, texture, position)
         {
             _itemDependency = itemDependency;
             _dialogUnlocked = dialogUnlocked;
@@ -66,6 +67,7 @@ namespace conscious
             dataHolderEntity.Pronoun = _pronoun;
             dataHolderEntity.CatchPhrase = _catchPhrase;
             dataHolderEntity.GiveAble = GiveAble;
+            dataHolderEntity.MoodChange = MoodChange;
             // PuzzleCharacter
             dataHolderEntity.ItemDependency = _itemDependency;
             dataHolderEntity.DialogUnlocked = _dialogUnlocked;
