@@ -61,9 +61,9 @@ namespace conscious
                                      content.Load<Texture2D>("Verbs/debug/verb_give_to"));
             _inventoryManager = new InventoryManager(_entityManager);
             _inventoryManager.LoadContent(content.Load<Texture2D>("Inventory/debug/inventory_background"));
-            _dialogManager = new DialogManager(_entityManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
-            _sequenceManager = new SequenceManager();
             _moodStateManager = new MoodStateManager(_entityManager);
+            _dialogManager = new DialogManager(_entityManager, _moodStateManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
+            _sequenceManager = new SequenceManager();
             _roomManager = new RoomManager(content, _player, _cursor, entityManager, _dialogManager, _sequenceManager, _moodStateManager, _preferredBackBufferWidth, _preferredBackBufferHeight);
             _interactionManager = new InteractionManager(_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager, _moodStateManager);
         }

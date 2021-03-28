@@ -114,20 +114,20 @@ namespace conscious
             // Start Initilizing dialog tree
             List<Node> dialogTree = new List<Node>();
             List<Edge> edges = new List<Edge>();
-            edges.Add(new Edge(2, "True dat!"));
-            edges.Add(new Edge(3, "Whatever."));
+            edges.Add(new Edge(2, "True dat!", MoodState.None));
+            edges.Add(new Edge(3, "Whatever.", MoodState.None));
             Node root = new Node(1, "Bib bup bip", edges);
             dialogTree.Add(root);
             edges = new List<Edge>();
-            edges.Add(new Edge(4, "Tell me more"));
+            edges.Add(new Edge(4, "Tell me more", MoodState.None));
             Node node2 = new Node(2, "Bab bip", edges);
             dialogTree.Add(node2);
             edges = new List<Edge>();
-            edges.Add(new Edge(4, "Like I said, whatever."));
+            edges.Add(new Edge(4, "Like I said, whatever.", MoodState.None));
             Node node3 = new Node(3, "Bub bap", edges);
             dialogTree.Add(node3);
             edges = new List<Edge>();
-            edges.Add(new Edge(0, "It was nice to talk to you too Sir."));
+            edges.Add(new Edge(0, "It was nice to talk to you too Sir.", MoodState.None));
             Node node4 = new Node(4, "Bib bip bup bip", edges);
             dialogTree.Add(node4);
             // End Initilizing dialog tree
