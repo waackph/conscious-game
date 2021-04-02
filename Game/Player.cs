@@ -15,7 +15,11 @@ namespace conscious
         public AnimatedSprite IdleAnimation;
         public AnimatedSprite MoveAnimation;
 
-        public Player(Texture2D moveTexture, string name, Texture2D texture, Vector2 position) : base(name, texture, position)
+        public Player(Texture2D moveTexture, 
+                      UIThought thought,
+                      string name, 
+                      Texture2D texture,
+                      Vector2 position) : base(thought, name, texture, position)
         {  
             IdleAnimation = new AnimatedSprite(texture, 1, 1, Width, Height, 0f);
             MoveAnimation = new AnimatedSprite(moveTexture, 1, 10, Width, Height, 0f);

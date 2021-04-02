@@ -5,10 +5,10 @@ namespace conscious
 {
     public class Thing : Entity
     {
-        private bool _isThing;
-        public Thing(string name, Texture2D texture, Vector2 position) : base(name, texture, position)
+        protected UIThought _thought;
+        public Thing(UIThought thought, string name, Texture2D texture, Vector2 position) : base(name, texture, position)
         {
-            _isThing = true;
+            _thought = thought;
         }
 
         public override DataHolderEntity GetDataHolderEntity()
@@ -19,6 +19,7 @@ namespace conscious
             dataHolderEntity.PositionY = Position.Y;
             dataHolderEntity.Rotation = Rotation;
             dataHolderEntity.texturePath = EntityTexture.ToString();
+            dataHolderEntity.Thought = _thought;
             return dataHolderEntity;
         }
     }

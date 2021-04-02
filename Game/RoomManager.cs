@@ -62,38 +62,38 @@ namespace conscious
             // Room 1
             Texture2D bg = _content.Load<Texture2D>("Backgrounds/debug/background");
             Room room = new Room(bg.Width, _entityManager, null);
-            Thing thing = new Thing("Background", bg, new Vector2(bg.Width/2, bg.Height/2));
+            Thing thing = new Thing(null, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
             room.addThing(thing);
 
             itemPosition = new Vector2(1058, 570);
             Thing door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
-                                  MoodState.None, 4, 2, false, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
+                                  MoodState.None, 4, 2, false, null, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
             room.addThing(door);
 
             itemPosition = new Vector2(448, 786+4);
             Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", MoodState.None,
-                                         1, _content.Load<Texture2D>("Objects/debug/key_oily"), Vector2.Zero);
+                                         1, null, _content.Load<Texture2D>("Objects/debug/key_oily"), Vector2.Zero);
 
             Thing key = new CombineItem(2, "Key", true, false, true, true, false, "It's a key", MoodState.Regular, 
-                                        combinedItem, 3, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
+                                        combinedItem, 3, null, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
             room.addThing(key);
 
             itemPosition = new Vector2(200, 786+4);
             Thing combineItem = new CombineItem(3, "Oil Bottle", true, false, true, false, false, "It's a bottle", MoodState.Depressed, 
-                                                null, 2, _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
+                                                null, 2, null, _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
             room.addThing(combineItem);
 
             // --------------------------- Morphing Item ---------------------------
             itemPosition = new Vector2(1058, 800);
             Dictionary<MoodState, Item> morphItems = new Dictionary<MoodState, Item>();
-            Key morphItem1 = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", MoodState.None, 1, 
+            Key morphItem1 = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", MoodState.None, 1, null,
                                        _content.Load<Texture2D>("Objects/debug/key_oily"), itemPosition);
-            Key morphItem2 = new Key(4, "Oil Bottle", true, true, false, false, true, "The key is smooth now", MoodState.None, 1, 
+            Key morphItem2 = new Key(4, "Oil Bottle", true, true, false, false, true, "The key is smooth now", MoodState.None, 1, null, 
                                        _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
             morphItems[MoodState.Regular] = morphItem1;
             morphItems[MoodState.Depressed] = morphItem2;
             Thing morph = new MorphingItem(_moodStateManager, morphItems, 
-                                           6, "Morph", false, true, false, false, true, "It's morphing", MoodState.None,
+                                           6, "Morph", false, true, false, false, true, "It's morphing", MoodState.None, null,
                                            _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
             room.addThing(morph);
 
@@ -102,11 +102,11 @@ namespace conscious
             // room 2
             bg = _content.Load<Texture2D>("Backgrounds/debug/background_double");
             room = new Room(bg.Width, _entityManager, null);
-            Thing background = new Thing("Background", bg, new Vector2(bg.Width/2, bg.Height/2));
+            Thing background = new Thing(null, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
             room.addThing(background);
 
             itemPosition = new Vector2(1058, 575+4);
-            door = new Door(1, "Door", false, true, false, false, false, "It's a door", MoodState.None, 2, 1, true,
+            door = new Door(1, "Door", false, true, false, false, false, "It's a door", MoodState.None, 2, 1, true, null,
                                   _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
             room.addThing(door);
             
@@ -132,7 +132,7 @@ namespace conscious
             dialogTree.Add(node4);
             // End Initilizing dialog tree
             Thing character = new Character(5, "Robo", "Hen", "Bib bup bip", true, dialogTree, _dialogManager, 
-                                            MoodState.None,
+                                            MoodState.None, null,
                                             _content.Load<Texture2D>("NPCs/debug/npc"), itemPosition);
             room.addThing(character);
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace conscious
 {
-    public class DataHolderCharacter : DataHolderEntity
+    public class DataHolderCharacter : DataHolderThing
     {
         public int Id { get; set; }
         public List<Node> TreeStructure { get; set; }

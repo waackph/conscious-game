@@ -43,6 +43,7 @@ namespace conscious
 
             Vector2 playerPosition = Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
             _player = new Player(content.Load<Texture2D>("Player/Run"),
+                                 null,
                                  "Player",
                                  content.Load<Texture2D>("Player/Idle"),
                                  playerPosition);
@@ -180,11 +181,12 @@ namespace conscious
         public Thing InstatiateEntity(DataHolderEntity dh)
         {
             Thing entity;
-            if(dh.GetType() == typeof(DataHolderEntity) || dh.GetType() == typeof(DataHolderThing))
+            if(dh.GetType() == typeof(DataHolderThing))
             {
-                entity = new Thing(dh.Name, 
-                                   _content.Load<Texture2D>(dh.texturePath), 
-                                   new Vector2(dh.PositionX, dh.PositionY));
+                DataHolderThing dhThing = (DataHolderThing)dh;
+                entity = new Thing(dhThing.Thought, dhThing.Name, 
+                                   _content.Load<Texture2D>(dhThing.texturePath), 
+                                   new Vector2(dhThing.PositionX, dhThing.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderItem))
             {
@@ -193,6 +195,7 @@ namespace conscious
                                   dhItem.PickUpAble, dhItem.UseAble, 
                                   dhItem.CombineAble, dhItem.GiveAble, 
                                   dhItem.UseWith, dhItem.ExamineText, dhItem.MoodChange,
+                                  dhItem.Thought,
                                   _content.Load<Texture2D>(dhItem.texturePath), 
                                   new Vector2(dhItem.PositionX, dhItem.PositionY));
             }
@@ -208,7 +211,7 @@ namespace conscious
                                           dhMorph.Id, dhMorph.Name, dhMorph.PickUpAble,
                                           dhMorph.UseAble, dhMorph.CombineAble,
                                           dhMorph.GiveAble, dhMorph.UseWith, 
-                                          dhMorph.ExamineText, dhMorph.MoodChange,
+                                          dhMorph.ExamineText, dhMorph.MoodChange, dhMorph.Thought,
                                   _content.Load<Texture2D>(dhMorph.texturePath), 
                                   new Vector2(dhMorph.PositionX, dhMorph.PositionY));
             }
@@ -220,7 +223,7 @@ namespace conscious
                                   dhDoor.CombineAble, dhDoor.GiveAble, 
                                   dhDoor.UseWith, dhDoor.ExamineText, dhDoor.MoodChange,
                                   dhDoor.ItemDependency, dhDoor.RoomId, 
-                                  dhDoor.IsUnlocked, 
+                                  dhDoor.IsUnlocked, dhDoor.Thought,
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY));
             }
@@ -231,7 +234,7 @@ namespace conscious
                                  dhKey.PickUpAble, dhKey.UseAble, 
                                  dhKey.CombineAble, dhKey.GiveAble, 
                                  dhKey.UseWith, dhKey.ExamineText, dhKey.MoodChange,
-                                 dhKey.ItemDependency, 
+                                 dhKey.ItemDependency, dhKey.Thought,
                                  _content.Load<Texture2D>(dhKey.texturePath), 
                                  new Vector2(dhKey.PositionX, dhKey.PositionY));
             }
@@ -251,7 +254,7 @@ namespace conscious
                                          dhCombinable.PickUpAble, dhCombinable.UseAble, 
                                          dhCombinable.CombineAble, dhCombinable.GiveAble, 
                                          dhCombinable.UseWith, dhCombinable.ExamineText, dhCombinable.MoodChange,
-                                         combinedItem, dhCombinable.ItemDependency, 
+                                         combinedItem, dhCombinable.ItemDependency, dhCombinable.Thought,
                                          _content.Load<Texture2D>(dhCombinable.texturePath), 
                                          new Vector2(dhCombinable.PositionX, dhCombinable.PositionY));
             }
@@ -261,7 +264,7 @@ namespace conscious
                 entity = new Character(dhCharacter.Id, dhCharacter.Name, 
                                        dhCharacter.Pronoun, dhCharacter.CatchPhrase, 
                                        dhCharacter.GiveAble, dhCharacter.TreeStructure, 
-                                       _dialogManager, dhCharacter.MoodChange,
+                                       _dialogManager, dhCharacter.MoodChange, dhCharacter.Thought,
                                        _content.Load<Texture2D>(dhCharacter.texturePath), 
                                        new Vector2(dhCharacter.PositionX, dhCharacter.PositionY));
             }
@@ -272,7 +275,7 @@ namespace conscious
                                              dhPuzzleCharacter.Pronoun, dhPuzzleCharacter.CatchPhrase, 
                                              dhPuzzleCharacter.GiveAble, dhPuzzleCharacter.ItemDependency,
                                              dhPuzzleCharacter.DialogUnlocked, dhPuzzleCharacter.TreeStructure, 
-                                             _dialogManager, dhPuzzleCharacter.MoodChange,
+                                             _dialogManager, dhPuzzleCharacter.MoodChange, dhPuzzleCharacter.Thought,
                                              _content.Load<Texture2D>(dhPuzzleCharacter.texturePath), 
                                              new Vector2(dhPuzzleCharacter.PositionX, dhPuzzleCharacter.PositionY));
             }

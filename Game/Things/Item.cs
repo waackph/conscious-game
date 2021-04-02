@@ -25,7 +25,8 @@ namespace conscious
                     bool useWith, 
                     string examineText,
                     MoodState moodChange,
-                    Texture2D texture, Vector2 position) : base(name, texture, position){
+                    UIThought thought, 
+                    Texture2D texture, Vector2 position) : base(thought, name, texture, position){
             Id = id;
             
             PickUpAble = pickUpAble;
@@ -61,22 +62,28 @@ namespace conscious
 
         public override DataHolderEntity GetDataHolderEntity()
         {
-            DataHolderItem dataHolderItem = new DataHolderItem();
-            dataHolderItem.Name = Name;
-            dataHolderItem.PositionX  = Position.X;
-            dataHolderItem.PositionY = Position.Y;
-            dataHolderItem.Rotation = Rotation;
-            dataHolderItem.texturePath = EntityTexture.ToString(); //ItemTexture.Name;
+            // Simplify code like this?
+            // DataHolderEntity dataHolderBase = base.GetDataHolderEntity();
+            // DataHolderItem dataHolderEntity = (DataHolderItem)dataHolderBase;
+
+            DataHolderItem dataHolderEntity = new DataHolderItem();
+            dataHolderEntity.Name = Name;
+            dataHolderEntity.PositionX  = Position.X;
+            dataHolderEntity.PositionY = Position.Y;
+            dataHolderEntity.Rotation = Rotation;
+            dataHolderEntity.texturePath = EntityTexture.ToString(); //ItemTexture.Name;
+            // Thing
+            dataHolderEntity.Thought = _thought;
             // Item
-            dataHolderItem.Id = Id;
-            dataHolderItem.PickUpAble = PickUpAble;
-            dataHolderItem.UseAble = UseAble;
-            dataHolderItem.UseWith = UseWith;
-            dataHolderItem.CombineAble = CombineAble;
-            dataHolderItem.GiveAble = GiveAble;
-            dataHolderItem.ExamineText = _examineText;
-            dataHolderItem.MoodChange = MoodChange;
-            return dataHolderItem;
+            dataHolderEntity.Id = Id;
+            dataHolderEntity.PickUpAble = PickUpAble;
+            dataHolderEntity.UseAble = UseAble;
+            dataHolderEntity.UseWith = UseWith;
+            dataHolderEntity.CombineAble = CombineAble;
+            dataHolderEntity.GiveAble = GiveAble;
+            dataHolderEntity.ExamineText = _examineText;
+            dataHolderEntity.MoodChange = MoodChange;
+            return dataHolderEntity;
         }
     }
 }

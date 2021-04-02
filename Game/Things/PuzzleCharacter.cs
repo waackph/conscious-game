@@ -19,8 +19,9 @@ namespace conscious
                                List<Node> treeStructure,
                                DialogManager dialogManager,
                                MoodState moodChange,
+                               UIThought thought,
                                Texture2D texture, Vector2 position)
-                            : base(id, name, pronoun, catchPhrase, giveAble, treeStructure, dialogManager, moodChange, texture, position)
+                            : base(id, name, pronoun, catchPhrase, giveAble, treeStructure, dialogManager, moodChange, thought, texture, position)
         {
             _itemDependency = itemDependency;
             _dialogUnlocked = dialogUnlocked;
@@ -61,6 +62,8 @@ namespace conscious
             dataHolderEntity.PositionY = Position.Y;
             dataHolderEntity.Rotation = Rotation;
             dataHolderEntity.texturePath = EntityTexture.ToString();
+            //Thing
+            dataHolderEntity.Thought = _thought;
             // Character
             dataHolderEntity.Id = Id;
             dataHolderEntity.TreeStructure = _treeStructure;

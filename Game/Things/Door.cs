@@ -24,8 +24,9 @@ namespace conscious
                     int itemDependency,
                     int roomId,
                     bool isUnlocked,
+                    UIThought thought,
                     Texture2D texture, Vector2 position)
-                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, texture, position){
+                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, thought, texture, position){
             _itemDependency = itemDependency;
             RoomId = roomId;
             IsUnlocked = isUnlocked;
@@ -56,26 +57,28 @@ namespace conscious
         }
         public override DataHolderEntity GetDataHolderEntity()
         {
-            DataHolderDoor dataHolderDoor = new DataHolderDoor();
-            dataHolderDoor.Name = Name;
-            dataHolderDoor.PositionX  = Position.X;
-            dataHolderDoor.PositionY = Position.Y;
-            dataHolderDoor.Rotation = Rotation;
-            dataHolderDoor.texturePath = EntityTexture.ToString(); //DoorTexture.Name;
+            DataHolderDoor dataHolderEntity = new DataHolderDoor();
+            dataHolderEntity.Name = Name;
+            dataHolderEntity.PositionX  = Position.X;
+            dataHolderEntity.PositionY = Position.Y;
+            dataHolderEntity.Rotation = Rotation;
+            dataHolderEntity.texturePath = EntityTexture.ToString(); //DoorTexture.Name;
+            // Thing
+            dataHolderEntity.Thought = _thought;
             // Item
-            dataHolderDoor.Id = Id;
-            dataHolderDoor.PickUpAble = PickUpAble;
-            dataHolderDoor.UseAble = UseAble;
-            dataHolderDoor.UseWith = UseWith;
-            dataHolderDoor.CombineAble = CombineAble;
-            dataHolderDoor.GiveAble = GiveAble;
-            dataHolderDoor.ExamineText = _examineText;
-            dataHolderDoor.MoodChange = MoodChange;
+            dataHolderEntity.Id = Id;
+            dataHolderEntity.PickUpAble = PickUpAble;
+            dataHolderEntity.UseAble = UseAble;
+            dataHolderEntity.UseWith = UseWith;
+            dataHolderEntity.CombineAble = CombineAble;
+            dataHolderEntity.GiveAble = GiveAble;
+            dataHolderEntity.ExamineText = _examineText;
+            dataHolderEntity.MoodChange = MoodChange;
             // Door
-            dataHolderDoor.ItemDependency = _itemDependency;
-            dataHolderDoor.IsUnlocked = IsUnlocked;
-            dataHolderDoor.RoomId = RoomId;
-            return dataHolderDoor;
+            dataHolderEntity.ItemDependency = _itemDependency;
+            dataHolderEntity.IsUnlocked = IsUnlocked;
+            dataHolderEntity.RoomId = RoomId;
+            return dataHolderEntity;
         }
     }
 }

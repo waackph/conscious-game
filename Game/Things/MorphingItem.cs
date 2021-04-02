@@ -22,7 +22,8 @@ namespace conscious
                              bool useWith, 
                              string examineText,
                              MoodState moodChange,
-                             Texture2D texture, Vector2 position) : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, texture, position)
+                             UIThought thought,
+                             Texture2D texture, Vector2 position) : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, thought, texture, position)
         {
             _moodStateManager = moodStateManager;
             _items = items;
@@ -73,29 +74,31 @@ namespace conscious
 
         public override DataHolderEntity GetDataHolderEntity()
         {
-            DataHolderMorphingItem dataHolderItem = new DataHolderMorphingItem();
-            dataHolderItem.Name = Name;
-            dataHolderItem.PositionX  = Position.X;
-            dataHolderItem.PositionY = Position.Y;
-            dataHolderItem.Rotation = Rotation;
-            dataHolderItem.texturePath = EntityTexture.ToString(); //ItemTexture.Name;
+            DataHolderMorphingItem dataHolderEntity = new DataHolderMorphingItem();
+            dataHolderEntity.Name = Name;
+            dataHolderEntity.PositionX  = Position.X;
+            dataHolderEntity.PositionY = Position.Y;
+            dataHolderEntity.Rotation = Rotation;
+            dataHolderEntity.texturePath = EntityTexture.ToString(); //ItemTexture.Name;
+            // Thing
+            dataHolderEntity.Thought = _thought;
             // Item
-            dataHolderItem.Id = Id;
-            dataHolderItem.PickUpAble = PickUpAble;
-            dataHolderItem.UseAble = UseAble;
-            dataHolderItem.UseWith = UseWith;
-            dataHolderItem.CombineAble = CombineAble;
-            dataHolderItem.GiveAble = GiveAble;
-            dataHolderItem.ExamineText = _examineText;
-            dataHolderItem.MoodChange = MoodChange;
+            dataHolderEntity.Id = Id;
+            dataHolderEntity.PickUpAble = PickUpAble;
+            dataHolderEntity.UseAble = UseAble;
+            dataHolderEntity.UseWith = UseWith;
+            dataHolderEntity.CombineAble = CombineAble;
+            dataHolderEntity.GiveAble = GiveAble;
+            dataHolderEntity.ExamineText = _examineText;
+            dataHolderEntity.MoodChange = MoodChange;
             // Morphing Item
             Dictionary<MoodState, DataHolderEntity> dhItems = new Dictionary<MoodState, DataHolderEntity>();
             foreach(KeyValuePair<MoodState, Item> entry in _items)
             {
                 dhItems.Add(entry.Key, entry.Value.GetDataHolderEntity());
             }
-            dataHolderItem.Items = dhItems;
-            return dataHolderItem;
+            dataHolderEntity.Items = dhItems;
+            return dataHolderEntity;
         }
     }
 }
