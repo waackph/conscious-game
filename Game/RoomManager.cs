@@ -4,8 +4,6 @@ using Microsoft.Xna.Framework.Content;
 
 using System.Collections.Generic;
 
-using conscious.Sequences;
-
 namespace conscious
 {
     public class RoomManager : IComponent

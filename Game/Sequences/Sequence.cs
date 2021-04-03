@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 using System.Collections.Generic;
 
-namespace conscious.Sequences
+namespace conscious
 {
     public class Sequence
     {
