@@ -35,22 +35,14 @@ namespace conscious
         public override DataHolderEntity GetDataHolderEntity()
         {
             DataHolderKey dataHolderEntity = new DataHolderKey();
-            dataHolderEntity.Name = Name;
-            dataHolderEntity.PositionX  = Position.X;
-            dataHolderEntity.PositionY = Position.Y;
-            dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = EntityTexture.ToString(); //KeyTexture.Name;
-            // Thing
-            dataHolderEntity.Thought = _thought;
-            // Item
-            dataHolderEntity.Id = Id;
-            dataHolderEntity.PickUpAble = PickUpAble;
-            dataHolderEntity.UseAble = UseAble;
-            dataHolderEntity.UseWith = UseWith;
-            dataHolderEntity.CombineAble = CombineAble;
-            dataHolderEntity.GiveAble = GiveAble;
-            dataHolderEntity.ExamineText = _examineText;
-            dataHolderEntity.MoodChange = MoodChange;
+            dataHolderEntity = (DataHolderKey)base.GetDataHolderEntity(dataHolderEntity);
+            // Key
+            dataHolderEntity.ItemDependency = _itemDependency;
+            return dataHolderEntity;
+        }
+        public DataHolderEntity GetDataHolderEntity(DataHolderKey dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderKey)base.GetDataHolderEntity(dataHolderEntity);
             // Key
             dataHolderEntity.ItemDependency = _itemDependency;
             return dataHolderEntity;

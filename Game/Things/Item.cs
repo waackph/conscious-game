@@ -62,18 +62,8 @@ namespace conscious
 
         public override DataHolderEntity GetDataHolderEntity()
         {
-            // Simplify code like this?
-            // DataHolderEntity dataHolderBase = base.GetDataHolderEntity();
-            // DataHolderItem dataHolderEntity = (DataHolderItem)dataHolderBase;
-
             DataHolderItem dataHolderEntity = new DataHolderItem();
-            dataHolderEntity.Name = Name;
-            dataHolderEntity.PositionX  = Position.X;
-            dataHolderEntity.PositionY = Position.Y;
-            dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = EntityTexture.ToString(); //ItemTexture.Name;
-            // Thing
-            dataHolderEntity.Thought = _thought;
+            dataHolderEntity = (DataHolderItem)base.GetDataHolderEntity(dataHolderEntity);
             // Item
             dataHolderEntity.Id = Id;
             dataHolderEntity.PickUpAble = PickUpAble;
@@ -85,5 +75,20 @@ namespace conscious
             dataHolderEntity.MoodChange = MoodChange;
             return dataHolderEntity;
         }
+
+        public DataHolderEntity GetDataHolderEntity(DataHolderItem dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderItem)base.GetDataHolderEntity(dataHolderEntity);
+            // Item
+            dataHolderEntity.Id = Id;
+            dataHolderEntity.PickUpAble = PickUpAble;
+            dataHolderEntity.UseAble = UseAble;
+            dataHolderEntity.UseWith = UseWith;
+            dataHolderEntity.CombineAble = CombineAble;
+            dataHolderEntity.GiveAble = GiveAble;
+            dataHolderEntity.ExamineText = _examineText;
+            dataHolderEntity.MoodChange = MoodChange;
+            return dataHolderEntity;
+        }    
     }
 }

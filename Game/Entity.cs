@@ -65,5 +65,15 @@ namespace conscious
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             return dataHolderEntity;
         }
+
+        public virtual DataHolderEntity GetDataHolderEntity(DataHolderEntity dataHolderEntity)
+        {
+            dataHolderEntity.Name = Name;
+            dataHolderEntity.PositionX  = Position.X;
+            dataHolderEntity.PositionY = Position.Y;
+            dataHolderEntity.Rotation = Rotation;
+            dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
+            return dataHolderEntity;
+        }
     }
 }

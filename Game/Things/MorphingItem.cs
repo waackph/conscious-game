@@ -75,22 +75,20 @@ namespace conscious
         public override DataHolderEntity GetDataHolderEntity()
         {
             DataHolderMorphingItem dataHolderEntity = new DataHolderMorphingItem();
-            dataHolderEntity.Name = Name;
-            dataHolderEntity.PositionX  = Position.X;
-            dataHolderEntity.PositionY = Position.Y;
-            dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = EntityTexture.ToString(); //ItemTexture.Name;
-            // Thing
-            dataHolderEntity.Thought = _thought;
-            // Item
-            dataHolderEntity.Id = Id;
-            dataHolderEntity.PickUpAble = PickUpAble;
-            dataHolderEntity.UseAble = UseAble;
-            dataHolderEntity.UseWith = UseWith;
-            dataHolderEntity.CombineAble = CombineAble;
-            dataHolderEntity.GiveAble = GiveAble;
-            dataHolderEntity.ExamineText = _examineText;
-            dataHolderEntity.MoodChange = MoodChange;
+            dataHolderEntity = (DataHolderMorphingItem)base.GetDataHolderEntity(dataHolderEntity);
+            // Morphing Item
+            Dictionary<MoodState, DataHolderEntity> dhItems = new Dictionary<MoodState, DataHolderEntity>();
+            foreach(KeyValuePair<MoodState, Item> entry in _items)
+            {
+                dhItems.Add(entry.Key, entry.Value.GetDataHolderEntity());
+            }
+            dataHolderEntity.Items = dhItems;
+            return dataHolderEntity;
+        }
+
+        public DataHolderEntity GetDataHolderEntity(DataHolderMorphingItem dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderMorphingItem)base.GetDataHolderEntity(dataHolderEntity);
             // Morphing Item
             Dictionary<MoodState, DataHolderEntity> dhItems = new Dictionary<MoodState, DataHolderEntity>();
             foreach(KeyValuePair<MoodState, Item> entry in _items)

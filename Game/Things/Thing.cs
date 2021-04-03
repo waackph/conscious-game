@@ -14,11 +14,14 @@ namespace conscious
         public override DataHolderEntity GetDataHolderEntity()
         {
             DataHolderThing dataHolderEntity = new DataHolderThing();
-            dataHolderEntity.Name = Name;
-            dataHolderEntity.PositionX  = Position.X;
-            dataHolderEntity.PositionY = Position.Y;
-            dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = EntityTexture.ToString();
+            dataHolderEntity = (DataHolderThing)base.GetDataHolderEntity(dataHolderEntity);
+            dataHolderEntity.Thought = _thought;
+            return dataHolderEntity;
+        }
+        
+        public DataHolderEntity GetDataHolderEntity(DataHolderThing dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderThing)base.GetDataHolderEntity(dataHolderEntity);
             dataHolderEntity.Thought = _thought;
             return dataHolderEntity;
         }

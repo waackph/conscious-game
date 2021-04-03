@@ -44,22 +44,21 @@ namespace conscious
         public override DataHolderEntity GetDataHolderEntity()
         {
             DataHolderCombineItem dataHolderEntity = new DataHolderCombineItem();
-            dataHolderEntity.Name = Name;
-            dataHolderEntity.PositionX  = Position.X;
-            dataHolderEntity.PositionY = Position.Y;
-            dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = EntityTexture.ToString(); //ComDataHolderCombineItemTexture.Name;
-            // Thing
-            dataHolderEntity.Thought = _thought;
-            // Item
-            dataHolderEntity.Id = Id;
-            dataHolderEntity.PickUpAble = PickUpAble;
-            dataHolderEntity.UseAble = UseAble;
-            dataHolderEntity.UseWith = UseWith;
-            dataHolderEntity.CombineAble = CombineAble;
-            dataHolderEntity.GiveAble = GiveAble;
-            dataHolderEntity.ExamineText = _examineText;
-            dataHolderEntity.MoodChange = MoodChange;
+            dataHolderEntity = (DataHolderCombineItem)base.GetDataHolderEntity(dataHolderEntity);
+            // ComDataHolderCombineItem
+            dataHolderEntity.ItemDependency = _itemDependency;
+            if(_combinedItem == null)
+            {
+                dataHolderEntity.CombineItem = null;
+            }
+            else{
+                dataHolderEntity.CombineItem = _combinedItem.GetDataHolderEntity();
+            }
+            return dataHolderEntity;
+        }
+        public DataHolderEntity GetDataHolderEntity(DataHolderCombineItem dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderCombineItem)base.GetDataHolderEntity(dataHolderEntity);
             // ComDataHolderCombineItem
             dataHolderEntity.ItemDependency = _itemDependency;
             if(_combinedItem == null)

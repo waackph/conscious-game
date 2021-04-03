@@ -56,21 +56,15 @@ namespace conscious
         public override DataHolderEntity GetDataHolderEntity()
         {
             DataHolderPuzzleCharacter dataHolderEntity = new DataHolderPuzzleCharacter();
-            // Entity
-            dataHolderEntity.Name = Name;
-            dataHolderEntity.PositionX  = Position.X;
-            dataHolderEntity.PositionY = Position.Y;
-            dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = EntityTexture.ToString();
-            //Thing
-            dataHolderEntity.Thought = _thought;
-            // Character
-            dataHolderEntity.Id = Id;
-            dataHolderEntity.TreeStructure = _treeStructure;
-            dataHolderEntity.Pronoun = _pronoun;
-            dataHolderEntity.CatchPhrase = _catchPhrase;
-            dataHolderEntity.GiveAble = GiveAble;
-            dataHolderEntity.MoodChange = MoodChange;
+            dataHolderEntity = (DataHolderPuzzleCharacter)base.GetDataHolderEntity(dataHolderEntity);
+            // PuzzleCharacter
+            dataHolderEntity.ItemDependency = _itemDependency;
+            dataHolderEntity.DialogUnlocked = _dialogUnlocked;
+            return dataHolderEntity;
+        }
+        public DataHolderEntity GetDataHolderEntity(DataHolderPuzzleCharacter dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderPuzzleCharacter)base.GetDataHolderEntity(dataHolderEntity);
             // PuzzleCharacter
             dataHolderEntity.ItemDependency = _itemDependency;
             dataHolderEntity.DialogUnlocked = _dialogUnlocked;

@@ -55,25 +55,21 @@ namespace conscious
             }
             return false;
         }
+        
         public override DataHolderEntity GetDataHolderEntity()
         {
             DataHolderDoor dataHolderEntity = new DataHolderDoor();
-            dataHolderEntity.Name = Name;
-            dataHolderEntity.PositionX  = Position.X;
-            dataHolderEntity.PositionY = Position.Y;
-            dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = EntityTexture.ToString(); //DoorTexture.Name;
-            // Thing
-            dataHolderEntity.Thought = _thought;
-            // Item
-            dataHolderEntity.Id = Id;
-            dataHolderEntity.PickUpAble = PickUpAble;
-            dataHolderEntity.UseAble = UseAble;
-            dataHolderEntity.UseWith = UseWith;
-            dataHolderEntity.CombineAble = CombineAble;
-            dataHolderEntity.GiveAble = GiveAble;
-            dataHolderEntity.ExamineText = _examineText;
-            dataHolderEntity.MoodChange = MoodChange;
+            dataHolderEntity = (DataHolderDoor)base.GetDataHolderEntity(dataHolderEntity);
+            // Door
+            dataHolderEntity.ItemDependency = _itemDependency;
+            dataHolderEntity.IsUnlocked = IsUnlocked;
+            dataHolderEntity.RoomId = RoomId;
+            return dataHolderEntity;
+        }
+
+        public DataHolderEntity GetDataHolderEntity(DataHolderDoor dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderDoor)base.GetDataHolderEntity(dataHolderEntity);
             // Door
             dataHolderEntity.ItemDependency = _itemDependency;
             dataHolderEntity.IsUnlocked = IsUnlocked;
