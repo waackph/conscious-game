@@ -16,7 +16,8 @@ namespace conscious
         private ControlsManager _controlsManager;
         private RoomManager _roomManager;
         private EntityManager _entityManager;
-        private VerbManager _verbManager;
+        // private VerbManager _verbManager;
+        private SoCManager _socManager;
         private InventoryManager _inventoryManager;
         private DialogManager _dialogManager;
         private InteractionManager _interactionManager;
@@ -52,21 +53,23 @@ namespace conscious
 
             _entityManager = entityManager;
             _controlsManager = new ControlsManager(_player);
-            _verbManager = new VerbManager(_entityManager);
-            _verbManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_examine"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_pick_up"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_use"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_combine"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_talk_to"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_give_to"));
+            // _verbManager = new VerbManager(_entityManager);
+            // _verbManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_examine"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_pick_up"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_use"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_combine"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_talk_to"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_give_to"));
+            _socManager = new SoCManager(_entityManager);
+            _socManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"));
             _inventoryManager = new InventoryManager(_entityManager);
             _inventoryManager.LoadContent(content.Load<Texture2D>("Inventory/debug/inventory_background"));
             _moodStateManager = new MoodStateManager(_entityManager);
             _dialogManager = new DialogManager(_entityManager, _moodStateManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
             _sequenceManager = new SequenceManager();
-            _roomManager = new RoomManager(content, _player, _cursor, entityManager, _dialogManager, _sequenceManager, _moodStateManager, _preferredBackBufferWidth, _preferredBackBufferHeight);
-            _interactionManager = new InteractionManager(_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager, _moodStateManager);
+            _roomManager = new RoomManager(content, _player, _cursor, _pixel, entityManager, _dialogManager, _sequenceManager, _moodStateManager, _preferredBackBufferWidth, _preferredBackBufferHeight);
+            _interactionManager = new InteractionManager(_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager, _moodStateManager, _socManager);
         }
 
         public override void Update(GameTime gameTime)
@@ -76,7 +79,7 @@ namespace conscious
                 _screenEvent.Invoke(this, new EventArgs());
             }
 
-            _verbManager.Update(gameTime);
+            // _verbManager.Update(gameTime);
             _inventoryManager.Update(gameTime);
             if(!_dialogManager.DialogActive && !_sequenceManager.SequenceActive)
             {
@@ -86,6 +89,7 @@ namespace conscious
             _dialogManager.Update(gameTime);
             _roomManager.Update(gameTime);
             _moodStateManager.Update(gameTime);
+            _socManager.Update(gameTime);
             if(_sequenceManager.SequenceActive)
             {
                 _sequenceManager.Update(gameTime);
@@ -112,9 +116,10 @@ namespace conscious
             _entityManager.AddEntity(_player);
             _entityManager.AddEntity(_cursor);
             _roomManager.currentRoom.FillEntityManager();
-            _verbManager.FillEntityManager();
+            // _verbManager.FillEntityManager();
             _inventoryManager.FillEntityManager();
             _dialogManager.FillEntityManager();
+            _socManager.FillEntityManager();
         }
 
         public void SaveGame()

@@ -24,5 +24,10 @@ namespace conscious
                 _color = Color.Gray;
             }
         }
+
+        public void SetPosition(float x, float y)
+        {
+            Position = new Vector2(x, y);
+        }
     }
 }

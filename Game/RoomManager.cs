@@ -19,6 +19,7 @@ namespace conscious
         private Vector2 _centerPosition;
         private Player _player;
         private Cursor _cursor;
+        private Texture2D _pixel;
         private int _currentRoomIndex;
 
         public Room currentRoom;
@@ -26,6 +27,7 @@ namespace conscious
         public RoomManager(ContentManager content, 
                            Player player,
                            Cursor cursor,
+                           Texture2D pixel,
                            EntityManager entityManager,
                            DialogManager dialogManager,
                            SequenceManager sequenceManager,
@@ -49,9 +51,11 @@ namespace conscious
             _player = player;
             _cursor = cursor;
 
-            _currentRoomIndex = 2;
+            _pixel = pixel;
 
-            // LoadRooms();
+            _currentRoomIndex = 1;
+
+            LoadRooms();
         }
         
         public void LoadRooms(){
@@ -64,21 +68,33 @@ namespace conscious
             room.addThing(thing);
 
             itemPosition = new Vector2(1058, 570);
+            UIThought thought = new UIThought(_content.Load<SpriteFont>("Font/Hud"),
+                                              "The door to the outside world. \nI am not ready for this.", 
+                                              "doorthought",
+                                              _pixel, Vector2.One);
             Thing door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
-                                  MoodState.None, 4, 2, false, null, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
+                                  MoodState.None, 4, 2, false, thought, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
             room.addThing(door);
 
             itemPosition = new Vector2(448, 786+4);
             Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", MoodState.None,
                                          1, null, _content.Load<Texture2D>("Objects/debug/key_oily"), Vector2.Zero);
 
+            thought = new UIThought(_content.Load<SpriteFont>("Font/Hud"),
+                                              "This key looks ugly as hell!", 
+                                              "keythought",
+                                              _pixel, Vector2.One);
             Thing key = new CombineItem(2, "Key", true, false, true, true, false, "It's a key", MoodState.Regular, 
-                                        combinedItem, 3, null, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
+                                        combinedItem, 3, thought, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
             room.addThing(key);
 
             itemPosition = new Vector2(200, 786+4);
+            thought = new UIThought(_content.Load<SpriteFont>("Font/Hud"),
+                                              "This is a nice oil bottle. \nI wonder whats inside.", 
+                                              "bottlethought",
+                                              _pixel, Vector2.One);
             Thing combineItem = new CombineItem(3, "Oil Bottle", true, false, true, false, false, "It's a bottle", MoodState.Depressed, 
-                                                null, 2, null, _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
+                                                null, 2, thought, _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
             room.addThing(combineItem);
 
             // --------------------------- Morphing Item ---------------------------

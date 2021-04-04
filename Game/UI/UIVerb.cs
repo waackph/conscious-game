@@ -17,7 +17,8 @@ namespace conscious
             Collidable = true;
         }
 
-        public void DoAction(Thing thing){
+        public void DoAction(Thing thing)
+        {
             if(thing != null){
                 Console.WriteLine("---" + VerbText + " " + thing.ToString() + "---");
             }
@@ -26,7 +27,8 @@ namespace conscious
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch){
+        public override void Draw(SpriteBatch spriteBatch)
+        {
             base.Draw(spriteBatch);
 
             _verbSprite.Draw(spriteBatch, Position, SpriteEffects.None);

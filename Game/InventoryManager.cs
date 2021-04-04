@@ -33,7 +33,7 @@ namespace conscious
                     UIInventoryPlace place = new UIInventoryPlace(iHeight.ToString()+"x"+iWidth.ToString(),
                                                                   inventoryPlaceTexture, 
                                                                   placePosition);
-                    place.DrawOrder = 2;
+                    place.UpdateDrawOrder(2);
                     _slots.Add(place);
                 }
             }

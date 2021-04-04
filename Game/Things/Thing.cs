@@ -5,24 +5,24 @@ namespace conscious
 {
     public class Thing : Entity
     {
-        protected UIThought _thought;
+        public UIThought Thought { get; protected set; }
         public Thing(UIThought thought, string name, Texture2D texture, Vector2 position) : base(name, texture, position)
         {
-            _thought = thought;
+            Thought = thought;
         }
 
         public override DataHolderEntity GetDataHolderEntity()
         {
             DataHolderThing dataHolderEntity = new DataHolderThing();
             dataHolderEntity = (DataHolderThing)base.GetDataHolderEntity(dataHolderEntity);
-            dataHolderEntity.Thought = _thought;
+            dataHolderEntity.Thought = Thought;
             return dataHolderEntity;
         }
         
         public DataHolderEntity GetDataHolderEntity(DataHolderThing dataHolderEntity)
         {
             dataHolderEntity = (DataHolderThing)base.GetDataHolderEntity(dataHolderEntity);
-            dataHolderEntity.Thought = _thought;
+            dataHolderEntity.Thought = Thought;
             return dataHolderEntity;
         }
     }

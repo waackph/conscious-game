@@ -15,6 +15,7 @@ namespace conscious
         private RoomManager _roomManager;
         private DialogManager _dialogManager;
         private MoodStateManager _moodStateManager;
+        private SoCManager _socManager;
         private Entity _lastEntityClicked;
         private Verb _verbClicked;
         private ButtonState _lastButtonState;
@@ -25,7 +26,8 @@ namespace conscious
         public InteractionManager(Player player, Cursor cursor, 
                                   ControlsManager controlsManager, EntityManager entityManager, 
                                   InventoryManager inventoryManager, RoomManager roomManager,
-                                  DialogManager dialogManager, MoodStateManager moodStateManager){
+                                  DialogManager dialogManager, MoodStateManager moodStateManager,
+                                  SoCManager socManager){
             _interactionActive = false;
             _itemInInventory = false;
             _dialogActive = false;
@@ -42,6 +44,7 @@ namespace conscious
             _roomManager = roomManager;
             _dialogManager = dialogManager;
             _moodStateManager = moodStateManager;
+            _socManager = socManager;
         }
 
         public void Update(GameTime gameTime)
@@ -227,6 +230,10 @@ namespace conscious
                     string text = item.Examine();
                     interactionSuccess = true;
                     _dialogManager.DoDisplayText(text);
+                    if(item.Thought != null)
+                    {
+                        _socManager.AddThought(item.Thought);
+                    }
                     break;
                 case Verb.PickUp:
                     _interactionActive = false;
