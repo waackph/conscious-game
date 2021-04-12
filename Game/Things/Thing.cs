@@ -5,8 +5,8 @@ namespace conscious
 {
     public class Thing : Entity
     {
-        public UIThought Thought { get; protected set; }
-        public Thing(UIThought thought, string name, Texture2D texture, Vector2 position) : base(name, texture, position)
+        public ThoughtNode Thought { get; protected set; }
+        public Thing(ThoughtNode thought, string name, Texture2D texture, Vector2 position) : base(name, texture, position)
         {
             Thought = thought;
         }

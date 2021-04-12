@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace conscious
 {
-    public class DialogManager : IComponent
+    public class UiDialogManager : IComponent
     {
         private UIText _currentText;
         private Node _currentNode;
@@ -31,7 +31,7 @@ namespace conscious
         public List<Node> TreeStructure;
         public bool DialogActive { get; protected set; }
 
-        public DialogManager(EntityManager entityManager,
+        public UiDialogManager(EntityManager entityManager,
                              MoodStateManager moodStateManager, 
                              SpriteFont displayFont, 
                              Texture2D pixel)

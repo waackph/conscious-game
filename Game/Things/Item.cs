@@ -25,7 +25,7 @@ namespace conscious
                     bool useWith, 
                     string examineText,
                     MoodState moodChange,
-                    UIThought thought, 
+                    ThoughtNode thought, 
                     Texture2D texture, Vector2 position) : base(thought, name, texture, position){
             Id = id;
             

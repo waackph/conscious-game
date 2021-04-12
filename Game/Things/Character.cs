@@ -9,7 +9,7 @@ namespace conscious
         protected int Id { get; }
         protected List<Node> _treeStructure;
 
-        protected DialogManager _dialogManager;
+        protected UiDialogManager _dialogManager;
         protected string _pronoun;
         protected string _catchPhrase;
 
@@ -22,9 +22,9 @@ namespace conscious
                          string catchPhrase, 
                          bool giveAble, 
                          List<Node> treeStructure, 
-                         DialogManager dialogManager,
+                         UiDialogManager dialogManager,
                          MoodState moodChange,
-                         UIThought thought,
+                         ThoughtNode thought,
                          Texture2D texture, Vector2 position)
                         : base(thought, name, texture, position)
         {

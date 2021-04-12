@@ -2,6 +2,6 @@ namespace conscious
 {
     public class DataHolderThing : DataHolderEntity
     {
-        public UIThought Thought { get; set; }
+        public ThoughtNode Thought { get; set; }
     }
 }

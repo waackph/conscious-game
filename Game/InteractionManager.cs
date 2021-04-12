@@ -13,7 +13,7 @@ namespace conscious
         private EntityManager _entityManager;
         private InventoryManager _inventoryManager;
         private RoomManager _roomManager;
-        private DialogManager _dialogManager;
+        private UiDialogManager _dialogManager;
         private MoodStateManager _moodStateManager;
         private SoCManager _socManager;
         private Entity _lastEntityClicked;
@@ -26,7 +26,7 @@ namespace conscious
         public InteractionManager(Player player, Cursor cursor, 
                                   ControlsManager controlsManager, EntityManager entityManager, 
                                   InventoryManager inventoryManager, RoomManager roomManager,
-                                  DialogManager dialogManager, MoodStateManager moodStateManager,
+                                  UiDialogManager dialogManager, MoodStateManager moodStateManager,
                                   SoCManager socManager){
             _interactionActive = false;
             _itemInInventory = false;

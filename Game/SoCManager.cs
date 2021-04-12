@@ -6,71 +6,81 @@ namespace conscious
 {
     public class SoCManager : IComponent
     {
-        private EntityManager _entityManager;
-        private Queue<UIThought> _thoughts;
-        private float _bgX;
-        private float _bgY;
-        private float _offsetY;
-        private float _offsetX;
-        private int _maxThoughts;
-        private UIArea _consciousnessBackground;
+        private Queue<ThoughtNode> _thoughts;
+        private UiDisplayThoughtManager _uiDisplayThought;
+        private List<ThoughtLink> _currentSubthoughtLinks;
+        private ThoughtNode _currentSubthought;
+        private ThoughtNode _currentThought;
 
-        public SoCManager(EntityManager entityManager)
+        public SoCManager()
         {
-            _entityManager = entityManager;
-            _thoughts = new Queue<UIThought>();
-            _maxThoughts = 2;
-            _bgX = 300f; // 150f;
-            _bgY = 900f; // 500f;
-            _offsetY = 20f;
-            _offsetX = 250f;
-        }
-
-        public void LoadContent(Texture2D consciousnessBackground)
-        {
-            Vector2 bgPosition = new Vector2(_bgX, _bgY);
-            _consciousnessBackground = new UIArea("SoC Background", consciousnessBackground, bgPosition);
+            
         }
 
         public void Update(GameTime gameTime){ }
 
         public void Draw(SpriteBatch spriteBatch){ }
 
-        public void AddThought(UIThought thought)
+        public void AddThought(ThoughtNode thought)
         {
-            if(!_thoughts.Contains(thought))
+            _thoughts.Enqueue(thought);
+            _uiDisplayThought.AddThought(thought);
+        }
+
+        public void RemoveThought(ThoughtNode thought)
+        {
+            _thoughts.Dequeue();
+        }
+
+        public void SelectThought(string thoughtName)
+        {
+            ThoughtNode node = GetThought(thoughtName);
+            if(node.HasLinks())
             {
-                if(_thoughts.Count + 1 > _maxThoughts)
-                {
-                    RemoveThought();
-                }
-                int thNumber = 0;
-                //Update position of thoughts in queue
-                foreach(UIThought th in _thoughts)
-                {
-                    _entityManager.RemoveEntity(th);
-                    th.SetPosition(_bgX - _offsetX,
-                                   _bgY + thNumber*_offsetY);
-                    _entityManager.AddEntity(th);
-                    thNumber++;
-                }
-                // add new thought
-                thought.SetPosition(_bgX - _offsetX,
-                                    _bgY + thNumber*_offsetY);
-                _thoughts.Enqueue(thought);
-                _entityManager.AddEntity(thought);
+                _uiDisplayThought.StartThoughtMode(node, node.Links);
             }
         }
 
-        public void RemoveThought()
+        public void SelectSubthought(string thoughtName)
         {
-            UIThought thought = _thoughts.Dequeue();
-            _entityManager.RemoveEntity(thought);
+            ThoughtLink option = GetOption(thoughtName);
+            ThoughtNode node = option.NextNode;
+            if(node == null || !node.HasLinks())
+            {
+                _uiDisplayThought.EndThoughtMode();
+            }
+            else
+            {
+                _uiDisplayThought.ChangeSubthought(node, node.Links);
+                _currentSubthoughtLinks = node.Links;
+            }
         }
 
-        public void FillEntityManager()
+        public ThoughtNode GetThought(string thoughtText)
         {
-            _entityManager.AddEntity(_consciousnessBackground);
+            foreach(ThoughtNode thought in _thoughts)
+            {
+                if(thought.Thought == thoughtText)
+                {
+                    return thought;
+                }
+            }
+            return null;
+        }
+
+        public ThoughtLink GetOption(string thoughtText)
+        {
+            if(_currentSubthoughtLinks != null)
+            {
+                foreach(ThoughtLink thought in _currentSubthoughtLinks)
+                {
+                    if(thought.Option == thoughtText)
+                    {
+                        return thought;
+                    }
+                }
+            }
+            return null;
         }
     }
 }

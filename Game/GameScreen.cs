@@ -19,7 +19,8 @@ namespace conscious
         // private VerbManager _verbManager;
         private SoCManager _socManager;
         private InventoryManager _inventoryManager;
-        private DialogManager _dialogManager;
+        private UiDialogManager _dialogManager;
+        private UiDisplayThoughtManager _uiDisplayThoughtManager;
         private InteractionManager _interactionManager;
         private SequenceManager _sequenceManager;
         private MoodStateManager _moodStateManager;
@@ -61,12 +62,13 @@ namespace conscious
             //                          content.Load<Texture2D>("Verbs/debug/verb_combine"),
             //                          content.Load<Texture2D>("Verbs/debug/verb_talk_to"),
             //                          content.Load<Texture2D>("Verbs/debug/verb_give_to"));
-            _socManager = new SoCManager(_entityManager);
-            _socManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"));
+            _socManager = new SoCManager();
+            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager);
+            _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"));
             _inventoryManager = new InventoryManager(_entityManager);
             _inventoryManager.LoadContent(content.Load<Texture2D>("Inventory/debug/inventory_background"));
             _moodStateManager = new MoodStateManager(_entityManager);
-            _dialogManager = new DialogManager(_entityManager, _moodStateManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
+            _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
             _sequenceManager = new SequenceManager();
             _roomManager = new RoomManager(content, _player, _cursor, _pixel, entityManager, _dialogManager, _sequenceManager, _moodStateManager, _preferredBackBufferWidth, _preferredBackBufferHeight);
             _interactionManager = new InteractionManager(_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager, _moodStateManager, _socManager);
@@ -119,7 +121,7 @@ namespace conscious
             // _verbManager.FillEntityManager();
             _inventoryManager.FillEntityManager();
             _dialogManager.FillEntityManager();
-            _socManager.FillEntityManager();
+            _uiDisplayThoughtManager.FillEntityManager();
         }
 
         public void SaveGame()

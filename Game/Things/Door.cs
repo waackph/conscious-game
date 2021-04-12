@@ -24,7 +24,7 @@ namespace conscious
                     int itemDependency,
                     int roomId,
                     bool isUnlocked,
-                    UIThought thought,
+                    ThoughtNode thought,
                     Texture2D texture, Vector2 position)
                     :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, thought, texture, position){
             _itemDependency = itemDependency;

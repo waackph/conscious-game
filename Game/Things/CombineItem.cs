@@ -19,7 +19,7 @@ namespace conscious
                            MoodState moodChange,
                            Item combinedItem,
                            int itemDependency,
-                           UIThought thought,
+                           ThoughtNode thought,
                            Texture2D texture, Vector2 position)
                 :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, thought, texture, position){
             _combinedItem = combinedItem;

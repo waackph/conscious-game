@@ -10,7 +10,7 @@ namespace conscious
     {
         private Dictionary<int, Room> _rooms = new Dictionary<int, Room>();
         private EntityManager _entityManager;
-        private DialogManager _dialogManager;
+        private UiDialogManager _dialogManager;
         private SequenceManager _sequenceManager;
         private MoodStateManager _moodStateManager;
         private ContentManager _content;
@@ -29,7 +29,7 @@ namespace conscious
                            Cursor cursor,
                            Texture2D pixel,
                            EntityManager entityManager,
-                           DialogManager dialogManager,
+                           UiDialogManager dialogManager,
                            SequenceManager sequenceManager,
                            MoodStateManager moodStateManager,
                            int preferredBackBufferWidth, 

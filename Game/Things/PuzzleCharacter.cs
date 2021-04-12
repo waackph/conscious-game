@@ -17,9 +17,9 @@ namespace conscious
                                int itemDependency, 
                                bool dialogUnlocked,
                                List<Node> treeStructure,
-                               DialogManager dialogManager,
+                               UiDialogManager dialogManager,
                                MoodState moodChange,
-                               UIThought thought,
+                               ThoughtNode thought,
                                Texture2D texture, Vector2 position)
                             : base(id, name, pronoun, catchPhrase, giveAble, treeStructure, dialogManager, moodChange, thought, texture, position)
         {
