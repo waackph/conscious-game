@@ -53,7 +53,9 @@ namespace conscious
             _cursor = cursor;
 
             _entityManager = entityManager;
+
             _controlsManager = new ControlsManager(_player);
+
             // _verbManager = new VerbManager(_entityManager);
             // _verbManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"),
             //                          content.Load<Texture2D>("Verbs/debug/verb_examine"),
@@ -62,15 +64,23 @@ namespace conscious
             //                          content.Load<Texture2D>("Verbs/debug/verb_combine"),
             //                          content.Load<Texture2D>("Verbs/debug/verb_talk_to"),
             //                          content.Load<Texture2D>("Verbs/debug/verb_give_to"));
-            _socManager = new SoCManager();
-            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager);
-            _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"));
+
             _inventoryManager = new InventoryManager(_entityManager);
             _inventoryManager.LoadContent(content.Load<Texture2D>("Inventory/debug/inventory_background"));
+
             _moodStateManager = new MoodStateManager(_entityManager);
+
+            // TODO: Solve the loop dependence - e.g. by making the current Thoughts in SoC public and ui thoughts updating them at each game loop
+            _socManager = new SoCManager();
+            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _socManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
+            _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"));
+
             _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
+
             _sequenceManager = new SequenceManager();
+
             _roomManager = new RoomManager(content, _player, _cursor, _pixel, entityManager, _dialogManager, _sequenceManager, _moodStateManager, _preferredBackBufferWidth, _preferredBackBufferHeight);
+
             _interactionManager = new InteractionManager(_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager, _moodStateManager, _socManager);
         }
 

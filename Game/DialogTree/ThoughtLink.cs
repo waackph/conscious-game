@@ -4,7 +4,7 @@ namespace conscious
 {
     public class ThoughtLink
     {
-        private int _id;
+        public int Id { get; }
         private MoodState[] _validMoods;
 
         public string Option { get; }
@@ -17,7 +17,7 @@ namespace conscious
                            bool isLocked, 
                            MoodState[] validMoods)
         {
-            _id = id;
+            Id = id;
             NextNode = nextNode;
             Option = option;
             IsLocked = isLocked;

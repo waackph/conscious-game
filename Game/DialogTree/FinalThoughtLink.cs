@@ -2,10 +2,9 @@ namespace conscious
 {
     public class FinalThoughtLink : ThoughtLink
     {
-        private MoodState _moodChange;
-        private Verb _verb;
-        private AnimatedSprite _animation;
-
+        public MoodState MoodChange { get; }
+        public Verb Verb { get; }
+        public AnimatedSprite Animation { get; }
         public  int UnlockId { get; }
 
         public FinalThoughtLink(MoodState moodChange,
@@ -19,9 +18,9 @@ namespace conscious
                                 MoodState[] validMoods)
                 : base(id, nextNode, option, isLocked, validMoods)
         {
-            _moodChange = moodChange;
-            _verb = verb;
-            _animation = animation;
+            MoodChange = moodChange;
+            Verb = verb;
+            Animation = animation;
             UnlockId = unlockId;
         }
         

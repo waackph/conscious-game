@@ -256,6 +256,7 @@ namespace conscious
             List<UIThought> uiOptions = new List<UIThought>();
             foreach(ThoughtLink link in links)
             {
+                // TODO: add a disabled style, if current moodState is not valid for this option
                 UIThought uiThought = new UIThought(_font, 
                                                     link.Option, link.Option, 
                                                     _pixel, 
