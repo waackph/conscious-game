@@ -71,7 +71,7 @@ namespace conscious
             _moodStateManager = new MoodStateManager(_entityManager);
 
             // TODO: Solve the loop dependence - e.g. by making the current Thoughts in SoC public and ui thoughts updating them at each game loop
-            _socManager = new SoCManager();
+            _socManager = new SoCManager(_moodStateManager);
             _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _socManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
             _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"));
 
@@ -201,7 +201,7 @@ namespace conscious
             if(dh.GetType() == typeof(DataHolderThing))
             {
                 DataHolderThing dhThing = (DataHolderThing)dh;
-                entity = new Thing(dhThing.Thought, dhThing.Name, 
+                entity = new Thing(dhThing.Id, dhThing.Thought, dhThing.Name, 
                                    _content.Load<Texture2D>(dhThing.texturePath), 
                                    new Vector2(dhThing.PositionX, dhThing.PositionY));
             }

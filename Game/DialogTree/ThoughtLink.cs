@@ -31,5 +31,10 @@ namespace conscious
                 _validMoods = validMoods;
             }
         }
+
+        public bool MoodValid(MoodState mood)
+        {
+            return Array.Exists(_validMoods, element => element == mood);
+        }
     }
 }

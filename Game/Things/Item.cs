@@ -8,7 +8,6 @@ namespace conscious
     {
         protected string _examineText;
 
-        public int Id;
         public bool PickUpAble { get; set; }
         public bool UseAble { get; set; }
         public bool CombineAble { get; set; }
@@ -26,9 +25,7 @@ namespace conscious
                     string examineText,
                     MoodState moodChange,
                     ThoughtNode thought, 
-                    Texture2D texture, Vector2 position) : base(thought, name, texture, position){
-            Id = id;
-            
+                    Texture2D texture, Vector2 position) : base(id, thought, name, texture, position){            
             PickUpAble = pickUpAble;
             UseAble = useAble;
             CombineAble = combineAble;
@@ -65,7 +62,6 @@ namespace conscious
             DataHolderItem dataHolderEntity = new DataHolderItem();
             dataHolderEntity = (DataHolderItem)base.GetDataHolderEntity(dataHolderEntity);
             // Item
-            dataHolderEntity.Id = Id;
             dataHolderEntity.PickUpAble = PickUpAble;
             dataHolderEntity.UseAble = UseAble;
             dataHolderEntity.UseWith = UseWith;
@@ -80,7 +76,6 @@ namespace conscious
         {
             dataHolderEntity = (DataHolderItem)base.GetDataHolderEntity(dataHolderEntity);
             // Item
-            dataHolderEntity.Id = Id;
             dataHolderEntity.PickUpAble = PickUpAble;
             dataHolderEntity.UseAble = UseAble;
             dataHolderEntity.UseWith = UseWith;

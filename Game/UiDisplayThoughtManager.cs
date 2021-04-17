@@ -33,6 +33,7 @@ namespace conscious
         {
             _entityManager = entityManager;
             _socManager = socManager;
+            _socManager.AddThoughtEvent += AddThoughtFromSoC;
             _thoughts = new Queue<UIThought>();
             _maxThoughts = 2;
             // Main SoC Area
@@ -70,6 +71,22 @@ namespace conscious
         }
 
         public void Draw(SpriteBatch spriteBatch){ }
+
+        // private void UpdateThoughtQueue()
+        // {
+        //     if(!_thoughts.ToList().ConvertAll<string>(_thoughts => _thoughts.Name).Equals(_socManager.Thoughts.ToList().ConvertAll<string>(Thoughts => Thoughts.Thought)))
+        //     {
+        //         foreach(ThoughtNode node in _socManager.Thoughts)
+        //         {
+        //             AddThought(node);
+        //         }
+        //     }
+        // }
+
+        public void AddThoughtFromSoC(object sender, ThoughtNode e)
+        {
+            AddThought(e);
+        }
 
         public void AddThought(ThoughtNode thought)
         {
@@ -113,6 +130,7 @@ namespace conscious
             return _thoughts.OfType<T>();
         }
 
+        // TODO: Do this in the UI Manager and call the Mode-Methods from there
         public void CheckThoughtClicked()
         {
             MouseState currentMouseState = Mouse.GetState();
@@ -122,17 +140,28 @@ namespace conscious
                 {
                     if(uiThought.BoundingBox.Contains(currentMouseState.Position))
                     {
+                        ThoughtNode node;
                         // Do logic stuff (run tree logic in SoCManager and maybe add a thought to UI or terminate thought)
                         // Check if click was in SoC
                         if(_thoughts.Contains(uiThought))
                         {
-                            // TODO: call Manager for new subthought
-                            _socManager.SelectThought(uiThought.Name);
+                            node = _socManager.SelectThought(uiThought.Name);
+                            if(node != null)
+                            {
+                                StartThoughtMode(node, node.Links);
+                            }
                         }
                         else if(_currentSubthoughtLinks != null && _currentSubthoughtLinks.Contains(uiThought))
                         {
-                            // TODO: call Manager for traverse in current subthought
-                            _socManager.SelectSubthought(uiThought.Name);
+                            node = _socManager.SelectSubthought(uiThought.Name);
+                            if(node == null)
+                            {
+                                EndThoughtMode();
+                            }
+                            else
+                            {
+                                ChangeSubthought(node, node.Links);
+                            }
                         }
                         break;
                     }

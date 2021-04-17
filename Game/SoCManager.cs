@@ -7,18 +7,23 @@ namespace conscious
 {
     public class SoCManager : IComponent
     {
-        private UiDisplayThoughtManager _uiDisplayThought;
-        private Queue<ThoughtNode> _thoughts;
+        private MoodStateManager _moodStateManager;
+        public Queue<ThoughtNode> Thoughts { get; private set; }
         private int _maxThoughts;
         private List<ThoughtLink> _currentSubthoughtLinks;
         private ThoughtNode _currentSubthought;
         private ThoughtNode _currentThought;
+        
+        public event EventHandler<VerbActionEventArgs> ActionEvent;
+        public event EventHandler<ThoughtNode> AddThoughtEvent;
+        public Verb VerbResult { get; private set; }
 
-        public SoCManager(UiDisplayThoughtManager uiDisplayThought)
+        public SoCManager(MoodStateManager moodStateManager)
         {
-            _uiDisplayThought = uiDisplayThought;            
-            _thoughts = new Queue<ThoughtNode>();
+            _moodStateManager = moodStateManager;
+            Thoughts = new Queue<ThoughtNode>();
             _maxThoughts = 2;
+            VerbResult = Verb.None;
         }
 
         public void Update(GameTime gameTime){ }
@@ -27,20 +32,16 @@ namespace conscious
 
         public void AddThought(ThoughtNode thought)
         {
-            if(_thoughts.Count + 1 > _maxThoughts)
+            if(Thoughts.Count + 1 > _maxThoughts)
             {
-                RemoveThought();
+                Thoughts.Dequeue();
             }
-            _thoughts.Enqueue(thought);
-            _uiDisplayThought.AddThought(thought);
+            Thoughts.Enqueue(thought);
+            // Invoke event for UiDisplayThoughtManager to add the thought UI Element as well
+            OnAddThoughtEvent(thought);
         }
 
-        public void RemoveThought()
-        {
-            _thoughts.Dequeue();
-        }
-
-        public void SelectThought(string thoughtName)
+        public ThoughtNode SelectThought(string thoughtName)
         {
             ThoughtNode node = GetThought(thoughtName);
             // If thought is an Selectable Thought: choose link from root
@@ -55,46 +56,57 @@ namespace conscious
                         if(!link.IsLocked)
                         {
                             ThoughtNode displayNode = link.NextNode;
-                            _uiDisplayThought.StartThoughtMode(displayNode, displayNode.Links);
-                            break;
+                            // _uiDisplayThought.StartThoughtMode(displayNode, displayNode.Links);
+                            return displayNode;
                         }
                     }
                 }
             }
+            return null;
         }
 
-        public void SelectSubthought(string thoughtName)
+        public ThoughtNode SelectSubthought(string thoughtName)
         {
             ThoughtLink option = GetOption(thoughtName);
-            // TODO: check here, if current mood state is valid to even select that option  
-            // or if the option is currently locked
-            // ...
-            ThoughtNode node = option.NextNode;
-            if(node == null || !node.HasLinks())
-            {
-                _uiDisplayThought.EndThoughtMode();
-                // If there is a last node (without links), it should be displayed as a concluding thought in the SoC Main Window
-                if(!node.HasLinks())
+            if(!option.IsLocked && option.MoodValid(_moodStateManager.moodState))
+            {    
+                ThoughtNode node = option.NextNode;
+                if(node == null || !node.HasLinks())
                 {
-                    AddThought(node);
+                    // If there is a last node (without links), it should be displayed as a concluding thought in the SoC Main Window
+                    if(!node.HasLinks())
+                    {
+                        AddThought(node);
+                    }
+                    // If the link is a final option, execute possible operations
+                    if(typeof(FinalThoughtLink) == option.GetType())
+                    {
+                        FinalThoughtLink finalOption = (FinalThoughtLink)option;
+                        if(finalOption.UnlockId != 0)
+                            unlockThoughtLink(finalOption.UnlockId);
+                        if(finalOption.Verb != Verb.None)
+                        {
+                            VerbActionEventArgs data = new VerbActionEventArgs();
+                            data.ThingId = _currentThought.ThingId;
+                            data.verbAction = finalOption.Verb;
+                            OnActionEvent(data);
+                        }
+                        if(finalOption.MoodChange != MoodState.None)
+                        {
+                            _moodStateManager.StateChange = finalOption.MoodChange;
+                        }
+                    }
+                    // _uiDisplayThought.EndThoughtMode();
+                    return null;
                 }
-                // If the link is a final option, execute possible operations
-                if(typeof(FinalThoughtLink) == option.GetType())
+                else
                 {
-                    FinalThoughtLink finalOption = (FinalThoughtLink)option;
-                    if(finalOption.UnlockId != 0)
-                        unlockThoughtLink(finalOption.UnlockId);
-                    if(finalOption.Verb != Verb.None)
-                        executeVerb(finalOption.Verb);
-                    if(finalOption.Animation != null)
-                        executeAnimation(finalOption.Animation);
+                    _currentSubthoughtLinks = node.Links;
+                    // _uiDisplayThought.ChangeSubthought(node, node.Links);
+                    return node;
                 }
             }
-            else
-            {
-                _uiDisplayThought.ChangeSubthought(node, node.Links);
-                _currentSubthoughtLinks = node.Links;
-            }
+            return null;
         }
 
         private void unlockThoughtLink(int unlockId)
@@ -113,24 +125,24 @@ namespace conscious
             }
         }
 
+        protected virtual void OnActionEvent(VerbActionEventArgs e)
+        {
+            ActionEvent?.Invoke(this, e);
+        }
+
+        protected virtual void OnAddThoughtEvent(ThoughtNode e)
+        {
+            AddThoughtEvent?.Invoke(this, e);
+        }
+
         private Node FindLinkById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void executeVerb(Verb verb)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void executeAnimation(AnimatedSprite sprite)
         {
             throw new NotImplementedException();
         }
 
         public ThoughtNode GetThought(string thoughtText)
         {
-            foreach(ThoughtNode thought in _thoughts)
+            foreach(ThoughtNode thought in Thoughts)
             {
                 if(thought.Thought == thoughtText)
                 {

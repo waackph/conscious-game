@@ -10,6 +10,7 @@ namespace conscious
 
         public string Thought { get; }
         public bool IsRoot { get; }
+        public int ThingId { get; }
 
         public ThoughtNode(int id, string thought, int linkageId, bool isRoot)
         {

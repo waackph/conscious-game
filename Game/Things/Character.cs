@@ -6,7 +6,6 @@ namespace conscious
 {
     public class Character : Thing
     {
-        protected int Id { get; }
         protected List<Node> _treeStructure;
 
         protected UiDialogManager _dialogManager;
@@ -26,9 +25,8 @@ namespace conscious
                          MoodState moodChange,
                          ThoughtNode thought,
                          Texture2D texture, Vector2 position)
-                        : base(thought, name, texture, position)
+                        : base(id, thought, name, texture, position)
         {
-            Id = id;
             _pronoun = pronoun;
             _catchPhrase = catchPhrase;
 
@@ -60,7 +58,6 @@ namespace conscious
             DataHolderCharacter dataHolderEntity = new DataHolderCharacter();
             dataHolderEntity = (DataHolderCharacter)base.GetDataHolderEntity(dataHolderEntity);
             // Character
-            dataHolderEntity.Id = Id;
             dataHolderEntity.TreeStructure = _treeStructure;
             dataHolderEntity.Pronoun = _pronoun;
             dataHolderEntity.CatchPhrase = _catchPhrase;
@@ -72,7 +69,6 @@ namespace conscious
         {
             dataHolderEntity = (DataHolderCharacter)base.GetDataHolderEntity(dataHolderEntity);
             // Character
-            dataHolderEntity.Id = Id;
             dataHolderEntity.TreeStructure = _treeStructure;
             dataHolderEntity.Pronoun = _pronoun;
             dataHolderEntity.CatchPhrase = _catchPhrase;
