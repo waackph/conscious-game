@@ -4,7 +4,6 @@ namespace conscious
 {
     public class DataHolderCharacter : DataHolderThing
     {
-        public int Id { get; set; }
         public List<Node> TreeStructure { get; set; }
         public string Pronoun { get; set; }
         public string CatchPhrase { get; set; }
