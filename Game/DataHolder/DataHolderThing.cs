@@ -4,5 +4,6 @@ namespace conscious
     {
         public int Id { get; set; }
         public ThoughtNode Thought { get; set; }
+        public bool IsInInventory { get; set; }
     }
 }

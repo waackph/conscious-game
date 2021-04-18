@@ -45,6 +45,7 @@ namespace conscious
 
         public void AddItem(Item item)
         {
+            item.IsInInventory = true;
             _items.Add(item);
             foreach(UIInventoryPlace inventoryPlace in _slots)
             {

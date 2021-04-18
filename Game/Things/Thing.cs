@@ -7,10 +7,13 @@ namespace conscious
     {
         public ThoughtNode Thought { get; protected set; }
         public int Id { get; protected set; }
+        public bool IsInInventory { get; set; }
+
         public Thing(int id, ThoughtNode thought, string name, Texture2D texture, Vector2 position) : base(name, texture, position)
         {
             Thought = thought;
             Id = id;
+            IsInInventory = false;
         }
 
         public override DataHolderEntity GetDataHolderEntity()
@@ -18,6 +21,7 @@ namespace conscious
             DataHolderThing dataHolderEntity = new DataHolderThing();
             dataHolderEntity = (DataHolderThing)base.GetDataHolderEntity(dataHolderEntity);
             dataHolderEntity.Thought = Thought;
+            dataHolderEntity.IsInInventory = IsInInventory;
             return dataHolderEntity;
         }
         
@@ -26,6 +30,7 @@ namespace conscious
             dataHolderEntity = (DataHolderThing)base.GetDataHolderEntity(dataHolderEntity);
             dataHolderEntity.Id = Id;
             dataHolderEntity.Thought = Thought;
+            dataHolderEntity.IsInInventory = IsInInventory;
             return dataHolderEntity;
         }
     }
