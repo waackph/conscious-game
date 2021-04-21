@@ -21,7 +21,7 @@ namespace conscious
         private InventoryManager _inventoryManager;
         private UiDialogManager _dialogManager;
         private UiDisplayThoughtManager _uiDisplayThoughtManager;
-        private InteractionManager _interactionManager;
+        private RoomInteractionManager _roomInteractionManager;
         private SequenceManager _sequenceManager;
         private MoodStateManager _moodStateManager;
         private Player _player;
@@ -82,7 +82,7 @@ namespace conscious
 
             _roomManager = new RoomManager(content, _player, _cursor, _pixel, entityManager, _dialogManager, _sequenceManager, _moodStateManager, _preferredBackBufferWidth, _preferredBackBufferHeight);
 
-            _interactionManager = new InteractionManager(_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager, _moodStateManager, _socManager);
+            _roomInteractionManager = new RoomInteractionManager(_entityManager, _socManager, _inventoryManager, _controlsManager, _roomManager, _dialogManager); //_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager, _moodStateManager, _socManager);
         }
 
         public override void Update(GameTime gameTime)
@@ -97,7 +97,7 @@ namespace conscious
             if(!_dialogManager.DialogActive && !_sequenceManager.SequenceActive)
             {
                 _controlsManager.Update(gameTime);
-                _interactionManager.Update(gameTime);
+                _roomInteractionManager.Update(gameTime);
             }
             _dialogManager.Update(gameTime);
             _roomManager.Update(gameTime);
