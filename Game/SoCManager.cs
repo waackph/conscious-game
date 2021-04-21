@@ -11,7 +11,6 @@ namespace conscious
         public Queue<ThoughtNode> Thoughts { get; private set; }
         private int _maxThoughts;
         private List<ThoughtLink> _currentSubthoughtLinks;
-        private ThoughtNode _currentSubthought;
         private ThoughtNode _currentThought;
         
         public event EventHandler<VerbActionEventArgs> ActionEvent;

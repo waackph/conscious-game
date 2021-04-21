@@ -64,14 +64,26 @@ namespace conscious
             // Room 1
             Texture2D bg = _content.Load<Texture2D>("Backgrounds/debug/background");
             Room room = new Room(bg.Width, _entityManager, null);
-            Thing thing = new Thing(null, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
+            Thing thing = new Thing(10, null, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
             room.addThing(thing);
 
             itemPosition = new Vector2(1058, 570);
-            UIThought thought = new UIThought(_content.Load<SpriteFont>("Font/Hud"),
-                                              "The door to the outside world. \nI am not ready for this.", 
-                                              "doorthought",
-                                              _pixel, Vector2.One);
+            // UIThought thought = new UIThought(_content.Load<SpriteFont>("Font/Hud"),
+            //                                   "The door to the outside world. \nI am not ready for this.", 
+            //                                   "doorthought",
+            //                                   _pixel, Vector2.One);
+
+            ThoughtNode thought = new ThoughtNode(12, "The door to the outside world. \nI am not ready for this.", 0, true);
+            thought.AddLink(new ThoughtLink(13, 
+                                            null, 
+                                            "Fuck it. I'll do it anyway [use]", 
+                                            false, 
+                                            new MoodState[] {MoodState.None}));
+            thought.AddLink(new ThoughtLink(14, 
+                                            null, 
+                                            "I'll rather feel alone then [leave]", 
+                                            false, 
+                                            new MoodState[] {MoodState.None}));
             Thing door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
                                   MoodState.None, 4, 2, false, thought, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
             room.addThing(door);
@@ -80,21 +92,13 @@ namespace conscious
             Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", MoodState.None,
                                          1, null, _content.Load<Texture2D>("Objects/debug/key_oily"), Vector2.Zero);
 
-            thought = new UIThought(_content.Load<SpriteFont>("Font/Hud"),
-                                              "This key looks ugly as hell!", 
-                                              "keythought",
-                                              _pixel, Vector2.One);
             Thing key = new CombineItem(2, "Key", true, false, true, true, false, "It's a key", MoodState.Regular, 
-                                        combinedItem, 3, thought, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
+                                        combinedItem, 3, null, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
             room.addThing(key);
 
             itemPosition = new Vector2(200, 786+4);
-            thought = new UIThought(_content.Load<SpriteFont>("Font/Hud"),
-                                              "This is a nice oil bottle. \nI wonder whats inside.", 
-                                              "bottlethought",
-                                              _pixel, Vector2.One);
             Thing combineItem = new CombineItem(3, "Oil Bottle", true, false, true, false, false, "It's a bottle", MoodState.Depressed, 
-                                                null, 2, thought, _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
+                                                null, 2, null, _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
             room.addThing(combineItem);
 
             // --------------------------- Morphing Item ---------------------------
@@ -116,7 +120,7 @@ namespace conscious
             // room 2
             bg = _content.Load<Texture2D>("Backgrounds/debug/background_double");
             room = new Room(bg.Width, _entityManager, null);
-            Thing background = new Thing(null, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
+            Thing background = new Thing(11, null, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
             room.addThing(background);
 
             itemPosition = new Vector2(1058, 575+4);

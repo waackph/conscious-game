@@ -11,7 +11,6 @@ namespace conscious
         public MoodState StateChange { get; set; }
 
         private EntityManager _entityManager;
-        private SoCManager _socManager;
 
         public MoodStateManager(EntityManager entityManager)
         {

@@ -45,6 +45,7 @@ namespace conscious
 
             Vector2 playerPosition = Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
             _player = new Player(content.Load<Texture2D>("Player/Run"),
+                                 50, 
                                  null,
                                  "Player",
                                  content.Load<Texture2D>("Player/Idle"),
