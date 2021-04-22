@@ -18,6 +18,7 @@ namespace conscious
 
         private Cursor _cursor;
         private Player _player;
+
         private ButtonState _lastButtonState;
         private Thing _lastThingClicked;
         private Verb _lastVerbChosen;
@@ -32,7 +33,9 @@ namespace conscious
                                       InventoryManager inventoryManager, 
                                       ControlsManager controlsManager,
                                       RoomManager roomManager,
-                                      UiDialogManager dialogManager) 
+                                      UiDialogManager dialogManager,
+                                      Cursor cursor,
+                                      Player player) 
         {
             _entityManager = entityManager;
             _socManager = socManager;
@@ -41,6 +44,11 @@ namespace conscious
             _controlsManager = controlsManager;
             _roomManager = roomManager;
             _dialogManager = dialogManager;
+
+            _cursor = cursor;
+            _player = player;
+
+            _lastThingsClicked = new Queue<Thing>();
             
             _lastButtonState = Mouse.GetState().LeftButton;
             _interactionActive = false;
@@ -67,18 +75,22 @@ namespace conscious
                 isNear = IsEntityNearPlayer(thingHovered);
                 _cursor.InteractionLabel = thingHovered.Name;
             }
+            else
+            {
+                _cursor.InteractionLabel = "";
+            }
 
             if(Mouse.GetState().LeftButton == ButtonState.Released && _lastButtonState == ButtonState.Pressed)
             {
                 thingClicked = thingHovered;
                 if(thingClicked != null)
                 {
-                    if(!isNear && thingClicked.IsInInventory)
+                    if(!isNear && !thingClicked.IsInInventory)
                     {
                         _lastThingClicked = thingClicked;
                         _isWalking = true;
                     }
-                    else
+                    else if(thingClicked.Thought != null)
                     {
                         // Add thing / Show thought
                         _socManager.AddThought(thingClicked.Thought);
@@ -103,11 +115,11 @@ namespace conscious
                             _lastVerbChosen = Verb.None;
                             _interactionActive = false;
                         }
-                        else
+                        else if(_lastThingClicked.Thought != null)
                         {
                             // Add thing / Show thought as soon as player is near thing
                             _socManager.AddThought(_lastThingClicked.Thought);
-                            addClickedThing(thingClicked);
+                            addClickedThing(_lastThingClicked);
                         }
                         _isWalking = false;
                         _lastThingClicked = null;

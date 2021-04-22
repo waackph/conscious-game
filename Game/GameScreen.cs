@@ -73,16 +73,31 @@ namespace conscious
 
             // TODO: Solve the loop dependence - e.g. by making the current Thoughts in SoC public and ui thoughts updating them at each game loop
             _socManager = new SoCManager(_moodStateManager);
-            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _socManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
+            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _socManager, _cursor, content.Load<SpriteFont>("Font/Hud"), _pixel);
             _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"));
 
             _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
 
             _sequenceManager = new SequenceManager();
 
-            _roomManager = new RoomManager(content, _player, _cursor, _pixel, entityManager, _dialogManager, _sequenceManager, _moodStateManager, _preferredBackBufferWidth, _preferredBackBufferHeight);
+            _roomManager = new RoomManager(content, 
+                                           _player, 
+                                           _cursor, 
+                                           _pixel, 
+                                           _entityManager, 
+                                           _dialogManager, 
+                                           _sequenceManager, 
+                                           _moodStateManager, 
+                                           _preferredBackBufferWidth, _preferredBackBufferHeight);
 
-            _roomInteractionManager = new RoomInteractionManager(_entityManager, _socManager, _inventoryManager, _controlsManager, _roomManager, _dialogManager); //_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager, _moodStateManager, _socManager);
+            _roomInteractionManager = new RoomInteractionManager(_entityManager, 
+                                                                 _socManager, 
+                                                                 _inventoryManager, 
+                                                                 _controlsManager, 
+                                                                 _roomManager, 
+                                                                 _dialogManager,
+                                                                 _cursor,
+                                                                 _player);
         }
 
         public override void Update(GameTime gameTime)
@@ -98,6 +113,7 @@ namespace conscious
             {
                 _controlsManager.Update(gameTime);
                 _roomInteractionManager.Update(gameTime);
+                _uiDisplayThoughtManager.Update(gameTime);
             }
             _dialogManager.Update(gameTime);
             _roomManager.Update(gameTime);

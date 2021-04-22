@@ -73,16 +73,22 @@ namespace conscious
             //                                   "doorthought",
             //                                   _pixel, Vector2.One);
 
-            ThoughtNode thought = new ThoughtNode(12, "The door to the outside world. \nI am not ready for this.", 0, true);
-            thought.AddLink(new ThoughtLink(13, 
+            ThoughtNode thought2 = new ThoughtNode(16, "First node", 0, false);
+            thought2.AddLink(new ThoughtLink(13, 
                                             null, 
                                             "Fuck it. I'll do it anyway [use]", 
                                             false, 
                                             new MoodState[] {MoodState.None}));
-            thought.AddLink(new ThoughtLink(14, 
+            thought2.AddLink(new ThoughtLink(14, 
                                             null, 
                                             "I'll rather feel alone then [leave]", 
-                                            false, 
+                                            false,
+                                            new MoodState[] {MoodState.None}));
+            ThoughtNode thought = new ThoughtNode(12, "The door to the outside world. \nI am not ready for this.", 0, true);
+            thought.AddLink(new ThoughtLink(15,
+                                            thought2,
+                                            "First link",
+                                            false,
                                             new MoodState[] {MoodState.None}));
             Thing door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
                                   MoodState.None, 4, 2, false, thought, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);

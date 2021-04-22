@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace conscious
@@ -11,6 +12,7 @@ namespace conscious
     {
         private EntityManager _entityManager;
         private SoCManager _socManager;
+        private Cursor _cursor;
         private Queue<UIThought> _thoughts;
         private SpriteFont _font;
         private Texture2D _pixel;
@@ -29,12 +31,16 @@ namespace conscious
         private MouseState _lastMouseState;
         public bool IsInThoughtMode { get; protected set; }
 
-        public UiDisplayThoughtManager(EntityManager entityManager, SoCManager socManager, SpriteFont font, Texture2D pixel)
+        public UiDisplayThoughtManager(EntityManager entityManager, SoCManager socManager, Cursor cursor, SpriteFont font, Texture2D pixel)
         {
             _entityManager = entityManager;
             _socManager = socManager;
             _socManager.AddThoughtEvent += AddThoughtFromSoC;
+
+            _cursor = cursor;
+
             _thoughts = new Queue<UIThought>();
+
             _maxThoughts = 2;
             // Main SoC Area
             _bgX = 300f; // 150f;
@@ -67,6 +73,7 @@ namespace conscious
 
         public void Update(GameTime gameTime)
         {
+            CheckThoughtClicked();
             _lastMouseState = Mouse.GetState();
         }
 
@@ -138,7 +145,7 @@ namespace conscious
             {
                 foreach(UIThought uiThought in GetThingsOfType<UIThought>())
                 {
-                    if(uiThought.BoundingBox.Contains(currentMouseState.Position))
+                    if(uiThought.BoundingBox.Contains(_cursor.Position))
                     {
                         ThoughtNode node;
                         // Do logic stuff (run tree logic in SoCManager and maybe add a thought to UI or terminate thought)
@@ -146,6 +153,7 @@ namespace conscious
                         if(_thoughts.Contains(uiThought))
                         {
                             node = _socManager.SelectThought(uiThought.Name);
+                            Console.WriteLine(node);
                             if(node != null)
                             {
                                 StartThoughtMode(node, node.Links);
@@ -171,16 +179,19 @@ namespace conscious
 
         public void StartThoughtMode(ThoughtNode node, List<ThoughtLink> links)
         {
+            Console.WriteLine("startthoughtmode");
+            Console.WriteLine(links.Count);
             IsInThoughtMode = true;
+            _entityManager.AddEntity(_subthoughtBackground);
             _currentThought = convertNodeToUi(node);
             _currentSubthoughtLinks = convertLinksToUi(links);
-            _entityManager.AddEntity(_subthoughtBackground);
             calculateSubthoughtPositions();
             addSubthought();
         }
 
         public void EndThoughtMode()
         {
+            Console.WriteLine("endthoughtmode");
             IsInThoughtMode = false;
             _currentThought = null;
             _currentSubthought = null;

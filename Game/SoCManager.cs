@@ -44,6 +44,9 @@ namespace conscious
         {
             ThoughtNode node = GetThought(thoughtName);
             // If thought is an Selectable Thought: choose link from root
+            Console.WriteLine(node);
+            Console.WriteLine(node.HasLinks());
+            Console.WriteLine(node.IsRoot);
             if(node.HasLinks())
             {
                 if(node.IsRoot)
