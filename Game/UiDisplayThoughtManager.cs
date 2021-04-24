@@ -48,8 +48,8 @@ namespace conscious
             _offsetY = 20f;
             _offsetX = 250f;
             // In Thought Area
-            _thoughtOffsetY = _bgY;
-            _thoughtOffsetX = _bgX + 50f;
+            _thoughtOffsetY = 0;
+            _thoughtOffsetX = _bgX + 80f;
             
             _font = font;
             _pixel = pixel;
@@ -132,18 +132,13 @@ namespace conscious
             return thought;
         }
 
-        public IEnumerable<T> GetThingsOfType<T>() where T : UIComponent
-        {
-            return _thoughts.OfType<T>();
-        }
-
         // TODO: Do this in the UI Manager and call the Mode-Methods from there
         public void CheckThoughtClicked()
         {
             MouseState currentMouseState = Mouse.GetState();
             if(currentMouseState.LeftButton == ButtonState.Released && _lastMouseState.LeftButton == ButtonState.Pressed)
             {
-                foreach(UIThought uiThought in GetThingsOfType<UIThought>())
+                foreach(UIThought uiThought in _entityManager.GetEntitiesOfType<UIThought>())
                 {
                     if(uiThought.BoundingBox.Contains(_cursor.Position))
                     {
@@ -153,7 +148,6 @@ namespace conscious
                         if(_thoughts.Contains(uiThought))
                         {
                             node = _socManager.SelectThought(uiThought.Name);
-                            Console.WriteLine(node);
                             if(node != null)
                             {
                                 StartThoughtMode(node, node.Links);
@@ -180,10 +174,9 @@ namespace conscious
         public void StartThoughtMode(ThoughtNode node, List<ThoughtLink> links)
         {
             Console.WriteLine("startthoughtmode");
-            Console.WriteLine(links.Count);
             IsInThoughtMode = true;
             _entityManager.AddEntity(_subthoughtBackground);
-            _currentThought = convertNodeToUi(node);
+            _currentSubthought = convertNodeToUi(node);
             _currentSubthoughtLinks = convertLinksToUi(links);
             calculateSubthoughtPositions();
             addSubthought();
@@ -193,10 +186,19 @@ namespace conscious
         {
             Console.WriteLine("endthoughtmode");
             IsInThoughtMode = false;
+            removeSubthought();
             _currentThought = null;
-            _currentSubthought = null;
-            _currentSubthoughtLinks = null;
             _entityManager.RemoveEntity(_subthoughtBackground);
+        }
+
+        public void ChangeSubthought(ThoughtNode node, List<ThoughtLink> links)
+        {
+            Console.WriteLine("changethoughtmode");
+            removeSubthought();
+            _currentSubthought = convertNodeToUi(node);
+            _currentSubthoughtLinks = convertLinksToUi(links);
+            calculateSubthoughtPositions();
+            addSubthought();
         }
 
         private void calculateSubthoughtPositions()
@@ -205,27 +207,18 @@ namespace conscious
             float heightOffset = 0f;
             if(_currentSubthought != null)
             {
-                _currentSubthought.SetPosition(_thoughtOffsetX - _offsetX,
-                                            _thoughtOffsetY + thoughtNumber*_offsetY + heightOffset);
+                _currentSubthought.SetPosition(_bgX + _thoughtOffsetX - _offsetX,
+                                               _bgY - _thoughtOffsetY + thoughtNumber*_offsetY + heightOffset);
                 thoughtNumber++;
                 heightOffset += _currentSubthought.Height;
             }
             foreach(UIThought option in _currentSubthoughtLinks)
             {
-                option.SetPosition(_thoughtOffsetX - _offsetX,
-                                   _thoughtOffsetY + thoughtNumber*_offsetY + heightOffset);
+                option.SetPosition(_bgX + _thoughtOffsetX - _offsetX,
+                                   _bgY - _thoughtOffsetY + thoughtNumber*_offsetY + heightOffset);
                 thoughtNumber++;
                 heightOffset += option.Height;
             }
-        }
-
-        public void ChangeSubthought(ThoughtNode node, List<ThoughtLink> links)
-        {
-            removeSubthought();
-            _currentSubthought = convertNodeToUi(node);
-            _currentSubthoughtLinks = convertLinksToUi(links);
-            calculateSubthoughtPositions();
-            addSubthought();
         }
 
         private void removeSubthought()
@@ -279,7 +272,13 @@ namespace conscious
         {
             if(node != null)
             {
-                UIThought uiThought = new UIThought(_font, 
+                bool isClickable = false;
+                if(node.HasLinks())
+                {
+                    isClickable = true;
+                }
+                UIThought uiThought = new UIThought(isClickable,
+                                                    _font, 
                                                     node.Thought, node.Thought, 
                                                     _pixel, 
                                                     Vector2.One);
@@ -297,10 +296,12 @@ namespace conscious
             foreach(ThoughtLink link in links)
             {
                 // TODO: add a disabled style, if current moodState is not valid for this option
-                UIThought uiThought = new UIThought(_font, 
+                UIThought uiThought = new UIThought(true,
+                                                    _font, 
                                                     link.Option, link.Option, 
                                                     _pixel, 
                                                     Vector2.One);
+                uiOptions.Add(uiThought);
             }
             return uiOptions;
         }

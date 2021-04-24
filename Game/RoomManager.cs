@@ -53,7 +53,7 @@ namespace conscious
 
             _pixel = pixel;
 
-            _currentRoomIndex = 1;
+            _currentRoomIndex = 2;
 
             LoadRooms();
         }
@@ -68,30 +68,8 @@ namespace conscious
             room.addThing(thing);
 
             itemPosition = new Vector2(1058, 570);
-            // UIThought thought = new UIThought(_content.Load<SpriteFont>("Font/Hud"),
-            //                                   "The door to the outside world. \nI am not ready for this.", 
-            //                                   "doorthought",
-            //                                   _pixel, Vector2.One);
-
-            ThoughtNode thought2 = new ThoughtNode(16, "First node", 0, false);
-            thought2.AddLink(new ThoughtLink(13, 
-                                            null, 
-                                            "Fuck it. I'll do it anyway [use]", 
-                                            false, 
-                                            new MoodState[] {MoodState.None}));
-            thought2.AddLink(new ThoughtLink(14, 
-                                            null, 
-                                            "I'll rather feel alone then [leave]", 
-                                            false,
-                                            new MoodState[] {MoodState.None}));
-            ThoughtNode thought = new ThoughtNode(12, "The door to the outside world. \nI am not ready for this.", 0, true);
-            thought.AddLink(new ThoughtLink(15,
-                                            thought2,
-                                            "First link",
-                                            false,
-                                            new MoodState[] {MoodState.None}));
             Thing door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
-                                  MoodState.None, 4, 2, false, thought, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
+                                  MoodState.None, 4, 2, false, null, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
             room.addThing(door);
 
             itemPosition = new Vector2(448, 786+4);
@@ -130,7 +108,32 @@ namespace conscious
             room.addThing(background);
 
             itemPosition = new Vector2(1058, 575+4);
-            door = new Door(1, "Door", false, true, false, false, false, "It's a door", MoodState.None, 2, 1, true, null,
+            ThoughtNode thought2 = new ThoughtNode(16, "First node", 0, false, 0);
+            thought2.AddLink(new FinalThoughtLink(MoodState.None,
+                                                  Verb.Use,
+                                                  null,
+                                                  0,
+                                                  13,
+                                                  null, 
+                                                  "Fuck it. I'll do it anyway [use]", 
+                                                  false, 
+                                                  new MoodState[] {MoodState.None}));
+            thought2.AddLink(new FinalThoughtLink(MoodState.None,
+                                                  Verb.None,
+                                                  null,
+                                                  0,
+                                                  14,
+                                                  null, 
+                                                  "I'll rather feel alone then [leave it]", 
+                                                  false,
+                                                  new MoodState[] {MoodState.None}));
+            ThoughtNode thought = new ThoughtNode(12, "The door to the outside world. \nI am not ready for this.", 0, true, 1);
+            thought.AddLink(new ThoughtLink(15,
+                                            thought2,
+                                            "First link",
+                                            false,
+                                            new MoodState[] {MoodState.None}));
+            door = new Door(1, "Door", false, true, false, false, false, "It's a door", MoodState.None, 2, 1, true, thought,
                                   _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
             room.addThing(door);
             

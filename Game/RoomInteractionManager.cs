@@ -203,22 +203,25 @@ namespace conscious
             Verb verb = e.verbAction;
             int thingId = e.ThingId;
             Thing thing = GetThingFromQueue(thingId);
-            bool isNear = IsEntityNearPlayer(thing);
-            
-            if(isNear || thing.IsInInventory)
+            if(thing != null)
             {
-                _interactionActive = false;
-                _isWalking = false;
-                _lastThingClicked = null;
-                _lastVerbChosen = Verb.None;
-                doInteraction(thing, verb);
-            }
-            else
-            {
-                _interactionActive = true;
-                _isWalking = true;
-                _lastThingClicked = thing;
-                _lastVerbChosen = verb;
+                bool isNear = IsEntityNearPlayer(thing);
+                
+                if(isNear || thing.IsInInventory)
+                {
+                    _interactionActive = false;
+                    _isWalking = false;
+                    _lastThingClicked = null;
+                    _lastVerbChosen = Verb.None;
+                    doInteraction(thing, verb);
+                }
+                else
+                {
+                    _interactionActive = true;
+                    _isWalking = true;
+                    _lastThingClicked = thing;
+                    _lastVerbChosen = verb;
+                }
             }
         }
 

@@ -44,9 +44,6 @@ namespace conscious
         {
             ThoughtNode node = GetThought(thoughtName);
             // If thought is an Selectable Thought: choose link from root
-            Console.WriteLine(node);
-            Console.WriteLine(node.HasLinks());
-            Console.WriteLine(node.IsRoot);
             if(node.HasLinks())
             {
                 if(node.IsRoot)
@@ -58,6 +55,7 @@ namespace conscious
                         if(!link.IsLocked)
                         {
                             ThoughtNode displayNode = link.NextNode;
+                            _currentSubthoughtLinks = displayNode.Links;
                             // _uiDisplayThought.StartThoughtMode(displayNode, displayNode.Links);
                             return displayNode;
                         }
@@ -70,13 +68,13 @@ namespace conscious
         public ThoughtNode SelectSubthought(string thoughtName)
         {
             ThoughtLink option = GetOption(thoughtName);
-            if(!option.IsLocked && option.MoodValid(_moodStateManager.moodState))
-            {    
+            if(option != null && !option.IsLocked && option.MoodValid(_moodStateManager.moodState))
+            {
                 ThoughtNode node = option.NextNode;
                 if(node == null || !node.HasLinks())
                 {
                     // If there is a last node (without links), it should be displayed as a concluding thought in the SoC Main Window
-                    if(!node.HasLinks())
+                    if(node != null && !node.HasLinks())
                     {
                         AddThought(node);
                     }

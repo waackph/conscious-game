@@ -12,14 +12,14 @@ namespace conscious
         public bool IsRoot { get; }
         public int ThingId { get; }
 
-        public ThoughtNode(int id, string thought, int linkageId, bool isRoot)
+        public ThoughtNode(int id, string thought, int linkageId, bool isRoot, int thingId)
         {
             _id = id;
             Thought = thought;
             _linkageId = linkageId;
             Links = new List<ThoughtLink>();
-
             IsRoot = isRoot;
+            ThingId = thingId;
         }
 
         public void AddLink(ThoughtLink link)
