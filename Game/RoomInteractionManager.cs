@@ -85,11 +85,20 @@ namespace conscious
                 thingClicked = thingHovered;
                 if(thingClicked != null)
                 {
+                    if(thingClicked.IsInInventory)
+                    {
+                        _inventoryManager.CloseInventory();
+                    }
                     if(!isNear && !thingClicked.IsInInventory)
                     {
                         _lastThingClicked = thingClicked;
                         _isWalking = true;
                     }
+                    else if(thingClicked.IsInInventory && _lastThingClicked != null)
+                    {
+                        doInteraction(thingClicked, _lastVerbChosen);
+                    }
+
                     else if(thingClicked.Thought != null)
                     {
                         // Add thing / Show thought
@@ -289,7 +298,8 @@ namespace conscious
                             _inventoryManager.AddItem(item);
                             interactionSuccess = true;
                         }
-                        else{
+                        else
+                        {
                             _dialogManager.DoDisplayText("That's already in my inventory.");
                         }
                     }
@@ -308,6 +318,11 @@ namespace conscious
                             {
                                 _interactionActive = false;
                                 handleUse(_roomManager.currentRoom, _player, item);
+                            }
+                            else
+                            {
+                                _lastThingClicked = item;
+                                _lastVerbChosen = verb;
                             }
                         }
                         else
@@ -336,6 +351,11 @@ namespace conscious
                                 RemoveItemFromWorld(_roomManager.currentRoom, item);
                                 _inventoryManager.AddItem(combinedItem);
                             }
+                        }
+                        else
+                        {
+                            _lastThingClicked = item;
+                            _lastVerbChosen = verb;
                         }
                     }
                     else
@@ -408,6 +428,11 @@ namespace conscious
                                 }
                             }
                         }
+                    }
+                    else
+                    {
+                        _lastThingClicked = character;
+                        _lastVerbChosen = verb;
                     }
                     break;
                 case Verb.TalkTo:

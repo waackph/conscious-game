@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 using System;
 using System.Collections.Generic;
@@ -11,15 +12,19 @@ namespace conscious
         private float _margin = 5f;
         private int _startWidth = 2030;
         private int _startHeight = 1050;
+        private KeyboardState _lastKeyboardState;
         private List<UIInventoryPlace> _slots;
         private List<Item> _items = new List<Item>();
 
         private EntityManager _entityManager;
 
+        public bool InventoryActive { get; set; }
+
         public InventoryManager(EntityManager entityManager)
         {
             _entityManager = entityManager;
             _slots = new List<UIInventoryPlace>();
+            InventoryActive = false;
         }
 
         public void LoadContent(Texture2D inventoryPlaceTexture)
@@ -39,7 +44,21 @@ namespace conscious
             }
         }
 
-        public virtual void Update(GameTime gameTime){ }
+        public virtual void Update(GameTime gameTime)
+        {
+            if(Keyboard.GetState().IsKeyUp(Keys.Tab) && _lastKeyboardState.IsKeyDown(Keys.Tab))
+            {
+                if(InventoryActive)
+                {
+                    CloseInventory();
+                }
+                else
+                {
+                    ShowInventory();
+                }
+            }
+            _lastKeyboardState = Keyboard.GetState();
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch){ }
 
@@ -92,6 +111,21 @@ namespace conscious
             {
                 _entityManager.AddEntity(slot);
             }
+        }
+
+        public void ShowInventory()
+        {
+            FillEntityManager();
+            InventoryActive = true;
+        }
+
+        public void CloseInventory()
+        {
+            foreach(UIInventoryPlace slot in _slots)
+            {
+                _entityManager.RemoveEntity(slot);
+            }
+            InventoryActive = false;
         }
 
         public List<Item> GetItems()

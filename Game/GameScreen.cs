@@ -111,9 +111,12 @@ namespace conscious
             _inventoryManager.Update(gameTime);
             if(!_dialogManager.DialogActive && !_sequenceManager.SequenceActive)
             {
-                _controlsManager.Update(gameTime);
                 _roomInteractionManager.Update(gameTime);
-                _uiDisplayThoughtManager.Update(gameTime);
+                if(!_inventoryManager.InventoryActive)
+                {
+                    _controlsManager.Update(gameTime);
+                    _uiDisplayThoughtManager.Update(gameTime);
+                }
             }
             _dialogManager.Update(gameTime);
             _roomManager.Update(gameTime);
@@ -146,7 +149,7 @@ namespace conscious
             _entityManager.AddEntity(_cursor);
             _roomManager.currentRoom.FillEntityManager();
             // _verbManager.FillEntityManager();
-            _inventoryManager.FillEntityManager();
+            // _inventoryManager.FillEntityManager();
             _dialogManager.FillEntityManager();
             _uiDisplayThoughtManager.FillEntityManager();
         }

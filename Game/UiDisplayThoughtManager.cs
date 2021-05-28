@@ -309,6 +309,23 @@ namespace conscious
         public void FillEntityManager()
         {
             _entityManager.AddEntity(_consciousnessBackground);
+            if(_thoughts.Count > 0)
+            {
+                foreach(UIThought thought in _thoughts)
+                {
+                    _entityManager.AddEntity(thought);
+                }
+                // if there is a subthought currently selected, render it
+                if(_currentSubthought != null && _currentSubthoughtLinks != null)
+                {
+                    _entityManager.AddEntity(_subthoughtBackground);
+                    _entityManager.AddEntity(_currentSubthought);
+                    foreach(UIThought thought in _currentSubthoughtLinks)
+                    {
+                        _entityManager.AddEntity(thought);
+                    }
+                }
+            }
         }
     }
 }
