@@ -73,7 +73,10 @@ namespace conscious
             if(thingHovered != null)
             {
                 isNear = IsEntityNearPlayer(thingHovered);
-                _cursor.InteractionLabel = thingHovered.Name;
+                if(!_inventoryManager.InventoryActive || (_inventoryManager.InventoryActive && thingHovered.IsInInventory))
+                {
+                    _cursor.InteractionLabel = thingHovered.Name;
+                }
             }
             else
             {
@@ -98,7 +101,6 @@ namespace conscious
                     {
                         doInteraction(thingClicked, _lastVerbChosen);
                     }
-
                     else if(thingClicked.Thought != null)
                     {
                         // Add thing / Show thought

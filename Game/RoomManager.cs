@@ -76,8 +76,13 @@ namespace conscious
             Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", MoodState.None,
                                          1, null, _content.Load<Texture2D>("Objects/debug/key_oily"), Vector2.Zero);
 
+            ThoughtNode thought2 = CreateSimpleThought(17, 
+                                                      "It's a key. There is nothing more mundane",
+                                                      "Let's keep it anyway [pick up]", 
+                                                      Verb.PickUp,
+                                                      2);
             Thing key = new CombineItem(2, "Key", true, false, true, true, false, "It's a key", MoodState.Regular, 
-                                        combinedItem, 3, null, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
+                                        combinedItem, 3, thought2, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
             room.addThing(key);
 
             itemPosition = new Vector2(200, 786+4);
@@ -108,31 +113,11 @@ namespace conscious
             room.addThing(background);
 
             itemPosition = new Vector2(1058, 575+4);
-            ThoughtNode thought2 = new ThoughtNode(16, "First node", 0, false, 0);
-            thought2.AddLink(new FinalThoughtLink(MoodState.None,
-                                                  Verb.Use,
-                                                  null,
-                                                  0,
-                                                  13,
-                                                  null, 
-                                                  "Fuck it. I'll do it anyway [use]", 
-                                                  false, 
-                                                  new MoodState[] {MoodState.None}));
-            thought2.AddLink(new FinalThoughtLink(MoodState.None,
-                                                  Verb.None,
-                                                  null,
-                                                  0,
-                                                  14,
-                                                  null, 
-                                                  "I'll rather feel alone then [leave it]", 
-                                                  false,
-                                                  new MoodState[] {MoodState.None}));
-            ThoughtNode thought = new ThoughtNode(12, "The door to the outside world. \nI am not ready for this.", 0, true, 1);
-            thought.AddLink(new ThoughtLink(15,
-                                            thought2,
-                                            "First link",
-                                            false,
-                                            new MoodState[] {MoodState.None}));
+            ThoughtNode thought = CreateSimpleThought(12, 
+                                                      "The door to the outside world. \nI am not ready for this.",
+                                                      "Fuck it. I'll do it anyway [use]", 
+                                                      Verb.Use,
+                                                      1);
             door = new Door(1, "Door", false, true, false, false, false, "It's a door", MoodState.None, 2, 1, true, thought,
                                   _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
             room.addThing(door);
@@ -164,6 +149,36 @@ namespace conscious
             room.addThing(character);
 
             _rooms.Add(2, room);
+        }
+
+        private ThoughtNode CreateSimpleThought(int minId, string thoughtText, string action, Verb verbAction, int containingThingId)
+        {
+            ThoughtNode thought2 = new ThoughtNode(minId, "First node", 0, false, 0);
+            thought2.AddLink(new FinalThoughtLink(MoodState.None,
+                                                  verbAction,
+                                                  null,
+                                                  0,
+                                                  minId+1,
+                                                  null, 
+                                                  action, 
+                                                  false, 
+                                                  new MoodState[] {MoodState.None}));
+            thought2.AddLink(new FinalThoughtLink(MoodState.None,
+                                                  Verb.None,
+                                                  null,
+                                                  0,
+                                                  minId+2,
+                                                  null, 
+                                                  "I'll rather feel alone then [leave it]", 
+                                                  false,
+                                                  new MoodState[] {MoodState.None}));
+            ThoughtNode thought = new ThoughtNode(minId+3, thoughtText, 0, true, containingThingId);
+            thought.AddLink(new ThoughtLink(minId+4,
+                                            thought2,
+                                            "First link",
+                                            false,
+                                            new MoodState[] {MoodState.None}));
+            return thought;
         }
 
         public void changeRoom(int roomId)

@@ -9,9 +9,11 @@ namespace conscious
 {
     public class InventoryManager : IComponent
     {
-        private float _margin = 5f;
-        private int _startWidth = 2030;
-        private int _startHeight = 1050;
+        private float _margin = 20f;
+        private int _startWidth = 1930;
+        private int _startHeight = 950;
+        private int _nrSlotRows =  4;
+        private int _nrSlotCols = 4;
         private KeyboardState _lastKeyboardState;
         private List<UIInventoryPlace> _slots;
         private List<Item> _items = new List<Item>();
@@ -29,9 +31,9 @@ namespace conscious
 
         public void LoadContent(Texture2D inventoryPlaceTexture)
         {
-            for(int iHeight=2; iHeight>=1; iHeight--)
+            for(int iHeight=_nrSlotRows; iHeight>=1; iHeight--)
             {
-                for(int iWidth=2; iWidth>=1; iWidth--)
+                for(int iWidth=_nrSlotCols; iWidth>=1; iWidth--)
                 {
                     Vector2 placePosition = new Vector2(_startWidth-inventoryPlaceTexture.Width*iWidth-_margin*iWidth, 
                                                         _startHeight-inventoryPlaceTexture.Height*iHeight-_margin*iHeight);

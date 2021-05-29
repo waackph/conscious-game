@@ -107,10 +107,9 @@ namespace conscious
                 _screenEvent.Invoke(this, new EventArgs());
             }
 
-            // _verbManager.Update(gameTime);
-            _inventoryManager.Update(gameTime);
             if(!_dialogManager.DialogActive && !_sequenceManager.SequenceActive)
             {
+                _inventoryManager.Update(gameTime);
                 _roomInteractionManager.Update(gameTime);
                 if(!_inventoryManager.InventoryActive)
                 {
@@ -148,8 +147,10 @@ namespace conscious
             _entityManager.AddEntity(_player);
             _entityManager.AddEntity(_cursor);
             _roomManager.currentRoom.FillEntityManager();
-            // _verbManager.FillEntityManager();
-            // _inventoryManager.FillEntityManager();
+            if(_inventoryManager.InventoryActive)
+            {
+                _inventoryManager.FillEntityManager();
+            }
             _dialogManager.FillEntityManager();
             _uiDisplayThoughtManager.FillEntityManager();
         }
