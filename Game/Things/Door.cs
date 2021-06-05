@@ -38,6 +38,7 @@ namespace conscious
                 if(IsUnlocked != true && item != null && item.Id == _itemDependency){
                     IsUnlocked = true;
                     UseWith = false;
+                    currentlyUsed = true;
                 }
                 if(IsUnlocked == true){
                     currentlyUsed = true;

@@ -21,6 +21,7 @@ namespace conscious
 
         private ButtonState _lastButtonState;
         private Thing _lastThingClicked;
+        private Thing _secondThingClicked;
         private Verb _lastVerbChosen;
         private int _maxThingsClicked;
         private Queue<Thing> _lastThingsClicked;
@@ -220,11 +221,22 @@ namespace conscious
                 
                 if(isNear || thing.IsInInventory)
                 {
-                    _interactionActive = false;
                     _isWalking = false;
-                    _lastThingClicked = null;
-                    _lastVerbChosen = Verb.None;
-                    doInteraction(thing, verb);
+                    if(verb == Verb.Give || verb == Verb.Combine || verb == Verb.Use)
+                    {
+                        _interactionActive = true;
+                        _lastThingClicked = thing;
+                        _lastVerbChosen = verb;
+                        if(!thing.IsInInventory)
+                            _inventoryManager.ShowInventory();
+                    }
+                    else
+                    {
+                        _interactionActive = false;
+                        _lastThingClicked = null;
+                        _lastVerbChosen = Verb.None;
+                        doInteraction(thing, verb);
+                    }
                 }
                 else
                 {
@@ -320,11 +332,6 @@ namespace conscious
                             {
                                 _interactionActive = false;
                                 handleUse(_roomManager.currentRoom, _player, item);
-                            }
-                            else
-                            {
-                                _lastThingClicked = item;
-                                _lastVerbChosen = verb;
                             }
                         }
                         else
