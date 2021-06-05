@@ -173,7 +173,6 @@ namespace conscious
 
         public void StartThoughtMode(ThoughtNode node, List<ThoughtLink> links)
         {
-            Console.WriteLine("startthoughtmode");
             IsInThoughtMode = true;
             _entityManager.AddEntity(_subthoughtBackground);
             _currentSubthought = convertNodeToUi(node);
@@ -184,7 +183,6 @@ namespace conscious
 
         public void EndThoughtMode()
         {
-            Console.WriteLine("endthoughtmode");
             IsInThoughtMode = false;
             removeSubthought();
             _currentThought = null;
@@ -193,7 +191,6 @@ namespace conscious
 
         public void ChangeSubthought(ThoughtNode node, List<ThoughtLink> links)
         {
-            Console.WriteLine("changethoughtmode");
             removeSubthought();
             _currentSubthought = convertNodeToUi(node);
             _currentSubthoughtLinks = convertLinksToUi(links);

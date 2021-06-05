@@ -20,8 +20,8 @@ namespace conscious
         private Player _player;
 
         private ButtonState _lastButtonState;
-        private Thing _lastThingClicked;
-        private Thing _secondThingClicked;
+        private Thing _thingClickedInRoom;
+        private Thing _thingClickedInInventory;
         private Verb _lastVerbChosen;
         private int _maxThingsClicked;
         private Queue<Thing> _lastThingsClicked;
@@ -68,12 +68,15 @@ namespace conscious
 
             Thing thingHovered = null;
             Thing thingClicked = null;
-            bool isNear = false;
+
+            if(Keyboard.GetState().IsKeyDown(Keys.C))
+            {
+                finishInteraction();
+            }
 
             thingHovered = CheckCursorHoversThing();
             if(thingHovered != null)
             {
-                isNear = IsEntityNearPlayer(thingHovered);
                 if(!_inventoryManager.InventoryActive || (_inventoryManager.InventoryActive && thingHovered.IsInInventory))
                 {
                     _cursor.InteractionLabel = thingHovered.Name;
@@ -93,20 +96,51 @@ namespace conscious
                     {
                         _inventoryManager.CloseInventory();
                     }
-                    if(!isNear && !thingClicked.IsInInventory)
-                    {
-                        _lastThingClicked = thingClicked;
-                        _isWalking = true;
-                    }
-                    else if(thingClicked.IsInInventory && _lastThingClicked != null)
-                    {
-                        doInteraction(thingClicked, _lastVerbChosen);
-                    }
-                    else if(thingClicked.Thought != null)
+                    if(thingClicked.Thought != null && !_interactionActive)
                     {
                         // Add thing / Show thought
                         _socManager.AddThought(thingClicked.Thought);
                         addClickedThing(thingClicked);
+                    }
+                    if(_interactionActive && isTwoPartInteraction(_lastVerbChosen))
+                    {
+                        // correctly assign the currently clicked thing
+                        if(_thingClickedInRoom != null)
+                        {
+                            if(thingClicked.IsInInventory)
+                            {
+                                _thingClickedInInventory = thingClicked;
+                            }
+                        }
+                        else if(_thingClickedInInventory != null)
+                        {
+                            if(!thingClicked.IsInInventory)
+                            {
+                                _thingClickedInRoom = thingClicked;
+                            }
+                        }
+                        // if thing in room near or both in inventory => execute interaction
+                        // if both not in inventory => cancel interaction
+                        // if thing in room not near => start walking
+                        if(_thingClickedInInventory == null)
+                        {
+                            finishInteraction();
+                        }
+                        else if(_thingClickedInRoom == null)
+                        {
+                            doInteraction(thingClicked, _thingClickedInInventory, _lastVerbChosen);
+                        }
+                        else
+                        {
+                            if(IsEntityNearPlayer(_thingClickedInRoom))
+                            {
+                                doInteraction(_thingClickedInRoom, _thingClickedInInventory, _lastVerbChosen);
+                            }
+                            else
+                            {
+                                startWalking(_thingClickedInRoom, _lastVerbChosen);
+                            }
+                        }
                     }
                 }
             }
@@ -115,30 +149,24 @@ namespace conscious
                 if(thingHovered == null)
                     mousePosition = _cursor.MouseCoordinates;
             }
-            else 
+            else
             {
-                if(_isWalking && _lastThingClicked != null)
+                if(_isWalking && _interactionActive && _thingClickedInRoom != null)
                 {
-                    if(IsEntityNearPlayer(_lastThingClicked))
+                    if(IsEntityNearPlayer(_thingClickedInRoom))
                     {
-                        if(_interactionActive)
+                        if(isTwoPartInteraction(_lastVerbChosen))
                         {
-                            doInteraction(_lastThingClicked, _lastVerbChosen);
-                            _lastVerbChosen = Verb.None;
-                            _interactionActive = false;
+                            doInteraction(_thingClickedInRoom, _thingClickedInInventory, _lastVerbChosen);
                         }
-                        else if(_lastThingClicked.Thought != null)
+                        else if(isOnePartInteraction(_lastVerbChosen))
                         {
-                            // Add thing / Show thought as soon as player is near thing
-                            _socManager.AddThought(_lastThingClicked.Thought);
-                            addClickedThing(_lastThingClicked);
+                            doInteraction(_thingClickedInRoom, _lastVerbChosen);
                         }
-                        _isWalking = false;
-                        _lastThingClicked = null;
                     }
                     else
                     {
-                        direction = Vector2.Normalize(_lastThingClicked.Position - _player.Position);
+                        direction = Vector2.Normalize(_thingClickedInRoom.Position - _player.Position);
                     }
                 }
             }
@@ -206,6 +234,33 @@ namespace conscious
             _lastThingsClicked.Enqueue(thing);
         }
 
+        private bool isTwoPartInteraction(Verb verb)
+        {
+            return (verb == Verb.Give || verb == Verb.Combine || verb == Verb.UseWith);
+        }
+
+        private bool isOnePartInteraction(Verb verb)
+        {
+            return (verb == Verb.Examine || verb == Verb.PickUp || verb == Verb.Use || verb == Verb.TalkTo);
+        }
+
+        private void finishInteraction()
+        {
+            _lastVerbChosen = Verb.None;
+            _thingClickedInRoom = null;
+            _thingClickedInInventory = null;
+            _interactionActive = false;
+            _isWalking = false;
+        }
+
+        private void startWalking(Thing thing, Verb verb)
+        {
+            _interactionActive = true;
+            _isWalking = true;
+            _thingClickedInRoom = thing;
+            _lastVerbChosen = verb;
+        }
+
         #endregion
 
         #region INTERACTION
@@ -217,49 +272,64 @@ namespace conscious
             Thing thing = GetThingFromQueue(thingId);
             if(thing != null)
             {
-                bool isNear = IsEntityNearPlayer(thing);
-                
-                if(isNear || thing.IsInInventory)
+                if(isTwoPartInteraction(verb))
                 {
-                    _isWalking = false;
-                    if(verb == Verb.Give || verb == Verb.Combine || verb == Verb.Use)
+                    _interactionActive = true;
+                    _lastVerbChosen = verb;
+                    if(thing.IsInInventory)
                     {
-                        _interactionActive = true;
-                        _lastThingClicked = thing;
-                        _lastVerbChosen = verb;
-                        if(!thing.IsInInventory)
-                            _inventoryManager.ShowInventory();
+                        _thingClickedInInventory = thing;
                     }
                     else
                     {
-                        _interactionActive = false;
-                        _lastThingClicked = null;
-                        _lastVerbChosen = Verb.None;
-                        doInteraction(thing, verb);
+                        _thingClickedInRoom = thing;
+                        _inventoryManager.ShowInventory();
                     }
                 }
-                else
+                else if(isOnePartInteraction(verb))
                 {
-                    _interactionActive = true;
-                    _isWalking = true;
-                    _lastThingClicked = thing;
-                    _lastVerbChosen = verb;
+                    bool isNear = IsEntityNearPlayer(thing);
+                    if(isNear || thing.IsInInventory)
+                    {
+                        doInteraction(thing, verb);
+                    }
+                    else
+                    {
+                        startWalking(thing, verb);
+                    }
                 }
             }
         }
 
         private void doInteraction(Thing thing, Verb verb)
         {
-            // Execute action
             if(IsSameOrSubclass(typeof(Item), thing.GetType()))
             {
-                Item item = (Item)thing;
-                ExecuteInteraction(item, verb);
+                ExecuteInteraction((Item)thing, verb);
             }
             else if(IsSameOrSubclass(typeof(Character), thing.GetType()))
             {
-                Character character = (Character)thing;
-                ExecuteInteraction(character, verb);
+                ExecuteInteraction((Character)thing, verb);
+            }
+            else
+            {
+                finishInteraction();
+            }
+        }
+
+        private void doInteraction(Thing thing1, Thing thing2, Verb verb)
+        {
+            if(IsSameOrSubclass(typeof(Character), thing1.GetType()))
+            {
+                ExecuteInteraction((Character)thing1, (Item)thing2, verb);
+            }
+            else if(IsSameOrSubclass(typeof(Character), thing2.GetType()))
+            {
+                ExecuteInteraction((Character)thing2, (Item)thing1, verb);
+            }
+            else
+            {
+                ExecuteInteraction((Item)thing1, (Item)thing2, verb);
             }
         }
 
@@ -286,14 +356,10 @@ namespace conscious
         {
             // TODO: handle dialog texts (separate into single line of player and dialog between character and player)
             // TODO: separate interaction code into tasks (especially what happens in the world and what in the game/progress logic and what in the item)
-            bool isAble = false;
-            bool interactionSuccess = false;
             switch(verb)
             {
                 case Verb.Examine:
-                    _interactionActive = false;
                     string text = item.Examine();
-                    interactionSuccess = true;
                     _dialogManager.DoDisplayText(text);
                     if(item.Thought != null)
                     {
@@ -301,16 +367,13 @@ namespace conscious
                     }
                     break;
                 case Verb.PickUp:
-                    _interactionActive = false;
-                    isAble = item.PickUpAble;
-                    if(isAble)
+                    if(item.PickUpAble)
                     {
                         if(!item.IsInInventory)
                         {
                             item.PickUp();
                             _roomManager.currentRoom.RemoveThing(item);
                             _inventoryManager.AddItem(item);
-                            interactionSuccess = true;
                         }
                         else
                         {
@@ -322,92 +385,16 @@ namespace conscious
                     }
                     break;
                 case Verb.Use:
-                    isAble = item.UseAble;
-                    if(isAble)
+                    if(item.UseAble && !item.UseWith)
                     {
-                        interactionSuccess = true;
-                        if(item.UseWith)
-                        {
-                            if(_lastThingClicked != null)
-                            {
-                                _interactionActive = false;
-                                handleUse(_roomManager.currentRoom, _player, item);
-                            }
-                        }
-                        else
-                        {
-                            _interactionActive = false;
-                            handleUse(_roomManager.currentRoom, _player, item);
-                        }
+                        handleUse(_roomManager.currentRoom, _player, item, null);
                     }
-                    else
-                    {
-                        _interactionActive = false;
-                        _dialogManager.DoDisplayText("I can't use that.");
-                    }
-                    break;
-                case Verb.Combine:
-                    isAble = item.CombineAble;
-                    if(isAble)
-                    {
-                        if(_lastThingClicked != null)
-                        {
-                            _interactionActive = false;
-                            Item combinedItem = item.Combine((Item)_lastThingClicked);
-                            if(combinedItem != null)
-                            {
-                                RemoveItemFromWorld(_roomManager.currentRoom, (Item)_lastThingClicked);
-                                RemoveItemFromWorld(_roomManager.currentRoom, item);
-                                _inventoryManager.AddItem(combinedItem);
-                            }
-                        }
-                        else
-                        {
-                            _lastThingClicked = item;
-                            _lastVerbChosen = verb;
-                        }
-                    }
-                    else
-                    {
-                        _interactionActive = false;
-                        _dialogManager.DoDisplayText("I can't combine that.");
-                    }
-                    break;
-                case Verb.Give:
-                    isAble = item.GiveAble;
-                    if(isAble)
-                    {
-                        if(_lastThingClicked != null)
-                        {
-                            _interactionActive = false;
-                            if(IsSameOrSubclass(typeof(Character), _lastThingClicked.GetType()))
-                            {
-                                Character character = (Character)_lastThingClicked;
-                                if(character.GiveAble)
-                                {
-                                    bool isSuccess = character.Give(item);
-                                    if(isSuccess == true)
-                                    {
-                                        interactionSuccess = true;
-                                        RemoveItemFromWorld(_roomManager.currentRoom, item);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            _interactionActive = false;
-                            _dialogManager.DoDisplayText("Who would have interest in that?");
-                        }
-                    }
-                    break;
-                case Verb.WalkTo:
                     break;
                 default:
-                    _interactionActive = false;
                     _dialogManager.DoDisplayText("I can't do that.");
                     break;
             }
+            finishInteraction();
             // TODO: Decide if item mood necessary - isnt that controlled over the thought?
             // if(interactionSuccess && item.MoodChange != MoodState.None)
             // {
@@ -415,74 +402,97 @@ namespace conscious
             // }
         }
 
-        private void ExecuteInteraction(Character character, Verb verb)
+        private void ExecuteInteraction(Item item1, Item item2, Verb verb)
         {
-            bool interactionSuccess = false;
             switch(verb)
             {
-                case Verb.Give:
-                    if(_lastThingClicked != null)
+                case Verb.UseWith:
+                    if((item1.UseAble && item1.UseWith) || (item2.UseAble && item2.UseWith))
                     {
-                        _interactionActive = false;
-                        if(IsSameOrSubclass(typeof(Item), _lastThingClicked.GetType()))
+                        handleUse(_roomManager.currentRoom, _player, item1, item2);
+                    }
+                    else
+                    {
+                        _dialogManager.DoDisplayText("I can't use that.");
+                    }
+                    break;
+                case Verb.Combine:
+                    if(item1.CombineAble || item2.CombineAble)
+                    {
+                        Item combinedItem = item1.Combine(item2);
+                        if(combinedItem != null)
                         {
-                            Item item = (Item)_lastThingClicked;
-                            if(item.GiveAble)
-                            {
-                                bool isSuccess = character.Give(item);
-                                if(isSuccess == true)
-                                {
-                                    interactionSuccess = true;
-                                    RemoveItemFromWorld(_roomManager.currentRoom, item);
-                                }
-                            }
+                            RemoveItemFromWorld(_roomManager.currentRoom, item1);
+                            RemoveItemFromWorld(_roomManager.currentRoom, item2);
+                            _inventoryManager.AddItem(combinedItem);
                         }
                     }
                     else
                     {
-                        _lastThingClicked = character;
-                        _lastVerbChosen = verb;
+                        _dialogManager.DoDisplayText("I can't combine that.");
                     }
                     break;
+                default:
+                    _dialogManager.DoDisplayText("I can't do that.");
+                    break;
+            }
+            finishInteraction();
+        }
+
+        private void ExecuteInteraction(Character character, Verb verb)
+        {
+            switch(verb)
+            {
                 case Verb.TalkTo:
-                    _interactionActive = false;
-                    interactionSuccess = true;
                     character.TalkTo();
                     _dialogActive = true;
                     break;
-                case Verb.WalkTo:
-                    break;
                 default:
-                    _interactionActive = false;
                     _dialogManager.DoDisplayText(character.Name + " would not like that.");
                     break;
             }
-            // TODO: Decide if item mood necessary - isnt that controlled over the thought?
-            // if(interactionSuccess && character.MoodChange != MoodState.None)
-            // {
-            //     _moodStateManager.StateChange = character.MoodChange;
-            // }
+            finishInteraction();
         }
 
-        public void handleUse(Room room, Player player, Item item)
+        private void ExecuteInteraction(Character character, Item item, Verb verb)
+        {
+            switch(verb)
+            {
+                case Verb.Give:
+                    if(item.GiveAble)
+                    {
+                        bool isSuccess = character.Give(item);
+                        if(isSuccess == true)
+                        {
+                            RemoveItemFromWorld(_roomManager.currentRoom, item);
+                        }
+                    }
+                    else
+                    {
+                        _dialogManager.DoDisplayText(character.Name + " would not like that.");
+                    }
+                    break;
+                default:
+                    _dialogManager.DoDisplayText(character.Name + " would not like that.");
+                    break;
+            }
+            finishInteraction();
+        }
+
+        public void handleUse(Room room, Player player, Item item1, Item item2)
         {
             bool doRemove = false;
-            if(item.UseWith){
-                if(IsSameOrSubclass(typeof(Item), _lastThingClicked.GetType()))
-                {
-                    doRemove = item.Use(room, _inventoryManager, player, (Item)_lastThingClicked);
-                }
-                else
-                {
-                    _dialogManager.DoDisplayText("I can't use that.");
-                    return;
-                }
+            if(item2 != null)
+            {
+                doRemove = item1.Use(room, _inventoryManager, player, item2);
             }
-            else{
-                doRemove = item.Use(room, _inventoryManager, player);
+            else
+            {
+                doRemove = item1.Use(room, _inventoryManager, player);
             }
-            if(doRemove == true){
-                RemoveItemFromWorld(room, item);
+            if(doRemove == true)
+            {
+                RemoveItemFromWorld(room, item1);
             }
         }
 
