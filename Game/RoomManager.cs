@@ -68,26 +68,35 @@ namespace conscious
             room.addThing(thing);
 
             itemPosition = new Vector2(1058, 570);
+            ThoughtNode thought3 = CreateSimpleThought(22, 
+                                                      "The door to the outside world",
+                                                      "Its locked. Maybe I can open it somehow? [use]", 
+                                                      Verb.UseWith,
+                                                      1);
             Thing door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
-                                  MoodState.None, 4, 2, false, null, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
+                                  MoodState.None, 4, 2, false, thought3, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
             room.addThing(door);
-
-            itemPosition = new Vector2(448, 786+4);
-            Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", MoodState.None,
-                                         1, null, _content.Load<Texture2D>("Objects/debug/key_oily"), Vector2.Zero);
 
             ThoughtNode thought2 = CreateSimpleThought(17, 
                                                       "It's a key. There is nothing more mundane",
                                                       "Let's keep it anyway [pick up]", 
                                                       Verb.PickUp,
                                                       2);
-            Thing key = new CombineItem(2, "Key", true, false, true, true, false, "It's a key", MoodState.Regular, 
+            Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", MoodState.None,
+                                         1, null, _content.Load<Texture2D>("Objects/debug/key_oily"), new Vector2(448, 786+4+50));
+            itemPosition = new Vector2(448, 786+4);
+            Thing key = new CombineItem(2, "Key", true, false, true, false, false, "It's a key", MoodState.Regular, 
                                         combinedItem, 3, thought2, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
             room.addThing(key);
 
+            ThoughtNode thought6 = CreateSimpleThought(41, 
+                                                      "It's a bottle. Wow...",
+                                                      "Maybe I can use it for something [combine]", 
+                                                      Verb.Combine,
+                                                      3);
             itemPosition = new Vector2(200, 786+4);
             Thing combineItem = new CombineItem(3, "Oil Bottle", true, false, true, false, false, "It's a bottle", MoodState.Depressed, 
-                                                null, 2, null, _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
+                                                null, 2, thought6, _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
             room.addThing(combineItem);
 
             // --------------------------- Morphing Item ---------------------------
@@ -117,8 +126,8 @@ namespace conscious
                                                       "The door to the outside world. \nI am not ready for this.",
                                                       "Fuck it. I'll do it anyway [use]", 
                                                       Verb.Use,
-                                                      1);
-            door = new Door(1, "Door", false, true, false, false, false, "It's a door", MoodState.None, 2, 1, true, thought,
+                                                      30);
+            door = new Door(30, "Door", false, true, false, false, false, "It's a door", MoodState.None, 2, 1, true, thought,
                                   _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
             room.addThing(door);
             
@@ -143,10 +152,27 @@ namespace conscious
             Node node4 = new Node(4, "Bib bip bup bip", edges);
             dialogTree.Add(node4);
             // End Initilizing dialog tree
-            Thing character = new Character(5, "Robo", "Hen", "Bib bup bip", true, dialogTree, _dialogManager, 
-                                            MoodState.None, null,
-                                            _content.Load<Texture2D>("NPCs/debug/npc"), itemPosition);
+
+            ThoughtNode thought4 = CreateSimpleThought(33, 
+                                                       "He looks hansome. I feel insecure.",
+                                                       "Maybe he likes a gift [give]", 
+                                                       Verb.Give,
+                                                       5);
+            Thing character = new PuzzleCharacter(5, "Robo", "Hen", "Bib bup bip", true, 32, 
+                                                  false, dialogTree, _dialogManager, 
+                                                  MoodState.None, thought4,
+                                                  _content.Load<Texture2D>("NPCs/debug/npc"), itemPosition);
             room.addThing(character);
+
+            ThoughtNode thought5 = CreateSimpleThought(38, 
+                                                       "A key. It looks shiny.",
+                                                       "Maybe I can use that at some time [pickup]", 
+                                                       Verb.PickUp,
+                                                       32);
+            itemPosition = new Vector2(448, 786+4);
+            Thing giveItem = new CombineItem(32, "Key", true, false, false, true, false, "It's a key", MoodState.Regular, 
+                                             combinedItem, 5, thought5, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
+            room.addThing(giveItem);
 
             _rooms.Add(2, room);
         }
@@ -183,9 +209,9 @@ namespace conscious
 
         public void changeRoom(int roomId)
         {
-            if(currentRoom != null)
-                currentRoom.ClearRoomEntityManager();
+            Room lastRoom = currentRoom;
             currentRoom = _rooms[roomId];
+
             float xPos = 0f;
             Matrix transform = Matrix.CreateTranslation(xPos, 0, 0);
             _entityManager.ViewportTransformation = transform;
@@ -194,7 +220,13 @@ namespace conscious
             // {
             //     thing.XPosOffset = 0;
             // }
-            currentRoom.FillEntityManager();
+
+            if(lastRoom != null)
+            {
+                lastRoom.ClearRoomEntityManager();
+                currentRoom.FillEntityManager();
+            }
+
             if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
                 _sequenceManager.StartSequence(currentRoom.EntrySequence);
         }
