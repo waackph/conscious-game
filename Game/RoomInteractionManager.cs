@@ -96,11 +96,9 @@ namespace conscious
                     {
                         _inventoryManager.CloseInventory();
                     }
-                    if(thingClicked.Thought != null && !_interactionActive)
+                    if(!_interactionActive)
                     {
-                        // Add thing / Show thought
-                        _socManager.AddThought(thingClicked.Thought);
-                        addClickedThing(thingClicked);
+                        triggerThought(thingClicked);
                     }
                     if(_interactionActive && isTwoPartInteraction(_lastVerbChosen))
                     {
@@ -141,6 +139,11 @@ namespace conscious
                                 startWalking(_thingClickedInRoom, _lastVerbChosen);
                             }
                         }
+                    }
+                    else if(_interactionActive && _isWalking && _thingClickedInRoom != thingClicked)
+                    {
+                        finishInteraction();
+                        triggerThought(thingClicked);
                     }
                 }
             }
@@ -184,6 +187,15 @@ namespace conscious
         #endregion
 
         #region UPDATE_HELPERS
+
+        private void triggerThought(Thing thing)
+        {
+            if(thing.Thought != null)
+            {
+                _socManager.AddThought(thing.Thought);
+                addClickedThing(thing);
+            }
+        }
 
         private Thing CheckCursorHoversThing()
         {
@@ -272,6 +284,10 @@ namespace conscious
             Thing thing = GetThingFromQueue(thingId);
             if(thing != null)
             {
+                if(_interactionActive)
+                {
+                    finishInteraction();
+                }
                 if(isTwoPartInteraction(verb))
                 {
                     _interactionActive = true;
