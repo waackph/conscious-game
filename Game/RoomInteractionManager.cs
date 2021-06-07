@@ -71,7 +71,7 @@ namespace conscious
 
             if(Keyboard.GetState().IsKeyDown(Keys.C))
             {
-                finishInteraction();
+                finishInteraction(canceled:true);
             }
 
             thingHovered = CheckCursorHoversThing();
@@ -122,7 +122,7 @@ namespace conscious
                         // if thing in room not near => start walking
                         if(_thingClickedInInventory == null)
                         {
-                            finishInteraction();
+                            finishInteraction(canceled:true);
                         }
                         else if(_thingClickedInRoom == null)
                         {
@@ -256,8 +256,12 @@ namespace conscious
             return (verb == Verb.Examine || verb == Verb.PickUp || verb == Verb.Use || verb == Verb.TalkTo);
         }
 
-        private void finishInteraction()
+        private void finishInteraction(bool canceled=false)
         {
+            if(canceled)
+            {
+                addConcludingThought("What was I thinking?!");
+            }
             _lastVerbChosen = Verb.None;
             _thingClickedInRoom = null;
             _thingClickedInInventory = null;
@@ -349,6 +353,11 @@ namespace conscious
             }
         }
 
+        private void addConcludingThought(string thoughtText)
+        {
+            _socManager.AddThought(new ThoughtNode(0, thoughtText, 0, true, 0));
+        }
+
         private Thing GetThingFromQueue(int id)
         {
             foreach(Thing thing in _lastThingsClicked)
@@ -393,11 +402,11 @@ namespace conscious
                         }
                         else
                         {
-                            _dialogManager.DoDisplayText("That's already in my inventory.");
+                            addConcludingThought("That's already in my inventory.");
                         }
                     }
                     else{
-                        _dialogManager.DoDisplayText("I can't pick that up.");
+                        addConcludingThought("I can't pick that up.");
                     }
                     break;
                 case Verb.Use:
@@ -407,7 +416,7 @@ namespace conscious
                     }
                     break;
                 default:
-                    _dialogManager.DoDisplayText("I can't do that.");
+                    addConcludingThought("That did not work. I feel so stupid..");
                     break;
             }
             finishInteraction();
@@ -429,7 +438,7 @@ namespace conscious
                     }
                     else
                     {
-                        _dialogManager.DoDisplayText("I can't use that.");
+                        addConcludingThought("I can't use that.");
                     }
                     break;
                 case Verb.Combine:
@@ -445,11 +454,11 @@ namespace conscious
                     }
                     else
                     {
-                        _dialogManager.DoDisplayText("I can't combine that.");
+                        addConcludingThought("I can't combine that.");
                     }
                     break;
                 default:
-                    _dialogManager.DoDisplayText("I can't do that.");
+                    addConcludingThought("I can't do that.");
                     break;
             }
             finishInteraction();
@@ -464,7 +473,7 @@ namespace conscious
                     _dialogActive = true;
                     break;
                 default:
-                    _dialogManager.DoDisplayText(character.Name + " would not like that.");
+                    addConcludingThought(character.Name + " would not like that.");
                     break;
             }
             finishInteraction();
@@ -485,11 +494,11 @@ namespace conscious
                     }
                     else
                     {
-                        _dialogManager.DoDisplayText(character.Name + " would not like that.");
+                        addConcludingThought(character.Name + " would not like that.");
                     }
                     break;
                 default:
-                    _dialogManager.DoDisplayText(character.Name + " would not like that.");
+                    addConcludingThought(character.Name + " would not like that.");
                     break;
             }
             finishInteraction();

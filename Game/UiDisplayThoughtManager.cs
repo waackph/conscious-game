@@ -173,6 +173,8 @@ namespace conscious
 
         public void StartThoughtMode(ThoughtNode node, List<ThoughtLink> links)
         {
+            // TODO: Restart Thought Mode when another thought is clicked 
+            //       while the subthought of another is already active
             IsInThoughtMode = true;
             _entityManager.AddEntity(_subthoughtBackground);
             _currentSubthought = convertNodeToUi(node);
