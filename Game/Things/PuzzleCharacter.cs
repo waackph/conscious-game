@@ -17,9 +17,11 @@ namespace conscious
                                int itemDependency, 
                                bool dialogUnlocked,
                                List<Node> treeStructure,
-                               DialogManager dialogManager,
+                               UiDialogManager dialogManager,
+                               MoodState moodChange,
+                               ThoughtNode thought,
                                Texture2D texture, Vector2 position)
-                            : base(id, name, pronoun, catchPhrase, giveAble, treeStructure, dialogManager, texture, position)
+                            : base(id, name, pronoun, catchPhrase, giveAble, treeStructure, dialogManager, moodChange, thought, texture, position)
         {
             _itemDependency = itemDependency;
             _dialogUnlocked = dialogUnlocked;
@@ -54,18 +56,15 @@ namespace conscious
         public override DataHolderEntity GetDataHolderEntity()
         {
             DataHolderPuzzleCharacter dataHolderEntity = new DataHolderPuzzleCharacter();
-            // Entity
-            dataHolderEntity.Name = Name;
-            dataHolderEntity.PositionX  = Position.X;
-            dataHolderEntity.PositionY = Position.Y;
-            dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = EntityTexture.ToString();
-            // Character
-            dataHolderEntity.Id = Id;
-            dataHolderEntity.TreeStructure = _treeStructure;
-            dataHolderEntity.Pronoun = _pronoun;
-            dataHolderEntity.CatchPhrase = _catchPhrase;
-            dataHolderEntity.GiveAble = GiveAble;
+            dataHolderEntity = (DataHolderPuzzleCharacter)base.GetDataHolderEntity(dataHolderEntity);
+            // PuzzleCharacter
+            dataHolderEntity.ItemDependency = _itemDependency;
+            dataHolderEntity.DialogUnlocked = _dialogUnlocked;
+            return dataHolderEntity;
+        }
+        public DataHolderEntity GetDataHolderEntity(DataHolderPuzzleCharacter dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderPuzzleCharacter)base.GetDataHolderEntity(dataHolderEntity);
             // PuzzleCharacter
             dataHolderEntity.ItemDependency = _itemDependency;
             dataHolderEntity.DialogUnlocked = _dialogUnlocked;

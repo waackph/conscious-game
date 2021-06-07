@@ -132,8 +132,10 @@ namespace conscious
             _currentScreen = _gameScreen;
             _currentScreen.EnteredScreen = true;
             if(!_titleScreen.GameLoaded)
+            {
                 _gameScreen.LoadGame(newGame:false);
-            _titleScreen.GameLoaded = true;
+                _titleScreen.GameLoaded = true;
+            }
         }
 
         public void TitleNewEvent(object obj, EventArgs e)
@@ -142,7 +144,7 @@ namespace conscious
             IsMouseVisible = false;
             _currentScreen = _gameScreen;
             _currentScreen.EnteredScreen = true;
-            _gameScreen.LoadGame(newGame:true);
+            // _gameScreen.LoadGame(newGame:true);
             _titleScreen.GameLoaded = true;
         }
         

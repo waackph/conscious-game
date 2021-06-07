@@ -7,7 +7,7 @@ namespace conscious
     {
         public int _id { get; set; }
         [JsonProperty]
-        private List<Edge> _edges;
+        public List<Edge> _edges;
         [JsonProperty]
         private string _dialogLine;
 
@@ -36,7 +36,8 @@ namespace conscious
 
         public bool HasEdges(){
             bool hasEdge = false;
-            if(_edges.Count > 0){
+            if(_edges.Count > 0)
+            {
                 hasEdge = true;
             }
             return hasEdge;

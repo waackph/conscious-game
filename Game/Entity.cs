@@ -7,12 +7,13 @@ namespace conscious
     {
         protected Sprite _sprite;
 
-        public Texture2D EntityTexture { get; set; }
-        public int DrawOrder { get; set; }
+        public Texture2D EntityTexture { get; protected set; }
+        public int DrawOrder { get; protected set; }
         public Vector2 Position;
-        public string Name { get; set; }
-        public bool FixedDrawPosition { get; set; }
-        public float Rotation { get; set; }
+        public string Name { get; protected set; }
+        public bool FixedDrawPosition { get; protected set; }
+        public float Rotation { get; protected set; }
+        public float Scale { get; protected set; }
         public virtual int Width 
         {
             get { return EntityTexture.Width; }
@@ -55,9 +56,24 @@ namespace conscious
             _sprite.Texture = texture;
         }
 
+        public void UpdateDrawOrder(int order)
+        {
+            DrawOrder = order;
+        }
+
         public virtual DataHolderEntity GetDataHolderEntity()
         {
             DataHolderEntity dataHolderEntity = new DataHolderEntity();
+            dataHolderEntity.Name = Name;
+            dataHolderEntity.PositionX  = Position.X;
+            dataHolderEntity.PositionY = Position.Y;
+            dataHolderEntity.Rotation = Rotation;
+            dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
+            return dataHolderEntity;
+        }
+
+        public virtual DataHolderEntity GetDataHolderEntity(DataHolderEntity dataHolderEntity)
+        {
             dataHolderEntity.Name = Name;
             dataHolderEntity.PositionX  = Position.X;
             dataHolderEntity.PositionY = Position.Y;

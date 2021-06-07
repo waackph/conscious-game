@@ -6,24 +6,33 @@ namespace conscious
 {
     public class Character : Thing
     {
-        protected int Id { get; }
         protected List<Node> _treeStructure;
 
-        protected DialogManager _dialogManager;
+        protected UiDialogManager _dialogManager;
         protected string _pronoun;
         protected string _catchPhrase;
 
         public bool GiveAble { get; }
+        public MoodState MoodChange { get; set; }
 
-        public Character(int id, string name, string pronoun, string catchPhrase, bool giveAble, 
-                         List<Node> treeStructure, DialogManager dialogManager,
+        public Character(int id, 
+                         string name, 
+                         string pronoun, 
+                         string catchPhrase, 
+                         bool giveAble, 
+                         List<Node> treeStructure, 
+                         UiDialogManager dialogManager,
+                         MoodState moodChange,
+                         ThoughtNode thought,
                          Texture2D texture, Vector2 position)
-                        : base(name, texture, position)
+                        : base(id, thought, name, texture, position)
         {
-            Id = id;
             _pronoun = pronoun;
             _catchPhrase = catchPhrase;
+
             GiveAble = giveAble;
+
+            MoodChange = moodChange;
 
             _treeStructure = treeStructure;
             _dialogManager = dialogManager;
@@ -47,18 +56,24 @@ namespace conscious
         public override DataHolderEntity GetDataHolderEntity()
         {
             DataHolderCharacter dataHolderEntity = new DataHolderCharacter();
-            // Entity
-            dataHolderEntity.Name = Name;
-            dataHolderEntity.PositionX  = Position.X;
-            dataHolderEntity.PositionY = Position.Y;
-            dataHolderEntity.Rotation = Rotation;
-            dataHolderEntity.texturePath = EntityTexture.ToString();
+            dataHolderEntity = (DataHolderCharacter)base.GetDataHolderEntity(dataHolderEntity);
             // Character
-            dataHolderEntity.Id = Id;
             dataHolderEntity.TreeStructure = _treeStructure;
             dataHolderEntity.Pronoun = _pronoun;
             dataHolderEntity.CatchPhrase = _catchPhrase;
             dataHolderEntity.GiveAble = GiveAble;
+            dataHolderEntity.MoodChange = MoodChange;
+            return dataHolderEntity;
+        }
+        public DataHolderEntity GetDataHolderEntity(DataHolderCharacter dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderCharacter)base.GetDataHolderEntity(dataHolderEntity);
+            // Character
+            dataHolderEntity.TreeStructure = _treeStructure;
+            dataHolderEntity.Pronoun = _pronoun;
+            dataHolderEntity.CatchPhrase = _catchPhrase;
+            dataHolderEntity.GiveAble = GiveAble;
+            dataHolderEntity.MoodChange = MoodChange;
             return dataHolderEntity;
         }
     }

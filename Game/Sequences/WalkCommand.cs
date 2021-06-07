@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 
-namespace conscious.Sequences
+namespace conscious
 {
     public class WalkCommand : Command
     {

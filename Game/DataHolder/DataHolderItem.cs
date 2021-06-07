@@ -1,8 +1,7 @@
 namespace conscious
 {
-    public class DataHolderItem : DataHolderEntity
+    public class DataHolderItem : DataHolderThing
     {
-        public int Id { get; set; }
         public bool PickUpAble { get; set; }
         public bool UseAble { get; set; }
         public bool CombineAble { get; set; }

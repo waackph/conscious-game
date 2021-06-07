@@ -217,6 +217,7 @@
         "Pronoun": "Hen",
         "CatchPhrase": "Bib bup bip",
         "GiveAble": true,
+        "MoodChange": 0,
         "texturePath": "NPCs/debug/npc",
         "Rotation": 0.0,
         "PositionX": 1400.0,

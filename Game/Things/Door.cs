@@ -24,8 +24,9 @@ namespace conscious
                     int itemDependency,
                     int roomId,
                     bool isUnlocked,
+                    ThoughtNode thought,
                     Texture2D texture, Vector2 position)
-                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, texture, position){
+                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, thought, texture, position){
             _itemDependency = itemDependency;
             RoomId = roomId;
             IsUnlocked = isUnlocked;
@@ -37,6 +38,7 @@ namespace conscious
                 if(IsUnlocked != true && item != null && item.Id == _itemDependency){
                     IsUnlocked = true;
                     UseWith = false;
+                    currentlyUsed = true;
                 }
                 if(IsUnlocked == true){
                     currentlyUsed = true;
@@ -54,28 +56,26 @@ namespace conscious
             }
             return false;
         }
+        
         public override DataHolderEntity GetDataHolderEntity()
         {
-            DataHolderDoor dataHolderDoor = new DataHolderDoor();
-            dataHolderDoor.Name = Name;
-            dataHolderDoor.PositionX  = Position.X;
-            dataHolderDoor.PositionY = Position.Y;
-            dataHolderDoor.Rotation = Rotation;
-            dataHolderDoor.texturePath = EntityTexture.ToString(); //DoorTexture.Name;
-            // Item
-            dataHolderDoor.Id = Id;
-            dataHolderDoor.PickUpAble = PickUpAble;
-            dataHolderDoor.UseAble = UseAble;
-            dataHolderDoor.UseWith = UseWith;
-            dataHolderDoor.CombineAble = CombineAble;
-            dataHolderDoor.GiveAble = GiveAble;
-            dataHolderDoor.ExamineText = _examineText;
-            dataHolderDoor.MoodChange = MoodChange;
+            DataHolderDoor dataHolderEntity = new DataHolderDoor();
+            dataHolderEntity = (DataHolderDoor)base.GetDataHolderEntity(dataHolderEntity);
             // Door
-            dataHolderDoor.ItemDependency = _itemDependency;
-            dataHolderDoor.IsUnlocked = IsUnlocked;
-            dataHolderDoor.RoomId = RoomId;
-            return dataHolderDoor;
+            dataHolderEntity.ItemDependency = _itemDependency;
+            dataHolderEntity.IsUnlocked = IsUnlocked;
+            dataHolderEntity.RoomId = RoomId;
+            return dataHolderEntity;
+        }
+
+        public DataHolderEntity GetDataHolderEntity(DataHolderDoor dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderDoor)base.GetDataHolderEntity(dataHolderEntity);
+            // Door
+            dataHolderEntity.ItemDependency = _itemDependency;
+            dataHolderEntity.IsUnlocked = IsUnlocked;
+            dataHolderEntity.RoomId = RoomId;
+            return dataHolderEntity;
         }
     }
 }

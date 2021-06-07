@@ -8,7 +8,6 @@ namespace conscious
     {
         protected string _examineText;
 
-        public int Id;
         public bool PickUpAble { get; set; }
         public bool UseAble { get; set; }
         public bool CombineAble { get; set; }
@@ -25,9 +24,8 @@ namespace conscious
                     bool useWith, 
                     string examineText,
                     MoodState moodChange,
-                    Texture2D texture, Vector2 position) : base(name, texture, position){
-            Id = id;
-            
+                    ThoughtNode thought, 
+                    Texture2D texture, Vector2 position) : base(id, thought, name, texture, position){            
             PickUpAble = pickUpAble;
             UseAble = useAble;
             CombineAble = combineAble;
@@ -61,22 +59,31 @@ namespace conscious
 
         public override DataHolderEntity GetDataHolderEntity()
         {
-            DataHolderItem dataHolderItem = new DataHolderItem();
-            dataHolderItem.Name = Name;
-            dataHolderItem.PositionX  = Position.X;
-            dataHolderItem.PositionY = Position.Y;
-            dataHolderItem.Rotation = Rotation;
-            dataHolderItem.texturePath = EntityTexture.ToString(); //ItemTexture.Name;
+            DataHolderItem dataHolderEntity = new DataHolderItem();
+            dataHolderEntity = (DataHolderItem)base.GetDataHolderEntity(dataHolderEntity);
             // Item
-            dataHolderItem.Id = Id;
-            dataHolderItem.PickUpAble = PickUpAble;
-            dataHolderItem.UseAble = UseAble;
-            dataHolderItem.UseWith = UseWith;
-            dataHolderItem.CombineAble = CombineAble;
-            dataHolderItem.GiveAble = GiveAble;
-            dataHolderItem.ExamineText = _examineText;
-            dataHolderItem.MoodChange = MoodChange;
-            return dataHolderItem;
+            dataHolderEntity.PickUpAble = PickUpAble;
+            dataHolderEntity.UseAble = UseAble;
+            dataHolderEntity.UseWith = UseWith;
+            dataHolderEntity.CombineAble = CombineAble;
+            dataHolderEntity.GiveAble = GiveAble;
+            dataHolderEntity.ExamineText = _examineText;
+            dataHolderEntity.MoodChange = MoodChange;
+            return dataHolderEntity;
         }
+
+        public DataHolderEntity GetDataHolderEntity(DataHolderItem dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderItem)base.GetDataHolderEntity(dataHolderEntity);
+            // Item
+            dataHolderEntity.PickUpAble = PickUpAble;
+            dataHolderEntity.UseAble = UseAble;
+            dataHolderEntity.UseWith = UseWith;
+            dataHolderEntity.CombineAble = CombineAble;
+            dataHolderEntity.GiveAble = GiveAble;
+            dataHolderEntity.ExamineText = _examineText;
+            dataHolderEntity.MoodChange = MoodChange;
+            return dataHolderEntity;
+        }    
     }
 }

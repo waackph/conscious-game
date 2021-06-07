@@ -7,6 +7,7 @@ namespace conscious
         Examine,
         PickUp,
         Use,
+        UseWith,
         Combine,
         Give,
         TalkTo

@@ -19,8 +19,9 @@ namespace conscious
                            MoodState moodChange,
                            Item combinedItem,
                            int itemDependency,
+                           ThoughtNode thought,
                            Texture2D texture, Vector2 position)
-                :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, texture, position){
+                :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, thought, texture, position){
             _combinedItem = combinedItem;
             _itemDependency = itemDependency;
         }
@@ -42,31 +43,32 @@ namespace conscious
         }
         public override DataHolderEntity GetDataHolderEntity()
         {
-            DataHolderCombineItem dataHolderComDataHolderCombineItem = new DataHolderCombineItem();
-            dataHolderComDataHolderCombineItem.Name = Name;
-            dataHolderComDataHolderCombineItem.PositionX  = Position.X;
-            dataHolderComDataHolderCombineItem.PositionY = Position.Y;
-            dataHolderComDataHolderCombineItem.Rotation = Rotation;
-            dataHolderComDataHolderCombineItem.texturePath = EntityTexture.ToString(); //ComDataHolderCombineItemTexture.Name;
-            // Item
-            dataHolderComDataHolderCombineItem.Id = Id;
-            dataHolderComDataHolderCombineItem.PickUpAble = PickUpAble;
-            dataHolderComDataHolderCombineItem.UseAble = UseAble;
-            dataHolderComDataHolderCombineItem.UseWith = UseWith;
-            dataHolderComDataHolderCombineItem.CombineAble = CombineAble;
-            dataHolderComDataHolderCombineItem.GiveAble = GiveAble;
-            dataHolderComDataHolderCombineItem.ExamineText = _examineText;
-            dataHolderComDataHolderCombineItem.MoodChange = MoodChange;
+            DataHolderCombineItem dataHolderEntity = new DataHolderCombineItem();
+            dataHolderEntity = (DataHolderCombineItem)base.GetDataHolderEntity(dataHolderEntity);
             // ComDataHolderCombineItem
-            dataHolderComDataHolderCombineItem.ItemDependency = _itemDependency;
+            dataHolderEntity.ItemDependency = _itemDependency;
             if(_combinedItem == null)
             {
-                dataHolderComDataHolderCombineItem.CombineItem = null;
+                dataHolderEntity.CombineItem = null;
             }
             else{
-                dataHolderComDataHolderCombineItem.CombineItem = _combinedItem.GetDataHolderEntity();
+                dataHolderEntity.CombineItem = _combinedItem.GetDataHolderEntity();
             }
-            return dataHolderComDataHolderCombineItem;
+            return dataHolderEntity;
+        }
+        public DataHolderEntity GetDataHolderEntity(DataHolderCombineItem dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderCombineItem)base.GetDataHolderEntity(dataHolderEntity);
+            // ComDataHolderCombineItem
+            dataHolderEntity.ItemDependency = _itemDependency;
+            if(_combinedItem == null)
+            {
+                dataHolderEntity.CombineItem = null;
+            }
+            else{
+                dataHolderEntity.CombineItem = _combinedItem.GetDataHolderEntity();
+            }
+            return dataHolderEntity;
         }
     }
 }

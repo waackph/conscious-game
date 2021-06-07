@@ -16,10 +16,12 @@ namespace conscious
         private ControlsManager _controlsManager;
         private RoomManager _roomManager;
         private EntityManager _entityManager;
-        private VerbManager _verbManager;
+        // private VerbManager _verbManager;
+        private SoCManager _socManager;
         private InventoryManager _inventoryManager;
-        private DialogManager _dialogManager;
-        private InteractionManager _interactionManager;
+        private UiDialogManager _dialogManager;
+        private UiDisplayThoughtManager _uiDisplayThoughtManager;
+        private RoomInteractionManager _roomInteractionManager;
         private SequenceManager _sequenceManager;
         private MoodStateManager _moodStateManager;
         private Player _player;
@@ -43,6 +45,8 @@ namespace conscious
 
             Vector2 playerPosition = Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
             _player = new Player(content.Load<Texture2D>("Player/Run"),
+                                 50, 
+                                 null,
                                  "Player",
                                  content.Load<Texture2D>("Player/Idle"),
                                  playerPosition);
@@ -50,22 +54,50 @@ namespace conscious
             _cursor = cursor;
 
             _entityManager = entityManager;
+
             _controlsManager = new ControlsManager(_player);
-            _verbManager = new VerbManager(_entityManager);
-            _verbManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_examine"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_pick_up"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_use"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_combine"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_talk_to"),
-                                     content.Load<Texture2D>("Verbs/debug/verb_give_to"));
+
+            // _verbManager = new VerbManager(_entityManager);
+            // _verbManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_examine"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_pick_up"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_use"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_combine"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_talk_to"),
+            //                          content.Load<Texture2D>("Verbs/debug/verb_give_to"));
+
             _inventoryManager = new InventoryManager(_entityManager);
             _inventoryManager.LoadContent(content.Load<Texture2D>("Inventory/debug/inventory_background"));
-            _dialogManager = new DialogManager(_entityManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
-            _sequenceManager = new SequenceManager();
+
             _moodStateManager = new MoodStateManager(_entityManager);
-            _roomManager = new RoomManager(content, _player, _cursor, entityManager, _dialogManager, _sequenceManager, _moodStateManager, _preferredBackBufferWidth, _preferredBackBufferHeight);
-            _interactionManager = new InteractionManager(_player, _cursor, _controlsManager, _entityManager, _inventoryManager, _roomManager, _dialogManager, _moodStateManager);
+
+            // TODO: Solve the loop dependence - e.g. by making the current Thoughts in SoC public and ui thoughts updating them at each game loop
+            _socManager = new SoCManager(_moodStateManager);
+            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _socManager, _cursor, content.Load<SpriteFont>("Font/Hud"), _pixel);
+            _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"));
+
+            _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
+
+            _sequenceManager = new SequenceManager();
+
+            _roomManager = new RoomManager(content, 
+                                           _player, 
+                                           _cursor, 
+                                           _pixel, 
+                                           _entityManager, 
+                                           _dialogManager, 
+                                           _sequenceManager, 
+                                           _moodStateManager, 
+                                           _preferredBackBufferWidth, _preferredBackBufferHeight);
+
+            _roomInteractionManager = new RoomInteractionManager(_entityManager, 
+                                                                 _socManager, 
+                                                                 _inventoryManager, 
+                                                                 _controlsManager, 
+                                                                 _roomManager, 
+                                                                 _dialogManager,
+                                                                 _cursor,
+                                                                 _player);
         }
 
         public override void Update(GameTime gameTime)
@@ -75,16 +107,20 @@ namespace conscious
                 _screenEvent.Invoke(this, new EventArgs());
             }
 
-            _verbManager.Update(gameTime);
-            _inventoryManager.Update(gameTime);
             if(!_dialogManager.DialogActive && !_sequenceManager.SequenceActive)
             {
-                _controlsManager.Update(gameTime);
-                _interactionManager.Update(gameTime);
+                _inventoryManager.Update(gameTime);
+                _roomInteractionManager.Update(gameTime);
+                if(!_inventoryManager.InventoryActive)
+                {
+                    _controlsManager.Update(gameTime);
+                    _uiDisplayThoughtManager.Update(gameTime);
+                }
             }
             _dialogManager.Update(gameTime);
             _roomManager.Update(gameTime);
             _moodStateManager.Update(gameTime);
+            _socManager.Update(gameTime);
             if(_sequenceManager.SequenceActive)
             {
                 _sequenceManager.Update(gameTime);
@@ -111,9 +147,12 @@ namespace conscious
             _entityManager.AddEntity(_player);
             _entityManager.AddEntity(_cursor);
             _roomManager.currentRoom.FillEntityManager();
-            _verbManager.FillEntityManager();
-            _inventoryManager.FillEntityManager();
+            if(_inventoryManager.InventoryActive)
+            {
+                _inventoryManager.FillEntityManager();
+            }
             _dialogManager.FillEntityManager();
+            _uiDisplayThoughtManager.FillEntityManager();
         }
 
         public void SaveGame()
@@ -180,11 +219,12 @@ namespace conscious
         public Thing InstatiateEntity(DataHolderEntity dh)
         {
             Thing entity;
-            if(dh.GetType() == typeof(DataHolderEntity) || dh.GetType() == typeof(DataHolderThing))
+            if(dh.GetType() == typeof(DataHolderThing))
             {
-                entity = new Thing(dh.Name, 
-                                   _content.Load<Texture2D>(dh.texturePath), 
-                                   new Vector2(dh.PositionX, dh.PositionY));
+                DataHolderThing dhThing = (DataHolderThing)dh;
+                entity = new Thing(dhThing.Id, dhThing.Thought, dhThing.Name, 
+                                   _content.Load<Texture2D>(dhThing.texturePath), 
+                                   new Vector2(dhThing.PositionX, dhThing.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderItem))
             {
@@ -193,6 +233,7 @@ namespace conscious
                                   dhItem.PickUpAble, dhItem.UseAble, 
                                   dhItem.CombineAble, dhItem.GiveAble, 
                                   dhItem.UseWith, dhItem.ExamineText, dhItem.MoodChange,
+                                  dhItem.Thought,
                                   _content.Load<Texture2D>(dhItem.texturePath), 
                                   new Vector2(dhItem.PositionX, dhItem.PositionY));
             }
@@ -208,7 +249,7 @@ namespace conscious
                                           dhMorph.Id, dhMorph.Name, dhMorph.PickUpAble,
                                           dhMorph.UseAble, dhMorph.CombineAble,
                                           dhMorph.GiveAble, dhMorph.UseWith, 
-                                          dhMorph.ExamineText, dhMorph.MoodChange,
+                                          dhMorph.ExamineText, dhMorph.MoodChange, dhMorph.Thought,
                                   _content.Load<Texture2D>(dhMorph.texturePath), 
                                   new Vector2(dhMorph.PositionX, dhMorph.PositionY));
             }
@@ -220,7 +261,7 @@ namespace conscious
                                   dhDoor.CombineAble, dhDoor.GiveAble, 
                                   dhDoor.UseWith, dhDoor.ExamineText, dhDoor.MoodChange,
                                   dhDoor.ItemDependency, dhDoor.RoomId, 
-                                  dhDoor.IsUnlocked, 
+                                  dhDoor.IsUnlocked, dhDoor.Thought,
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY));
             }
@@ -231,7 +272,7 @@ namespace conscious
                                  dhKey.PickUpAble, dhKey.UseAble, 
                                  dhKey.CombineAble, dhKey.GiveAble, 
                                  dhKey.UseWith, dhKey.ExamineText, dhKey.MoodChange,
-                                 dhKey.ItemDependency, 
+                                 dhKey.ItemDependency, dhKey.Thought,
                                  _content.Load<Texture2D>(dhKey.texturePath), 
                                  new Vector2(dhKey.PositionX, dhKey.PositionY));
             }
@@ -251,7 +292,7 @@ namespace conscious
                                          dhCombinable.PickUpAble, dhCombinable.UseAble, 
                                          dhCombinable.CombineAble, dhCombinable.GiveAble, 
                                          dhCombinable.UseWith, dhCombinable.ExamineText, dhCombinable.MoodChange,
-                                         combinedItem, dhCombinable.ItemDependency, 
+                                         combinedItem, dhCombinable.ItemDependency, dhCombinable.Thought,
                                          _content.Load<Texture2D>(dhCombinable.texturePath), 
                                          new Vector2(dhCombinable.PositionX, dhCombinable.PositionY));
             }
@@ -261,7 +302,7 @@ namespace conscious
                 entity = new Character(dhCharacter.Id, dhCharacter.Name, 
                                        dhCharacter.Pronoun, dhCharacter.CatchPhrase, 
                                        dhCharacter.GiveAble, dhCharacter.TreeStructure, 
-                                       _dialogManager, 
+                                       _dialogManager, dhCharacter.MoodChange, dhCharacter.Thought,
                                        _content.Load<Texture2D>(dhCharacter.texturePath), 
                                        new Vector2(dhCharacter.PositionX, dhCharacter.PositionY));
             }
@@ -272,7 +313,7 @@ namespace conscious
                                              dhPuzzleCharacter.Pronoun, dhPuzzleCharacter.CatchPhrase, 
                                              dhPuzzleCharacter.GiveAble, dhPuzzleCharacter.ItemDependency,
                                              dhPuzzleCharacter.DialogUnlocked, dhPuzzleCharacter.TreeStructure, 
-                                             _dialogManager, 
+                                             _dialogManager, dhPuzzleCharacter.MoodChange, dhPuzzleCharacter.Thought,
                                              _content.Load<Texture2D>(dhPuzzleCharacter.texturePath), 
                                              new Vector2(dhPuzzleCharacter.PositionX, dhPuzzleCharacter.PositionY));
             }

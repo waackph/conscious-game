@@ -7,12 +7,13 @@ using System.Linq;
 
 namespace conscious
 {
-    public class DialogManager : IComponent
+    public class UiDialogManager : IComponent
     {
         private UIText _currentText;
         private Node _currentNode;
         private List<UIComponent> _texts;
         private EntityManager _entityManager;
+        private MoodStateManager _moodStateManager;
         private SpriteFont _displayFont;
         private Texture2D _pixel;
         private bool _displayActive;
@@ -30,10 +31,14 @@ namespace conscious
         public List<Node> TreeStructure;
         public bool DialogActive { get; protected set; }
 
-        public DialogManager(EntityManager entityManager, SpriteFont displayFont, Texture2D pixel)
+        public UiDialogManager(EntityManager entityManager,
+                             MoodStateManager moodStateManager, 
+                             SpriteFont displayFont, 
+                             Texture2D pixel)
         {
             // General
             _entityManager = entityManager;
+            _moodStateManager = moodStateManager;
             _displayFont = displayFont;
             _pixel = pixel;
             _texts = new List<UIComponent>();
@@ -124,13 +129,16 @@ namespace conscious
                 Vector2 responsePosition = new Vector2(_textPosition.X, _textPosition.Y + offset);
                 offset = offset + 20f;
                 Edge responseEdge = edge;
-                UIResponse response = new UIResponse(edge,
-                                                     _displayFont,
-                                                     edge.GetLine(), 
-                                                     "Response_" + (offset/20f).ToString(), 
-                                                     _pixel, 
-                                                     responsePosition);
-                AddText(response);
+                if(edge.MoodDependence == MoodState.None || edge.MoodDependence == _moodStateManager.moodState)
+                {
+                    UIResponse response = new UIResponse(edge,
+                                                        _displayFont,
+                                                        edge.GetLine(), 
+                                                        "Response_" + (offset/20f).ToString(), 
+                                                        _pixel, 
+                                                        responsePosition);
+                    AddText(response);
+                }
             }
         }
 

@@ -2,6 +2,8 @@ namespace conscious
 {
     public class DataHolderThing : DataHolderEntity
     {
-        bool IsThing { get; set; }
+        public int Id { get; set; }
+        public ThoughtNode Thought { get; set; }
+        public bool IsInInventory { get; set; }
     }
 }

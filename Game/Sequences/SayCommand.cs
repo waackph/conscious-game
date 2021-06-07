@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace conscious.Sequences
+namespace conscious
 {
     public class SayCommand : Command
     {

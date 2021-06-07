@@ -17,8 +17,9 @@ namespace conscious
                   string examineText,
                   MoodState moodChange,
                   int itemDependency,
+                  ThoughtNode thought,
                   Texture2D texture, Vector2 position) 
-                : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, texture, position){
+                : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, thought, texture, position){
             _itemDependency = itemDependency;
         }
 
@@ -33,24 +34,18 @@ namespace conscious
 
         public override DataHolderEntity GetDataHolderEntity()
         {
-            DataHolderKey dataHolderKey = new DataHolderKey();
-            dataHolderKey.Name = Name;
-            dataHolderKey.PositionX  = Position.X;
-            dataHolderKey.PositionY = Position.Y;
-            dataHolderKey.Rotation = Rotation;
-            dataHolderKey.texturePath = EntityTexture.ToString(); //KeyTexture.Name;
-            // Item
-            dataHolderKey.Id = Id;
-            dataHolderKey.PickUpAble = PickUpAble;
-            dataHolderKey.UseAble = UseAble;
-            dataHolderKey.UseWith = UseWith;
-            dataHolderKey.CombineAble = CombineAble;
-            dataHolderKey.GiveAble = GiveAble;
-            dataHolderKey.ExamineText = _examineText;
-            dataHolderKey.MoodChange = MoodChange;
+            DataHolderKey dataHolderEntity = new DataHolderKey();
+            dataHolderEntity = (DataHolderKey)base.GetDataHolderEntity(dataHolderEntity);
             // Key
-            dataHolderKey.ItemDependency = _itemDependency;
-            return dataHolderKey;
+            dataHolderEntity.ItemDependency = _itemDependency;
+            return dataHolderEntity;
+        }
+        public DataHolderEntity GetDataHolderEntity(DataHolderKey dataHolderEntity)
+        {
+            dataHolderEntity = (DataHolderKey)base.GetDataHolderEntity(dataHolderEntity);
+            // Key
+            dataHolderEntity.ItemDependency = _itemDependency;
+            return dataHolderEntity;
         }
     }
 }
