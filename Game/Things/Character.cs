@@ -13,7 +13,6 @@ namespace conscious
         protected string _catchPhrase;
 
         public bool GiveAble { get; }
-        public MoodState MoodChange { get; set; }
 
         public Character(int id, 
                          string name, 
@@ -22,7 +21,6 @@ namespace conscious
                          bool giveAble, 
                          List<Node> treeStructure, 
                          UiDialogManager dialogManager,
-                         MoodState moodChange,
                          ThoughtNode thought,
                          Texture2D texture, Vector2 position)
                         : base(id, thought, name, texture, position)
@@ -31,8 +29,6 @@ namespace conscious
             _catchPhrase = catchPhrase;
 
             GiveAble = giveAble;
-
-            MoodChange = moodChange;
 
             _treeStructure = treeStructure;
             _dialogManager = dialogManager;
@@ -62,7 +58,6 @@ namespace conscious
             dataHolderEntity.Pronoun = _pronoun;
             dataHolderEntity.CatchPhrase = _catchPhrase;
             dataHolderEntity.GiveAble = GiveAble;
-            dataHolderEntity.MoodChange = MoodChange;
             return dataHolderEntity;
         }
         public DataHolderEntity GetDataHolderEntity(DataHolderCharacter dataHolderEntity)
@@ -73,7 +68,6 @@ namespace conscious
             dataHolderEntity.Pronoun = _pronoun;
             dataHolderEntity.CatchPhrase = _catchPhrase;
             dataHolderEntity.GiveAble = GiveAble;
-            dataHolderEntity.MoodChange = MoodChange;
             return dataHolderEntity;
         }
     }

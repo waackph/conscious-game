@@ -256,7 +256,8 @@ namespace conscious
 
         private void addConcludingThought(string thoughtText)
         {
-            _socManager.AddThought(new ThoughtNode(0, thoughtText, 0, true, 0));
+            if(thoughtText != "" && thoughtText != null)
+                _socManager.AddThought(new ThoughtNode(0, thoughtText, 0, true, 0));
         }
 
         private void finishInteraction(bool canceled=false)
@@ -373,8 +374,6 @@ namespace conscious
             return potentialDescendant.IsSubclassOf(potentialBase) || potentialDescendant == potentialBase;
         }
         
-        // TODO: maybe decouple item/character interaction to other class - or move maybe move calls to dialogManager
-        // TODO: separate interaction code into tasks (especially what happens in the world and what in the game/progress logic and what in the item)
         private void ExecuteInteraction(Item item, Verb verb)
         {
             switch(verb)
@@ -416,11 +415,6 @@ namespace conscious
                     break;
             }
             finishInteraction();
-            // TODO: Decide if item mood necessary - isnt that controlled by the thought?
-            // if(interactionSuccess && item.MoodChange != MoodState.None)
-            // {
-            //     _moodStateManager.StateChange = item.MoodChange;
-            // }
         }
 
         private void ExecuteInteraction(Item item1, Item item2, Verb verb)

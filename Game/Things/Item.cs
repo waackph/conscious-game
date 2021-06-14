@@ -13,7 +13,6 @@ namespace conscious
         public bool CombineAble { get; set; }
         public bool GiveAble { get; set; }
         public bool UseWith { get; set; }
-        public MoodState MoodChange { get; set; }
 
         public Item(int id,
                     string name, 
@@ -23,7 +22,6 @@ namespace conscious
                     bool giveAble, 
                     bool useWith, 
                     string examineText,
-                    MoodState moodChange,
                     ThoughtNode thought, 
                     Texture2D texture, Vector2 position) : base(id, thought, name, texture, position){            
             PickUpAble = pickUpAble;
@@ -31,7 +29,6 @@ namespace conscious
             CombineAble = combineAble;
             GiveAble = giveAble;
             UseWith = useWith;
-            MoodChange = moodChange;
             _examineText = examineText;
 
             Collidable = true;
@@ -68,7 +65,6 @@ namespace conscious
             dataHolderEntity.CombineAble = CombineAble;
             dataHolderEntity.GiveAble = GiveAble;
             dataHolderEntity.ExamineText = _examineText;
-            dataHolderEntity.MoodChange = MoodChange;
             return dataHolderEntity;
         }
 
@@ -82,7 +78,6 @@ namespace conscious
             dataHolderEntity.CombineAble = CombineAble;
             dataHolderEntity.GiveAble = GiveAble;
             dataHolderEntity.ExamineText = _examineText;
-            dataHolderEntity.MoodChange = MoodChange;
             return dataHolderEntity;
         }    
     }
