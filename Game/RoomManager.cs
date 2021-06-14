@@ -72,20 +72,22 @@ namespace conscious
                                                       "The door to the outside world",
                                                       "Its locked. Maybe I can open it somehow? [use]", 
                                                       Verb.UseWith,
-                                                      1);
+                                                      1,
+                                                      MoodState.Depressed);
             Thing door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
-                                  MoodState.None, 4, 2, false, thought3, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
+                                  4, 2, false, thought3, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
             room.addThing(door);
 
             ThoughtNode thought2 = CreateSimpleThought(17, 
                                                       "It's a key. There is nothing more mundane",
                                                       "Let's keep it anyway [pick up]", 
                                                       Verb.PickUp,
-                                                      2);
-            Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", MoodState.None,
+                                                      2,
+                                                      MoodState.Regular);
+            Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now",
                                          1, null, _content.Load<Texture2D>("Objects/debug/key_oily"), new Vector2(448, 786+4+50));
             itemPosition = new Vector2(448, 786+4);
-            Thing key = new CombineItem(2, "Key", true, false, true, false, false, "It's a key", MoodState.Regular, 
+            Thing key = new CombineItem(2, "Key", true, false, true, false, false, "It's a key", 
                                         combinedItem, 3, thought2, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
             room.addThing(key);
 
@@ -93,23 +95,24 @@ namespace conscious
                                                       "It's a bottle. Wow...",
                                                       "Maybe I can use it for something [combine]", 
                                                       Verb.Combine,
-                                                      3);
+                                                      3,
+                                                      MoodState.None);
             itemPosition = new Vector2(200, 786+4);
-            Thing combineItem = new CombineItem(3, "Oil Bottle", true, false, true, false, false, "It's a bottle", MoodState.Depressed, 
+            Thing combineItem = new CombineItem(3, "Oil Bottle", true, false, true, false, false, "It's a bottle", 
                                                 null, 2, thought6, _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
             room.addThing(combineItem);
 
             // --------------------------- Morphing Item ---------------------------
             itemPosition = new Vector2(1058, 800);
             Dictionary<MoodState, Item> morphItems = new Dictionary<MoodState, Item>();
-            Key morphItem1 = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", MoodState.None, 1, null,
+            Key morphItem1 = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", 1, null,
                                        _content.Load<Texture2D>("Objects/debug/key_oily"), itemPosition);
-            Key morphItem2 = new Key(4, "Oil Bottle", true, true, false, false, true, "The key is smooth now", MoodState.None, 1, null, 
+            Key morphItem2 = new Key(4, "Oil Bottle", true, true, false, false, true, "The key is smooth now", 1, null, 
                                        _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
             morphItems[MoodState.Regular] = morphItem1;
             morphItems[MoodState.Depressed] = morphItem2;
             Thing morph = new MorphingItem(_moodStateManager, morphItems, 
-                                           6, "Morph", false, true, false, false, true, "It's morphing", MoodState.None, null,
+                                           6, "Morph", false, true, false, false, true, "It's morphing", null,
                                            _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
             room.addThing(morph);
 
@@ -126,8 +129,9 @@ namespace conscious
                                                       "The door to the outside world. \nI am not ready for this.",
                                                       "Fuck it. I'll do it anyway [use]", 
                                                       Verb.Use,
-                                                      30);
-            door = new Door(30, "Door", false, true, false, false, false, "It's a door", MoodState.None, 2, 1, true, thought,
+                                                      30,
+                                                      MoodState.None);
+            door = new Door(30, "Door", false, true, false, false, false, "It's a door", 2, 1, true, thought,
                                   _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
             room.addThing(door);
             
@@ -157,10 +161,11 @@ namespace conscious
                                                        "He looks hansome. I feel insecure.",
                                                        "Maybe he likes a gift [give]", 
                                                        Verb.Give,
-                                                       5);
+                                                       5,
+                                                       MoodState.None);
             Thing character = new PuzzleCharacter(5, "Robo", "Hen", "Bib bup bip", true, 32, 
                                                   false, dialogTree, _dialogManager, 
-                                                  MoodState.None, thought4,
+                                                  thought4,
                                                   _content.Load<Texture2D>("NPCs/debug/npc"), itemPosition);
             room.addThing(character);
 
@@ -168,19 +173,20 @@ namespace conscious
                                                        "A key. It looks shiny.",
                                                        "Maybe I can use that at some time [pickup]", 
                                                        Verb.PickUp,
-                                                       32);
+                                                       32,
+                                                       MoodState.None);
             itemPosition = new Vector2(448, 786+4);
-            Thing giveItem = new CombineItem(32, "Key", true, false, false, true, false, "It's a key", MoodState.Regular, 
+            Thing giveItem = new CombineItem(32, "Key", true, false, false, true, false, "It's a key", 
                                              combinedItem, 5, thought5, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
             room.addThing(giveItem);
 
             _rooms.Add(2, room);
         }
 
-        private ThoughtNode CreateSimpleThought(int minId, string thoughtText, string action, Verb verbAction, int containingThingId)
+        private ThoughtNode CreateSimpleThought(int minId, string thoughtText, string action, Verb verbAction, int containingThingId, MoodState state)
         {
             ThoughtNode thought2 = new ThoughtNode(minId, "First node", 0, false, 0);
-            thought2.AddLink(new FinalThoughtLink(MoodState.None,
+            thought2.AddLink(new FinalThoughtLink(state,
                                                   verbAction,
                                                   null,
                                                   0,

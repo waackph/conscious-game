@@ -27,7 +27,6 @@ namespace conscious
         private Queue<Thing> _lastThingsClicked;
         private bool _isWalking;
         private bool _interactionActive;
-        private bool _dialogActive;
 
         public RoomInteractionManager(EntityManager entityManager, 
                                       SoCManager socManager, 
@@ -54,7 +53,6 @@ namespace conscious
             _lastButtonState = Mouse.GetState().LeftButton;
             _interactionActive = false;
             _isWalking = false;
-            _dialogActive = true;
             _maxThingsClicked = 3;
             _lastVerbChosen = Verb.None;
         }
@@ -256,6 +254,12 @@ namespace conscious
             return (verb == Verb.Examine || verb == Verb.PickUp || verb == Verb.Use || verb == Verb.TalkTo);
         }
 
+        private void addConcludingThought(string thoughtText)
+        {
+            if(thoughtText != "" && thoughtText != null)
+                _socManager.AddThought(new ThoughtNode(0, thoughtText, 0, true, 0));
+        }
+
         private void finishInteraction(bool canceled=false)
         {
             if(canceled)
@@ -353,11 +357,6 @@ namespace conscious
             }
         }
 
-        private void addConcludingThought(string thoughtText)
-        {
-            _socManager.AddThought(new ThoughtNode(0, thoughtText, 0, true, 0));
-        }
-
         private Thing GetThingFromQueue(int id)
         {
             foreach(Thing thing in _lastThingsClicked)
@@ -375,17 +374,13 @@ namespace conscious
             return potentialDescendant.IsSubclassOf(potentialBase) || potentialDescendant == potentialBase;
         }
         
-        // TODO: maybe decouple item/character interaction to other class - or move maybe move calls to dialogManager
-        // TODO: Rethink code because examine does not exist anymore, is handled in thoughts, here only use/combine and stuff
         private void ExecuteInteraction(Item item, Verb verb)
         {
-            // TODO: handle dialog texts (separate into single line of player and dialog between character and player)
-            // TODO: separate interaction code into tasks (especially what happens in the world and what in the game/progress logic and what in the item)
             switch(verb)
             {
                 case Verb.Examine:
                     string text = item.Examine();
-                    _dialogManager.DoDisplayText(text);
+                    addConcludingThought(text);
                     if(item.Thought != null)
                     {
                         _socManager.AddThought(item.Thought);
@@ -420,11 +415,6 @@ namespace conscious
                     break;
             }
             finishInteraction();
-            // TODO: Decide if item mood necessary - isnt that controlled over the thought?
-            // if(interactionSuccess && item.MoodChange != MoodState.None)
-            // {
-            //     _moodStateManager.StateChange = item.MoodChange;
-            // }
         }
 
         private void ExecuteInteraction(Item item1, Item item2, Verb verb)
@@ -470,7 +460,6 @@ namespace conscious
             {
                 case Verb.TalkTo:
                     character.TalkTo();
-                    _dialogActive = true;
                     break;
                 default:
                     addConcludingThought(character.Name + " would not like that.");

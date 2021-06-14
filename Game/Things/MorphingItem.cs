@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using System.Collections.Generic;
-using System;
+
 namespace conscious
 {
     public class MorphingItem : Item
@@ -21,9 +21,8 @@ namespace conscious
                              bool giveAble, 
                              bool useWith, 
                              string examineText,
-                             MoodState moodChange,
                              ThoughtNode thought,
-                             Texture2D texture, Vector2 position) : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, thought, texture, position)
+                             Texture2D texture, Vector2 position) : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, texture, position)
         {
             _moodStateManager = moodStateManager;
             _items = items;

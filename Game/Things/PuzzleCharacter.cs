@@ -18,10 +18,9 @@ namespace conscious
                                bool dialogUnlocked,
                                List<Node> treeStructure,
                                UiDialogManager dialogManager,
-                               MoodState moodChange,
                                ThoughtNode thought,
                                Texture2D texture, Vector2 position)
-                            : base(id, name, pronoun, catchPhrase, giveAble, treeStructure, dialogManager, moodChange, thought, texture, position)
+                            : base(id, name, pronoun, catchPhrase, giveAble, treeStructure, dialogManager, thought, texture, position)
         {
             _itemDependency = itemDependency;
             _dialogUnlocked = dialogUnlocked;

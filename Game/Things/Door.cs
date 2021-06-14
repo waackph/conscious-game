@@ -20,13 +20,12 @@ namespace conscious
                     bool giveAble, 
                     bool useWith, 
                     string examineText,
-                    MoodState moodChange,
                     int itemDependency,
                     int roomId,
                     bool isUnlocked,
                     ThoughtNode thought,
                     Texture2D texture, Vector2 position)
-                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, moodChange, thought, texture, position){
+                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, texture, position){
             _itemDependency = itemDependency;
             RoomId = roomId;
             IsUnlocked = isUnlocked;
