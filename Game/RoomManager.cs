@@ -105,9 +105,9 @@ namespace conscious
             // --------------------------- Morphing Item ---------------------------
             itemPosition = new Vector2(1058, 800);
             Dictionary<MoodState, Item> morphItems = new Dictionary<MoodState, Item>();
-            Key morphItem1 = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now", 1, null,
+            Key morphItem1 = new Key(45, "Oily Key", true, true, false, false, true, "The key is smooth now", 1, null,
                                        _content.Load<Texture2D>("Objects/debug/key_oily"), itemPosition);
-            Key morphItem2 = new Key(4, "Oil Bottle", true, true, false, false, true, "The key is smooth now", 1, null, 
+            Key morphItem2 = new Key(46, "Oil Bottle", true, true, false, false, true, "The key is smooth now", 1, null, 
                                        _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
             morphItems[MoodState.Regular] = morphItem1;
             morphItems[MoodState.Depressed] = morphItem2;

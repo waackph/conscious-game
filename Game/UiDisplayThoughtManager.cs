@@ -57,7 +57,6 @@ namespace conscious
             _currentSubthoughtLinks = null;
             _currentThought = null;
             IsInThoughtMode = false;
-
         }
 
         public void LoadContent(Texture2D consciousnessBackground)
@@ -234,10 +233,11 @@ namespace conscious
 
         private void addSubthought()
         {
-            if(_currentSubthought != null)
-            {
-                _entityManager.AddEntity(_currentSubthought);
-            }
+            // We only want to see the options aka links in this menu
+            // if(_currentSubthought != null)
+            // {
+            //     _entityManager.AddEntity(_currentSubthought);
+            // }
             foreach(UIThought link in _currentSubthoughtLinks)
             {
                 _entityManager.AddEntity(link);

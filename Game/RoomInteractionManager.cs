@@ -71,6 +71,10 @@ namespace conscious
             {
                 finishInteraction(canceled:true);
             }
+            else if(Keyboard.GetState().IsKeyDown(Keys.Tab) && _interactionActive && _inventoryManager.InventoryActive)
+            {
+                finishInteraction(canceled:true);
+            }
 
             thingHovered = CheckCursorHoversThing();
             if(thingHovered != null)
@@ -147,7 +151,17 @@ namespace conscious
             }
             else if(Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
-                if(thingHovered == null)
+                bool uiHit = false;
+                // Check if a non-room entity (a UI entity) has been clicked
+                foreach(UIArea entity in _entityManager.GetEntitiesOfType<UIArea>())
+                {
+                    if(entity.BoundingBox.Contains(_cursor.Position.X, _cursor.Position.Y))
+                    {
+                        uiHit = true;
+                        break;
+                    }
+                }
+                if(thingHovered == null && !uiHit)
                     mousePosition = _cursor.MouseCoordinates;
             }
             else

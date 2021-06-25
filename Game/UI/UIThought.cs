@@ -14,6 +14,7 @@ namespace conscious
                         Texture2D texture, 
                         Vector2 position) : base(font, text, name, texture, position)
         {
+            Collidable = true;
             _isClickable = isClickable;
         }
 
