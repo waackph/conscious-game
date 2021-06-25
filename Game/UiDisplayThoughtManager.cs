@@ -25,7 +25,6 @@ namespace conscious
         private UIArea _subthoughtBackground;
         private List<UIThought> _currentSubthoughtLinks;
         private UIThought _currentSubthought;
-        private UIThought _currentThought;
         private MouseState _lastMouseState;
         public bool IsInThoughtMode { get; protected set; }
 
@@ -47,7 +46,7 @@ namespace conscious
             _offsetX = 250f;
             // In Thought Area
             _thoughtOffsetY = 0;
-            _thoughtOffsetX = _bgX + 80f;
+            _thoughtOffsetX = _bgX + 210f;
             
             _font = font;
             _pixel = pixel;
@@ -55,9 +54,7 @@ namespace conscious
             _lastMouseState = Mouse.GetState();
             _currentSubthought = null;
             _currentSubthoughtLinks = null;
-            _currentThought = null;
             IsInThoughtMode = false;
-
         }
 
         public void LoadContent(Texture2D consciousnessBackground)
@@ -113,20 +110,23 @@ namespace conscious
 
         private UIThought CalculateThoughtPositions(UIThought thought)
         {
+            float uiXPos = _bgX - _offsetX;
+            float uiYPos = _bgY - _consciousnessBackground.Height;
             int thoughtNumber = 0;
             float heightOffset = 0f;
+            
             //Update position of thoughts in queue
             foreach(UIThought th in _thoughts)
             {
                 _entityManager.RemoveEntity(th);
-                th.SetPosition(_bgX - _offsetX,
-                                _bgY + thoughtNumber * _offsetY + heightOffset);
+                th.SetPosition(uiXPos,
+                               uiYPos + thoughtNumber * _offsetY + heightOffset);
                 heightOffset += th.BoundingBox.Height;
                 _entityManager.AddEntity(th);
                 thoughtNumber++;
             }
-            thought.SetPosition(_bgX - _offsetX,
-                                _bgY + thoughtNumber*_offsetY + heightOffset);
+            thought.SetPosition(uiXPos,
+                                uiYPos + thoughtNumber * _offsetY + heightOffset);
             return thought;
         }
 
@@ -175,7 +175,7 @@ namespace conscious
             //       while the subthought of another is already active
             IsInThoughtMode = true;
             _entityManager.AddEntity(_subthoughtBackground);
-            _currentSubthought = convertNodeToUi(node);
+            _currentSubthought = convertNodeToUi(node, doDisplay:false);
             _currentSubthoughtLinks = convertLinksToUi(links);
             calculateSubthoughtPositions();
             addSubthought();
@@ -185,7 +185,6 @@ namespace conscious
         {
             IsInThoughtMode = false;
             removeSubthought();
-            _currentThought = null;
             _entityManager.RemoveEntity(_subthoughtBackground);
         }
 
@@ -200,21 +199,23 @@ namespace conscious
 
         private void calculateSubthoughtPositions()
         {
+            float uiXPos = _bgX + _thoughtOffsetX - _offsetX;
+            float uiYPos = _bgY + _thoughtOffsetY - _subthoughtBackground.Height;
             int thoughtNumber = 0;
             float heightOffset = 0f;
-            if(_currentSubthought != null)
+            if(_currentSubthought != null && _currentSubthought.DoDisplay)
             {
-                _currentSubthought.SetPosition(_bgX + _thoughtOffsetX - _offsetX,
-                                               _bgY - _thoughtOffsetY + thoughtNumber*_offsetY + heightOffset);
+                _currentSubthought.SetPosition(uiXPos,
+                                               uiYPos + thoughtNumber * _offsetY + heightOffset);
                 thoughtNumber++;
-                heightOffset += _currentSubthought.Height;
+                heightOffset += _currentSubthought.BoundingBox.Height;
             }
             foreach(UIThought option in _currentSubthoughtLinks)
             {
-                option.SetPosition(_bgX + _thoughtOffsetX - _offsetX,
-                                   _bgY - _thoughtOffsetY + thoughtNumber*_offsetY + heightOffset);
+                option.SetPosition(uiXPos,
+                                   uiYPos + thoughtNumber * _offsetY + heightOffset);
                 thoughtNumber++;
-                heightOffset += option.Height;
+                heightOffset += option.BoundingBox.Height;
             }
         }
 
@@ -234,7 +235,8 @@ namespace conscious
 
         private void addSubthought()
         {
-            if(_currentSubthought != null)
+            // We only want to see the options aka links in this menu
+            if(_currentSubthought != null && _currentSubthought.DoDisplay)
             {
                 _entityManager.AddEntity(_currentSubthought);
             }
@@ -265,16 +267,17 @@ namespace conscious
             }
         }
 
-        private UIThought convertNodeToUi(ThoughtNode node)
+        private UIThought convertNodeToUi(ThoughtNode node, bool doDisplay=true)
         {
             if(node != null)
             {
                 bool isClickable = false;
-                if(node.HasLinks())
+                if(node.HasLinks() && node.IsRoot)
                 {
                     isClickable = true;
                 }
                 UIThought uiThought = new UIThought(isClickable,
+                                                    doDisplay,
                                                     _font, 
                                                     node.Thought, node.Thought, 
                                                     _pixel, 
@@ -293,7 +296,8 @@ namespace conscious
             foreach(ThoughtLink link in links)
             {
                 // TODO: add a disabled style, if current moodState is not valid for this option
-                UIThought uiThought = new UIThought(true,
+                UIThought uiThought = new UIThought(isClickable:true,
+                                                    doDisplay:true,
                                                     _font, 
                                                     link.Option, link.Option, 
                                                     _pixel, 

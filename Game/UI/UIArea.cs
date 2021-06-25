@@ -7,7 +7,7 @@ namespace conscious
     {
         public UIArea(string name, Texture2D texture, Vector2 position) : base(name, texture, position)
         {
-            Collidable = true;
+            Collidable = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -17,6 +17,16 @@ namespace conscious
                              new Vector2(Width/2, Height/2),
                              new Vector2(2, 2),
                              SpriteEffects.None, 0f);
+        }
+
+        public override Rectangle BoundingBox
+        {
+            get
+            {
+                return new Rectangle((int)Position.X - Width, 
+                                     (int)Position.Y - Height,
+                                     Width*2, Height*2);
+            }
         }
     }
 }

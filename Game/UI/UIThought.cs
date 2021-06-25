@@ -7,14 +7,19 @@ namespace conscious
     public class UIThought : UIText
     {
         private bool _isClickable;
+        public bool DoDisplay;
         public UIThought(bool isClickable,
-                        SpriteFont font, 
-                        string text, 
-                        string name, 
-                        Texture2D texture, 
-                        Vector2 position) : base(font, text, name, texture, position)
+                         bool doDisplay,
+                         SpriteFont font, 
+                         string text, 
+                         string name, 
+                         Texture2D texture, 
+                         Vector2 position) : base(font, text, name, texture, position)
         {
+            Collidable = true;
             _isClickable = isClickable;
+
+            DoDisplay = doDisplay;
         }
 
         public override void Update(GameTime gameTime)
