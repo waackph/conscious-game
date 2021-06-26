@@ -20,10 +20,10 @@ namespace conscious
         private Player _player;
         private Cursor _cursor;
         private Texture2D _pixel;
-        private int _currentRoomIndex;
         private Door _doorEntered;
 
         public Room currentRoom;
+        public int CurrentRoomIndex;
 
         public RoomManager(ContentManager content, 
                            Player player,
@@ -54,7 +54,7 @@ namespace conscious
 
             _pixel = pixel;
 
-            _currentRoomIndex = 2;
+            CurrentRoomIndex = 2;
             _doorEntered = null;
 
             LoadRooms();
@@ -281,10 +281,10 @@ namespace conscious
                     command
                 };
                 Sequence seq = new Sequence(coms);
-                _rooms[_currentRoomIndex].EntrySequence = seq;
+                _rooms[CurrentRoomIndex].EntrySequence = seq;
 
-                // currentRoom = _rooms[_currentRoomIndex];
-                changeRoom(_currentRoomIndex, Vector2.Zero);
+                // currentRoom = _rooms[CurrentRoomIndex];
+                changeRoom(CurrentRoomIndex, Vector2.Zero);
             }
 
             // Close the door when entered
@@ -365,12 +365,12 @@ namespace conscious
 
         public void SetCurrentRoomIndex(int roomIndex)
         {
-            _currentRoomIndex = roomIndex;
+            CurrentRoomIndex = roomIndex;
         }
 
         public void ResetCurrentRoom()
         {
-            // currentRoom = _rooms[_currentRoomIndex];
+            // currentRoom = _rooms[CurrentRoomIndex];
             
             // Testing: Sequence
             _player.Position = new Vector2(10, 900);
@@ -380,10 +380,10 @@ namespace conscious
                 command
             };
             Sequence seq = new Sequence(coms);
-            _rooms[_currentRoomIndex].EntrySequence = seq;
+            _rooms[CurrentRoomIndex].EntrySequence = seq;
 
-            // currentRoom = _rooms[_currentRoomIndex];
-            changeRoom(_currentRoomIndex, Vector2.Zero);
+            // currentRoom = _rooms[CurrentRoomIndex];
+            changeRoom(CurrentRoomIndex, Vector2.Zero);
 
         }
 
