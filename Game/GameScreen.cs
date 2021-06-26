@@ -250,8 +250,8 @@ namespace conscious
                                           dhMorph.UseAble, dhMorph.CombineAble,
                                           dhMorph.GiveAble, dhMorph.UseWith, 
                                           dhMorph.ExamineText, dhMorph.Thought,
-                                  _content.Load<Texture2D>(dhMorph.texturePath), 
-                                  new Vector2(dhMorph.PositionX, dhMorph.PositionY));
+                                          _content.Load<Texture2D>(dhMorph.texturePath), 
+                                          new Vector2(dhMorph.PositionX, dhMorph.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderDoor))
             {
@@ -260,8 +260,9 @@ namespace conscious
                                   dhDoor.PickUpAble, dhDoor.UseAble, 
                                   dhDoor.CombineAble, dhDoor.GiveAble, 
                                   dhDoor.UseWith, dhDoor.ExamineText,
-                                  dhDoor.ItemDependency, dhDoor.RoomId, 
+                                  dhDoor.ItemDependency, dhDoor.RoomId, dhDoor.DoorId,
                                   new Vector2(dhDoor.InitPlayerPosX, dhDoor.InitPlayerPosY),
+                                  _content.Load<Texture2D>(dhDoor.CloseTexturePath),
                                   dhDoor.IsUnlocked, dhDoor.Thought,
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY));

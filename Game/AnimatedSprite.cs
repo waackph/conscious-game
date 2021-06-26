@@ -9,6 +9,8 @@ namespace conscious
         private int _atlasCols;
         private int _currentFrame;
         private int _totalFrames;
+        private int _timeSinceLastFrame = 0;
+        private int _millisecondsPerFrame = 40;
 
         public AnimatedSprite(Texture2D texture, int rows, int columns, int width, int height, float rotation)
           :base(texture, width, height, rotation)
@@ -21,13 +23,18 @@ namespace conscious
             Width = width;
             Height = height;
         } 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
-            _currentFrame++;
-            if(_currentFrame == _totalFrames)
+            _timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
+            if (_timeSinceLastFrame > _millisecondsPerFrame)
             {
-                _currentFrame = 0;
-            }    
+                _timeSinceLastFrame = 0;
+                _currentFrame++;
+                if(_currentFrame == _totalFrames)
+                {
+                    _currentFrame = 0;
+                }    
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 location, SpriteEffects flip){

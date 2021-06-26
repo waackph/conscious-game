@@ -21,6 +21,7 @@ namespace conscious
         private Cursor _cursor;
         private Texture2D _pixel;
         private int _currentRoomIndex;
+        private Door _doorEntered;
 
         public Room currentRoom;
 
@@ -54,6 +55,7 @@ namespace conscious
             _pixel = pixel;
 
             _currentRoomIndex = 2;
+            _doorEntered = null;
 
             LoadRooms();
         }
@@ -75,8 +77,12 @@ namespace conscious
                                                       1,
                                                       MoodState.Depressed);
             Thing door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
-                                  4, 2, new Vector2(1058, 579+120+_player.Height), false, thought3, 
-                                  _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
+                                  4, 2, 30, 
+                                  new Vector2(1058, 579+150+_player.Height), 
+                                  _content.Load<Texture2D>("Objects/debug/door_closed"),
+                                  false, thought3, 
+                                  _content.Load<Texture2D>("Objects/debug/door_opened"), 
+                                  itemPosition);
             room.addThing(door);
 
             ThoughtNode thought2 = CreateSimpleThought(17, 
@@ -132,8 +138,11 @@ namespace conscious
                                                       Verb.Use,
                                                       30,
                                                       MoodState.None);
-            door = new Door(30, "Door", false, true, false, false, false, "It's a door", 2, 1,
-                            new Vector2(1058, 570+110+_player.Height), true, thought,
+            door = new Door(30, "Door", false, true, false, false, false, "It's a door", 
+                            2, 1, 1,
+                            new Vector2(1058, 570+140+_player.Height), 
+                            _content.Load<Texture2D>("Objects/debug/door_closed"),
+                            true, thought,
                             _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
             room.addThing(door);
             
@@ -215,7 +224,7 @@ namespace conscious
             return thought;
         }
 
-        public void changeRoom(int roomId, Vector2 newPlayerPosition)
+        public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId=0)
         {
             Room lastRoom = currentRoom;
             currentRoom = _rooms[roomId];
@@ -234,13 +243,30 @@ namespace conscious
                 lastRoom.ClearRoomEntityManager();
                 currentRoom.FillEntityManager();
             }
-            if(lastRoom != null || newPlayerPosition == Vector2.Zero)
-            {
-                _player.Position = newPlayerPosition;
-            }
 
             if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
+            {
                 _sequenceManager.StartSequence(currentRoom.EntrySequence);
+            }
+            else if(lastRoom != null || newPlayerPosition == Vector2.Zero)
+            {
+                if(doorId != 0)
+                {
+                    _doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
+                    _doorEntered.OpenDoor();
+                }
+                // Set player to middle of door (for now quick fix)
+                _player.Position = newPlayerPosition;
+                _player.Position.Y = _player.Position.Y-100f;
+
+                WalkCommand command = new WalkCommand(_player, newPlayerPosition);
+                List<Command> coms = new List<Command>()
+                {
+                    command
+                };
+                Sequence seq = new Sequence(coms);
+                _sequenceManager.StartSequence(seq);
+            }
         }
 
         public void Update(GameTime gameTime){
@@ -259,6 +285,13 @@ namespace conscious
 
                 // currentRoom = _rooms[_currentRoomIndex];
                 changeRoom(_currentRoomIndex, Vector2.Zero);
+            }
+
+            // Close the door when entered
+            if(_doorEntered != null && !_sequenceManager.SequenceActive)
+            {
+                _doorEntered.CloseDoor();
+                _doorEntered = null;
             }
  
             // Scroll room and thing positions
@@ -279,7 +312,7 @@ namespace conscious
                 if(door.currentlyUsed == true)
                 {
                     door.currentlyUsed = false;
-                    changeRoom(door.RoomId, door.InitPlayerPos);
+                    changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
                     break;
                 }
             }
