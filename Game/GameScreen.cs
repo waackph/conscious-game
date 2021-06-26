@@ -185,11 +185,11 @@ namespace conscious
             string savePath;
             if(newGame)
             {
-                savePath = "new_states/20210313-2101";
+                savePath = "new_states/20210626-1248";
             }
             else
             {
-                savePath = "save_states/20210313-2110";
+                savePath = "save_states/20210626-1307";
             }
 
             // Clear Data
@@ -221,7 +221,7 @@ namespace conscious
                         things.Add(entity);
                     }
                 }
-                Room room = new Room(dhRoom.RoomWidth, _entityManager, null);
+                Room room = new Room(dhRoom.RoomWidth, _entityManager, dhRoom.EntrySequence);
                 room.SetThings(things);
                 _roomManager.AddRoom(entry.Key, room);
             }

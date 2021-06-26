@@ -93,6 +93,7 @@ namespace conscious
             }
             dataHolderRoom.RoomWidth = RoomWidth;
             dataHolderRoom.Things = dhThings;
+            dataHolderRoom.EntrySequence = EntrySequence;
             return dataHolderRoom;
         }
     }

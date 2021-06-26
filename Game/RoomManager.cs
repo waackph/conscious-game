@@ -57,7 +57,7 @@ namespace conscious
             CurrentRoomIndex = 2;
             _doorEntered = null;
 
-            LoadRooms();
+            // LoadRooms();
         }
         
         public void LoadRooms(){
@@ -248,7 +248,7 @@ namespace conscious
             {
                 _sequenceManager.StartSequence(currentRoom.EntrySequence);
             }
-            else if(lastRoom != null || newPlayerPosition == Vector2.Zero)
+            else if(lastRoom != null && newPlayerPosition != Vector2.Zero)
             {
                 if(doorId != 0)
                 {
@@ -274,14 +274,17 @@ namespace conscious
             if(currentRoom == null)
             {
                 // Testing: Sequence
-                _player.Position = new Vector2(10, 786);
-                WalkCommand command = new WalkCommand(_player, new Vector2(1000, 786));
-                List<Command> coms = new List<Command>()
+                if(_rooms[CurrentRoomIndex].EntrySequence == null && CurrentRoomIndex == 2)
                 {
-                    command
-                };
-                Sequence seq = new Sequence(coms);
-                _rooms[CurrentRoomIndex].EntrySequence = seq;
+                    _player.Position = new Vector2(10, 786);
+                    WalkCommand command = new WalkCommand(_player, new Vector2(1000, 786));
+                    List<Command> coms = new List<Command>()
+                    {
+                        command
+                    };
+                    Sequence seq = new Sequence(coms);
+                    _rooms[CurrentRoomIndex].EntrySequence = seq;
+                }
 
                 // currentRoom = _rooms[CurrentRoomIndex];
                 changeRoom(CurrentRoomIndex, Vector2.Zero);

@@ -1,12 +1,16 @@
 using Microsoft.Xna.Framework;
 
 using System.Collections.Generic;
+using Newtonsoft.Json;
+
 
 namespace conscious
 {
     public class Sequence
     {
+        [JsonProperty]
         private List<Command> _commands;
+        [JsonProperty]
         private int _currentIndex;
         public bool SequenceFinished;
 
