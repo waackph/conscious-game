@@ -261,6 +261,7 @@ namespace conscious
                                   dhDoor.CombineAble, dhDoor.GiveAble, 
                                   dhDoor.UseWith, dhDoor.ExamineText,
                                   dhDoor.ItemDependency, dhDoor.RoomId, 
+                                  new Vector2(dhDoor.InitPlayerPosX, dhDoor.InitPlayerPosY),
                                   dhDoor.IsUnlocked, dhDoor.Thought,
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY));
