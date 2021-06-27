@@ -246,7 +246,7 @@ namespace conscious
 
             if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
             {
-                _sequenceManager.StartSequence(currentRoom.EntrySequence);
+                _sequenceManager.StartSequence(currentRoom.EntrySequence, _player);
             }
             else if(lastRoom != null && newPlayerPosition != Vector2.Zero)
             {
@@ -259,13 +259,13 @@ namespace conscious
                 _player.Position = newPlayerPosition;
                 _player.Position.Y = _player.Position.Y-100f;
 
-                WalkCommand command = new WalkCommand(_player, newPlayerPosition);
+                WalkCommand command = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
                 List<Command> coms = new List<Command>()
                 {
                     command
                 };
                 Sequence seq = new Sequence(coms);
-                _sequenceManager.StartSequence(seq);
+                _sequenceManager.StartSequence(seq, _player);
             }
         }
 
@@ -277,7 +277,7 @@ namespace conscious
                 if(_rooms[CurrentRoomIndex].EntrySequence == null && CurrentRoomIndex == 2)
                 {
                     _player.Position = new Vector2(10, 786);
-                    WalkCommand command = new WalkCommand(_player, new Vector2(1000, 786));
+                    WalkCommand command = new WalkCommand(1000f, 786f);
                     List<Command> coms = new List<Command>()
                     {
                         command
@@ -377,7 +377,7 @@ namespace conscious
             
             // Testing: Sequence
             _player.Position = new Vector2(10, 900);
-            WalkCommand command = new WalkCommand(_player, new Vector2(1000, 900));
+            WalkCommand command = new WalkCommand(1000f, 900f);
             List<Command> coms = new List<Command>()
             {
                 command

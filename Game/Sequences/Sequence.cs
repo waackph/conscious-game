@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-
 namespace conscious
 {
     public class Sequence
@@ -21,13 +20,13 @@ namespace conscious
             SequenceFinished = false;
         }
 
-        public void PlaySequence(GameTime gameTime)
+        public void PlaySequence(GameTime gameTime, Thing thing)
         {
             if(_currentIndex == -1 || _commands[_currentIndex].CommandFinished)
                 _currentIndex = _currentIndex + 1;
             if(_currentIndex < _commands.Count)
             {
-                _commands[_currentIndex].ExecuteCommand(gameTime);
+                _commands[_currentIndex].ExecuteCommand(gameTime, thing);
             }
             else
             {

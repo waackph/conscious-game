@@ -185,11 +185,11 @@ namespace conscious
             string savePath;
             if(newGame)
             {
-                savePath = "new_states/20210626-1248";
+                savePath = "new_states/20210627-0855";
             }
             else
             {
-                savePath = "save_states/20210626-1307";
+                savePath = "save_states/20210627-0858";
             }
 
             // Clear Data

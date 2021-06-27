@@ -615,10 +615,12 @@
       "_commands": [
         {
           "$type": "conscious.WalkCommand, conscious",
+          "_destinationX": 1000.0,
+          "_destinationY": 786.0,
           "CommandFinished": false
         }
       ],
-      "_currentIndex": 0,
+      "_currentIndex": 1,
       "SequenceFinished": false
     }
   }

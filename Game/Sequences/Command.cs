@@ -11,6 +11,6 @@ namespace conscious
             CommandFinished = false;
         }
 
-        public abstract void ExecuteCommand(GameTime gameTime);
+        public abstract void ExecuteCommand(GameTime gameTime, Thing thing);
     }
 }

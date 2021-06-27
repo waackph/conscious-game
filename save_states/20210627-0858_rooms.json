@@ -526,6 +526,8 @@
       "_commands": [
         {
           "$type": "conscious.WalkCommand, conscious",
+          "_destinationX": 1000.0,
+          "_destinationY": 786.0,
           "CommandFinished": true
         }
       ],
