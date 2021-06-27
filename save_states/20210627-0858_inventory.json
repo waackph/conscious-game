@@ -1,0 +1,91 @@
+[
+  {
+    "$type": "conscious.DataHolderCombineItem, conscious",
+    "ItemDependency": 5,
+    "CombineItem": {
+      "$type": "conscious.DataHolderKey, conscious",
+      "ItemDependency": 1,
+      "PickUpAble": true,
+      "UseAble": true,
+      "CombineAble": false,
+      "GiveAble": false,
+      "UseWith": true,
+      "ExamineText": "The key is smooth now",
+      "Id": 4,
+      "Thought": null,
+      "IsInInventory": false,
+      "texturePath": "Objects/debug/key_oily",
+      "Rotation": 0.0,
+      "PositionX": 448.0,
+      "PositionY": 840.0,
+      "Name": "Oily Key"
+    },
+    "PickUpAble": true,
+    "UseAble": false,
+    "CombineAble": false,
+    "GiveAble": true,
+    "UseWith": false,
+    "ExamineText": "It's a key",
+    "Id": 32,
+    "Thought": {
+      "_id": 41,
+      "_linkageId": 0,
+      "Links": [
+        {
+          "_validMoods": [
+            0
+          ],
+          "Id": 42,
+          "Option": "First link",
+          "NextNode": {
+            "_id": 38,
+            "_linkageId": 0,
+            "Links": [
+              {
+                "$type": "conscious.FinalThoughtLink, conscious",
+                "_validMoods": [
+                  0
+                ],
+                "MoodChange": 0,
+                "Verb": 3,
+                "Animation": null,
+                "UnlockId": 0,
+                "Id": 39,
+                "Option": "Maybe I can use that at some time [pickup]",
+                "NextNode": null,
+                "IsLocked": false
+              },
+              {
+                "$type": "conscious.FinalThoughtLink, conscious",
+                "_validMoods": [
+                  0
+                ],
+                "MoodChange": 0,
+                "Verb": 0,
+                "Animation": null,
+                "UnlockId": 0,
+                "Id": 40,
+                "Option": "I'll rather feel alone then [leave it]",
+                "NextNode": null,
+                "IsLocked": false
+              }
+            ],
+            "Thought": "First node",
+            "IsRoot": false,
+            "ThingId": 0
+          },
+          "IsLocked": false
+        }
+      ],
+      "Thought": "A key. It looks shiny.",
+      "IsRoot": true,
+      "ThingId": 32
+    },
+    "IsInInventory": true,
+    "texturePath": "Objects/debug/key",
+    "Rotation": 0.0,
+    "PositionX": 448.0,
+    "PositionY": 790.0,
+    "Name": "Key"
+  }
+]

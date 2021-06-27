@@ -20,9 +20,10 @@ namespace conscious
         private Player _player;
         private Cursor _cursor;
         private Texture2D _pixel;
-        private int _currentRoomIndex;
+        private Door _doorEntered;
 
         public Room currentRoom;
+        public int CurrentRoomIndex;
 
         public RoomManager(ContentManager content, 
                            Player player,
@@ -53,9 +54,10 @@ namespace conscious
 
             _pixel = pixel;
 
-            _currentRoomIndex = 2;
+            CurrentRoomIndex = 2;
+            _doorEntered = null;
 
-            LoadRooms();
+            // LoadRooms();
         }
         
         public void LoadRooms(){
@@ -75,7 +77,12 @@ namespace conscious
                                                       1,
                                                       MoodState.Depressed);
             Thing door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
-                                  4, 2, false, thought3, _content.Load<Texture2D>("Objects/debug/door_closed"), itemPosition);
+                                  4, 2, 30, 
+                                  new Vector2(1058, 579+150+_player.Height), 
+                                  _content.Load<Texture2D>("Objects/debug/door_closed"),
+                                  false, thought3, 
+                                  _content.Load<Texture2D>("Objects/debug/door_opened"), 
+                                  itemPosition);
             room.addThing(door);
 
             ThoughtNode thought2 = CreateSimpleThought(17, 
@@ -103,7 +110,7 @@ namespace conscious
             room.addThing(combineItem);
 
             // --------------------------- Morphing Item ---------------------------
-            itemPosition = new Vector2(1058, 800);
+            itemPosition = new Vector2(1058, 850);
             Dictionary<MoodState, Item> morphItems = new Dictionary<MoodState, Item>();
             Key morphItem1 = new Key(45, "Oily Key", true, true, false, false, true, "The key is smooth now", 1, null,
                                        _content.Load<Texture2D>("Objects/debug/key_oily"), itemPosition);
@@ -131,8 +138,12 @@ namespace conscious
                                                       Verb.Use,
                                                       30,
                                                       MoodState.None);
-            door = new Door(30, "Door", false, true, false, false, false, "It's a door", 2, 1, true, thought,
-                                  _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
+            door = new Door(30, "Door", false, true, false, false, false, "It's a door", 
+                            2, 1, 1,
+                            new Vector2(1058, 570+140+_player.Height), 
+                            _content.Load<Texture2D>("Objects/debug/door_closed"),
+                            true, thought,
+                            _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
             room.addThing(door);
             
             itemPosition = new Vector2(1400, 786+4);
@@ -213,7 +224,7 @@ namespace conscious
             return thought;
         }
 
-        public void changeRoom(int roomId)
+        public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId=0)
         {
             Room lastRoom = currentRoom;
             currentRoom = _rooms[roomId];
@@ -234,7 +245,28 @@ namespace conscious
             }
 
             if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
-                _sequenceManager.StartSequence(currentRoom.EntrySequence);
+            {
+                _sequenceManager.StartSequence(currentRoom.EntrySequence, _player);
+            }
+            else if(lastRoom != null && newPlayerPosition != Vector2.Zero)
+            {
+                if(doorId != 0)
+                {
+                    _doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
+                    _doorEntered.OpenDoor();
+                }
+                // Set player to middle of door (for now quick fix)
+                _player.Position = newPlayerPosition;
+                _player.Position.Y = _player.Position.Y-100f;
+
+                WalkCommand command = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
+                List<Command> coms = new List<Command>()
+                {
+                    command
+                };
+                Sequence seq = new Sequence(coms);
+                _sequenceManager.StartSequence(seq, _player);
+            }
         }
 
         public void Update(GameTime gameTime){
@@ -242,17 +274,27 @@ namespace conscious
             if(currentRoom == null)
             {
                 // Testing: Sequence
-                _player.Position = new Vector2(10, 786);
-                WalkCommand command = new WalkCommand(_player, new Vector2(1000, 786));
-                List<Command> coms = new List<Command>()
+                if(_rooms[CurrentRoomIndex].EntrySequence == null && CurrentRoomIndex == 2)
                 {
-                    command
-                };
-                Sequence seq = new Sequence(coms);
-                _rooms[_currentRoomIndex].EntrySequence = seq;
+                    _player.Position = new Vector2(10, 786);
+                    WalkCommand command = new WalkCommand(1000f, 786f);
+                    List<Command> coms = new List<Command>()
+                    {
+                        command
+                    };
+                    Sequence seq = new Sequence(coms);
+                    _rooms[CurrentRoomIndex].EntrySequence = seq;
+                }
 
-                // currentRoom = _rooms[_currentRoomIndex];
-                changeRoom(_currentRoomIndex);
+                // currentRoom = _rooms[CurrentRoomIndex];
+                changeRoom(CurrentRoomIndex, Vector2.Zero);
+            }
+
+            // Close the door when entered
+            if(_doorEntered != null && !_sequenceManager.SequenceActive)
+            {
+                _doorEntered.CloseDoor();
+                _doorEntered = null;
             }
  
             // Scroll room and thing positions
@@ -273,7 +315,7 @@ namespace conscious
                 if(door.currentlyUsed == true)
                 {
                     door.currentlyUsed = false;
-                    changeRoom(door.RoomId);
+                    changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
                     break;
                 }
             }
@@ -326,25 +368,25 @@ namespace conscious
 
         public void SetCurrentRoomIndex(int roomIndex)
         {
-            _currentRoomIndex = roomIndex;
+            CurrentRoomIndex = roomIndex;
         }
 
         public void ResetCurrentRoom()
         {
-            // currentRoom = _rooms[_currentRoomIndex];
+            // currentRoom = _rooms[CurrentRoomIndex];
             
             // Testing: Sequence
             _player.Position = new Vector2(10, 900);
-            WalkCommand command = new WalkCommand(_player, new Vector2(1000, 900));
+            WalkCommand command = new WalkCommand(1000f, 900f);
             List<Command> coms = new List<Command>()
             {
                 command
             };
             Sequence seq = new Sequence(coms);
-            _rooms[_currentRoomIndex].EntrySequence = seq;
+            _rooms[CurrentRoomIndex].EntrySequence = seq;
 
-            // currentRoom = _rooms[_currentRoomIndex];
-            changeRoom(_currentRoomIndex);
+            // currentRoom = _rooms[CurrentRoomIndex];
+            changeRoom(CurrentRoomIndex, Vector2.Zero);
 
         }
 

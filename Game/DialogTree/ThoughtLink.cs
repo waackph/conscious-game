@@ -1,10 +1,12 @@
 using System;
+using Newtonsoft.Json;
 
 namespace conscious
 {
     public class ThoughtLink
     {
         public int Id { get; }
+        [JsonProperty]
         private MoodState[] _validMoods;
 
         public string Option { get; }
@@ -21,7 +23,7 @@ namespace conscious
             NextNode = nextNode;
             Option = option;
             IsLocked = isLocked;
-            if(validMoods.Length > 3)
+            if(validMoods != null && validMoods.Length > 3)
             {
                 _validMoods = new MoodState[0];
                 throw new OutOfMemoryException("The Mood Array is too long");

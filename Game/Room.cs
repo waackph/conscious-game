@@ -57,6 +57,18 @@ namespace conscious
             _things = things;
         }
 
+        public Thing GetThingInRoom(int thingId)
+        {
+            foreach(Thing thing in _things)
+            {
+                if(thing.Id == thingId)
+                {
+                    return thing;
+                }
+            }
+            return null;
+        }
+
         public void FillEntityManager()
         {
             foreach(Thing thing in _things)
@@ -81,6 +93,7 @@ namespace conscious
             }
             dataHolderRoom.RoomWidth = RoomWidth;
             dataHolderRoom.Things = dhThings;
+            dataHolderRoom.EntrySequence = EntrySequence;
             return dataHolderRoom;
         }
     }

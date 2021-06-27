@@ -17,7 +17,7 @@ namespace conscious
             Rotation = rotation;
         } 
 
-        public virtual void Update(){}
+        public virtual void Update(GameTime gameTime){}
 
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 location, SpriteEffects flip){
 

@@ -5,7 +5,7 @@ namespace conscious
 {
     public class SequenceManager : IComponent
     {
-        // private List<Sequence> _sequences;
+        private Thing _thing;
         public bool SequenceActive;
         public Sequence _currentSequence;
 
@@ -13,14 +13,14 @@ namespace conscious
         {
             SequenceActive = false;
             _currentSequence = null;
-            // _sequences = new List<Sequence>();
+            _thing = null;
         }
 
         public void Update(GameTime gameTime)
         {
             if(!(_currentSequence == null))
             {
-                _currentSequence.PlaySequence(gameTime);
+                _currentSequence.PlaySequence(gameTime, _thing);
                 if(_currentSequence.SequenceFinished)
                     SequenceActive = false;
             }
@@ -32,10 +32,11 @@ namespace conscious
 
         public void Draw(SpriteBatch spriteBatch){ }
 
-        public void StartSequence(Sequence sequence)
+        public void StartSequence(Sequence sequence, Thing thing)
         {
             _currentSequence = sequence;
             SequenceActive = true;
+            _thing = thing;
         }
     }
 }
