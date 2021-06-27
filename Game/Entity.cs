@@ -32,6 +32,15 @@ namespace conscious
                                      Width, Height);
             }
         }
+        public virtual Rectangle CollisionBox
+        {
+            get
+            {
+                return new Rectangle((int)Position.X - Width/2, 
+                                     (int)Position.Y + Height/2,
+                                     Width, 20);
+            }
+        }
 
         public Entity(string name, Texture2D texture, Vector2 position)
         {

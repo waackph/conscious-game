@@ -56,7 +56,7 @@ namespace conscious
                     entity.Draw(spriteBatch);
                     
                     if(_debuggingMode && entity.Name != "Background")
-                        spriteBatch.Draw(_pixel, entity.BoundingBox, Color.White);
+                        spriteBatch.Draw(_pixel, entity.CollisionBox, Color.White);
             }
             spriteBatch.End();
 
@@ -67,7 +67,7 @@ namespace conscious
                     entity.Draw(spriteBatch);
 
                     if(_debuggingMode && entity.Name != "Background")
-                        spriteBatch.Draw(_pixel, entity.BoundingBox, Color.White);
+                        spriteBatch.Draw(_pixel, entity.CollisionBox, Color.White);
             }
             spriteBatch.End();
         }

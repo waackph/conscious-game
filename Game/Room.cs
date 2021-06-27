@@ -26,7 +26,7 @@ namespace conscious
 
         public bool checkBoundingBoxes(Rectangle boundBox){
             foreach(Thing thing in _things){
-                if(thing.Collidable && boundBox.Intersects(thing.BoundingBox))
+                if(thing.Collidable && boundBox.Intersects(thing.CollisionBox))
                 {
                     return true;
                 }

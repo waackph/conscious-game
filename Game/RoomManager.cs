@@ -263,7 +263,7 @@ namespace conscious
 
             LimitRoom();
 
-            if(currentRoom.checkBoundingBoxes(_player.BoundingBox))
+            if(currentRoom.checkBoundingBoxes(_player.CollisionBox))
             {
                 _player.Position = _player.LastPosition;
             }
