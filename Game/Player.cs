@@ -26,7 +26,7 @@ namespace conscious
             MoveAnimation = new AnimatedSprite(moveTexture, 1, 10, Width, Height, 0f);
 
             _flip = SpriteEffects.None;
-            _playerSpeed = 500f;
+            _playerSpeed = 400f;
             _isMoving = false;
             _lastIsMoving = _isMoving;
             LastPosition = position;
@@ -47,12 +47,12 @@ namespace conscious
             // Update animations
             if(Position == LastPosition)
             {
-                IdleAnimation.Update();
+                IdleAnimation.Update(gameTime);
                 _isMoving = false;
             }
             else
             {
-                MoveAnimation.Update();
+                MoveAnimation.Update(gameTime);
                 _isMoving = true;
             }
             if(_lastIsMoving != _isMoving){

@@ -1,27 +1,30 @@
 using Microsoft.Xna.Framework;
-using System;
+using Newtonsoft.Json;
 
 namespace conscious
 {
     public class WalkCommand : Command
     {
-        private Player _player;
-        private Vector2 _destinationPoint;
+        [JsonProperty]
+        private float _destinationX;
+        [JsonProperty]
+        private float _destinationY;
 
-        public WalkCommand(Player player, Vector2 destinationPoint) : base()
+        public WalkCommand(float destinationX, float destinationY) : base()
         {
-            _player = player;
-            _destinationPoint = destinationPoint;
+            _destinationX = destinationX;
+            _destinationY = destinationY;
         }
 
-        public override void ExecuteCommand(GameTime gameTime)
+        public override void ExecuteCommand(GameTime gameTime, Thing thing)
         {
-            float xDist = MathHelper.Distance(_player.Position.X, _destinationPoint.X);
-            float yDist = MathHelper.Distance(_player.Position.Y, _destinationPoint.Y);
+            Player player = (Player)thing;
+            float xDist = MathHelper.Distance(player.Position.X, _destinationX);
+            float yDist = MathHelper.Distance(player.Position.Y, _destinationY);
             if(xDist >= 15f || yDist >= 15f)
             {
                 float totalSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                _player.MoveToPoint(_destinationPoint, totalSeconds);
+                player.MoveToPoint(new Vector2(_destinationX, _destinationY), totalSeconds);
             }
             else
             {

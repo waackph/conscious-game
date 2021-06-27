@@ -31,13 +31,28 @@ namespace conscious
 
         public void AddThought(ThoughtNode thought)
         {
-            if(Thoughts.Count + 1 > _maxThoughts)
+            if(!containsThoughtNode(Thoughts, thought))
             {
-                Thoughts.Dequeue();
+                if(Thoughts.Count + 1 > _maxThoughts)
+                {
+                    Thoughts.Dequeue();
+                }
+                Thoughts.Enqueue(thought);
+                // Invoke event for UiDisplayThoughtManager to add the thought UI Element as well
+                OnAddThoughtEvent(thought);
             }
-            Thoughts.Enqueue(thought);
-            // Invoke event for UiDisplayThoughtManager to add the thought UI Element as well
-            OnAddThoughtEvent(thought);
+        }
+
+        private bool containsThoughtNode(Queue<ThoughtNode> thoughts, ThoughtNode node)
+        {
+            foreach(ThoughtNode thought in thoughts)
+            {
+                if(thought.Thought == node.Thought)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public ThoughtNode SelectThought(string thoughtName)

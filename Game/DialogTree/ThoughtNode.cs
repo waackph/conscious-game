@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace conscious
 {
     public class ThoughtNode
     {
+        [JsonProperty]
         private int _id;
+        [JsonProperty]
         private int _linkageId;
         public List<ThoughtLink> Links { get; }
 

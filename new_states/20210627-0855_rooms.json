@@ -1,0 +1,627 @@
+{
+  "1": {
+    "RoomWidth": 1920,
+    "Things": [
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "Id": 0,
+        "Thought": null,
+        "IsInInventory": false,
+        "texturePath": "Backgrounds/debug/background",
+        "Rotation": 0.0,
+        "PositionX": 960.0,
+        "PositionY": 540.0,
+        "Name": "Background"
+      },
+      {
+        "$type": "conscious.DataHolderDoor, conscious",
+        "ItemDependency": 4,
+        "IsUnlocked": false,
+        "RoomId": 2,
+        "DoorId": 30,
+        "InitPlayerPosX": 1058.0,
+        "InitPlayerPosY": 793.0,
+        "CloseTexturePath": "Objects/debug/door_closed",
+        "PickUpAble": false,
+        "UseAble": true,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": true,
+        "ExamineText": "It's a door",
+        "Id": 1,
+        "Thought": {
+          "_id": 25,
+          "_linkageId": 0,
+          "Links": [
+            {
+              "_validMoods": [
+                0
+              ],
+              "Id": 26,
+              "Option": "First link",
+              "NextNode": {
+                "_id": 22,
+                "_linkageId": 0,
+                "Links": [
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 1,
+                    "Verb": 5,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 23,
+                    "Option": "Its locked. Maybe I can open it somehow? [use]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  },
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 0,
+                    "Verb": 0,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 24,
+                    "Option": "I'll rather feel alone then [leave it]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  }
+                ],
+                "Thought": "First node",
+                "IsRoot": false,
+                "ThingId": 0
+              },
+              "IsLocked": false
+            }
+          ],
+          "Thought": "The door to the outside world",
+          "IsRoot": true,
+          "ThingId": 1
+        },
+        "IsInInventory": false,
+        "texturePath": "Objects/debug/door_opened",
+        "Rotation": 0.0,
+        "PositionX": 1058.0,
+        "PositionY": 570.0,
+        "Name": "Door"
+      },
+      {
+        "$type": "conscious.DataHolderCombineItem, conscious",
+        "ItemDependency": 3,
+        "CombineItem": {
+          "$type": "conscious.DataHolderKey, conscious",
+          "ItemDependency": 1,
+          "PickUpAble": true,
+          "UseAble": true,
+          "CombineAble": false,
+          "GiveAble": false,
+          "UseWith": true,
+          "ExamineText": "The key is smooth now",
+          "Id": 4,
+          "Thought": null,
+          "IsInInventory": false,
+          "texturePath": "Objects/debug/key_oily",
+          "Rotation": 0.0,
+          "PositionX": 448.0,
+          "PositionY": 840.0,
+          "Name": "Oily Key"
+        },
+        "PickUpAble": true,
+        "UseAble": false,
+        "CombineAble": true,
+        "GiveAble": false,
+        "UseWith": false,
+        "ExamineText": "It's a key",
+        "Id": 2,
+        "Thought": {
+          "_id": 20,
+          "_linkageId": 0,
+          "Links": [
+            {
+              "_validMoods": [
+                0
+              ],
+              "Id": 21,
+              "Option": "First link",
+              "NextNode": {
+                "_id": 17,
+                "_linkageId": 0,
+                "Links": [
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 2,
+                    "Verb": 3,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 18,
+                    "Option": "Let's keep it anyway [pick up]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  },
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 0,
+                    "Verb": 0,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 19,
+                    "Option": "I'll rather feel alone then [leave it]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  }
+                ],
+                "Thought": "First node",
+                "IsRoot": false,
+                "ThingId": 0
+              },
+              "IsLocked": false
+            }
+          ],
+          "Thought": "It's a key. There is nothing more mundane",
+          "IsRoot": true,
+          "ThingId": 2
+        },
+        "IsInInventory": false,
+        "texturePath": "Objects/debug/key",
+        "Rotation": 0.0,
+        "PositionX": 448.0,
+        "PositionY": 790.0,
+        "Name": "Key"
+      },
+      {
+        "$type": "conscious.DataHolderCombineItem, conscious",
+        "ItemDependency": 2,
+        "CombineItem": null,
+        "PickUpAble": true,
+        "UseAble": false,
+        "CombineAble": true,
+        "GiveAble": false,
+        "UseWith": false,
+        "ExamineText": "It's a bottle",
+        "Id": 3,
+        "Thought": {
+          "_id": 44,
+          "_linkageId": 0,
+          "Links": [
+            {
+              "_validMoods": [
+                0
+              ],
+              "Id": 45,
+              "Option": "First link",
+              "NextNode": {
+                "_id": 41,
+                "_linkageId": 0,
+                "Links": [
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 0,
+                    "Verb": 6,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 42,
+                    "Option": "Maybe I can use it for something [combine]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  },
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 0,
+                    "Verb": 0,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 43,
+                    "Option": "I'll rather feel alone then [leave it]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  }
+                ],
+                "Thought": "First node",
+                "IsRoot": false,
+                "ThingId": 0
+              },
+              "IsLocked": false
+            }
+          ],
+          "Thought": "It's a bottle. Wow...",
+          "IsRoot": true,
+          "ThingId": 3
+        },
+        "IsInInventory": false,
+        "texturePath": "Objects/debug/oil_bottle",
+        "Rotation": 0.0,
+        "PositionX": 200.0,
+        "PositionY": 790.0,
+        "Name": "Oil Bottle"
+      },
+      {
+        "$type": "conscious.DataHolderMorphingItem, conscious",
+        "Items": {
+          "Regular": {
+            "$type": "conscious.DataHolderKey, conscious",
+            "ItemDependency": 1,
+            "PickUpAble": true,
+            "UseAble": true,
+            "CombineAble": false,
+            "GiveAble": false,
+            "UseWith": true,
+            "ExamineText": "The key is smooth now",
+            "Id": 45,
+            "Thought": null,
+            "IsInInventory": false,
+            "texturePath": "Objects/debug/key_oily",
+            "Rotation": 0.0,
+            "PositionX": 1058.0,
+            "PositionY": 850.0,
+            "Name": "Oily Key"
+          },
+          "Depressed": {
+            "$type": "conscious.DataHolderKey, conscious",
+            "ItemDependency": 1,
+            "PickUpAble": true,
+            "UseAble": true,
+            "CombineAble": false,
+            "GiveAble": false,
+            "UseWith": true,
+            "ExamineText": "The key is smooth now",
+            "Id": 46,
+            "Thought": null,
+            "IsInInventory": false,
+            "texturePath": "Objects/debug/oil_bottle",
+            "Rotation": 0.0,
+            "PositionX": 1058.0,
+            "PositionY": 850.0,
+            "Name": "Oil Bottle"
+          }
+        },
+        "PickUpAble": true,
+        "UseAble": true,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": true,
+        "ExamineText": "It's morphing",
+        "Id": 6,
+        "Thought": null,
+        "IsInInventory": false,
+        "texturePath": "Objects/debug/oil_bottle",
+        "Rotation": 0.0,
+        "PositionX": 1058.0,
+        "PositionY": 850.0,
+        "Name": "Oil Bottle"
+      }
+    ],
+    "EntrySequence": null
+  },
+  "2": {
+    "RoomWidth": 7680,
+    "Things": [
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "Id": 0,
+        "Thought": null,
+        "IsInInventory": false,
+        "texturePath": "Backgrounds/debug/background_double",
+        "Rotation": 0.0,
+        "PositionX": 3840.0,
+        "PositionY": 540.0,
+        "Name": "Background"
+      },
+      {
+        "$type": "conscious.DataHolderDoor, conscious",
+        "ItemDependency": 2,
+        "IsUnlocked": true,
+        "RoomId": 1,
+        "DoorId": 1,
+        "InitPlayerPosX": 1058.0,
+        "InitPlayerPosY": 774.0,
+        "CloseTexturePath": "Objects/debug/door_closed",
+        "PickUpAble": false,
+        "UseAble": true,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ExamineText": "It's a door",
+        "Id": 30,
+        "Thought": {
+          "_id": 15,
+          "_linkageId": 0,
+          "Links": [
+            {
+              "_validMoods": [
+                0
+              ],
+              "Id": 16,
+              "Option": "First link",
+              "NextNode": {
+                "_id": 12,
+                "_linkageId": 0,
+                "Links": [
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 0,
+                    "Verb": 4,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 13,
+                    "Option": "Fuck it. I'll do it anyway [use]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  },
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 0,
+                    "Verb": 0,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 14,
+                    "Option": "I'll rather feel alone then [leave it]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  }
+                ],
+                "Thought": "First node",
+                "IsRoot": false,
+                "ThingId": 0
+              },
+              "IsLocked": false
+            }
+          ],
+          "Thought": "The door to the outside world. \nI am not ready for this.",
+          "IsRoot": true,
+          "ThingId": 30
+        },
+        "IsInInventory": false,
+        "texturePath": "Objects/debug/door_opened",
+        "Rotation": 0.0,
+        "PositionX": 1058.0,
+        "PositionY": 579.0,
+        "Name": "Door"
+      },
+      {
+        "$type": "conscious.DataHolderPuzzleCharacter, conscious",
+        "ItemDependency": 32,
+        "DialogUnlocked": false,
+        "TreeStructure": [
+          {
+            "_edges": [
+              {
+                "_nextNodeId": 2,
+                "_dialogLine": "True dat!",
+                "MoodDependence": 0
+              },
+              {
+                "_nextNodeId": 3,
+                "_dialogLine": "Whatever.",
+                "MoodDependence": 0
+              }
+            ],
+            "_dialogLine": "Bib bup bip",
+            "_id": 1
+          },
+          {
+            "_edges": [
+              {
+                "_nextNodeId": 4,
+                "_dialogLine": "Tell me more",
+                "MoodDependence": 0
+              }
+            ],
+            "_dialogLine": "Bab bip",
+            "_id": 2
+          },
+          {
+            "_edges": [
+              {
+                "_nextNodeId": 4,
+                "_dialogLine": "Like I said, whatever.",
+                "MoodDependence": 0
+              }
+            ],
+            "_dialogLine": "Bub bap",
+            "_id": 3
+          },
+          {
+            "_edges": [
+              {
+                "_nextNodeId": 0,
+                "_dialogLine": "It was nice to talk to you too Sir.",
+                "MoodDependence": 0
+              }
+            ],
+            "_dialogLine": "Bib bip bup bip",
+            "_id": 4
+          }
+        ],
+        "Pronoun": "Hen",
+        "CatchPhrase": "Bib bup bip",
+        "GiveAble": true,
+        "MoodChange": 0,
+        "Id": 5,
+        "Thought": {
+          "_id": 36,
+          "_linkageId": 0,
+          "Links": [
+            {
+              "_validMoods": [
+                0
+              ],
+              "Id": 37,
+              "Option": "First link",
+              "NextNode": {
+                "_id": 33,
+                "_linkageId": 0,
+                "Links": [
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 0,
+                    "Verb": 7,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 34,
+                    "Option": "Maybe he likes a gift [give]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  },
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 0,
+                    "Verb": 0,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 35,
+                    "Option": "I'll rather feel alone then [leave it]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  }
+                ],
+                "Thought": "First node",
+                "IsRoot": false,
+                "ThingId": 0
+              },
+              "IsLocked": false
+            }
+          ],
+          "Thought": "He looks hansome. I feel insecure.",
+          "IsRoot": true,
+          "ThingId": 5
+        },
+        "IsInInventory": false,
+        "texturePath": "NPCs/debug/npc",
+        "Rotation": 0.0,
+        "PositionX": 1400.0,
+        "PositionY": 790.0,
+        "Name": "Robo"
+      },
+      {
+        "$type": "conscious.DataHolderCombineItem, conscious",
+        "ItemDependency": 5,
+        "CombineItem": {
+          "$type": "conscious.DataHolderKey, conscious",
+          "ItemDependency": 1,
+          "PickUpAble": true,
+          "UseAble": true,
+          "CombineAble": false,
+          "GiveAble": false,
+          "UseWith": true,
+          "ExamineText": "The key is smooth now",
+          "Id": 4,
+          "Thought": null,
+          "IsInInventory": false,
+          "texturePath": "Objects/debug/key_oily",
+          "Rotation": 0.0,
+          "PositionX": 448.0,
+          "PositionY": 840.0,
+          "Name": "Oily Key"
+        },
+        "PickUpAble": true,
+        "UseAble": false,
+        "CombineAble": false,
+        "GiveAble": true,
+        "UseWith": false,
+        "ExamineText": "It's a key",
+        "Id": 32,
+        "Thought": {
+          "_id": 41,
+          "_linkageId": 0,
+          "Links": [
+            {
+              "_validMoods": [
+                0
+              ],
+              "Id": 42,
+              "Option": "First link",
+              "NextNode": {
+                "_id": 38,
+                "_linkageId": 0,
+                "Links": [
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 0,
+                    "Verb": 3,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 39,
+                    "Option": "Maybe I can use that at some time [pickup]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  },
+                  {
+                    "$type": "conscious.FinalThoughtLink, conscious",
+                    "_validMoods": [
+                      0
+                    ],
+                    "MoodChange": 0,
+                    "Verb": 0,
+                    "Animation": null,
+                    "UnlockId": 0,
+                    "Id": 40,
+                    "Option": "I'll rather feel alone then [leave it]",
+                    "NextNode": null,
+                    "IsLocked": false
+                  }
+                ],
+                "Thought": "First node",
+                "IsRoot": false,
+                "ThingId": 0
+              },
+              "IsLocked": false
+            }
+          ],
+          "Thought": "A key. It looks shiny.",
+          "IsRoot": true,
+          "ThingId": 32
+        },
+        "IsInInventory": false,
+        "texturePath": "Objects/debug/key",
+        "Rotation": 0.0,
+        "PositionX": 448.0,
+        "PositionY": 790.0,
+        "Name": "Key"
+      }
+    ],
+    "EntrySequence": {
+      "_commands": [
+        {
+          "$type": "conscious.WalkCommand, conscious",
+          "_destinationX": 1000.0,
+          "_destinationY": 786.0,
+          "CommandFinished": false
+        }
+      ],
+      "_currentIndex": 1,
+      "SequenceFinished": false
+    }
+  }
+}

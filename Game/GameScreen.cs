@@ -155,6 +155,15 @@ namespace conscious
             _uiDisplayThoughtManager.FillEntityManager();
         }
 
+        public DataHolderPlayer GetDataHolderPlayer()
+        {
+            DataHolderPlayer dataHolder = new DataHolderPlayer();
+            dataHolder.PlayerPositionX = _player.Position.X;
+            dataHolder.PlayerPositionY = _player.Position.Y;
+            dataHolder.RoomId = _roomManager.CurrentRoomIndex;
+            return dataHolder;
+        }
+
         public void SaveGame()
         {
             string date = DateTime.Now.ToString("yyyyMMdd-HHmm");
@@ -165,6 +174,9 @@ namespace conscious
 
             // Room Data
             File.WriteAllText(savePath+"_rooms.json", JsonConvert.SerializeObject(_roomManager.GetDataHolderRooms(), Formatting.Indented, settings));
+
+            // Player Data
+            File.WriteAllText(savePath+"_player.json", JsonConvert.SerializeObject(GetDataHolderPlayer(), Formatting.Indented, settings));
         }
 
         // TODO: serialize data of player position and currentRoomIndex of the RoomManager
@@ -173,11 +185,11 @@ namespace conscious
             string savePath;
             if(newGame)
             {
-                savePath = "new_states/20210313-2101";
+                savePath = "new_states/20210627-0855";
             }
             else
             {
-                savePath = "save_states/20210313-2110";
+                savePath = "save_states/20210627-0858";
             }
 
             // Clear Data
@@ -209,11 +221,19 @@ namespace conscious
                         things.Add(entity);
                     }
                 }
-                Room room = new Room(dhRoom.RoomWidth, _entityManager, null);
+                Room room = new Room(dhRoom.RoomWidth, _entityManager, dhRoom.EntrySequence);
                 room.SetThings(things);
                 _roomManager.AddRoom(entry.Key, room);
             }
-            _roomManager.ResetCurrentRoom();
+
+            // Player data
+            DataHolderPlayer playerData = JsonConvert.DeserializeObject<DataHolderPlayer>(File.ReadAllText(savePath+"_player.json"), settings);
+            _roomManager.CurrentRoomIndex = playerData.RoomId;
+            
+            if(newGame)
+                _roomManager.ResetCurrentRoom();
+            else
+                _player.Position = new Vector2(playerData.PlayerPositionX, playerData.PlayerPositionY);
         }
 
         public Thing InstatiateEntity(DataHolderEntity dh)
@@ -250,8 +270,8 @@ namespace conscious
                                           dhMorph.UseAble, dhMorph.CombineAble,
                                           dhMorph.GiveAble, dhMorph.UseWith, 
                                           dhMorph.ExamineText, dhMorph.Thought,
-                                  _content.Load<Texture2D>(dhMorph.texturePath), 
-                                  new Vector2(dhMorph.PositionX, dhMorph.PositionY));
+                                          _content.Load<Texture2D>(dhMorph.texturePath), 
+                                          new Vector2(dhMorph.PositionX, dhMorph.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderDoor))
             {
@@ -260,7 +280,9 @@ namespace conscious
                                   dhDoor.PickUpAble, dhDoor.UseAble, 
                                   dhDoor.CombineAble, dhDoor.GiveAble, 
                                   dhDoor.UseWith, dhDoor.ExamineText,
-                                  dhDoor.ItemDependency, dhDoor.RoomId, 
+                                  dhDoor.ItemDependency, dhDoor.RoomId, dhDoor.DoorId,
+                                  new Vector2(dhDoor.InitPlayerPosX, dhDoor.InitPlayerPosY),
+                                  _content.Load<Texture2D>(dhDoor.CloseTexturePath),
                                   dhDoor.IsUnlocked, dhDoor.Thought,
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY));

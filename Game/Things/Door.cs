@@ -1,17 +1,18 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using System;
-
 namespace conscious
 {
     public class Door : Item
     {
         private int _itemDependency;
-        private bool IsUnlocked;
+        private bool _isUnlocked;
+        private Texture2D _closeTexture;
 
         public bool currentlyUsed = false;
         public int RoomId;
+        public int DoorId;
+        public Vector2 InitPlayerPos;
         public Door(int id,
                     string name, 
                     bool pickUpAble, 
@@ -22,24 +23,30 @@ namespace conscious
                     string examineText,
                     int itemDependency,
                     int roomId,
+                    int doorId,
+                    Vector2 initPlayerPos,
+                    Texture2D closeTexture,
                     bool isUnlocked,
                     ThoughtNode thought,
                     Texture2D texture, Vector2 position)
                     :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, texture, position){
             _itemDependency = itemDependency;
             RoomId = roomId;
-            IsUnlocked = isUnlocked;
+            DoorId = doorId;
+            InitPlayerPos = initPlayerPos;
+            _isUnlocked = isUnlocked;
+            _closeTexture = closeTexture;
         }
 
         public override bool Use(Room room, InventoryManager inventory, Player player, Item item){
             if(UseAble == true){
 
-                if(IsUnlocked != true && item != null && item.Id == _itemDependency){
-                    IsUnlocked = true;
+                if(_isUnlocked != true && item != null && item.Id == _itemDependency){
+                    _isUnlocked = true;
                     UseWith = false;
                     currentlyUsed = true;
                 }
-                if(IsUnlocked == true){
+                if(_isUnlocked == true){
                     currentlyUsed = true;
                 }
             }
@@ -49,11 +56,21 @@ namespace conscious
         public override bool Use(Room room, InventoryManager inventory, Player player)
         {
             if(UseAble == true){
-                if(IsUnlocked == true){
+                if(_isUnlocked == true){
                     currentlyUsed = true;
                 }
             }
             return false;
+        }
+
+        public void OpenDoor()
+        {
+            _sprite.Texture = EntityTexture;
+        }
+
+        public void CloseDoor()
+        {
+            _sprite.Texture = _closeTexture;
         }
         
         public override DataHolderEntity GetDataHolderEntity()
@@ -62,8 +79,12 @@ namespace conscious
             dataHolderEntity = (DataHolderDoor)base.GetDataHolderEntity(dataHolderEntity);
             // Door
             dataHolderEntity.ItemDependency = _itemDependency;
-            dataHolderEntity.IsUnlocked = IsUnlocked;
+            dataHolderEntity.IsUnlocked = _isUnlocked;
             dataHolderEntity.RoomId = RoomId;
+            dataHolderEntity.DoorId = DoorId;
+            dataHolderEntity.InitPlayerPosX = InitPlayerPos.X;
+            dataHolderEntity.InitPlayerPosY = InitPlayerPos.Y;
+            dataHolderEntity.CloseTexturePath = _closeTexture.ToString();
             return dataHolderEntity;
         }
 
@@ -72,8 +93,12 @@ namespace conscious
             dataHolderEntity = (DataHolderDoor)base.GetDataHolderEntity(dataHolderEntity);
             // Door
             dataHolderEntity.ItemDependency = _itemDependency;
-            dataHolderEntity.IsUnlocked = IsUnlocked;
+            dataHolderEntity.IsUnlocked = _isUnlocked;
             dataHolderEntity.RoomId = RoomId;
+            dataHolderEntity.DoorId = DoorId;
+            dataHolderEntity.InitPlayerPosX = InitPlayerPos.X;
+            dataHolderEntity.InitPlayerPosY = InitPlayerPos.Y;
+            dataHolderEntity.CloseTexturePath = _closeTexture.ToString();
             return dataHolderEntity;
         }
     }
