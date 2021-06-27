@@ -30,7 +30,7 @@ namespace conscious
             _isMoving = false;
             _lastIsMoving = _isMoving;
             LastPosition = position;
-            DrawOrder = 2;
+            DrawOrder = 5;
         }
 
         public override void Update(GameTime gameTime)
@@ -87,7 +87,8 @@ namespace conscious
             Position = Position + posDelta  * totalSeconds;
         }
 
-        public void MoveToDirection(Vector2 direction){
+        public void MoveToDirection(Vector2 direction)
+        {
             Position = Position + direction*5;
         }
 
@@ -103,7 +104,8 @@ namespace conscious
             }
         }
 
-        public float GetDistance(Entity entity){
+        public float GetDistance(Entity entity)
+        {
             return Vector2.Distance(entity.Position, Position);
         }
     }

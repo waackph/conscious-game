@@ -51,6 +51,7 @@ namespace conscious
             Name = name;
             FixedDrawPosition = false;
             Collidable = false;
+            DrawOrder = 1;
         }
 
         public virtual void Update(GameTime gameTime){ }
@@ -78,6 +79,7 @@ namespace conscious
             dataHolderEntity.PositionY = Position.Y;
             dataHolderEntity.Rotation = Rotation;
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
+            dataHolderEntity.DrawOrder = DrawOrder;
             return dataHolderEntity;
         }
 
@@ -88,6 +90,7 @@ namespace conscious
             dataHolderEntity.PositionY = Position.Y;
             dataHolderEntity.Rotation = Rotation;
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
+            dataHolderEntity.DrawOrder = DrawOrder;
             return dataHolderEntity;
         }
     }

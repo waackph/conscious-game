@@ -60,7 +60,8 @@ namespace conscious
             // LoadRooms();
         }
         
-        public void LoadRooms(){
+        public void LoadRooms()
+        {
             Vector2 itemPosition;
             
             // Room 1
@@ -309,6 +310,9 @@ namespace conscious
             {
                 _player.Position = _player.LastPosition;
             }
+
+            // Decide player draw order
+            _player.UpdateDrawOrder(currentRoom.getDrawOrderInRoom(_player.CollisionBox));
             
             foreach(Door door in _entityManager.GetEntitiesOfType<Door>())
             {
