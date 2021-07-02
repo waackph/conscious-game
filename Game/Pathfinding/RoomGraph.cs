@@ -5,14 +5,19 @@ namespace conscious
 {
     public class RoomGraph
     {
+        private List<Rectangle> _boundingBoxes = new List<Rectangle>();
+
         List<Vertex> Graph = new List<Vertex>();
         public Vertex Start = null;
         public Vertex Goal = null;
 
         public RoomGraph(){ }
 
-        public void GenerateRoomGraph(List<Rectangle> boundingBoxes, Vector2 start, Vector2 goal)
+        public void GenerateRoomGraph(List<Rectangle> boundingBoxes)
         {
+            _boundingBoxes = boundingBoxes;
+            Graph.Clear();
+            
             foreach(Rectangle bb in boundingBoxes)
             {
                 Graph.Add(new Vertex(bb.X, bb.Y));
@@ -28,18 +33,14 @@ namespace conscious
                 {
                     if(v1 != v2 && !verticesChecked.Contains(v2))
                     {
-                        if(!isNotVisible(v1.RoomPosition, v2.RoomPosition, boundingBoxes))
-                        {
-                            v1.AddNeighbor(v2, 1);
-                            v2.AddNeighbor(v1, 1);
-                        }
+                        evaluateLink(v1, v2);
                     }
                 }
                 verticesChecked.Add(v1);
             }
         }
 
-        public void SetStartGoal(Vector2 start, Vector2 goal, List<Rectangle> boundingBoxes)
+        public void SetStartGoal(Vector2 start, Vector2 goal)
         {
             if(Start != null && Goal != null)
             {
@@ -49,18 +50,21 @@ namespace conscious
             Start = new Vertex(start.X, start.Y);
             Goal = new Vertex(goal.X, goal.Y);
 
+            evaluateLink(Start, Goal);
+
             foreach(Vertex v in Graph)
             {
-                if(!isNotVisible(Start.RoomPosition, Start.RoomPosition, boundingBoxes))
-                {
-                    Start.AddNeighbor(v, 1);
-                    v.AddNeighbor(Start, 1);
-                }
-                if(!isNotVisible(Goal.RoomPosition, Goal.RoomPosition, boundingBoxes))
-                {
-                    Goal.AddNeighbor(v, 1);
-                    v.AddNeighbor(Goal, 1);
-                }
+                evaluateLink(Start, v);
+                evaluateLink(Goal, v);
+            }
+        }
+
+        private void evaluateLink(Vertex v1, Vertex v2)
+        {
+            if(!isNotVisible(v1.RoomPosition, v2.RoomPosition, _boundingBoxes))
+            {
+                v1.AddNeighbor(v2, 1);
+                v2.AddNeighbor(v1, 1);
             }
         }
 

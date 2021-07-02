@@ -21,9 +21,9 @@ namespace conscious
             return Math.Abs(position1.X - position2.X) + Math.Abs(position1.Y - position2.Y);
         }
 
-        public List<Vector2> AStartSearch(Vector2 start, Vector2 goal, List<Rectangle> boundingBoxes)
+        public List<Vector2> AStarSearch(Vector2 start, Vector2 goal)
         {
-            _graph.SetStartGoal(start, goal, boundingBoxes);
+            _graph.SetStartGoal(start, goal);
 
             PriorityQueue<Vertex> frontier = new PriorityQueue<Vertex>();
             frontier.Enqueue(_graph.Start, 0);

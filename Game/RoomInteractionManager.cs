@@ -16,6 +16,8 @@ namespace conscious
         private RoomManager _roomManager;
         private UiDialogManager _dialogManager;
 
+        private AStarShortestPath _pathfinder;
+
         private Cursor _cursor;
         private Player _player;
 
@@ -27,6 +29,8 @@ namespace conscious
         private Queue<Thing> _lastThingsClicked;
         private bool _isWalking;
         private bool _interactionActive;
+        private List<Vector2> _path;
+        private int _currentPathPoint;
 
         public RoomInteractionManager(EntityManager entityManager, 
                                       SoCManager socManager, 
@@ -34,6 +38,7 @@ namespace conscious
                                       ControlsManager controlsManager,
                                       RoomManager roomManager,
                                       UiDialogManager dialogManager,
+                                      AStarShortestPath pathfinder,
                                       Cursor cursor,
                                       Player player) 
         {
@@ -44,6 +49,8 @@ namespace conscious
             _controlsManager = controlsManager;
             _roomManager = roomManager;
             _dialogManager = dialogManager;
+
+            _pathfinder = pathfinder;
 
             _cursor = cursor;
             _player = player;
@@ -181,7 +188,14 @@ namespace conscious
                     }
                     else
                     {
-                        direction = Vector2.Normalize(_thingClickedInRoom.Position - _player.Position);
+                        // TODO: Add code to walk towards shortest path (?)
+                        // direction = Vector2.Normalize(_thingClickedInRoom.Position - _player.Position);
+                        Vector2 diff = _path[_currentPathPoint] - _player.Position;
+                        if(Math.Abs(diff.X) < 0.5 && Math.Abs(diff.Y) < 0.5 && _path.Count > _currentPathPoint+1)
+                        {
+                            _currentPathPoint++;
+                        }
+                        direction = Vector2.Normalize(_path[_currentPathPoint] - _player.Position);
                     }
                 }
             }
@@ -293,6 +307,9 @@ namespace conscious
             _isWalking = true;
             _thingClickedInRoom = thing;
             _lastVerbChosen = verb;
+            // TODO: Initilize and compute shortest path here (?)
+            _currentPathPoint = 0;
+            _path = _pathfinder.AStarSearch(_player.Position, _cursor.Position);
         }
 
         #endregion

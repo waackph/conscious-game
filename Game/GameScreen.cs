@@ -24,6 +24,8 @@ namespace conscious
         private RoomInteractionManager _roomInteractionManager;
         private SequenceManager _sequenceManager;
         private MoodStateManager _moodStateManager;
+        private RoomGraph _roomGraph;
+        private AStarShortestPath _pathFinder;
         private Player _player;
         private Cursor _cursor;
         private int _preferredBackBufferWidth;
@@ -71,6 +73,9 @@ namespace conscious
 
             _moodStateManager = new MoodStateManager(_entityManager);
 
+            _roomGraph = new RoomGraph();
+            _pathFinder = new AStarShortestPath(_roomGraph);
+
             // TODO: Solve the loop dependence - e.g. by making the current Thoughts in SoC public and ui thoughts updating them at each game loop
             _socManager = new SoCManager(_moodStateManager);
             _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _socManager, _cursor, content.Load<SpriteFont>("Font/Hud"), _pixel);
@@ -88,6 +93,7 @@ namespace conscious
                                            _dialogManager, 
                                            _sequenceManager, 
                                            _moodStateManager, 
+                                           _roomGraph,
                                            _preferredBackBufferWidth, _preferredBackBufferHeight);
 
             _roomInteractionManager = new RoomInteractionManager(_entityManager, 
@@ -96,6 +102,7 @@ namespace conscious
                                                                  _controlsManager, 
                                                                  _roomManager, 
                                                                  _dialogManager,
+                                                                 _pathFinder,
                                                                  _cursor,
                                                                  _player);
         }

@@ -78,6 +78,16 @@ namespace conscious
             return _things;
         }
 
+        public List<Rectangle> GetBoundingBoxes()
+        {
+            List<Rectangle> bbs = new List<Rectangle>();
+            foreach(Thing thing in _things)
+            {
+                bbs.Add(thing.BoundingBox);
+            }
+            return bbs;
+        }
+
         public void SetThings(List<Thing> things)
         {
             _things = things;

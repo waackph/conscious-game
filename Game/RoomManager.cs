@@ -13,6 +13,7 @@ namespace conscious
         private UiDialogManager _dialogManager;
         private SequenceManager _sequenceManager;
         private MoodStateManager _moodStateManager;
+        private RoomGraph _roomGraph;
         private ContentManager _content;
         private int _preferredBackBufferWidth;
         private int _preferredBackBufferHeight;
@@ -33,6 +34,7 @@ namespace conscious
                            UiDialogManager dialogManager,
                            SequenceManager sequenceManager,
                            MoodStateManager moodStateManager,
+                           RoomGraph roomGraph,
                            int preferredBackBufferWidth, 
                            int preferredBackBufferHeight)
         {
@@ -48,6 +50,7 @@ namespace conscious
             _dialogManager = dialogManager;
             _sequenceManager = sequenceManager;
             _moodStateManager = moodStateManager;
+            _roomGraph = roomGraph;
 
             _player = player;
             _cursor = cursor;
@@ -244,6 +247,9 @@ namespace conscious
                 lastRoom.ClearRoomEntityManager();
                 currentRoom.FillEntityManager();
             }
+
+            // Create path graph of room here
+            _roomGraph.GenerateRoomGraph(currentRoom.GetBoundingBoxes());
 
             if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
             {
