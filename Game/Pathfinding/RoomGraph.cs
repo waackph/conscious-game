@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System;
 
 namespace conscious
 {
@@ -11,19 +12,28 @@ namespace conscious
         public Vertex Start = null;
         public Vertex Goal = null;
 
+        private float _minRoomLimitX;
+        private float _maxRoomLimitX;
+        private float _minRoomLimitY;
+        private float _maxRoomLimitY;
+
         public RoomGraph(){ }
 
-        public void GenerateRoomGraph(List<Rectangle> boundingBoxes)
+        public void GenerateRoomGraph(List<Rectangle> boundingBoxes, float minX, float maxX, float minY, float maxY)
         {
             _boundingBoxes = boundingBoxes;
             Graph.Clear();
+            _minRoomLimitX = minX;
+            _minRoomLimitY = minY;
+            _maxRoomLimitX = maxX;
+            _maxRoomLimitY = maxY;
             
             foreach(Rectangle bb in boundingBoxes)
             {
-                Graph.Add(new Vertex(bb.X, bb.Y));
-                Graph.Add(new Vertex(bb.X + bb.Width, bb.Y));
-                Graph.Add(new Vertex(bb.X, bb.Y + bb.Height));
-                Graph.Add(new Vertex(bb.X + bb.Width, bb.Y + bb.Height));
+                Graph.Add(new Vertex(bb.X - 50, bb.Y));
+                Graph.Add(new Vertex(bb.X + bb.Width + 50, bb.Y));
+                Graph.Add(new Vertex(bb.X - 50, bb.Y + bb.Height));
+                Graph.Add(new Vertex(bb.X + bb.Width + 50, bb.Y + bb.Height));
             }
 
             List<Vertex> verticesChecked = new List<Vertex>();
@@ -47,9 +57,9 @@ namespace conscious
                 removeVertex(Start);
                 removeVertex(Goal);
             }
+
             Start = new Vertex(start.X, start.Y);
             Goal = new Vertex(goal.X, goal.Y);
-
             evaluateLink(Start, Goal);
 
             foreach(Vertex v in Graph)
@@ -61,10 +71,27 @@ namespace conscious
 
         private void evaluateLink(Vertex v1, Vertex v2)
         {
-            if(!isNotVisible(v1.RoomPosition, v2.RoomPosition, _boundingBoxes))
+            if(!vertexNotWalkable(v1) &&
+               !vertexNotWalkable(v2) &&
+               !isNotVisible(v1.RoomPosition, v2.RoomPosition, _boundingBoxes))
             {
                 v1.AddNeighbor(v2, 1);
                 v2.AddNeighbor(v1, 1);
+            }
+        }
+
+        private bool vertexNotWalkable(Vertex v)
+        {
+            if(v.RoomPosition.X < _minRoomLimitX || 
+               v.RoomPosition.X > _maxRoomLimitX ||
+               v.RoomPosition.Y < _minRoomLimitY ||
+               v.RoomPosition.Y > _maxRoomLimitY)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -90,18 +117,18 @@ namespace conscious
 
             foreach(Rectangle r in boundingBoxes)
             {
-                if(r.Left > getXMax(v1, v2) || r.Right < getXMin(v1, v2))
+                if(r.Left >= getXMax(v1, v2) || r.Right <= getXMin(v1, v2))
                 {
                     continue;
                 }
-                if(r.Top < getYMin(v1, v2) || r.Bottom > getYMax(v1, v2))
+                if(r.Bottom <= getYMin(v1, v2) || r.Top >= getYMax(v1, v2))
                 {
                     continue;
                 }
 
                 float yAtRectLeft = calculateYforX(r.Left, slope, intercept);
                 float yAtRectRight = calculateYforX(r.Right, slope, intercept);
-                if(r.Bottom > yAtRectLeft && r.Bottom > yAtRectRight)
+                if(r.Top >= yAtRectLeft && r.Top >= yAtRectRight)
                 {
                     continue;
                 }

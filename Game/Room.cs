@@ -83,7 +83,8 @@ namespace conscious
             List<Rectangle> bbs = new List<Rectangle>();
             foreach(Thing thing in _things)
             {
-                bbs.Add(thing.BoundingBox);
+                if(thing.Collidable)
+                    bbs.Add(thing.BoundingBox);
             }
             return bbs;
         }

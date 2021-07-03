@@ -25,7 +25,10 @@ namespace conscious
         {
             _graph.SetStartGoal(start, goal);
 
+            cameFrom.Clear();
+            costSoFar.Clear();
             PriorityQueue<Vertex> frontier = new PriorityQueue<Vertex>();
+
             frontier.Enqueue(_graph.Start, 0);
             cameFrom[_graph.Start] = _graph.Start;
             costSoFar[_graph.Start] = 0;
@@ -41,8 +44,12 @@ namespace conscious
 
                 foreach(KeyValuePair<Vertex, int> next in current.Neighbors)
                 {
+                    if(next.Key.Equals(_graph.Goal))
+                    {
+                        
+                    }
                     int newCost = costSoFar[current] + next.Value;
-                    if(costSoFar.ContainsKey(next.Key) || newCost < costSoFar[next.Key])
+                    if(!costSoFar.ContainsKey(next.Key) || newCost < costSoFar[next.Key])
                     {
                         costSoFar[next.Key] = newCost;
                         float priority = newCost + heuristic(next.Key.RoomPosition, _graph.Goal.RoomPosition);

@@ -60,7 +60,7 @@ namespace conscious
             CurrentRoomIndex = 2;
             _doorEntered = null;
 
-            // LoadRooms();
+            LoadRooms();
         }
         
         public void LoadRooms()
@@ -150,7 +150,7 @@ namespace conscious
                             _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
             room.addThing(door);
             
-            itemPosition = new Vector2(1400, 786+4);
+            itemPosition = new Vector2(858, 786+4);
             // Start Initilizing dialog tree
             List<Node> dialogTree = new List<Node>();
             List<Edge> edges = new List<Edge>();
@@ -249,7 +249,9 @@ namespace conscious
             }
 
             // Create path graph of room here
-            _roomGraph.GenerateRoomGraph(currentRoom.GetBoundingBoxes());
+            _roomGraph.GenerateRoomGraph(currentRoom.GetBoundingBoxes(), 
+                                         0, currentRoom.RoomWidth, 
+                                         0, _preferredBackBufferHeight);
 
             if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
             {
