@@ -31,6 +31,7 @@ namespace conscious
         private int _preferredBackBufferWidth;
         private int _preferredBackBufferHeight;
         private Texture2D _pixel;
+        // private Effect _blur;
 
         private static JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
 
@@ -42,6 +43,8 @@ namespace conscious
             _preferredBackBufferHeight = preferredBackBufferHeight;
             _preferredBackBufferWidth = preferredBackBufferWidth;
             _pixel = pixel;
+
+            // _blur = content.Load<Effect>("blur");
 
             _lastKeyboardState = Keyboard.GetState();
 
@@ -109,6 +112,9 @@ namespace conscious
 
         public override void Update(GameTime gameTime)
         {
+            // Shader test
+            // _blur.Parameters["time"].SetValue((float)gameTime.TotalGameTime.TotalSeconds);
+
             if(Keyboard.GetState().IsKeyUp(Keys.Escape) && _lastKeyboardState.IsKeyDown(Keys.Escape))
             {
                 _screenEvent.Invoke(this, new EventArgs());

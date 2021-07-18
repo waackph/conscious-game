@@ -18,12 +18,16 @@ namespace conscious
 
         public IEnumerable<Entity> Entities => new ReadOnlyCollection<Entity>(_entities);
 
+        // private Effect _blur;
+        // public bool doBlur;
         // Debugging
         private Texture2D _pixel;
         private bool _debuggingMode;
 
         public EntityManager(Matrix viewportTransformation, Texture2D pixel)
         {
+            // _blur = blur;
+            // doBlur = false;
             _debuggingMode = false;
             _pixel = pixel;
             ViewportTransformation = viewportTransformation;
@@ -49,7 +53,11 @@ namespace conscious
         }
 
         public void Draw(SpriteBatch spriteBatch){
-            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null,null, ViewportTransformation);
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, ViewportTransformation);
+            // if(doBlur)
+            // {
+            //     _blur.CurrentTechnique.Passes[0].Apply();
+            // }
             foreach(Entity entity in _entities.OrderBy(e => e.DrawOrder))
             {
                 if(!entity.FixedDrawPosition)
