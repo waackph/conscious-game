@@ -11,7 +11,7 @@ namespace conscious
         private int _linkageId;
         public List<ThoughtLink> Links { get; }
 
-        public string Thought { get; }
+        public string Thought { get; set; }
         public bool IsRoot { get; }
         public int ThingId { get; }
 

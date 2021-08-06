@@ -212,7 +212,9 @@ namespace conscious
             }
             foreach(UIThought option in _currentSubthoughtLinks)
             {
-                option.SetPosition(uiXPos,
+                // add the offset to better differentiate the characters response from the options
+                int optionOffset = 10;
+                option.SetPosition(uiXPos + optionOffset,
                                    uiYPos + thoughtNumber * _offsetY + heightOffset);
                 thoughtNumber++;
                 heightOffset += option.BoundingBox.Height;
