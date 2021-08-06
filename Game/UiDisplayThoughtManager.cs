@@ -40,13 +40,13 @@ namespace conscious
 
             _maxThoughts = 2;
             // Main SoC Area
-            _bgX = 300f; // 150f;
-            _bgY = 900f; // 500f;
+            _bgX = 1600f; // 150f;
+            _bgY = 200f; // 500f;
             _offsetY = 20f;
             _offsetX = 250f;
             // In Thought Area
-            _thoughtOffsetY = 0;
-            _thoughtOffsetX = _bgX + 210f;
+            _thoughtOffsetY = 170;
+            _thoughtOffsetX = 0; //_bgX + 210f;
             
             _font = font;
             _pixel = pixel;

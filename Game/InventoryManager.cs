@@ -10,8 +10,8 @@ namespace conscious
     public class InventoryManager : IComponent
     {
         private float _margin = 20f;
-        private int _startWidth = 1930;
-        private int _startHeight = 950;
+        private int _startWidth = 1430;
+        private int _startHeight = 580;
         private int _nrSlotRows =  4;
         private int _nrSlotCols = 4;
         private KeyboardState _lastKeyboardState;
