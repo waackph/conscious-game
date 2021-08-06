@@ -36,6 +36,7 @@ namespace conscious
             InitPlayerPos = initPlayerPos;
             _isUnlocked = isUnlocked;
             _closeTexture = closeTexture;
+            this.CloseDoor();
         }
 
         public override bool Use(Room room, InventoryManager inventory, Player player, Item item){

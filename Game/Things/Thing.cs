@@ -16,6 +16,16 @@ namespace conscious
             IsInInventory = false;
         }
 
+        public virtual Rectangle CollisionBox
+        {
+            get
+            {
+                return new Rectangle((int)Position.X - Width/2, 
+                                     (int)Position.Y + Height/2,
+                                     Width, 20);
+            }
+        }
+
         public override DataHolderEntity GetDataHolderEntity()
         {
             DataHolderThing dataHolderEntity = new DataHolderThing();

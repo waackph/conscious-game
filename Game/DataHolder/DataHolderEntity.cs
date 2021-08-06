@@ -8,5 +8,6 @@ namespace conscious
         public float PositionX { get; set; }
         public float PositionY { get; set; }
         public string Name { get; set; }
+        public int DrawOrder { get; set; }
     }
 }

@@ -32,6 +32,7 @@ namespace conscious
             _examineText = examineText;
 
             Collidable = true;
+            DrawOrder = 3;
         }
 
         public virtual string Examine(){

@@ -13,6 +13,7 @@ namespace conscious
         private UiDialogManager _dialogManager;
         private SequenceManager _sequenceManager;
         private MoodStateManager _moodStateManager;
+        private RoomGraph _roomGraph;
         private ContentManager _content;
         private int _preferredBackBufferWidth;
         private int _preferredBackBufferHeight;
@@ -33,6 +34,7 @@ namespace conscious
                            UiDialogManager dialogManager,
                            SequenceManager sequenceManager,
                            MoodStateManager moodStateManager,
+                           RoomGraph roomGraph,
                            int preferredBackBufferWidth, 
                            int preferredBackBufferHeight)
         {
@@ -48,6 +50,7 @@ namespace conscious
             _dialogManager = dialogManager;
             _sequenceManager = sequenceManager;
             _moodStateManager = moodStateManager;
+            _roomGraph = roomGraph;
 
             _player = player;
             _cursor = cursor;
@@ -57,10 +60,11 @@ namespace conscious
             CurrentRoomIndex = 2;
             _doorEntered = null;
 
-            // LoadRooms();
+            LoadRooms();
         }
         
-        public void LoadRooms(){
+        public void LoadRooms()
+        {
             Vector2 itemPosition;
             
             // Room 1
@@ -146,7 +150,7 @@ namespace conscious
                             _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
             room.addThing(door);
             
-            itemPosition = new Vector2(1400, 786+4);
+            itemPosition = new Vector2(858, 786+4);
             // Start Initilizing dialog tree
             List<Node> dialogTree = new List<Node>();
             List<Edge> edges = new List<Edge>();
@@ -244,6 +248,11 @@ namespace conscious
                 currentRoom.FillEntityManager();
             }
 
+            // Create path graph of room here
+            _roomGraph.GenerateRoomGraph(currentRoom.GetBoundingBoxes(), 
+                                         0, currentRoom.RoomWidth, 
+                                         0, _preferredBackBufferHeight);
+
             if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
             {
                 _sequenceManager.StartSequence(currentRoom.EntrySequence, _player);
@@ -305,10 +314,13 @@ namespace conscious
 
             LimitRoom();
 
-            if(currentRoom.checkBoundingBoxes(_player.BoundingBox))
+            if(currentRoom.checkBoundingBoxes(_player.CollisionBox))
             {
                 _player.Position = _player.LastPosition;
             }
+
+            // Decide player draw order
+            _player.UpdateDrawOrder(currentRoom.getDrawOrderInRoom(_player.CollisionBox));
             
             foreach(Door door in _entityManager.GetEntitiesOfType<Door>())
             {

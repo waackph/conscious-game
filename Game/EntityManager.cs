@@ -53,10 +53,14 @@ namespace conscious
             foreach(Entity entity in _entities.OrderBy(e => e.DrawOrder))
             {
                 if(!entity.FixedDrawPosition)
+                {
                     entity.Draw(spriteBatch);
-                    
                     if(_debuggingMode && entity.Name != "Background")
-                        spriteBatch.Draw(_pixel, entity.BoundingBox, Color.White);
+                    {
+                        spriteBatch.Draw(_pixel, entity.CollisionBox, Color.White);
+                    }
+                }
+                    
             }
             spriteBatch.End();
 
@@ -64,10 +68,13 @@ namespace conscious
             foreach(Entity entity in _entities.OrderBy(e => e.DrawOrder))
             {
                 if(entity.FixedDrawPosition)
+                {
                     entity.Draw(spriteBatch);
-
                     if(_debuggingMode && entity.Name != "Background")
-                        spriteBatch.Draw(_pixel, entity.BoundingBox, Color.White);
+                    {
+                        spriteBatch.Draw(_pixel, entity.CollisionBox, Color.White);
+                    }
+                }
             }
             spriteBatch.End();
         }

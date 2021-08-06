@@ -24,14 +24,40 @@ namespace conscious
             return _things.OfType<T>();
         }
 
-        public bool checkBoundingBoxes(Rectangle boundBox){
+        public bool checkBoundingBoxes(Rectangle boundBox)
+        {
             foreach(Thing thing in _things){
-                if(thing.Collidable && boundBox.Intersects(thing.BoundingBox))
+                if(thing.Collidable && boundBox.Intersects(thing.CollisionBox))
                 {
                     return true;
                 }
             }
             return false;
+        }
+
+        public int getDrawOrderInRoom(Rectangle collisionBox)
+        {
+            // project collision boxes onto X Axis
+            // start with highest draw order and decrease if something is in front of player
+            int currentDrawOrder = 5;
+            Rectangle bboxProjected = collisionBox;
+            bboxProjected.Y = 0;
+            foreach(Thing thing in _things)
+            {
+                Rectangle thingBoxProjected = thing.CollisionBox;
+                thingBoxProjected.Y = 0;
+                if(thing.Name != "Background" && thingBoxProjected.Intersects(bboxProjected))
+                {
+                    if(thing.CollisionBox.Y >= collisionBox.Y)
+                    {
+                        if(currentDrawOrder >= thing.DrawOrder)
+                        {
+                            currentDrawOrder = thing.DrawOrder - 1;
+                        }
+                    }
+                }
+            }
+            return currentDrawOrder;
         }
 
         public void addThing(Thing thing)
@@ -50,6 +76,17 @@ namespace conscious
         public List<Thing> GetThings()
         {
             return _things;
+        }
+
+        public List<Rectangle> GetBoundingBoxes()
+        {
+            List<Rectangle> bbs = new List<Rectangle>();
+            foreach(Thing thing in _things)
+            {
+                if(thing.Collidable)
+                    bbs.Add(thing.BoundingBox);
+            }
+            return bbs;
         }
 
         public void SetThings(List<Thing> things)

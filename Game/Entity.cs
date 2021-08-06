@@ -32,6 +32,15 @@ namespace conscious
                                      Width, Height);
             }
         }
+        public virtual Rectangle CollisionBox
+        {
+            get
+            {
+                return new Rectangle((int)Position.X - Width/2, 
+                                     (int)Position.Y + Height/2,
+                                     Width, 20);
+            }
+        }
 
         public Entity(string name, Texture2D texture, Vector2 position)
         {
@@ -42,6 +51,7 @@ namespace conscious
             Name = name;
             FixedDrawPosition = false;
             Collidable = false;
+            DrawOrder = 1;
         }
 
         public virtual void Update(GameTime gameTime){ }
@@ -69,6 +79,7 @@ namespace conscious
             dataHolderEntity.PositionY = Position.Y;
             dataHolderEntity.Rotation = Rotation;
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
+            dataHolderEntity.DrawOrder = DrawOrder;
             return dataHolderEntity;
         }
 
@@ -79,6 +90,7 @@ namespace conscious
             dataHolderEntity.PositionY = Position.Y;
             dataHolderEntity.Rotation = Rotation;
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
+            dataHolderEntity.DrawOrder = DrawOrder;
             return dataHolderEntity;
         }
     }

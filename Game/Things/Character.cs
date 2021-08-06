@@ -34,6 +34,7 @@ namespace conscious
             _dialogManager = dialogManager;
 
             Collidable = true;
+            DrawOrder = 4;
         }
 
         public virtual void TalkTo()
