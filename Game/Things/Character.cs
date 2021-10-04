@@ -40,14 +40,14 @@ namespace conscious
         public virtual void TalkTo()
         {
             if(_treeStructure.Count == 0)
-                _dialogManager.DoDisplayText(_pronoun + " has nothing to talk about.");
+                _dialogManager.DoDisplayText(_pronoun + " has nothing to talk about.", this);
             else
-                _dialogManager.StartDialog(_treeStructure);
+                _dialogManager.StartDialog(_treeStructure, this);
         }
 
         public virtual bool Give(Item item)
         {
-            _dialogManager.DoDisplayText(_pronoun + " is not interessted in that.");
+            _dialogManager.DoDisplayText(_pronoun + " is not interessted in that.", this);
             return false;
         }
         public override DataHolderEntity GetDataHolderEntity()

@@ -81,7 +81,7 @@ namespace conscious
             _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _socManager, _cursor, content.Load<SpriteFont>("Font/Hud"), _pixel);
             _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"));
 
-            _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
+            _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, _player, content.Load<SpriteFont>("Font/Hud"), _pixel);
 
             _sequenceManager = new SequenceManager();
 

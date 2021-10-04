@@ -30,11 +30,11 @@ namespace conscious
         {
             if(_dialogUnlocked == true)
             {
-                _dialogManager.DoDisplayText("I'm happy now!");
+                _dialogManager.DoDisplayText("I'm happy now!", this);
             }
             else
             {
-                _dialogManager.DoDisplayText(_catchPhrase);
+                _dialogManager.DoDisplayText(_catchPhrase, this);
             }
         }
 
@@ -42,13 +42,13 @@ namespace conscious
         {
             if(item.Id != _itemDependency)
             {
-                _dialogManager.DoDisplayText(_pronoun + " is not interessted in that.");
+                _dialogManager.DoDisplayText(_pronoun + " is not interessted in that.", this);
                 return false;
             }
             else
             {
                 _dialogUnlocked = true;
-                _dialogManager.DoDisplayText("Thank you!");
+                _dialogManager.DoDisplayText("Thank you!", this);
                 return true;
             }
         }        
