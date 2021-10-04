@@ -80,6 +80,20 @@ namespace conscious
             return null;
         }
 
+        public bool IsSuccessEdgeChosen(string thoughtName)
+        {
+            ThoughtLink option = GetOption(thoughtName);
+            if(option != null && !option.IsLocked && option.MoodValid(_moodStateManager.moodState))
+            {
+                if(typeof(FinalThoughtLink) == option.GetType())
+                {
+                    FinalThoughtLink finalOption = (FinalThoughtLink)option;
+                    return finalOption.IsSuccessEdge;
+                }
+            }
+            return false;
+        }
+
         public ThoughtNode SelectSubthought(string thoughtName)
         {
             ThoughtLink option = GetOption(thoughtName);

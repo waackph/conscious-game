@@ -25,6 +25,7 @@ namespace conscious
         private UIArea _subthoughtBackground;
         private List<UIThought> _currentSubthoughtLinks;
         private UIThought _currentSubthought;
+        private UIThought _currentThought;
         private MouseState _lastMouseState;
         public bool IsInThoughtMode { get; protected set; }
 
@@ -54,6 +55,7 @@ namespace conscious
             _lastMouseState = Mouse.GetState();
             _currentSubthought = null;
             _currentSubthoughtLinks = null;
+            _currentThought = null;
             IsInThoughtMode = false;
         }
 
@@ -138,7 +140,7 @@ namespace conscious
             {
                 foreach(UIThought uiThought in _entityManager.GetEntitiesOfType<UIThought>())
                 {
-                    if(uiThought.BoundingBox.Contains(_cursor.Position))
+                    if(uiThought.BoundingBox.Contains(_cursor.Position) && !uiThought.IsUsed && !uiThought.IsActive)
                     {
                         ThoughtNode node;
                         // Do logic stuff (run tree logic in SoCManager and maybe add a thought to UI or terminate thought)
@@ -148,6 +150,10 @@ namespace conscious
                             node = _socManager.SelectThought(uiThought.Name);
                             if(node != null)
                             {
+                                if(_currentThought != null)
+                                    _currentThought.IsActive = false;
+                                _currentThought = uiThought;
+                                _currentThought.IsActive = true;
                                 StartThoughtMode(node, node.Links);
                             }
                         }
@@ -156,6 +162,12 @@ namespace conscious
                             node = _socManager.SelectSubthought(uiThought.Name);
                             if(node == null)
                             {
+                                if(_socManager.IsSuccessEdgeChosen(uiThought.Name))
+                                {
+                                    _currentThought.IsUsed = true;
+                                }
+                                _currentThought.IsActive = false;
+                                _currentThought = null;
                                 EndThoughtMode();
                             }
                             else

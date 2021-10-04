@@ -5,7 +5,8 @@ namespace conscious
         public MoodState MoodChange { get; }
         public Verb Verb { get; }
         public AnimatedSprite Animation { get; }
-        public  int UnlockId { get; }
+        public int UnlockId { get; }
+        public bool IsSuccessEdge { get; }
 
         public FinalThoughtLink(MoodState moodChange,
                                 Verb verb,
@@ -15,13 +16,15 @@ namespace conscious
                                 ThoughtNode nextNode, 
                                 string option, 
                                 bool isLocked, 
-                                MoodState[] validMoods)
+                                MoodState[] validMoods,
+                                bool isSuccessEdge)
                 : base(id, nextNode, option, isLocked, validMoods)
         {
             MoodChange = moodChange;
             Verb = verb;
             Animation = animation;
             UnlockId = unlockId;
+            IsSuccessEdge = isSuccessEdge;
         }
         
     }

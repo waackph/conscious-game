@@ -209,7 +209,8 @@ namespace conscious
                                                   null, 
                                                   action, 
                                                   false, 
-                                                  new MoodState[] {MoodState.None}));
+                                                  new MoodState[] {MoodState.None},
+                                                  true));
             thought2.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
                                                   null,
@@ -218,7 +219,8 @@ namespace conscious
                                                   null, 
                                                   "I'll rather feel alone then [leave it]", 
                                                   false,
-                                                  new MoodState[] {MoodState.None}));
+                                                  new MoodState[] {MoodState.None},
+                                                  false));
             ThoughtNode thought = new ThoughtNode(minId+3, thoughtText, 0, true, containingThingId);
             thought.AddLink(new ThoughtLink(minId+4,
                                             thought2,
