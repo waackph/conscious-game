@@ -294,6 +294,7 @@ namespace conscious
             {
                 addConcludingThought("What was I thinking?!");
             }
+            _socManager.InteractionIsSuccessfull(canceled);
             _lastVerbChosen = Verb.None;
             _thingClickedInRoom = null;
             _thingClickedInInventory = null;

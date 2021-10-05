@@ -34,6 +34,7 @@ namespace conscious
             _entityManager = entityManager;
             _socManager = socManager;
             _socManager.AddThoughtEvent += AddThoughtFromSoC;
+            _socManager.FinishInteractionEvent += FinishThought;
 
             _cursor = cursor;
 
@@ -90,6 +91,19 @@ namespace conscious
         public void AddThoughtFromSoC(object sender, ThoughtNode e)
         {
             AddThought(e);
+        }
+
+        public void FinishThought(object sender, bool e)
+        {
+            if(_currentThought != null) 
+            {
+                if(e)
+                {
+                    _currentThought.IsUsed = true;
+                }
+                _currentThought.IsActive = false;
+                _currentThought = null;
+            }
         }
 
         public void AddThought(ThoughtNode thought)
@@ -162,12 +176,6 @@ namespace conscious
                             node = _socManager.SelectSubthought(uiThought.Name);
                             if(node == null)
                             {
-                                if(_socManager.IsSuccessEdgeChosen(uiThought.Name))
-                                {
-                                    _currentThought.IsUsed = true;
-                                }
-                                _currentThought.IsActive = false;
-                                _currentThought = null;
                                 EndThoughtMode();
                             }
                             else
@@ -291,6 +299,7 @@ namespace conscious
                     isClickable = true;
                 }
                 UIThought uiThought = new UIThought(isClickable,
+                                                    false,
                                                     doDisplay,
                                                     _font, 
                                                     node.Thought, node.Thought, 
@@ -311,11 +320,18 @@ namespace conscious
             {
                 // TODO: add a disabled style, if current moodState is not valid for this option
                 UIThought uiThought = new UIThought(isClickable:true,
+                                                    isVisited:link.IsVisited,
                                                     doDisplay:true,
                                                     _font, 
                                                     link.Option, link.Option, 
                                                     _pixel, 
                                                     Vector2.One);
+                if(typeof(FinalThoughtLink) == link.GetType() && link.IsVisited)
+                {
+                    FinalThoughtLink finalLink = (FinalThoughtLink)link;
+                    if(finalLink.IsSuccessEdge)
+                        uiThought.IsUsed = true;
+                }
                 uiOptions.Add(uiThought);
             }
             return uiOptions;

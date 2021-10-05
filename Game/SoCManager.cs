@@ -12,9 +12,11 @@ namespace conscious
         private int _maxThoughts;
         private List<ThoughtLink> _currentSubthoughtLinks;
         private ThoughtNode _currentThought;
+        private FinalThoughtLink _finalOption;
         
         public event EventHandler<VerbActionEventArgs> ActionEvent;
         public event EventHandler<ThoughtNode> AddThoughtEvent;
+        public event EventHandler<bool> FinishInteractionEvent;
         public Verb VerbResult { get; private set; }
 
         public SoCManager(MoodStateManager moodStateManager)
@@ -110,19 +112,18 @@ namespace conscious
                     // If the link is a final option, execute possible operations
                     if(typeof(FinalThoughtLink) == option.GetType())
                     {
-                        FinalThoughtLink finalOption = (FinalThoughtLink)option;
-                        if(finalOption.UnlockId != 0)
-                            unlockThoughtLink(finalOption.UnlockId);
-                        if(finalOption.Verb != Verb.None)
+                        _finalOption = (FinalThoughtLink)option;
+                        if(_finalOption.Verb != Verb.None)
                         {
                             VerbActionEventArgs data = new VerbActionEventArgs();
                             data.ThingId = _currentThought.ThingId;
-                            data.verbAction = finalOption.Verb;
+                            data.verbAction = _finalOption.Verb;
                             OnActionEvent(data);
                         }
-                        if(finalOption.MoodChange != MoodState.None)
+                        else
                         {
-                            _moodStateManager.StateChange = finalOption.MoodChange;
+                            OnFinishInteractionEvent(false);
+                            option.IsVisited = true;
                         }
                     }
                     // _uiDisplayThought.EndThoughtMode();
@@ -131,11 +132,28 @@ namespace conscious
                 else
                 {
                     _currentSubthoughtLinks = node.Links;
+                    option.IsVisited = true;
                     // _uiDisplayThought.ChangeSubthought(node, node.Links);
                     return node;
                 }
             }
             return null;
+        }
+
+        public void InteractionIsSuccessfull(bool isCanceled)
+        {
+            bool successEdge = (!isCanceled && _finalOption.IsSuccessEdge);
+            OnFinishInteractionEvent(successEdge);
+            if(!isCanceled)
+            {
+                _finalOption.IsVisited = true;
+                if(_finalOption.UnlockId != 0)
+                    unlockThoughtLink(_finalOption.UnlockId);
+                if(_finalOption.MoodChange != MoodState.None)
+                    _moodStateManager.StateChange = _finalOption.MoodChange;
+            }
+                _finalOption = null;
+                _currentThought = null;
         }
 
         private void unlockThoughtLink(int unlockId)
@@ -162,6 +180,11 @@ namespace conscious
         protected virtual void OnAddThoughtEvent(ThoughtNode e)
         {
             AddThoughtEvent?.Invoke(this, e);
+        }
+
+        protected virtual void OnFinishInteractionEvent(bool e)
+        {
+            FinishInteractionEvent?.Invoke(this, e);
         }
 
         private Node FindLinkById(int id)

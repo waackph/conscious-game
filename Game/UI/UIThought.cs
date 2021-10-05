@@ -9,8 +9,10 @@ namespace conscious
         public bool IsClickable { get; set; }
         public bool IsActive { get; set; }
         public bool IsUsed { get; set; }
+        public bool IsVisited { get; set; }
         public bool DoDisplay;
         public UIThought(bool isClickable,
+                         bool isVisited,
                          bool doDisplay,
                          SpriteFont font, 
                          string text, 
@@ -21,6 +23,7 @@ namespace conscious
             Collidable = true;
             IsActive = false;
             IsClickable = isClickable;
+            IsVisited = isVisited;
 
             DoDisplay = doDisplay;
         }
@@ -39,9 +42,13 @@ namespace conscious
             {
                 _color = Color.Brown;
             }
-            else if(_color != Color.Gray)
+            else if(IsVisited)
             {
                 _color = Color.Gray;
+            }
+            else
+            {
+                _color = Color.DarkGreen;
             }
         }
 

@@ -12,6 +12,7 @@ namespace conscious
         public string Option { get; }
         public ThoughtNode NextNode { get; }
         public bool IsLocked { get; set; }
+        public bool IsVisited { get; set; }
 
         public ThoughtLink(int id, 
                            ThoughtNode nextNode, 
@@ -23,6 +24,7 @@ namespace conscious
             NextNode = nextNode;
             Option = option;
             IsLocked = isLocked;
+            IsVisited = false;
             if(validMoods != null && validMoods.Length > 3)
             {
                 _validMoods = new MoodState[0];
