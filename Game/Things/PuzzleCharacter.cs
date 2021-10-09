@@ -30,7 +30,8 @@ namespace conscious
         {
             if(_dialogUnlocked == true)
             {
-                _dialogManager.DoDisplayText("I'm happy now!", this);
+                // _dialogManager.DoDisplayText("I'm happy now!", this);
+                _dialogManager.StartDialog(_treeStructure, this);
             }
             else
             {

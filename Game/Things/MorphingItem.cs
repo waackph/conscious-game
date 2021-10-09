@@ -28,6 +28,7 @@ namespace conscious
             _items = items;
             setCurrentItem();
         }
+
         public void setCurrentItem()
         {
             if(_items.ContainsKey(_moodStateManager.moodState))

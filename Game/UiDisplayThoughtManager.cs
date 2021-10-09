@@ -164,6 +164,10 @@ namespace conscious
                             node = _socManager.SelectThought(uiThought.Name);
                             if(node != null)
                             {
+                                if(IsInThoughtMode)
+                                {
+                                    EndThoughtMode();
+                                }
                                 if(_currentThought != null)
                                     _currentThought.IsActive = false;
                                 _currentThought = uiThought;
@@ -305,6 +309,8 @@ namespace conscious
                                                     node.Thought, node.Thought, 
                                                     _pixel, 
                                                     Vector2.One);
+                if(node.IsRoot && node.IsInnerDialog)
+                    uiThought.IsUsed = node.IsUsed;
                 return uiThought;
             }
             else
@@ -318,21 +324,24 @@ namespace conscious
             List<UIThought> uiOptions = new List<UIThought>();
             foreach(ThoughtLink link in links)
             {
-                // TODO: add a disabled style, if current moodState is not valid for this option
-                UIThought uiThought = new UIThought(isClickable:true,
-                                                    isVisited:link.IsVisited,
-                                                    doDisplay:true,
-                                                    _font, 
-                                                    link.Option, link.Option, 
-                                                    _pixel, 
-                                                    Vector2.One);
-                if(typeof(FinalThoughtLink) == link.GetType() && link.IsVisited)
+                if(!link.IsLocked)
                 {
-                    FinalThoughtLink finalLink = (FinalThoughtLink)link;
-                    if(finalLink.IsSuccessEdge)
-                        uiThought.IsUsed = true;
+                    // TODO: add a disabled style, if current moodState is not valid for this option
+                    UIThought uiThought = new UIThought(isClickable:true,
+                                                        isVisited:link.IsVisited,
+                                                        doDisplay:true,
+                                                        _font, 
+                                                        link.Option, link.Option, 
+                                                        _pixel, 
+                                                        Vector2.One);
+                    if(typeof(FinalThoughtLink) == link.GetType() && link.IsVisited)
+                    {
+                        FinalThoughtLink finalLink = (FinalThoughtLink)link;
+                        if(finalLink.IsSuccessEdge)
+                            uiThought.IsUsed = true;
+                    }
+                    uiOptions.Add(uiThought);
                 }
-                uiOptions.Add(uiThought);
             }
             return uiOptions;
         }

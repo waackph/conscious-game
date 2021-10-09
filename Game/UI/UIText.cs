@@ -1,5 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Text.RegularExpressions;
 
 namespace conscious
 {
@@ -23,7 +25,7 @@ namespace conscious
         public UIText(SpriteFont font, string text, string name, Texture2D texture, Vector2 position) : base(name, texture, position)
         {
             _font = font;
-            _text = text;
+            _text = Regex.Replace(text, "(.{" + 45 + "})", "$1" + Environment.NewLine);
             _color = Color.Black;
         }
 

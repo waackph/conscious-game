@@ -132,7 +132,8 @@ namespace conscious
             float offset = 0f;
             // Player position for response text
             Vector2 playerResponsePosition = _player.Position;
-            playerResponsePosition.Y = playerResponsePosition.Y - _player.Height/2 + 50; // 50 is the arbitrary offset for now
+            playerResponsePosition.Y = playerResponsePosition.Y - _player.Height/2 - 50; // 50 is the arbitrary offset for now
+            playerResponsePosition.X = playerResponsePosition.X - _player.Width/2;
             foreach(Edge edge in _currentNode.GetEdges()){
                 Vector2 responsePosition = new Vector2(playerResponsePosition.X, playerResponsePosition.Y + offset);
                 offset = offset + 20f;
@@ -192,6 +193,7 @@ namespace conscious
         {
             Vector2 nodePosition = character.Position;
             nodePosition.Y = nodePosition.Y - character.Height/2 - 50; // 50 is the arbitrary offset for now
+            nodePosition.X = nodePosition.X - character.Width/2;
             UIText text = new UIText(_displayFont, displayText, "Display Text", _pixel, nodePosition);
             RemoveText();
             _currentText = text;
