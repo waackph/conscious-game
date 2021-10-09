@@ -45,6 +45,7 @@ namespace conscious
             _entityManager = entityManager;
             _socManager = socManager;
             _socManager.ActionEvent += executeThoughtInteraction;
+            _socManager.FinalEdgeSelected += wakePlayer;
             _inventoryManager = inventoryManager;
             _controlsManager = controlsManager;
             _roomManager = roomManager;
@@ -209,6 +210,14 @@ namespace conscious
         }
 
         public void Draw(SpriteBatch spriteBatch) {}
+
+        private void wakePlayer(object sender, Verb e)
+        {
+            if(e == Verb.WakeUp)
+            {
+                _player.WakeUp();
+            }
+        }
 
         #endregion
 

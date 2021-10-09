@@ -10,6 +10,7 @@ namespace conscious
         private bool _isMoving;
         private bool _lastIsMoving;
         private float _playerSpeed;
+        private PlayerState _playerState;
 
         public Vector2 LastPosition;
         public AnimatedSprite IdleAnimation;
@@ -28,6 +29,7 @@ namespace conscious
             _flip = SpriteEffects.None;
             _playerSpeed = 400f;
             _isMoving = false;
+            _playerState = PlayerState.Idle;
             _lastIsMoving = _isMoving;
             LastPosition = position;
             DrawOrder = 5;
@@ -45,62 +47,98 @@ namespace conscious
             }
 
             // Update animations
-            if(Position == LastPosition)
+            if(_playerState == PlayerState.Idle || _playerState == PlayerState.Walk)
             {
-                IdleAnimation.Update(gameTime);
-                _isMoving = false;
+                if(Position == LastPosition)
+                {
+                    IdleAnimation.Update(gameTime);
+                    _isMoving = false;
+                    _playerState = PlayerState.Idle;
+                }
+                else
+                {
+                    MoveAnimation.Update(gameTime);
+                    _isMoving = true;
+                    _playerState = PlayerState.Walk;
+                }
+                if(_lastIsMoving != _isMoving){
+                    IdleAnimation.resetAnimation();
+                    MoveAnimation.resetAnimation();
+                }
+
+                LastPosition = Position;
+                _lastIsMoving = _isMoving;
             }
-            else
+            else if(_playerState == PlayerState.Sleep) 
             {
-                MoveAnimation.Update(gameTime);
-                _isMoving = true;
+                // add sleep logic here
             }
-            if(_lastIsMoving != _isMoving){
-                IdleAnimation.resetAnimation();
-                MoveAnimation.resetAnimation();
+        }
+
+        public void GoToSleep()
+        {
+            _playerState = PlayerState.Sleep;
+        }
+
+        public void WakeUp()
+        {
+            _playerState = PlayerState.Idle;
+        }
+
+        public void MoveUp(float totalSeconds)
+        {
+            if(_playerState == PlayerState.Idle || _playerState == PlayerState.Walk)
+                Position.Y -= _playerSpeed * totalSeconds;
+        }
+
+        public void MoveDown(float totalSeconds)
+        {
+            if(_playerState == PlayerState.Idle || _playerState == PlayerState.Walk)
+                Position.Y += _playerSpeed * totalSeconds;
+        }
+
+        public void MoveLeft(float totalSeconds)
+        {
+            if(_playerState == PlayerState.Idle || _playerState == PlayerState.Walk)
+                Position.X -= _playerSpeed * totalSeconds;
+        }
+
+        public void MoveRight(float totalSeconds)
+        {
+            if(_playerState == PlayerState.Idle || _playerState == PlayerState.Walk)
+                Position.X += _playerSpeed * totalSeconds;
+        }
+
+        public void MoveToPoint(Vector2 mousePosition, float totalSeconds)
+        {
+            if(_playerState == PlayerState.Idle || _playerState == PlayerState.Walk)
+            {
+                Vector2 posDelta = mousePosition - Position;
+                posDelta.Normalize();
+                posDelta = posDelta * (_playerSpeed);
+                Position = Position + posDelta  * totalSeconds;
             }
-
-            LastPosition = Position;
-            _lastIsMoving = _isMoving;
-        }
-
-        public void MoveUp(float totalSeconds){
-            Position.Y -= _playerSpeed * totalSeconds;
-        }
-
-        public void MoveDown(float totalSeconds){
-            Position.Y += _playerSpeed * totalSeconds;
-        }
-
-        public void MoveLeft(float totalSeconds){
-            Position.X -= _playerSpeed * totalSeconds;
-        }
-
-        public void MoveRight(float totalSeconds){
-            Position.X += _playerSpeed * totalSeconds;
-        }
-
-        public void MoveToPoint(Vector2 mousePosition, float totalSeconds){
-            Vector2 posDelta = mousePosition - Position;
-            posDelta.Normalize();
-            posDelta = posDelta * (_playerSpeed);
-            Position = Position + posDelta  * totalSeconds;
         }
 
         public void MoveToDirection(Vector2 direction)
         {
-            Position = Position + direction*5;
+            if(_playerState == PlayerState.Idle || _playerState == PlayerState.Walk)
+                Position = Position + direction*5;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if(_isMoving)
+            if(_playerState == PlayerState.Walk)
             {
                 MoveAnimation.Draw(spriteBatch, Position, _flip);
             }
-            else
+            else if(_playerState == PlayerState.Idle)
             {
                 IdleAnimation.Draw(spriteBatch, Position, _flip);
+            }
+            else if(_playerState == PlayerState.Sleep)
+            {
+                // Add Sleep Animation
             }
         }
 

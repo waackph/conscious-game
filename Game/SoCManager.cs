@@ -19,6 +19,7 @@ namespace conscious
         public event EventHandler<VerbActionEventArgs> ActionEvent;
         public event EventHandler<ThoughtNode> AddThoughtEvent;
         public event EventHandler<bool> FinishInteractionEvent;
+        public event EventHandler<Verb> FinalEdgeSelected;
         public Verb VerbResult { get; private set; }
 
         public SoCManager(MoodStateManager moodStateManager)
@@ -117,6 +118,7 @@ namespace conscious
                     if(typeof(FinalThoughtLink) == option.GetType())
                     {
                         _finalOption = (FinalThoughtLink)option;
+                        OnFinalEdgeSelected(_finalOption.Verb);
                         if(_finalOption.Verb != Verb.None)
                         {
                             VerbActionEventArgs data = new VerbActionEventArgs();
@@ -229,6 +231,11 @@ namespace conscious
         protected virtual void OnFinishInteractionEvent(bool e)
         {
             FinishInteractionEvent?.Invoke(this, e);
+        }
+
+        protected virtual void OnFinalEdgeSelected(Verb e)
+        {
+            FinalEdgeSelected?.Invoke(this, e);
         }
 
         private Node FindLinkById(int id)
