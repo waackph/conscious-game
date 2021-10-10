@@ -47,7 +47,7 @@ namespace conscious
             _offsetY = 20f;
             _offsetX = 250f;
             // In Thought Area
-            _thoughtOffsetY = 170;
+            _thoughtOffsetY = 55;
             _thoughtOffsetX = 0; //_bgX + 210f;
             
             _font = font;
@@ -60,13 +60,14 @@ namespace conscious
             IsInThoughtMode = false;
         }
 
-        public void LoadContent(Texture2D consciousnessBackground)
+        public void LoadContent(Texture2D consciousnessBackground, Texture2D consciousnessBackgroundSubthought)
         {
             Vector2 bgPosition = new Vector2(_bgX, _bgY);
             _consciousnessBackground = new UIArea("SoC Background", consciousnessBackground, bgPosition);
 
-            Vector2 thoughtBgPosition = new Vector2(_bgX + _thoughtOffsetX, _bgY + _thoughtOffsetY);
-            _subthoughtBackground = new UIArea("Thought Background", consciousnessBackground, thoughtBgPosition);
+            Vector2 thoughtBgPosition = new Vector2(_bgX + _thoughtOffsetX, 
+                                                    _bgY + _consciousnessBackground.Height + _consciousnessBackground.Height/2 + _thoughtOffsetY);
+            _subthoughtBackground = new UIArea("Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition);
         }
 
         public void Update(GameTime gameTime)
@@ -127,7 +128,7 @@ namespace conscious
         private UIThought CalculateThoughtPositions(UIThought thought)
         {
             float uiXPos = _bgX - _offsetX;
-            float uiYPos = _bgY - _consciousnessBackground.Height;
+            float uiYPos = _bgY - _consciousnessBackground.Height/2;
             int thoughtNumber = 0;
             float heightOffset = 0f;
             
@@ -224,7 +225,7 @@ namespace conscious
         private void calculateSubthoughtPositions()
         {
             float uiXPos = _bgX + _thoughtOffsetX - _offsetX;
-            float uiYPos = _bgY + _thoughtOffsetY - _subthoughtBackground.Height;
+            float uiYPos = _bgY + _consciousnessBackground.Height/2 + _thoughtOffsetY/2;
             int thoughtNumber = 0;
             float heightOffset = 0f;
             if(_currentSubthought != null && _currentSubthought.DoDisplay)

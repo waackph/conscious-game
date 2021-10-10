@@ -15,7 +15,7 @@ namespace conscious
             spriteBatch.Draw(EntityTexture, Position,
                              null, Color.White, Rotation, 
                              new Vector2(Width/2, Height/2),
-                             new Vector2(2, 2),
+                             Vector2.One,
                              SpriteEffects.None, 0f);
         }
 
