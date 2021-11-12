@@ -11,8 +11,10 @@ namespace conscious
         private int _linkageId;
         public List<ThoughtLink> Links { get; }
 
-        public string Thought { get; }
+        public string Thought { get; set; }
         public bool IsRoot { get; }
+        public bool IsUsed { get; set; }
+        public bool IsInnerDialog { get; set; }
         public int ThingId { get; }
 
         public ThoughtNode(int id, string thought, int linkageId, bool isRoot, int thingId)
@@ -22,6 +24,8 @@ namespace conscious
             _linkageId = linkageId;
             Links = new List<ThoughtLink>();
             IsRoot = isRoot;
+            IsUsed = false;
+            IsInnerDialog = false;
             ThingId = thingId;
         }
 

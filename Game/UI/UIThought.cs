@@ -6,9 +6,13 @@ namespace conscious
 {
     public class UIThought : UIText
     {
-        private bool _isClickable;
+        public bool IsClickable { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsUsed { get; set; }
+        public bool IsVisited { get; set; }
         public bool DoDisplay;
         public UIThought(bool isClickable,
+                         bool isVisited,
                          bool doDisplay,
                          SpriteFont font, 
                          string text, 
@@ -17,20 +21,34 @@ namespace conscious
                          Vector2 position) : base(font, text, name, texture, position)
         {
             Collidable = true;
-            _isClickable = isClickable;
+            IsActive = false;
+            IsClickable = isClickable;
+            IsVisited = isVisited;
 
             DoDisplay = doDisplay;
         }
 
         public override void Update(GameTime gameTime)
         {
-            if(BoundingBox.Contains(Mouse.GetState().Position.ToVector2()) && _isClickable)
+            if(IsActive)
+            {
+                _color = Color.Beige;
+            }
+            else if(IsUsed)
+            {
+                _color = Color.AliceBlue;
+            }
+            else if(BoundingBox.Contains(Mouse.GetState().Position.ToVector2()) && IsClickable)
             {
                 _color = Color.Brown;
             }
-            else if(_color != Color.Gray)
+            else if(IsVisited)
             {
                 _color = Color.Gray;
+            }
+            else
+            {
+                _color = Color.DarkGreen;
             }
         }
 

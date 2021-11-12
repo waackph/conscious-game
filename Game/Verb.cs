@@ -10,6 +10,7 @@ namespace conscious
         UseWith,
         Combine,
         Give,
-        TalkTo
+        TalkTo,
+        WakeUp
     }
 }

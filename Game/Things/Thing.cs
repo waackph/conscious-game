@@ -12,6 +12,10 @@ namespace conscious
         public Thing(int id, ThoughtNode thought, string name, Texture2D texture, Vector2 position) : base(name, texture, position)
         {
             Thought = thought;
+            if(Thought != null && name != "")
+            {
+                Thought.Thought = "[" + name + "] " + Thought.Thought;
+            }
             Id = id;
             IsInInventory = false;
         }

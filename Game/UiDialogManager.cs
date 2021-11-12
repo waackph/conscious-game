@@ -14,6 +14,7 @@ namespace conscious
         private List<UIComponent> _texts;
         private EntityManager _entityManager;
         private MoodStateManager _moodStateManager;
+        private Player _player;
         private SpriteFont _displayFont;
         private Texture2D _pixel;
         private bool _displayActive;
@@ -27,18 +28,20 @@ namespace conscious
         private bool _responsesInitilized;
         private bool _isRoot;
 
-
+        private Character _nodeCharacter;
         public List<Node> TreeStructure;
         public bool DialogActive { get; protected set; }
 
         public UiDialogManager(EntityManager entityManager,
-                             MoodStateManager moodStateManager, 
-                             SpriteFont displayFont, 
+                             MoodStateManager moodStateManager,
+                             Player player,
+                             SpriteFont displayFont,
                              Texture2D pixel)
         {
             // General
             _entityManager = entityManager;
             _moodStateManager = moodStateManager;
+            _player = player;
             _displayFont = displayFont;
             _pixel = pixel;
             _texts = new List<UIComponent>();
@@ -47,6 +50,7 @@ namespace conscious
             // Dialog
             TreeStructure = new List<Node>();
             DialogActive = false;
+            _nodeCharacter = null;
             _responseSelectionMode = false;
             _responsesInitilized = false;
             _isRoot = true;
@@ -73,7 +77,7 @@ namespace conscious
                     RemoveText();
                     _currentNode = GetNode(1);
 
-                    DoDisplayText(_currentNode.GetLine());
+                    DoDisplayText(_currentNode.GetLine(), _nodeCharacter);
                     _isRoot = false;
                 }
                 else if(_responseSelectionMode == false)
@@ -103,10 +107,11 @@ namespace conscious
 
         public void Draw(SpriteBatch spriteBatch){ }
 
-        public void StartDialog(List<Node> tree)
+        public void StartDialog(List<Node> tree, Character character)
         {
             TreeStructure = tree;
             DialogActive = true;
+            _nodeCharacter = character;
         }
 
         public Node GetNode(int nodeId)
@@ -125,8 +130,12 @@ namespace conscious
         {
             RemoveText();
             float offset = 0f;
+            // Player position for response text
+            Vector2 playerResponsePosition = _player.Position;
+            playerResponsePosition.Y = playerResponsePosition.Y - _player.Height/2 - 50; // 50 is the arbitrary offset for now
+            playerResponsePosition.X = playerResponsePosition.X - _player.Width/2;
             foreach(Edge edge in _currentNode.GetEdges()){
-                Vector2 responsePosition = new Vector2(_textPosition.X, _textPosition.Y + offset);
+                Vector2 responsePosition = new Vector2(playerResponsePosition.X, playerResponsePosition.Y + offset);
                 offset = offset + 20f;
                 Edge responseEdge = edge;
                 if(edge.MoodDependence == MoodState.None || edge.MoodDependence == _moodStateManager.moodState)
@@ -155,7 +164,7 @@ namespace conscious
                         {
                             _currentNode = GetNode(response.ResponseEdge.getNextNodeId());
                             RemoveText();
-                            DoDisplayText(_currentNode.GetLine());
+                            DoDisplayText(_currentNode.GetLine(), _nodeCharacter);
                             _responsesInitilized = false;
                             _responseSelectionMode = false;
                         }
@@ -174,14 +183,18 @@ namespace conscious
             RemoveText();
             TreeStructure = new List<Node>();
             DialogActive = false;
+            _nodeCharacter = null;
             _responseSelectionMode = false;
             _responsesInitilized = false;
             _isRoot = true;
         }
 
-        public void DoDisplayText(string displayText)
+        public void DoDisplayText(string displayText, Character character)
         {
-            UIText text = new UIText(_displayFont, displayText, "Display Text", _pixel, _textPosition);
+            Vector2 nodePosition = character.Position;
+            nodePosition.Y = nodePosition.Y - character.Height/2 - 50; // 50 is the arbitrary offset for now
+            nodePosition.X = nodePosition.X - character.Width/2;
+            UIText text = new UIText(_displayFont, displayText, "Display Text", _pixel, nodePosition);
             RemoveText();
             _currentText = text;
             AddText(_currentText);

@@ -25,6 +25,7 @@ namespace conscious
         private UIArea _subthoughtBackground;
         private List<UIThought> _currentSubthoughtLinks;
         private UIThought _currentSubthought;
+        private UIThought _currentThought;
         private MouseState _lastMouseState;
         public bool IsInThoughtMode { get; protected set; }
 
@@ -33,6 +34,7 @@ namespace conscious
             _entityManager = entityManager;
             _socManager = socManager;
             _socManager.AddThoughtEvent += AddThoughtFromSoC;
+            _socManager.FinishInteractionEvent += FinishThought;
 
             _cursor = cursor;
 
@@ -40,13 +42,13 @@ namespace conscious
 
             _maxThoughts = 2;
             // Main SoC Area
-            _bgX = 300f; // 150f;
-            _bgY = 900f; // 500f;
+            _bgX = 1600f; // 150f;
+            _bgY = 200f; // 500f;
             _offsetY = 20f;
             _offsetX = 250f;
             // In Thought Area
-            _thoughtOffsetY = 0;
-            _thoughtOffsetX = _bgX + 210f;
+            _thoughtOffsetY = 55;
+            _thoughtOffsetX = 0; //_bgX + 210f;
             
             _font = font;
             _pixel = pixel;
@@ -54,16 +56,18 @@ namespace conscious
             _lastMouseState = Mouse.GetState();
             _currentSubthought = null;
             _currentSubthoughtLinks = null;
+            _currentThought = null;
             IsInThoughtMode = false;
         }
 
-        public void LoadContent(Texture2D consciousnessBackground)
+        public void LoadContent(Texture2D consciousnessBackground, Texture2D consciousnessBackgroundSubthought)
         {
             Vector2 bgPosition = new Vector2(_bgX, _bgY);
             _consciousnessBackground = new UIArea("SoC Background", consciousnessBackground, bgPosition);
 
-            Vector2 thoughtBgPosition = new Vector2(_bgX + _thoughtOffsetX, _bgY + _thoughtOffsetY);
-            _subthoughtBackground = new UIArea("Thought Background", consciousnessBackground, thoughtBgPosition);
+            Vector2 thoughtBgPosition = new Vector2(_bgX + _thoughtOffsetX, 
+                                                    _bgY + _consciousnessBackground.Height + _consciousnessBackground.Height/2 + _thoughtOffsetY);
+            _subthoughtBackground = new UIArea("Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition);
         }
 
         public void Update(GameTime gameTime)
@@ -90,6 +94,19 @@ namespace conscious
             AddThought(e);
         }
 
+        public void FinishThought(object sender, bool e)
+        {
+            if(_currentThought != null) 
+            {
+                if(e)
+                {
+                    _currentThought.IsUsed = true;
+                }
+                _currentThought.IsActive = false;
+                _currentThought = null;
+            }
+        }
+
         public void AddThought(ThoughtNode thought)
         {
             // Add if the UI not already contains the thought
@@ -111,7 +128,7 @@ namespace conscious
         private UIThought CalculateThoughtPositions(UIThought thought)
         {
             float uiXPos = _bgX - _offsetX;
-            float uiYPos = _bgY - _consciousnessBackground.Height;
+            float uiYPos = _bgY - _consciousnessBackground.Height/2;
             int thoughtNumber = 0;
             float heightOffset = 0f;
             
@@ -138,7 +155,7 @@ namespace conscious
             {
                 foreach(UIThought uiThought in _entityManager.GetEntitiesOfType<UIThought>())
                 {
-                    if(uiThought.BoundingBox.Contains(_cursor.Position))
+                    if(uiThought.BoundingBox.Contains(_cursor.Position) && !uiThought.IsUsed && !uiThought.IsActive)
                     {
                         ThoughtNode node;
                         // Do logic stuff (run tree logic in SoCManager and maybe add a thought to UI or terminate thought)
@@ -148,6 +165,14 @@ namespace conscious
                             node = _socManager.SelectThought(uiThought.Name);
                             if(node != null)
                             {
+                                if(IsInThoughtMode)
+                                {
+                                    EndThoughtMode();
+                                }
+                                if(_currentThought != null)
+                                    _currentThought.IsActive = false;
+                                _currentThought = uiThought;
+                                _currentThought.IsActive = true;
                                 StartThoughtMode(node, node.Links);
                             }
                         }
@@ -200,7 +225,7 @@ namespace conscious
         private void calculateSubthoughtPositions()
         {
             float uiXPos = _bgX + _thoughtOffsetX - _offsetX;
-            float uiYPos = _bgY + _thoughtOffsetY - _subthoughtBackground.Height;
+            float uiYPos = _bgY + _consciousnessBackground.Height/2 + _thoughtOffsetY/2;
             int thoughtNumber = 0;
             float heightOffset = 0f;
             if(_currentSubthought != null && _currentSubthought.DoDisplay)
@@ -212,7 +237,9 @@ namespace conscious
             }
             foreach(UIThought option in _currentSubthoughtLinks)
             {
-                option.SetPosition(uiXPos,
+                // add the offset to better differentiate the characters response from the options
+                int optionOffset = 10;
+                option.SetPosition(uiXPos + optionOffset,
                                    uiYPos + thoughtNumber * _offsetY + heightOffset);
                 thoughtNumber++;
                 heightOffset += option.BoundingBox.Height;
@@ -277,11 +304,14 @@ namespace conscious
                     isClickable = true;
                 }
                 UIThought uiThought = new UIThought(isClickable,
+                                                    false,
                                                     doDisplay,
                                                     _font, 
                                                     node.Thought, node.Thought, 
                                                     _pixel, 
                                                     Vector2.One);
+                if(node.IsRoot && node.IsInnerDialog)
+                    uiThought.IsUsed = node.IsUsed;
                 return uiThought;
             }
             else
@@ -295,14 +325,24 @@ namespace conscious
             List<UIThought> uiOptions = new List<UIThought>();
             foreach(ThoughtLink link in links)
             {
-                // TODO: add a disabled style, if current moodState is not valid for this option
-                UIThought uiThought = new UIThought(isClickable:true,
-                                                    doDisplay:true,
-                                                    _font, 
-                                                    link.Option, link.Option, 
-                                                    _pixel, 
-                                                    Vector2.One);
-                uiOptions.Add(uiThought);
+                if(!link.IsLocked)
+                {
+                    // TODO: add a disabled style, if current moodState is not valid for this option
+                    UIThought uiThought = new UIThought(isClickable:true,
+                                                        isVisited:link.IsVisited,
+                                                        doDisplay:true,
+                                                        _font, 
+                                                        link.Option, link.Option, 
+                                                        _pixel, 
+                                                        Vector2.One);
+                    if(typeof(FinalThoughtLink) == link.GetType() && link.IsVisited)
+                    {
+                        FinalThoughtLink finalLink = (FinalThoughtLink)link;
+                        if(finalLink.IsSuccessEdge)
+                            uiThought.IsUsed = true;
+                    }
+                    uiOptions.Add(uiThought);
+                }
             }
             return uiOptions;
         }

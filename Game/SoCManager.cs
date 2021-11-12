@@ -12,9 +12,14 @@ namespace conscious
         private int _maxThoughts;
         private List<ThoughtLink> _currentSubthoughtLinks;
         private ThoughtNode _currentThought;
+        private FinalThoughtLink _finalOption;
+        private List<int> _toUnlock = new List<int>();
+        private List<int> _alreadyUnlocked = new List<int>();
         
         public event EventHandler<VerbActionEventArgs> ActionEvent;
         public event EventHandler<ThoughtNode> AddThoughtEvent;
+        public event EventHandler<bool> FinishInteractionEvent;
+        public event EventHandler<Verb> FinalEdgeSelected;
         public Verb VerbResult { get; private set; }
 
         public SoCManager(MoodStateManager moodStateManager)
@@ -31,6 +36,8 @@ namespace conscious
 
         public void AddThought(ThoughtNode thought)
         {
+            // check if there are links to unlock in the newly selected thought tree 
+            checkUnlockIds(thought);
             if(!containsThoughtNode(Thoughts, thought))
             {
                 if(Thoughts.Count + 1 > _maxThoughts)
@@ -80,6 +87,20 @@ namespace conscious
             return null;
         }
 
+        public bool IsSuccessEdgeChosen(string thoughtName)
+        {
+            ThoughtLink option = GetOption(thoughtName);
+            if(option != null && !option.IsLocked && option.MoodValid(_moodStateManager.moodState))
+            {
+                if(typeof(FinalThoughtLink) == option.GetType())
+                {
+                    FinalThoughtLink finalOption = (FinalThoughtLink)option;
+                    return finalOption.IsSuccessEdge;
+                }
+            }
+            return false;
+        }
+
         public ThoughtNode SelectSubthought(string thoughtName)
         {
             ThoughtLink option = GetOption(thoughtName);
@@ -96,19 +117,31 @@ namespace conscious
                     // If the link is a final option, execute possible operations
                     if(typeof(FinalThoughtLink) == option.GetType())
                     {
-                        FinalThoughtLink finalOption = (FinalThoughtLink)option;
-                        if(finalOption.UnlockId != 0)
-                            unlockThoughtLink(finalOption.UnlockId);
-                        if(finalOption.Verb != Verb.None)
+                        _finalOption = (FinalThoughtLink)option;
+                        OnFinalEdgeSelected(_finalOption.Verb);
+                        if(_finalOption.Verb != Verb.None)
                         {
                             VerbActionEventArgs data = new VerbActionEventArgs();
                             data.ThingId = _currentThought.ThingId;
-                            data.verbAction = finalOption.Verb;
+                            data.verbAction = _finalOption.Verb;
                             OnActionEvent(data);
                         }
-                        if(finalOption.MoodChange != MoodState.None)
+                        else
                         {
-                            _moodStateManager.StateChange = finalOption.MoodChange;
+                            bool usedThought;
+                            if(_finalOption.IsSuccessEdge && !_finalOption.IsLocked)
+                            {
+                                usedThought = true;
+                            }
+                            else
+                            {
+                                usedThought = false;
+                            }
+                            if(_finalOption.UnlockId != 0)
+                                unlockThoughtLink(_finalOption.UnlockId);
+                            OnFinishInteractionEvent(usedThought);
+                            option.IsVisited = true;
+                            _currentThought.IsUsed = true;
                         }
                     }
                     // _uiDisplayThought.EndThoughtMode();
@@ -117,6 +150,7 @@ namespace conscious
                 else
                 {
                     _currentSubthoughtLinks = node.Links;
+                    option.IsVisited = true;
                     // _uiDisplayThought.ChangeSubthought(node, node.Links);
                     return node;
                 }
@@ -124,18 +158,62 @@ namespace conscious
             return null;
         }
 
-        private void unlockThoughtLink(int unlockId)
+        public void InteractionIsSuccessfull(bool isCanceled)
         {
-            if(_currentThought != null)
+            bool successEdge = (!isCanceled && _finalOption.IsSuccessEdge);
+            OnFinishInteractionEvent(successEdge);
+            if(!isCanceled)
             {
-                // TODO: May be needed in the future - Traverse Tree from root, to unlock any edge in the tree
-                // FindLinkById(unlockId)
-                foreach(ThoughtLink link in _currentThought.Links)
+                _finalOption.IsVisited = true;
+                _currentThought.IsUsed = true;
+                if(_finalOption.UnlockId != 0)
+                    unlockThoughtLink(_finalOption.UnlockId);
+                if(_finalOption.MoodChange != MoodState.None)
+                    _moodStateManager.StateChange = _finalOption.MoodChange;
+            }
+                _finalOption = null;
+                _currentThought = null;
+        }
+
+        private void checkUnlockId(ThoughtNode node, int unlockId)
+        {
+            if(node != null)
+            {
+                foreach(ThoughtLink link in node.Links)
                 {
                     if(link.Id == unlockId)
                     {
                         link.IsLocked = false;
+                        _toUnlock.Remove(unlockId);
+                        _alreadyUnlocked.Add(unlockId);
                     }
+                    else
+                    {
+                        checkUnlockId(link.NextNode, unlockId);
+                    }
+                }
+            }
+        }
+
+        private void unlockThoughtLink(int unlockId)
+        {
+            if(!_alreadyUnlocked.Contains(unlockId))
+            {
+                // store id to unlock to be able to later unlock a link from a different tree
+                _toUnlock.Add(unlockId);
+                // first traverse own tree
+                checkUnlockId(_currentThought, unlockId);
+            }
+        }
+
+        private void checkUnlockIds(ThoughtNode node)
+        {
+            List<int> tempUnlockIds = _toUnlock;
+            if(tempUnlockIds.Count != 0)
+            {
+                foreach(int id in tempUnlockIds)
+                {
+                    checkUnlockId(node, id);
                 }
             }
         }
@@ -148,6 +226,16 @@ namespace conscious
         protected virtual void OnAddThoughtEvent(ThoughtNode e)
         {
             AddThoughtEvent?.Invoke(this, e);
+        }
+
+        protected virtual void OnFinishInteractionEvent(bool e)
+        {
+            FinishInteractionEvent?.Invoke(this, e);
+        }
+
+        protected virtual void OnFinalEdgeSelected(Verb e)
+        {
+            FinalEdgeSelected?.Invoke(this, e);
         }
 
         private Node FindLinkById(int id)

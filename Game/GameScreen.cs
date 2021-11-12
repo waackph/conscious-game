@@ -69,19 +69,20 @@ namespace conscious
             //                          content.Load<Texture2D>("Verbs/debug/verb_give_to"));
 
             _inventoryManager = new InventoryManager(_entityManager);
-            _inventoryManager.LoadContent(content.Load<Texture2D>("Inventory/debug/inventory_background"));
+            _inventoryManager.LoadContent(content.Load<Texture2D>("UI/debug_sprites/inventory_place_background_v2"), 
+                                          content.Load<Texture2D>("UI/debug_sprites/inventory_background_v2"));
 
             _moodStateManager = new MoodStateManager(_entityManager);
 
             _roomGraph = new RoomGraph();
             _pathFinder = new AStarShortestPath(_roomGraph);
 
-            // TODO: Solve the loop dependence - e.g. by making the current Thoughts in SoC public and ui thoughts updating them at each game loop
             _socManager = new SoCManager(_moodStateManager);
             _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _socManager, _cursor, content.Load<SpriteFont>("Font/Hud"), _pixel);
-            _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"));
+            _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("UI/debug_sprites/soc_background_main"),
+                                                 content.Load<Texture2D>("UI/debug_sprites/soc_background_sub"));
 
-            _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
+            _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, _player, content.Load<SpriteFont>("Font/Hud"), _pixel);
 
             _sequenceManager = new SequenceManager();
 

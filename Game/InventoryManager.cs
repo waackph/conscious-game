@@ -2,20 +2,21 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-using System;
 using System.Collections.Generic;
 
 namespace conscious
 {
     public class InventoryManager : IComponent
     {
-        private float _margin = 20f;
-        private int _startWidth = 1930;
-        private int _startHeight = 950;
+        private float _marginWidth = 60f;
+        private float _marginHeight = 20f;
+        private int _startWidth = 1430;
+        private int _startHeight = 1050;
         private int _nrSlotRows =  4;
         private int _nrSlotCols = 4;
         private KeyboardState _lastKeyboardState;
         private List<UIInventoryPlace> _slots;
+        private UIArea _inventoryBackground;
         private List<Item> _items = new List<Item>();
 
         private EntityManager _entityManager;
@@ -29,14 +30,16 @@ namespace conscious
             InventoryActive = false;
         }
 
-        public void LoadContent(Texture2D inventoryPlaceTexture)
+        public void LoadContent(Texture2D inventoryPlaceTexture, Texture2D inventoryBackground)
         {
+            Vector2 bgPosition = new Vector2(780, 500);
+            _inventoryBackground = new UIArea("Inventory Background", inventoryBackground, bgPosition);
             for(int iHeight=_nrSlotRows; iHeight>=1; iHeight--)
             {
                 for(int iWidth=_nrSlotCols; iWidth>=1; iWidth--)
                 {
-                    Vector2 placePosition = new Vector2(_startWidth-inventoryPlaceTexture.Width*iWidth-_margin*iWidth, 
-                                                        _startHeight-inventoryPlaceTexture.Height*iHeight-_margin*iHeight);
+                    Vector2 placePosition = new Vector2(_startWidth - inventoryPlaceTexture.Width*iWidth - _marginWidth*iWidth, 
+                                                        _startHeight - inventoryPlaceTexture.Height*iHeight - _marginHeight*iHeight);
                     UIInventoryPlace place = new UIInventoryPlace(iHeight.ToString()+"x"+iWidth.ToString(),
                                                                   inventoryPlaceTexture, 
                                                                   placePosition);
@@ -109,6 +112,7 @@ namespace conscious
 
         public void FillEntityManager()
         {
+            _entityManager.AddEntity(_inventoryBackground);
             foreach(UIInventoryPlace slot in _slots)
             {
                 _entityManager.AddEntity(slot);
@@ -123,6 +127,7 @@ namespace conscious
 
         public void CloseInventory()
         {
+            _entityManager.RemoveEntity(_inventoryBackground);
             foreach(UIInventoryPlace slot in _slots)
             {
                 _entityManager.RemoveEntity(slot);

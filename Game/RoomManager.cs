@@ -76,8 +76,8 @@ namespace conscious
             itemPosition = new Vector2(1058, 570);
             ThoughtNode thought3 = CreateSimpleThought(22, 
                                                       "The door to the outside world",
-                                                      "Its locked. Maybe I can open it somehow? [use]", 
-                                                      Verb.UseWith,
+                                                      new string[]{"Its locked. Maybe I can open it somehow? [use]"}, 
+                                                      new Verb[]{Verb.UseWith},
                                                       1,
                                                       MoodState.Depressed);
             Thing door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
@@ -91,8 +91,8 @@ namespace conscious
 
             ThoughtNode thought2 = CreateSimpleThought(17, 
                                                       "It's a key. There is nothing more mundane",
-                                                      "Let's keep it anyway [pick up]", 
-                                                      Verb.PickUp,
+                                                      new string[]{"Let's keep it anyway [pick up]"}, 
+                                                      new Verb[]{Verb.PickUp},
                                                       2,
                                                       MoodState.Regular);
             Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now",
@@ -104,8 +104,8 @@ namespace conscious
 
             ThoughtNode thought6 = CreateSimpleThought(41, 
                                                       "It's a bottle. Wow...",
-                                                      "Maybe I can use it for something [combine]", 
-                                                      Verb.Combine,
+                                                      new string[]{"Maybe I can use it for something [combine]"}, 
+                                                      new Verb[]{Verb.Combine},
                                                       3,
                                                       MoodState.None);
             itemPosition = new Vector2(200, 786+4);
@@ -136,17 +136,76 @@ namespace conscious
             room.addThing(background);
 
             itemPosition = new Vector2(1058, 575+4);
-            ThoughtNode thought = CreateSimpleThought(12, 
-                                                      "The door to the outside world. \nI am not ready for this.",
-                                                      "Fuck it. I'll do it anyway [use]", 
-                                                      Verb.Use,
-                                                      30,
-                                                      MoodState.None);
+            // ThoughtNode thought = CreateSimpleThought(12, 
+            //                                           "The door to the outside world. \nI am not ready for this.",
+            //                                           new string[]{"Fuck it. I'll do it anyway [use]"}, 
+            //                                           new Verb[]{Verb.Use},
+            //                                           30,
+            //                                           MoodState.None);
+            // ----- Inner Dialog Thought -----
+            ThoughtNode innerThought5 = new ThoughtNode(54, "Right. Just like in the last days. (Sigh) Ok. Here we go", 0, false, 0);
+            ThoughtNode innerThought4 = new ThoughtNode(53, "No. Exhausting is the right word. Maybe I try some time later again.", 0, false, 0);
+            ThoughtNode innerThought3 = new ThoughtNode(52, "But why? There is only struggle awaiting me.", 0, false, 0);
+            innerThought3.AddLink(new FinalThoughtLink(MoodState.None,
+                                                  Verb.None,
+                                                  null,
+                                                  0,
+                                                  51,
+                                                  innerThought4, 
+                                                  "Thats what makes it interessting!", 
+                                                  false,
+                                                  new MoodState[] {MoodState.None},
+                                                  false));
+            innerThought3.AddLink(new FinalThoughtLink(MoodState.None,
+                                                  Verb.None,
+                                                  null,
+                                                  55,
+                                                  50,
+                                                  innerThought5, 
+                                                  "If I don't get up now I struggle with myself the rest of the day that I can't get up. Is that better?", 
+                                                  false,
+                                                  new MoodState[] {MoodState.None},
+                                                  false));
+
+            ThoughtNode innerThought2 = new ThoughtNode(49, "First node", 0, false, 0);
+            innerThought2.AddLink(new ThoughtLink(48,
+                                                  innerThought3,
+                                                  "But I should!",
+                                                  false,
+                                                  new MoodState[] {MoodState.None}));
+            innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
+                                                  Verb.Use,
+                                                  null,
+                                                  0,
+                                                  55,
+                                                  null, 
+                                                  "Ok. Let's go! [use]", 
+                                                  true,
+                                                  new MoodState[] {MoodState.None},
+                                                  true));
+            innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
+                                                  Verb.None,
+                                                  null,
+                                                  0,
+                                                  47,
+                                                  null, 
+                                                  "Right. I just continue laying. Maybe I fall asleep again.", 
+                                                  false,
+                                                  new MoodState[] {MoodState.None},
+                                                  false));
+            ThoughtNode innerThought = new ThoughtNode(46, "Its already 12 am. Fuck. I don't want to get up.", 0, true, 30);
+            innerThought.AddLink(new ThoughtLink(45,
+                                            innerThought2,
+                                            "First link",
+                                            false,
+                                            new MoodState[] {MoodState.None}));
+            innerThought.IsInnerDialog = true;
+
             door = new Door(30, "Door", false, true, false, false, false, "It's a door", 
                             2, 1, 1,
                             new Vector2(1058, 570+140+_player.Height), 
                             _content.Load<Texture2D>("Objects/debug/door_closed"),
-                            true, thought,
+                            true, innerThought,
                             _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
             room.addThing(door);
             
@@ -173,9 +232,9 @@ namespace conscious
             // End Initilizing dialog tree
 
             ThoughtNode thought4 = CreateSimpleThought(33, 
-                                                       "He looks hansome. I feel insecure.",
-                                                       "Maybe he likes a gift [give]", 
-                                                       Verb.Give,
+                                                       "He looks handsome. I feel insecure.",
+                                                       new string[] {"Maybe he likes a gift [give]", "I shall talk to him [talk]"}, 
+                                                       new Verb[] {Verb.Give, Verb.TalkTo},
                                                        5,
                                                        MoodState.None);
             Thing character = new PuzzleCharacter(5, "Robo", "Hen", "Bib bup bip", true, 32, 
@@ -186,10 +245,30 @@ namespace conscious
 
             ThoughtNode thought5 = CreateSimpleThought(38, 
                                                        "A key. It looks shiny.",
-                                                       "Maybe I can use that at some time [pickup]", 
-                                                       Verb.PickUp,
+                                                       new string[] {"Maybe I can use that at some time [pickup]"}, 
+                                                       new Verb[] {Verb.PickUp},
                                                        32,
                                                        MoodState.None);
+
+            // thought5 = CreateInnerDialogThought(45, 
+            //                                     "Its already 12 am. Fuck. I don't want to get up.",
+            //                                     new Dictionary<string, object>()
+            //                                     {
+            //                                         {"But I should.", new Dictionary<string, object>()
+            //                                             { 
+            //                                                 {"Why? There is only struggle awaiting me.", new Dictionary<string, object>
+            //                                                     {
+            //                                                         {"Thats what makes it interessting!", "No. Exhausting is the right word. Maybe I try some time later again"},
+            //                                                         {"If I don't get up now I struggle with myself the rest of the day that I can't get up. Is that better?", "Right. Just like in the last days. (Sigh) Ok. Here we go"}
+            //                                                     }
+            //                                                 },
+            //                                             }
+            //                                         },
+            //                                         {"Right. I just continue laying. Maybe I fall asleep again.", ""}
+            //                                     }, 
+            //                                     32,
+            //                                     MoodState.None);
+
             itemPosition = new Vector2(448, 786+4);
             Thing giveItem = new CombineItem(32, "Key", true, false, false, true, false, "It's a key", 
                                              combinedItem, 5, thought5, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
@@ -198,35 +277,53 @@ namespace conscious
             _rooms.Add(2, room);
         }
 
-        private ThoughtNode CreateSimpleThought(int minId, string thoughtText, string action, Verb verbAction, int containingThingId, MoodState state)
+        private ThoughtNode CreateSimpleThought(int minId, string thoughtText, string[] action, Verb[] verbAction, int containingThingId, MoodState state)
         {
             ThoughtNode thought2 = new ThoughtNode(minId, "First node", 0, false, 0);
-            thought2.AddLink(new FinalThoughtLink(state,
-                                                  verbAction,
-                                                  null,
-                                                  0,
-                                                  minId+1,
-                                                  null, 
-                                                  action, 
-                                                  false, 
-                                                  new MoodState[] {MoodState.None}));
+            for(int i = 0; i < action.Length; i++)
+            {
+                thought2.AddLink(new FinalThoughtLink(state,
+                                                    verbAction[i],
+                                                    null,
+                                                    0,
+                                                    minId+i+1,
+                                                    null, 
+                                                    action[i], 
+                                                    false, 
+                                                    new MoodState[] {MoodState.None},
+                                                    false));
+            }
             thought2.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
                                                   null,
                                                   0,
-                                                  minId+2,
+                                                  minId+action.Length+1,
                                                   null, 
                                                   "I'll rather feel alone then [leave it]", 
                                                   false,
-                                                  new MoodState[] {MoodState.None}));
-            ThoughtNode thought = new ThoughtNode(minId+3, thoughtText, 0, true, containingThingId);
-            thought.AddLink(new ThoughtLink(minId+4,
+                                                  new MoodState[] {MoodState.None},
+                                                  false));
+            ThoughtNode thought = new ThoughtNode(minId+action.Length+2, thoughtText, 0, true, containingThingId);
+            thought.AddLink(new ThoughtLink(minId+action.Length+3,
                                             thought2,
                                             "First link",
                                             false,
                                             new MoodState[] {MoodState.None}));
             return thought;
         }
+
+        // private ThoughtNode CreateInnerDialogThought(int minId, string thoughtText, Dictionary<string, object> action, int containingThingId, MoodState state)
+        // {
+        //     int idCount = minId;
+
+        //     ThoughtNode thought = new ThoughtNode(idCount+1, thoughtText, 0, true, containingThingId);
+        //     thought.AddLink(new ThoughtLink(idCount+1,
+        //                                     thought2,
+        //                                     "First link",
+        //                                     false,
+        //                                     new MoodState[] {MoodState.None}));
+        //     return thought;
+        // }
 
         public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId=0)
         {
