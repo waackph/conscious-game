@@ -130,12 +130,11 @@ namespace conscious
             _rooms.Add(1, room);
 
             // room 2
-            bg = _content.Load<Texture2D>("Backgrounds/debug/background_double");
+            bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
             room = new Room(bg.Width, _entityManager, null);
             Thing background = new Thing(11, null, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
             room.addThing(background);
 
-            itemPosition = new Vector2(1058, 575+4);
             // ThoughtNode thought = CreateSimpleThought(12, 
             //                                           "The door to the outside world. \nI am not ready for this.",
             //                                           new string[]{"Fuck it. I'll do it anyway [use]"}, 
@@ -201,12 +200,22 @@ namespace conscious
                                             new MoodState[] {MoodState.None}));
             innerThought.IsInnerDialog = true;
 
-            door = new Door(30, "Door", false, true, false, false, false, "It's a door", 
+            itemPosition = new Vector2(260, 475);
+            door = new Door(30, "Front Door", false, true, false, false, false, "It's a door", 
                             2, 1, 1,
-                            new Vector2(1058, 570+140+_player.Height), 
-                            _content.Load<Texture2D>("Objects/debug/door_closed"),
+                            new Vector2(260, 475+140+_player.Height), 
+                            _content.Load<Texture2D>("Objects/front_door"),
                             true, innerThought,
-                            _content.Load<Texture2D>("Objects/debug/door_opened"), itemPosition);
+                            _content.Load<Texture2D>("Objects/front_door_open"), itemPosition);
+            room.addThing(door);
+
+            itemPosition = new Vector2(2500, 475);
+            door = new Door(80, "Bathroom Door", false, true, false, false, false, "It's a door", 
+                            2, 1, 1,
+                            new Vector2(2500, 475+140+_player.Height), 
+                            _content.Load<Texture2D>("Objects/bath_door"),
+                            true, null,
+                            _content.Load<Texture2D>("Objects/bath_door_open"), itemPosition);
             room.addThing(door);
             
             itemPosition = new Vector2(858, 786+4);
@@ -241,7 +250,7 @@ namespace conscious
                                                   false, dialogTree, _dialogManager, 
                                                   thought4,
                                                   _content.Load<Texture2D>("NPCs/debug/npc"), itemPosition);
-            room.addThing(character);
+            // room.addThing(character);
 
             ThoughtNode thought5 = CreateSimpleThought(38, 
                                                        "A key. It looks shiny.",
@@ -272,7 +281,7 @@ namespace conscious
             itemPosition = new Vector2(448, 786+4);
             Thing giveItem = new CombineItem(32, "Key", true, false, false, true, false, "It's a key", 
                                              combinedItem, 5, thought5, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
-            room.addThing(giveItem);
+            // room.addThing(giveItem);
 
             _rooms.Add(2, room);
         }

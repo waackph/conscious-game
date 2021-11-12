@@ -12,7 +12,7 @@ namespace conscious
         private int _timeSinceLastFrame = 0;
         private int _millisecondsPerFrame = 40;
 
-        public AnimatedSprite(Texture2D texture, int rows, int columns, int width, int height, float rotation)
+        public AnimatedSprite(Texture2D texture, int rows, int columns, int width, int height, float rotation, int secPerFrame)
           :base(texture, width, height, rotation)
         {
             Texture = texture;
@@ -20,6 +20,7 @@ namespace conscious
             _atlasCols = columns;
             _currentFrame = 0;
             _totalFrames = rows * columns;
+            _millisecondsPerFrame = secPerFrame;
             Width = width;
             Height = height;
         } 

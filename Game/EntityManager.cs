@@ -24,7 +24,7 @@ namespace conscious
 
         public EntityManager(Matrix viewportTransformation, Texture2D pixel)
         {
-            _debuggingMode = false;
+            _debuggingMode = true;
             _pixel = pixel;
             ViewportTransformation = viewportTransformation;
         }

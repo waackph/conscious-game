@@ -46,11 +46,11 @@ namespace conscious
             _lastKeyboardState = Keyboard.GetState();
 
             Vector2 playerPosition = Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
-            _player = new Player(content.Load<Texture2D>("Player/Run"),
+            _player = new Player(content.Load<Texture2D>("Player/128_character_animation_walking_draft"),
                                  50, 
                                  null,
                                  "Player",
-                                 content.Load<Texture2D>("Player/Idle"),
+                                 content.Load<Texture2D>("Player/128_character_animation_idle_draft"),
                                  playerPosition);
 
             _cursor = cursor;

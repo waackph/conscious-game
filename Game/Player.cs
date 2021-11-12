@@ -23,8 +23,8 @@ namespace conscious
                       Texture2D texture,
                       Vector2 position) : base(id, thought, name, texture, position)
         {  
-            IdleAnimation = new AnimatedSprite(texture, 1, 1, Width, Height, 0f);
-            MoveAnimation = new AnimatedSprite(moveTexture, 1, 10, Width, Height, 0f);
+            IdleAnimation = new AnimatedSprite(texture, 1, 2, Width, Height, 0f, 800);
+            MoveAnimation = new AnimatedSprite(moveTexture, 4, 2, Width, Height, 0f, 60);
 
             _flip = SpriteEffects.None;
             _playerSpeed = 400f;
@@ -35,14 +35,33 @@ namespace conscious
             DrawOrder = 5;
         }
 
+        public override Rectangle BoundingBox
+        {
+            get
+            {
+                return new Rectangle((int)Position.X - (Width)/2, 
+                                     (int)Position.Y - Height/2,
+                                     (Width/3), Height);
+            }
+        }
+        public override Rectangle CollisionBox
+        {
+            get
+            {
+                return new Rectangle((int)Position.X - (Width)/2, 
+                                     (int)Position.Y + Height/2,
+                                     (Width/3), 20);
+            }
+        }
+
         public override void Update(GameTime gameTime)
         {
             // Decide if Sprite should be flipped
             _currentPositionDelta = LastPosition.X - Position.X;
-            if(_currentPositionDelta < 0){
+            if(_currentPositionDelta > 0){
                 _flip = SpriteEffects.FlipHorizontally;
             }
-            else if(_currentPositionDelta > 0){
+            else if(_currentPositionDelta < 0){
                 _flip = SpriteEffects.None;
             }
 
