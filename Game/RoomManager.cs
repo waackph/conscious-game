@@ -442,14 +442,14 @@ namespace conscious
         public void LimitRoom()
         {
             int roomEnding = currentRoom.RoomWidth;
-            if(_player.Position.X > roomEnding - _player.Width / 2)
-                _player.Position.X = roomEnding - _player.Width / 2;
-            else if(_player.Position.X < _player.Width / 2)
-                _player.Position.X = _player.Width / 2;
-            if(_player.Position.Y > _preferredBackBufferHeight - _player.Height)
-                _player.Position.Y = _preferredBackBufferHeight - _player.Height;
-            else if(_player.Position.Y < _player.Height / 2f + _preferredBackBufferHeight * .64f)
-                _player.Position.Y = _player.Height / 2f + _preferredBackBufferHeight *.64f;
+            if(_player.Position.X > roomEnding)
+                _player.Position.X = roomEnding;
+            else if(_player.Position.X < (_player.Width/2) / 2)
+                _player.Position.X = (_player.Width/2) / 2;
+            if(_player.Position.Y > _preferredBackBufferHeight - (_player.Height/2))
+                _player.Position.Y = _preferredBackBufferHeight - (_player.Height/2);
+            else if(_player.Position.Y < _preferredBackBufferHeight * .55f)
+                _player.Position.Y = _preferredBackBufferHeight *.55f;
         }
 
         public void ScrollRoom()
@@ -495,7 +495,7 @@ namespace conscious
             
             // Testing: Sequence
             _player.Position = new Vector2(10, 900);
-            WalkCommand command = new WalkCommand(1000f, 900f);
+            WalkCommand command = new WalkCommand(1000f, 1000f);
             List<Command> coms = new List<Command>()
             {
                 command

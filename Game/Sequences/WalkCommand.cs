@@ -21,7 +21,7 @@ namespace conscious
             Player player = (Player)thing;
             float xDist = MathHelper.Distance(player.Position.X, _destinationX);
             float yDist = MathHelper.Distance(player.Position.Y, _destinationY);
-            if(xDist >= 15f || yDist >= 15f)
+            if(xDist >= 15f || yDist >= 220f) // (xDist >= 15f || yDist >= 15f)
             {
                 float totalSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 player.MoveToPoint(new Vector2(_destinationX, _destinationY), totalSeconds);
