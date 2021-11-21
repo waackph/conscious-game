@@ -442,12 +442,12 @@ namespace conscious
         public void LimitRoom()
         {
             int roomEnding = currentRoom.RoomWidth;
-            if(_player.Position.X > roomEnding)
-                _player.Position.X = roomEnding;
-            else if(_player.Position.X < (_player.Width/2) / 2)
-                _player.Position.X = (_player.Width/2) / 2;
-            if(_player.Position.Y > _preferredBackBufferHeight - (_player.Height/2))
-                _player.Position.Y = _preferredBackBufferHeight - (_player.Height/2);
+            if(_player.Position.X > roomEnding - (_player.Width/6) / 2)
+                _player.Position.X = roomEnding - (_player.Width/6) / 2;
+            else if(_player.Position.X < (_player.Width/6) / 2)
+                _player.Position.X = (_player.Width/6) / 2;
+            if(_player.Position.Y > _preferredBackBufferHeight - (_player.Height/1.75f))
+                _player.Position.Y = _preferredBackBufferHeight - (_player.Height/1.75f);
             else if(_player.Position.Y < _preferredBackBufferHeight * .55f)
                 _player.Position.Y = _preferredBackBufferHeight *.55f;
         }
