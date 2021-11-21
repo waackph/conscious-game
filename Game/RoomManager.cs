@@ -156,7 +156,7 @@ namespace conscious
                                                   new MoodState[] {MoodState.None},
                                                   false));
             innerThought3.AddLink(new FinalThoughtLink(MoodState.None,
-                                                  Verb.None,
+                                                  Verb.Use,
                                                   null,
                                                   55,
                                                   50,

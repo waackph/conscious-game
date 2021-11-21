@@ -265,7 +265,7 @@ namespace conscious
         {
             bool isNear;
             float distance = _player.GetDistance(entity);
-            if(distance <= Math.Max(entity.Height, entity.Width)*0.66 + _player.Width*0.66)
+            if(distance <= Math.Max(entity.Height, entity.Width)*0.66 + (_player.Width/2)*0.66)
                 isNear = true;
             else
                 isNear = false;

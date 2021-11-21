@@ -44,13 +44,14 @@ namespace conscious
                                      (Width/2), Height);
             }
         }
+
         public override Rectangle CollisionBox
         {
             get
             {
-                return new Rectangle((int)Position.X - (Width/2)/2, 
-                                     (int)Position.Y + Height/2,
-                                     (Width/2), 20);
+                return new Rectangle((int)Position.X - (Width/6)/2, 
+                                     (int)Position.Y + Height/2-20,
+                                     (Width/6), 20);
             }
         }
 
