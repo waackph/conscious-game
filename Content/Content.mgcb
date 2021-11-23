@@ -147,6 +147,18 @@
 /processorParam:TextureFormat=Color
 /build:NPCs/debug/npc.png
 
+#begin NPCs/phone_draft.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:NPCs/phone_draft.png
+
 #begin Objects/alarm_clock_draft.png
 /importer:TextureImporter
 /processor:TextureProcessor

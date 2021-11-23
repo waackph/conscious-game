@@ -217,39 +217,39 @@ namespace conscious
                             _content.Load<Texture2D>("Objects/bath_door_open"), itemPosition);
             room.addThing(door);
             
-            itemPosition = new Vector2(858, 786+4);
+            itemPosition = new Vector2(1488, 600);
             // Start Initilizing dialog tree
             List<Node> dialogTree = new List<Node>();
             List<Edge> edges = new List<Edge>();
-            edges.Add(new Edge(2, "True dat!", MoodState.None));
-            edges.Add(new Edge(3, "Whatever.", MoodState.None));
-            Node root = new Node(1, "Bib bup bip", edges);
+            edges.Add(new Edge(2, "Like puke. But its nice that you called.", MoodState.None));
+            edges.Add(new Edge(3, "Won't complain. You?", MoodState.None));
+            Node root = new Node(1, "Hey Lola, how are you?", edges);
             dialogTree.Add(root);
             edges = new List<Edge>();
-            edges.Add(new Edge(4, "Tell me more", MoodState.None));
-            Node node2 = new Node(2, "Bab bip", edges);
+            edges.Add(new Edge(4, "Sorry.", MoodState.None));
+            Node node2 = new Node(2, "Well, you need to get out of your room. Im trying to reach you for days now.", edges);
             dialogTree.Add(node2);
             edges = new List<Edge>();
-            edges.Add(new Edge(4, "Like I said, whatever.", MoodState.None));
-            Node node3 = new Node(3, "Bub bap", edges);
+            edges.Add(new Edge(4, "Do I have to?", MoodState.None));
+            Node node3 = new Node(3, "Just meet me in the park. It will be nice. I promise!", edges);
             dialogTree.Add(node3);
             edges = new List<Edge>();
-            edges.Add(new Edge(0, "It was nice to talk to you too Sir.", MoodState.None));
-            Node node4 = new Node(4, "Bib bip bup bip", edges);
+            edges.Add(new Edge(0, "Yeah, seems to help. I'll be there as soon as I can. Bye.", MoodState.None));
+            Node node4 = new Node(4, "It it helps.. yes! Meet you there.", edges);
             dialogTree.Add(node4);
             // End Initilizing dialog tree
 
             ThoughtNode thought4 = CreateSimpleThought(33, 
-                                                       "He looks handsome. I feel insecure.",
-                                                       new string[] {"Maybe he likes a gift [give]", "I shall talk to him [talk]"}, 
-                                                       new Verb[] {Verb.Give, Verb.TalkTo},
+                                                       "Oh no. Mara called... 10 times.",
+                                                       new string[] {"Social Contact, yikes!", "I need to call her now. She surely is angry with me by now [talk]"}, 
+                                                       new Verb[] {Verb.None, Verb.TalkTo},
                                                        5,
                                                        MoodState.None);
-            Thing character = new PuzzleCharacter(5, "Robo", "Hen", "Bib bup bip", true, 32, 
-                                                  false, dialogTree, _dialogManager, 
-                                                  thought4,
-                                                  _content.Load<Texture2D>("NPCs/debug/npc"), itemPosition);
-            // room.addThing(character);
+            Thing character = new Character(5, "Phone", "She", "Riiiing", 
+                                            false, dialogTree, _dialogManager, 
+                                            thought4,
+                                            _content.Load<Texture2D>("NPCs/phone_draft"), itemPosition);
+            room.addThing(character);
 
             ThoughtNode thought5 = CreateSimpleThought(38, 
                                                        "A key. It looks shiny.",
