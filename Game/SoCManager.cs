@@ -186,6 +186,7 @@ namespace conscious
                         link.IsLocked = false;
                         _toUnlock.Remove(unlockId);
                         _alreadyUnlocked.Add(unlockId);
+                        break;
                     }
                     else
                     {
@@ -208,7 +209,7 @@ namespace conscious
 
         private void checkUnlockIds(ThoughtNode node)
         {
-            List<int> tempUnlockIds = _toUnlock;
+            List<int> tempUnlockIds = new List<int>(_toUnlock);
             if(tempUnlockIds.Count != 0)
             {
                 foreach(int id in tempUnlockIds)

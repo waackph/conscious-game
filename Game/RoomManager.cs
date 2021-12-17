@@ -129,6 +129,7 @@ namespace conscious
 
             _rooms.Add(1, room);
 
+            ////////////////////////////////////////////////
             // room 2
             bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
             room = new Room(bg.Width, _entityManager, null);
@@ -152,7 +153,7 @@ namespace conscious
                                                   null, 
                                                   "Ok. Let's go! [use]", 
                                                   true,
-                                                  new MoodState[] {MoodState.Regular},
+                                                  new MoodState[] {MoodState.None},  // TODO: Use regular when bath door use action also implemented (showering)
                                                   true));
             innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
@@ -183,7 +184,7 @@ namespace conscious
             ThoughtNode innerThought12 = new ThoughtNode(49, "First node", 0, false, 0);
             // TODO: Add sequence going into bathroom, wait x seconds, go back to current room.
             innerThought12.AddLink(new FinalThoughtLink(MoodState.Regular,
-                                                  Verb.None,  // Verb.Use,
+                                                  Verb.None,  // TODO: later on use: Verb.Use
                                                   null,
                                                   55,
                                                   94,
