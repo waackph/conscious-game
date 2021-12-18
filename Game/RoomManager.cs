@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
 using System.Collections.Generic;
+using System;
 
 namespace conscious
 {
@@ -25,6 +26,8 @@ namespace conscious
 
         public Room currentRoom;
         public int CurrentRoomIndex;
+
+        public event EventHandler<bool> TerminateGameEvent;
 
         public RoomManager(ContentManager content, 
                            Player player,
@@ -61,6 +64,11 @@ namespace conscious
             _doorEntered = null;
 
             LoadRooms();
+        }
+
+        protected virtual void OnTerminateGameEvent(bool e)
+        {
+            TerminateGameEvent?.Invoke(this, e);
         }
         
         public void LoadRooms()
@@ -527,7 +535,8 @@ namespace conscious
                 if(door.currentlyUsed == true)
                 {
                     door.currentlyUsed = false;
-                    changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
+                    // changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
+                    OnTerminateGameEvent(true);
                     break;
                 }
             }

@@ -32,6 +32,8 @@ namespace conscious
         private int _preferredBackBufferHeight;
         private Texture2D _pixel;
 
+        public bool gameFinished = false;
+
         private static JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
 
         public GameScreen(int preferredBackBufferWidth, int preferredBackBufferHeight, Texture2D pixel, Cursor cursor, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager) 
@@ -98,6 +100,8 @@ namespace conscious
                                            _roomGraph,
                                            _preferredBackBufferWidth, _preferredBackBufferHeight);
 
+            _roomManager.TerminateGameEvent += SetTerminateGame;
+
             _roomInteractionManager = new RoomInteractionManager(_entityManager, 
                                                                  _socManager, 
                                                                  _inventoryManager, 
@@ -114,6 +118,12 @@ namespace conscious
         {
             if(Keyboard.GetState().IsKeyUp(Keys.Escape) && _lastKeyboardState.IsKeyDown(Keys.Escape))
             {
+                _screenEvent.Invoke(this, new EventArgs());
+            }
+
+            if(gameFinished)
+            {
+                // TODO: Add logic to reinitilize game (if continue is clicked afterwards)
                 _screenEvent.Invoke(this, new EventArgs());
             }
 
@@ -150,6 +160,11 @@ namespace conscious
         public override void Draw(SpriteBatch spriteBatch)
         {
             _entityManager.Draw(spriteBatch);
+        }
+
+        public void SetTerminateGame(object sender, bool e)
+        {
+                gameFinished = true;
         }
 
         public override void InitilizeEntityManager()
