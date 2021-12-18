@@ -15,11 +15,14 @@ namespace conscious
         private ControlsManager _controlsManager;
         private RoomManager _roomManager;
         private UiDialogManager _dialogManager;
+        private SequenceManager _sequenceManager;
 
         private AStarShortestPath _pathfinder;
 
         private Cursor _cursor;
         private Player _player;
+
+        private GameTime _gameTime;
 
         private ButtonState _lastButtonState;
         private Thing _thingClickedInRoom;
@@ -38,6 +41,7 @@ namespace conscious
                                       ControlsManager controlsManager,
                                       RoomManager roomManager,
                                       UiDialogManager dialogManager,
+                                      SequenceManager sequenceManager,
                                       AStarShortestPath pathfinder,
                                       Cursor cursor,
                                       Player player) 
@@ -45,11 +49,12 @@ namespace conscious
             _entityManager = entityManager;
             _socManager = socManager;
             _socManager.ActionEvent += executeThoughtInteraction;
-            _socManager.FinalEdgeSelected += wakePlayer;
+            _socManager.FinalEdgeSelected += doPlayerFinalThoughtActions;
             _inventoryManager = inventoryManager;
             _controlsManager = controlsManager;
             _roomManager = roomManager;
             _dialogManager = dialogManager;
+            _sequenceManager = sequenceManager;
 
             _pathfinder = pathfinder;
 
@@ -69,6 +74,8 @@ namespace conscious
 
         public void Update(GameTime gameTime)
         {
+            _gameTime = gameTime;
+            
             Vector2 direction = Vector2.Zero;
             Vector2 mousePosition = Vector2.Zero;
 
@@ -211,11 +218,16 @@ namespace conscious
 
         public void Draw(SpriteBatch spriteBatch) {}
 
-        private void wakePlayer(object sender, Verb e)
+        private void doPlayerFinalThoughtActions(object sender, FinalEdgeEventArgs e)
         {
-            if(e == Verb.WakeUp)
+            if(e.verbAction == Verb.WakeUp)
             {
                 _player.WakeUp();
+            }
+            
+            if(e.seq != null)
+            {
+                _sequenceManager.StartSequence(e.seq, _player);
             }
         }
 

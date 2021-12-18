@@ -45,8 +45,9 @@ namespace conscious
 
             _lastKeyboardState = Keyboard.GetState();
 
-            Vector2 playerPosition = Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
+            Vector2 playerPosition = new Vector2(1000, 150);  //Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
             _player = new Player(content.Load<Texture2D>("Player/128_character_animation_walking_draft"),
+                                 content.Load<Texture2D>("Player/128_character_animation_sleeping_draft"),
                                  50, 
                                  null,
                                  "Player",
@@ -103,6 +104,7 @@ namespace conscious
                                                                  _controlsManager, 
                                                                  _roomManager, 
                                                                  _dialogManager,
+                                                                 _sequenceManager,
                                                                  _pathFinder,
                                                                  _cursor,
                                                                  _player);

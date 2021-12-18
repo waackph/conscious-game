@@ -80,7 +80,7 @@ namespace conscious
                                                       new Verb[]{Verb.UseWith},
                                                       1,
                                                       MoodState.Depressed);
-            Thing door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
+            Door door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
                                   4, 2, 30, 
                                   new Vector2(1058, 579+150+_player.Height), 
                                   _content.Load<Texture2D>("Objects/debug/door_closed"),
@@ -148,6 +148,7 @@ namespace conscious
             innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.Use,
                                                   null,
+                                                  null,
                                                   0,
                                                   55,
                                                   null, 
@@ -157,6 +158,7 @@ namespace conscious
                                                   true));
             innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
+                                                  null,
                                                   null,
                                                   0,
                                                   47,
@@ -182,19 +184,9 @@ namespace conscious
             room.addThing(door);
 
             ThoughtNode innerThought12 = new ThoughtNode(49, "First node", 0, false, 0);
-            // TODO: Add sequence going into bathroom, wait x seconds, go back to current room.
-            innerThought12.AddLink(new FinalThoughtLink(MoodState.Regular,
-                                                  Verb.None,  // TODO: later on use: Verb.Use
-                                                  null,
-                                                  55,
-                                                  94,
-                                                  null, 
-                                                  "Puh.. I need to take a shower [use]", 
-                                                  false,
-                                                  new MoodState[] {MoodState.None},
-                                                  true));
             innerThought12.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
+                                                  null,
                                                   null,
                                                   0,
                                                   93,
@@ -216,6 +208,38 @@ namespace conscious
                             _content.Load<Texture2D>("Objects/bath_door"),
                             true, innerThought11,
                             _content.Load<Texture2D>("Objects/bath_door_open"), itemPosition);
+
+            // Add final link with animation
+            // TODO: Add sequence going into bathroom, wait x seconds, go back to current room.
+            WalkCommand walkToDoor = new WalkCommand(door.Position.X, door.Position.Y);
+            DoorActionCommand useDoor = new DoorActionCommand(door);
+            VanishCommand playerAppearance = new VanishCommand();
+            WaitCommand wait = new WaitCommand(10000);
+            WalkCommand walkToRoom = new WalkCommand(2500, 1000);
+            List<Command> coms = new List<Command>()
+            {
+                walkToDoor,
+                useDoor,
+                playerAppearance,
+                wait,
+                useDoor,
+                playerAppearance,
+                walkToRoom
+            };
+            Sequence seq = new Sequence(coms);
+
+            innerThought12.AddLink(new FinalThoughtLink(MoodState.Regular,
+                                                        Verb.None,  // We use the sequence here, so no verb needed
+                                                        null, 
+                                                        seq,
+                                                        55,
+                                                        94,
+                                                        null, 
+                                                        "Puh.. I need to take a shower [use]", 
+                                                        false,
+                                                        new MoodState[] {MoodState.None},
+                                                        true));
+
             room.addThing(door);
             
             itemPosition = new Vector2(1488, 600);
@@ -289,6 +313,7 @@ namespace conscious
             innerThought8.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
                                                   null,
+                                                  null,
                                                   0,
                                                   87,
                                                   innerThought9, 
@@ -299,7 +324,8 @@ namespace conscious
             innerThought8.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.WakeUp,
                                                   null,
-                                                  55,
+                                                  null,
+                                                  0,
                                                   86,
                                                   innerThought10, 
                                                   "If I don't get up now I struggle with myself the rest of the day that I can't get up. Is that better?", 
@@ -325,6 +351,7 @@ namespace conscious
             //                                       true));
             innerThought7.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
+                                                  null,
                                                   null,
                                                   0,
                                                   83,
@@ -359,6 +386,7 @@ namespace conscious
                 thought2.AddLink(new FinalThoughtLink(state,
                                                     verbAction[i],
                                                     null,
+                                                    null,
                                                     0,
                                                     minId+i+1,
                                                     null, 
@@ -369,6 +397,7 @@ namespace conscious
             }
             thought2.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
+                                                  null,
                                                   null,
                                                   0,
                                                   minId+action.Length+1,
@@ -454,17 +483,17 @@ namespace conscious
             if(currentRoom == null)
             {
                 // Testing: Sequence
-                if(_rooms[CurrentRoomIndex].EntrySequence == null && CurrentRoomIndex == 2)
-                {
-                    _player.Position = new Vector2(10, 786);
-                    WalkCommand command = new WalkCommand(1000f, 786f);
-                    List<Command> coms = new List<Command>()
-                    {
-                        command
-                    };
-                    Sequence seq = new Sequence(coms);
-                    _rooms[CurrentRoomIndex].EntrySequence = seq;
-                }
+                // if(_rooms[CurrentRoomIndex].EntrySequence == null && CurrentRoomIndex == 2)
+                // {
+                //     _player.Position = new Vector2(10, 786);
+                //     WalkCommand command = new WalkCommand(1000f, 786f);
+                //     List<Command> coms = new List<Command>()
+                //     {
+                //         command
+                //     };
+                //     Sequence seq = new Sequence(coms);
+                //     _rooms[CurrentRoomIndex].EntrySequence = seq;
+                // }
 
                 // currentRoom = _rooms[CurrentRoomIndex];
                 changeRoom(CurrentRoomIndex, Vector2.Zero);

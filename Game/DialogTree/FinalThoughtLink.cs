@@ -5,12 +5,14 @@ namespace conscious
         public MoodState MoodChange { get; }
         public Verb Verb { get; }
         public AnimatedSprite Animation { get; }
+        public Sequence ThoughtSequence { get; }
         public int UnlockId { get; }
         public bool IsSuccessEdge { get; }
 
         public FinalThoughtLink(MoodState moodChange,
                                 Verb verb,
                                 AnimatedSprite animation,
+                                Sequence sequence,
                                 int unlockId,
                                 int id, 
                                 ThoughtNode nextNode, 
@@ -25,7 +27,7 @@ namespace conscious
             Animation = animation;
             UnlockId = unlockId;
             IsSuccessEdge = isSuccessEdge;
+            ThoughtSequence = sequence;
         }
-        
     }
 }
