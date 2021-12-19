@@ -8,6 +8,7 @@ namespace conscious
         private int _itemDependency;
         private bool _isUnlocked;
         private Texture2D _closeTexture;
+        public bool IsClosed;
 
         public bool currentlyUsed = false;
         public int RoomId;
@@ -67,11 +68,13 @@ namespace conscious
         public void OpenDoor()
         {
             _sprite.Texture = EntityTexture;
+            IsClosed = false;
         }
 
         public void CloseDoor()
         {
             _sprite.Texture = _closeTexture;
+            IsClosed = true;
         }
         
         public override DataHolderEntity GetDataHolderEntity()

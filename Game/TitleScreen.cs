@@ -113,6 +113,10 @@ namespace conscious
             {
                 _entityManager.AddEntity(uiComponent);
             }
+
+            Texture2D bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
+            Thing background = new Thing(11, null, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
+            _entityManager.AddEntity(background);
         }
     }
 }

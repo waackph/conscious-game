@@ -4,6 +4,7 @@ namespace conscious
     {
         Idle,
         Walk,
-        Sleep
+        Sleep,
+        None
     }
 }

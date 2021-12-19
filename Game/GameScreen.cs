@@ -32,6 +32,8 @@ namespace conscious
         private int _preferredBackBufferHeight;
         private Texture2D _pixel;
 
+        public bool gameFinished = false;
+
         private static JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
 
         public GameScreen(int preferredBackBufferWidth, int preferredBackBufferHeight, Texture2D pixel, Cursor cursor, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager) 
@@ -45,12 +47,13 @@ namespace conscious
 
             _lastKeyboardState = Keyboard.GetState();
 
-            Vector2 playerPosition = Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
-            _player = new Player(content.Load<Texture2D>("Player/Run"),
+            Vector2 playerPosition = new Vector2(1000, 150);  //Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
+            _player = new Player(content.Load<Texture2D>("Player/128_character_animation_walking_draft"),
+                                 content.Load<Texture2D>("Player/128_character_animation_sleeping_draft"),
                                  50, 
                                  null,
                                  "Player",
-                                 content.Load<Texture2D>("Player/Idle"),
+                                 content.Load<Texture2D>("Player/128_character_animation_idle_draft"),
                                  playerPosition);
 
             _cursor = cursor;
@@ -97,12 +100,15 @@ namespace conscious
                                            _roomGraph,
                                            _preferredBackBufferWidth, _preferredBackBufferHeight);
 
+            _roomManager.TerminateGameEvent += SetTerminateGame;
+
             _roomInteractionManager = new RoomInteractionManager(_entityManager, 
                                                                  _socManager, 
                                                                  _inventoryManager, 
                                                                  _controlsManager, 
                                                                  _roomManager, 
                                                                  _dialogManager,
+                                                                 _sequenceManager,
                                                                  _pathFinder,
                                                                  _cursor,
                                                                  _player);
@@ -112,6 +118,12 @@ namespace conscious
         {
             if(Keyboard.GetState().IsKeyUp(Keys.Escape) && _lastKeyboardState.IsKeyDown(Keys.Escape))
             {
+                _screenEvent.Invoke(this, new EventArgs());
+            }
+
+            if(gameFinished)
+            {
+                // TODO: Add logic to reinitilize game (if continue is clicked afterwards)
                 _screenEvent.Invoke(this, new EventArgs());
             }
 
@@ -148,6 +160,11 @@ namespace conscious
         public override void Draw(SpriteBatch spriteBatch)
         {
             _entityManager.Draw(spriteBatch);
+        }
+
+        public void SetTerminateGame(object sender, bool e)
+        {
+                gameFinished = true;
         }
 
         public override void InitilizeEntityManager()
