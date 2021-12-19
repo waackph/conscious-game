@@ -54,7 +54,29 @@ namespace conscious
 
             _viewportTransformation = Matrix.CreateTranslation(0, 0, 0);
 
-            _entityManager = new EntityManager(_viewportTransformation, _pixel);
+            // add lighting
+            Texture2D lightMap = Content.Load<Texture2D>("light/light_gimp");
+            // instatiate the blendState
+            BlendState multiplicativeBlend = new BlendState();
+            // deal with transparency
+            multiplicativeBlend.AlphaBlendFunction = BlendFunction.ReverseSubtract;
+            multiplicativeBlend.AlphaSourceBlend = Blend.SourceAlpha;
+            multiplicativeBlend.AlphaDestinationBlend = Blend.Zero;
+            // deal with color
+            multiplicativeBlend.ColorBlendFunction = BlendFunction.Add;
+            multiplicativeBlend.ColorSourceBlend = Blend.DestinationColor;
+            multiplicativeBlend.ColorDestinationBlend = Blend.Zero;
+
+            // Another blendstate to deal with the lightmap later:
+            // BlendState LightBlend = new BlendState();
+            // LightBlend.ColorBlendFunction = BlendFunction.Subtract;
+            // LightBlend.ColorSourceBlend = Blend.DestinationColor;
+            // LightBlend.ColorDestinationBlend = Blend.Zero;
+
+            // TODO: Do I need the renderTarget2D? -> Do I maybe need one target for light and one for world?
+            // RenderTarget2D GhostLayer = new RenderTarget2D(graphicsDevice, 250, 250);
+
+            _entityManager = new EntityManager(_viewportTransformation, lightMap, multiplicativeBlend, _pixel);
 
             _cursor= new Cursor(Content.Load<SpriteFont>("Font/Hud"),
                                 Matrix.Invert(_viewportTransformation),

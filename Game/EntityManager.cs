@@ -16,17 +16,23 @@ namespace conscious
         
         public Matrix ViewportTransformation;
 
+        // Lighting
+        private Texture2D _lightMap;
+        private BlendState _multiplicativeBlend;
+
         public IEnumerable<Entity> Entities => new ReadOnlyCollection<Entity>(_entities);
 
         // Debugging
         private Texture2D _pixel;
         private bool _debuggingMode;
 
-        public EntityManager(Matrix viewportTransformation, Texture2D pixel)
+        public EntityManager(Matrix viewportTransformation, Texture2D lightMap, BlendState multiplicativeBlend, Texture2D pixel)
         {
             _debuggingMode = false;
             _pixel = pixel;
             ViewportTransformation = viewportTransformation;
+            _lightMap = lightMap;
+            _multiplicativeBlend = multiplicativeBlend;
         }
 
         public void Update(GameTime gameTime){
@@ -76,6 +82,10 @@ namespace conscious
                     }
                 }
             }
+            spriteBatch.End();
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, _multiplicativeBlend);
+            spriteBatch.Draw(_lightMap, new Rectangle(0, 0, 1920, 1080), Color.White);
             spriteBatch.End();
         }
 
