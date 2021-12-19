@@ -86,6 +86,8 @@ namespace conscious
                                                       "The door to the outside world",
                                                       new string[]{"Its locked. Maybe I can open it somehow? [use]"}, 
                                                       new Verb[]{Verb.UseWith},
+                                                      new int[] {0},
+                                                      new bool[] {true},
                                                       1,
                                                       MoodState.Depressed);
             Door door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
@@ -101,6 +103,8 @@ namespace conscious
                                                       "It's a key. There is nothing more mundane",
                                                       new string[]{"Let's keep it anyway [pick up]"}, 
                                                       new Verb[]{Verb.PickUp},
+                                                      new int[]{0},
+                                                      new bool[] {true},
                                                       2,
                                                       MoodState.Regular);
             Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now",
@@ -114,6 +118,8 @@ namespace conscious
                                                       "It's a bottle. Wow...",
                                                       new string[]{"Maybe I can use it for something [combine]"}, 
                                                       new Verb[]{Verb.Combine},
+                                                      new int[]{0},
+                                                      new bool[] {true},
                                                       3,
                                                       MoodState.None);
             itemPosition = new Vector2(200, 786+4);
@@ -244,7 +250,7 @@ namespace conscious
                                                         94,
                                                         null, 
                                                         "Puh.. I need to take a shower [use]", 
-                                                        false,
+                                                        true,
                                                         new MoodState[] {MoodState.None},
                                                         true));
 
@@ -276,6 +282,8 @@ namespace conscious
                                                        "Oh no. Mara called... 10 times.",
                                                        new string[] {"Social Contact, yikes!", "I need to call her now. She surely is angry with me by now [talk]"}, 
                                                        new Verb[] {Verb.None, Verb.TalkTo},
+                                                       new int[] {0, 94},
+                                                       new bool[] {false, true},
                                                        5,
                                                        MoodState.None);
             Thing character = new Character(5, "Phone", "She", "Riiiing", 
@@ -283,37 +291,6 @@ namespace conscious
                                             thought4,
                                             _content.Load<Texture2D>("NPCs/phone_draft"), itemPosition);
             room.addThing(character);
-
-            ThoughtNode thought5 = CreateSimpleThought(38, 
-                                                       "A key. It looks shiny.",
-                                                       new string[] {"Maybe I can use that at some time [pickup]"}, 
-                                                       new Verb[] {Verb.PickUp},
-                                                       32,
-                                                       MoodState.None);
-
-            // thought5 = CreateInnerDialogThought(45, 
-            //                                     "Its already 12 am. Fuck. I don't want to get up.",
-            //                                     new Dictionary<string, object>()
-            //                                     {
-            //                                         {"But I should.", new Dictionary<string, object>()
-            //                                             { 
-            //                                                 {"Why? There is only struggle awaiting me.", new Dictionary<string, object>
-            //                                                     {
-            //                                                         {"Thats what makes it interessting!", "No. Exhausting is the right word. Maybe I try some time later again"},
-            //                                                         {"If I don't get up now I struggle with myself the rest of the day that I can't get up. Is that better?", "Right. Just like in the last days. (Sigh) Ok. Here we go"}
-            //                                                     }
-            //                                                 },
-            //                                             }
-            //                                         },
-            //                                         {"Right. I just continue laying. Maybe I fall asleep again.", ""}
-            //                                     }, 
-            //                                     32,
-            //                                     MoodState.None);
-
-            itemPosition = new Vector2(448, 786+4);
-            Thing giveItem = new CombineItem(32, "Key", true, false, false, true, false, "It's a key", 
-                                             combinedItem, 5, thought5, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
-            // room.addThing(giveItem);
 
             ThoughtNode innerThought10 = new ThoughtNode(90, "Right. Just like in the last days. (Sigh) Ok. Here we go", 0, false, 0);
             ThoughtNode innerThought9 = new ThoughtNode(89, "No. Exhausting is the right word. Maybe I try some time later again.", 0, false, 0);
@@ -386,7 +363,7 @@ namespace conscious
             _rooms.Add(2, room);
         }
 
-        private ThoughtNode CreateSimpleThought(int minId, string thoughtText, string[] action, Verb[] verbAction, int containingThingId, MoodState state)
+        private ThoughtNode CreateSimpleThought(int minId, string thoughtText, string[] action, Verb[] verbAction, int[] unlockIDs, bool[] isSuccessList, int containingThingId, MoodState state)
         {
             ThoughtNode thought2 = new ThoughtNode(minId, "First node", 0, false, 0);
             for(int i = 0; i < action.Length; i++)
@@ -395,13 +372,13 @@ namespace conscious
                                                     verbAction[i],
                                                     null,
                                                     null,
-                                                    0,
+                                                    unlockIDs[i],
                                                     minId+i+1,
                                                     null, 
                                                     action[i], 
                                                     false, 
                                                     new MoodState[] {MoodState.None},
-                                                    false));
+                                                    isSuccessList[i]));
             }
             thought2.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
