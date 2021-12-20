@@ -55,6 +55,7 @@ namespace conscious
         }
 
         public void Draw(SpriteBatch spriteBatch){
+            // TODO: Maybe split up entities into different types to have better control over draw order and batchmode
             spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null,null, ViewportTransformation);
             foreach(Entity entity in _entities.OrderBy(e => e.DrawOrder))
             {
@@ -70,6 +71,10 @@ namespace conscious
             }
             spriteBatch.End();
 
+            spriteBatch.Begin(SpriteSortMode.Immediate, _multiplicativeBlend);
+            spriteBatch.Draw(_lightMap, new Rectangle(0, 0, 1920, 1080), Color.White);
+            spriteBatch.End();
+
             spriteBatch.Begin();
             foreach(Entity entity in _entities.OrderBy(e => e.DrawOrder))
             {
@@ -82,10 +87,6 @@ namespace conscious
                     }
                 }
             }
-            spriteBatch.End();
-
-            spriteBatch.Begin(SpriteSortMode.Immediate, _multiplicativeBlend);
-            spriteBatch.Draw(_lightMap, new Rectangle(0, 0, 1920, 1080), Color.White);
             spriteBatch.End();
         }
 
