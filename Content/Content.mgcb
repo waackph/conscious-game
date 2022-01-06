@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Audio/BackgroundNoise.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/BackgroundNoise.mp3
+
 #begin Audio/ExitReached.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -24,6 +30,12 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Audio/Music.wma
+
+#begin Audio/ShowerSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/ShowerSound.wav
 
 #begin Backgrounds/480_270_Room_double_Concept_Draft.png
 /importer:TextureImporter

@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 using System.Collections.Generic;
 using System;
@@ -224,11 +225,13 @@ namespace conscious
                             _content.Load<Texture2D>("Objects/bath_door_open"), itemPosition);
 
             // Add final link with animation
-            // TODO: Add sequence going into bathroom, wait x seconds, go back to current room.
+            // Add sequence going into bathroom, wait x seconds, go back to current room.
             WalkCommand walkToDoor = new WalkCommand(door.Position.X, door.Position.Y);
             DoorActionCommand useDoor = new DoorActionCommand(door);
             VanishCommand playerAppearance = new VanishCommand();
             WaitCommand wait = new WaitCommand(10000);
+            SoundEffect sound = _content.Load<SoundEffect>("Audio/ShowerSound");
+            wait.Sound = sound;
             WalkCommand walkToRoom = new WalkCommand(2500, 1000);
             List<Command> coms = new List<Command>()
             {

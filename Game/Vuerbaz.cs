@@ -12,6 +12,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace conscious
 {
@@ -29,6 +30,8 @@ namespace conscious
         private Texture2D _pixel;
         private Matrix _viewportTransformation;
         private Cursor _cursor;
+
+        public Song StreetAmbient;
 
 
         public Vuerbaz()
@@ -111,6 +114,12 @@ namespace conscious
             
             _currentScreen = _titleScreen;
             _currentScreen.EnteredScreen = true;
+
+            // add test audio file as song (because its mp3 and we just repeat it)
+            StreetAmbient = Content.Load<Song>("Audio/BackgroundNoise");
+            MediaPlayer.Play(StreetAmbient);
+            MediaPlayer.IsRepeating = true;
+
         }
 
         /// <summary>
