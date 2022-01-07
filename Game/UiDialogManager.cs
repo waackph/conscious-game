@@ -23,6 +23,7 @@ namespace conscious
         private bool _textInilized;
         private Vector2 _textPosition;
         private MouseState _lastMouseState;
+        private Cursor _cursor;
 
         private bool _responseSelectionMode;
         private bool _responsesInitilized;
@@ -35,6 +36,7 @@ namespace conscious
         public UiDialogManager(EntityManager entityManager,
                              MoodStateManager moodStateManager,
                              Player player,
+                             Cursor cursor,
                              SpriteFont displayFont,
                              Texture2D pixel)
         {
@@ -46,6 +48,7 @@ namespace conscious
             _pixel = pixel;
             _texts = new List<UIComponent>();
             _lastMouseState = Mouse.GetState();
+            _cursor = cursor;
 
             // Dialog
             TreeStructure = new List<Node>();
@@ -133,7 +136,7 @@ namespace conscious
             // Player position for response text
             Vector2 playerResponsePosition = _player.Position;
             playerResponsePosition.Y = playerResponsePosition.Y - _player.Height/2 - 50; // 50 is the arbitrary offset for now
-            playerResponsePosition.X = playerResponsePosition.X - _player.Width/2;
+            // playerResponsePosition.X = playerResponsePosition.X;
             foreach(Edge edge in _currentNode.GetEdges()){
                 Vector2 responsePosition = new Vector2(playerResponsePosition.X, playerResponsePosition.Y + offset);
                 offset = offset + 20f;
@@ -141,11 +144,13 @@ namespace conscious
                 if(edge.MoodDependence == MoodState.None || edge.MoodDependence == _moodStateManager.moodState)
                 {
                     UIResponse response = new UIResponse(edge,
+                                                        _cursor,
                                                         _displayFont,
                                                         edge.GetLine(), 
                                                         "Response_" + (offset/20f).ToString(), 
                                                         _pixel, 
                                                         responsePosition);
+                    response.FixedDrawPosition = false;
                     AddText(response);
                 }
             }
@@ -158,7 +163,7 @@ namespace conscious
             {
                 foreach(UIResponse response in GetThingsOfType<UIResponse>())
                 {
-                    if(response.BoundingBox.Contains(currentMouseState.Position))
+                    if(response.BoundingBox.Contains(_cursor.MouseCoordinates))
                     {
                         if(response.ResponseEdge.getNextNodeId() != 0)
                         {
@@ -193,8 +198,9 @@ namespace conscious
         {
             Vector2 nodePosition = character.Position;
             nodePosition.Y = nodePosition.Y - character.Height/2 - 50; // 50 is the arbitrary offset for now
-            nodePosition.X = nodePosition.X - character.Width/2;
+            nodePosition.X = nodePosition.X + character.Width/2;
             UIText text = new UIText(_displayFont, displayText, "Display Text", _pixel, nodePosition);
+            text.FixedDrawPosition = false;
             RemoveText();
             _currentText = text;
             AddText(_currentText);

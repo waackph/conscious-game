@@ -85,7 +85,7 @@ namespace conscious
             _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("UI/debug_sprites/soc_background_main"),
                                                  content.Load<Texture2D>("UI/debug_sprites/soc_background_sub"));
 
-            _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, _player, content.Load<SpriteFont>("Font/Hud"), _pixel);
+            _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, _player, cursor, content.Load<SpriteFont>("Font/Hud"), _pixel);
 
             _sequenceManager = new SequenceManager();
 

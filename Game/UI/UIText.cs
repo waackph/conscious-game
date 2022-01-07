@@ -27,6 +27,8 @@ namespace conscious
             _font = font;
             _text = Regex.Replace(text, "(.{" + 45 + "})", "$1" + Environment.NewLine);
             _color = Color.Black;
+
+            DrawOrder = 7;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
