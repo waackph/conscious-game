@@ -310,7 +310,7 @@ namespace conscious
                                                     node.Thought, node.Thought, 
                                                     _pixel, 
                                                     Vector2.One);
-                if(node.IsRoot && node.IsInnerDialog)
+                if(node.IsRoot)
                     uiThought.IsUsed = node.IsUsed;
                 return uiThought;
             }

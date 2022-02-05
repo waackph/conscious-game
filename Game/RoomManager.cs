@@ -89,6 +89,7 @@ namespace conscious
                                                       new Verb[]{Verb.UseWith},
                                                       new int[] {0},
                                                       new bool[] {true},
+                                                      new bool[] {false},
                                                       1,
                                                       MoodState.Depressed);
             Door door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
@@ -106,6 +107,7 @@ namespace conscious
                                                       new Verb[]{Verb.PickUp},
                                                       new int[]{0},
                                                       new bool[] {true},
+                                                      new bool[] {false},
                                                       2,
                                                       MoodState.Regular);
             Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now",
@@ -121,6 +123,7 @@ namespace conscious
                                                       new Verb[]{Verb.Combine},
                                                       new int[]{0},
                                                       new bool[] {true},
+                                                      new bool[] {false},
                                                       3,
                                                       MoodState.None);
             itemPosition = new Vector2(200, 786+4);
@@ -287,6 +290,7 @@ namespace conscious
                                                        new Verb[] {Verb.None, Verb.TalkTo},
                                                        new int[] {0, 94},
                                                        new bool[] {false, true},
+                                                       new bool[] {false, true},
                                                        5,
                                                        MoodState.None);
             Thing character = new Character(5, "Phone", "She", "Riiiing", 
@@ -313,7 +317,7 @@ namespace conscious
                                                   Verb.WakeUp,
                                                   null,
                                                   null,
-                                                  0,
+                                                  35,
                                                   86,
                                                   innerThought10, 
                                                   "If I don't get up now I struggle with myself the rest of the day that I can't get up. Is that better?", 
@@ -366,7 +370,7 @@ namespace conscious
             _rooms.Add(2, room);
         }
 
-        private ThoughtNode CreateSimpleThought(int minId, string thoughtText, string[] action, Verb[] verbAction, int[] unlockIDs, bool[] isSuccessList, int containingThingId, MoodState state)
+        private ThoughtNode CreateSimpleThought(int minId, string thoughtText, string[] action, Verb[] verbAction, int[] unlockIDs, bool[] isSuccessList, bool[] isLocked, int containingThingId, MoodState state)
         {
             ThoughtNode thought2 = new ThoughtNode(minId, "First node", 0, false, 0);
             for(int i = 0; i < action.Length; i++)
@@ -379,7 +383,7 @@ namespace conscious
                                                     minId+i+1,
                                                     null, 
                                                     action[i], 
-                                                    false, 
+                                                    isLocked[i],
                                                     new MoodState[] {MoodState.None},
                                                     isSuccessList[i]));
             }

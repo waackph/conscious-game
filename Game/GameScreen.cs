@@ -75,7 +75,7 @@ namespace conscious
             _inventoryManager.LoadContent(content.Load<Texture2D>("UI/debug_sprites/inventory_place_background_v2"), 
                                           content.Load<Texture2D>("UI/debug_sprites/inventory_background_v2"));
 
-            _moodStateManager = new MoodStateManager(_entityManager);
+            _moodStateManager = new MoodStateManager(_entityManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
 
             _roomGraph = new RoomGraph();
             _pathFinder = new AStarShortestPath(_roomGraph);
@@ -178,6 +178,7 @@ namespace conscious
             }
             _dialogManager.FillEntityManager();
             _uiDisplayThoughtManager.FillEntityManager();
+            _moodStateManager.FillEntityManager();
         }
 
         public DataHolderPlayer GetDataHolderPlayer()

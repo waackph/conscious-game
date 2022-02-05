@@ -65,6 +65,7 @@ namespace conscious
         public ThoughtNode SelectThought(string thoughtName)
         {
             ThoughtNode node = GetThought(thoughtName);
+            checkUnlockIds(node);
             // If thought is an Selectable Thought: choose link from root
             if(node.HasLinks())
             {
@@ -135,6 +136,7 @@ namespace conscious
                             if(_finalOption.IsSuccessEdge && !_finalOption.IsLocked)
                             {
                                 usedThought = true;
+                                _currentThought.IsUsed = true;
                             }
                             else
                             {
@@ -144,7 +146,7 @@ namespace conscious
                                 unlockThoughtLink(_finalOption.UnlockId);
                             OnFinishInteractionEvent(usedThought);
                             option.IsVisited = true;
-                            _currentThought.IsUsed = true;
+                            _moodStateManager.StateChange = _finalOption.MoodChange;
                         }
                     }
                     // _uiDisplayThought.EndThoughtMode();

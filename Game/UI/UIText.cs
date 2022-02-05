@@ -45,6 +45,11 @@ namespace conscious
             return _font.MeasureString(_text).X;
         }
 
+        public void UpdateText(string text)
+        {
+            _text = text;
+        }
+
         public float GetStringHeight()
         {
             return _font.MeasureString(_text).Y;
