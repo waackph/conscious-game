@@ -285,8 +285,8 @@ namespace conscious
             // End Initilizing dialog tree
 
             ThoughtNode thought4 = CreateSimpleThought(33, 
-                                                       "Oh no. Mara called... 10 times.",
-                                                       new string[] {"Social Contact, yikes!", "I need to call her now. She surely is angry with me by now [talk]"}, 
+                                                       "My phone means only trouble to me",
+                                                       new string[] {"Oh no. Mara called... 10 times.", "I need to call her now. She surely is angry with me by now [talk]"}, 
                                                        new Verb[] {Verb.None, Verb.TalkTo},
                                                        new int[] {0, 94},
                                                        new bool[] {false, true},
