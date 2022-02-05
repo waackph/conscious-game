@@ -9,6 +9,7 @@ namespace conscious
     public class UiDisplayThoughtManager : IComponent
     {
         private EntityManager _entityManager;
+        private MoodStateManager _moodStateManager;
         private SoCManager _socManager;
         private Cursor _cursor;
         private Queue<UIThought> _thoughts;
@@ -29,9 +30,10 @@ namespace conscious
         private MouseState _lastMouseState;
         public bool IsInThoughtMode { get; protected set; }
 
-        public UiDisplayThoughtManager(EntityManager entityManager, SoCManager socManager, Cursor cursor, SpriteFont font, Texture2D pixel)
+        public UiDisplayThoughtManager(EntityManager entityManager, MoodStateManager moodStateManager, SoCManager socManager, Cursor cursor, SpriteFont font, Texture2D pixel)
         {
             _entityManager = entityManager;
+            _moodStateManager = moodStateManager;
             _socManager = socManager;
             _socManager.AddThoughtEvent += AddThoughtFromSoC;
             _socManager.FinishInteractionEvent += FinishThought;
@@ -325,7 +327,7 @@ namespace conscious
             List<UIThought> uiOptions = new List<UIThought>();
             foreach(ThoughtLink link in links)
             {
-                if(!link.IsLocked)
+                if(!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
                 {
                     // TODO: add a disabled style, if current moodState is not valid for this option
                     UIThought uiThought = new UIThought(isClickable:true,

@@ -81,7 +81,7 @@ namespace conscious
             _pathFinder = new AStarShortestPath(_roomGraph);
 
             _socManager = new SoCManager(_moodStateManager);
-            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _socManager, _cursor, content.Load<SpriteFont>("Font/Hud"), _pixel);
+            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _moodStateManager, _socManager, _cursor, content.Load<SpriteFont>("Font/Hud"), _pixel);
             _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("UI/debug_sprites/soc_background_main"),
                                                  content.Load<Texture2D>("UI/debug_sprites/soc_background_sub"));
 

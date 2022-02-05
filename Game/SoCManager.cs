@@ -75,7 +75,7 @@ namespace conscious
                     node.Links.Sort((x, y) => x.Id.CompareTo(y.Id));
                     foreach(ThoughtLink link in node.Links)
                     {
-                        if(!link.IsLocked)
+                        if(!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
                         {
                             ThoughtNode displayNode = link.NextNode;
                             _currentSubthoughtLinks = displayNode.Links;

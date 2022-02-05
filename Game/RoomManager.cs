@@ -171,8 +171,8 @@ namespace conscious
                                                   55,
                                                   null, 
                                                   "Ok. Let's go! [use]", 
-                                                  true,
-                                                  new MoodState[] {MoodState.None},  // TODO: Use regular when bath door use action also implemented (showering)
+                                                  false,
+                                                  new MoodState[] {MoodState.Regular},  // TODO: Use regular when bath door use action also implemented (showering)
                                                   true));
             innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
@@ -252,7 +252,7 @@ namespace conscious
                                                         Verb.None,  // We use the sequence here, so no verb needed
                                                         null, 
                                                         seq,
-                                                        55,
+                                                        0,
                                                         94,
                                                         null, 
                                                         "Puh.. I need to take a shower [use]", 
