@@ -84,6 +84,7 @@ namespace conscious
 
             itemPosition = new Vector2(1058, 570);
             ThoughtNode thought3 = CreateSimpleThought(22, 
+                                                      "Mhh...",
                                                       "The door to the outside world",
                                                       new string[]{"Its locked. Maybe I can open it somehow? [use]"}, 
                                                       new Verb[]{Verb.UseWith},
@@ -102,6 +103,7 @@ namespace conscious
             room.addThing(door);
 
             ThoughtNode thought2 = CreateSimpleThought(17, 
+                                                      "Mhh...",
                                                       "It's a key. There is nothing more mundane",
                                                       new string[]{"Let's keep it anyway [pick up]"}, 
                                                       new Verb[]{Verb.PickUp},
@@ -118,6 +120,7 @@ namespace conscious
             room.addThing(key);
 
             ThoughtNode thought6 = CreateSimpleThought(41, 
+                                                      "Mhh...",
                                                       "It's a bottle. Wow...",
                                                       new string[]{"Maybe I can use it for something [combine]"}, 
                                                       new Verb[]{Verb.Combine},
@@ -162,7 +165,7 @@ namespace conscious
             //                                           MoodState.None);
             // ----- Inner Dialog Thought -----
             
-            ThoughtNode innerThought2 = new ThoughtNode(49, "First node", 0, false, 0);
+            ThoughtNode innerThought2 = new ThoughtNode(49, "I don't know if I'm ready.", 0, false, 0);
             innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.Use,
                                                   null,
@@ -172,8 +175,19 @@ namespace conscious
                                                   null, 
                                                   "Ok. Let's go! [use]", 
                                                   false,
-                                                  new MoodState[] {MoodState.Regular},  // TODO: Use regular when bath door use action also implemented (showering)
+                                                  new MoodState[] {MoodState.Regular},
                                                   true));
+            innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
+                                                  Verb.None,
+                                                  null,
+                                                  null,
+                                                  0,
+                                                  55,
+                                                  null, 
+                                                  "I can't. I'm just feeling to ugly [not use]", 
+                                                  false,
+                                                  new MoodState[] {MoodState.Depressed},
+                                                  false));
             innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
                                                   null,
@@ -181,7 +195,7 @@ namespace conscious
                                                   0,
                                                   47,
                                                   null, 
-                                                  "Nah. Im not ready for this. I wanna go to bed again!", 
+                                                  "Nah. Let's go back to bed again!", 
                                                   false,
                                                   new MoodState[] {MoodState.None},
                                                   false));
@@ -201,7 +215,7 @@ namespace conscious
                             _content.Load<Texture2D>("Objects/front_door_open"), itemPosition);
             room.addThing(door);
 
-            ThoughtNode innerThought12 = new ThoughtNode(49, "First node", 0, false, 0);
+            ThoughtNode innerThought12 = new ThoughtNode(49, "Cleaning is so annoying", 0, false, 0);
             innerThought12.AddLink(new FinalThoughtLink(MoodState.None,
                                                   Verb.None,
                                                   null,
@@ -255,7 +269,7 @@ namespace conscious
                                                         0,
                                                         94,
                                                         null, 
-                                                        "Puh.. I need to take a shower [use]", 
+                                                        "Puh.. But I need to take a shower [use]", 
                                                         true,
                                                         new MoodState[] {MoodState.None},
                                                         true));
@@ -285,8 +299,9 @@ namespace conscious
             // End Initilizing dialog tree
 
             ThoughtNode thought4 = CreateSimpleThought(33, 
+                                                       "Oh no. Mara called... 10 times.",
                                                        "My phone means only trouble to me",
-                                                       new string[] {"Oh no. Mara called... 10 times.", "I need to call her now. She surely is angry with me by now [talk]"}, 
+                                                       new string[] {"Just ignore it. Don't start thinking about it.", "I need to call her now. She surely is angry with me by now [talk]"}, 
                                                        new Verb[] {Verb.None, Verb.TalkTo},
                                                        new int[] {0, 94},
                                                        new bool[] {false, true},
@@ -325,7 +340,7 @@ namespace conscious
                                                   new MoodState[] {MoodState.None},
                                                   true));
 
-            ThoughtNode innerThought7 = new ThoughtNode(85, "First node", 0, false, 0);
+            ThoughtNode innerThought7 = new ThoughtNode(85, "Its already 12 am. Fuck. I don't want to get up.", 0, false, 0);
             innerThought7.AddLink(new ThoughtLink(84,
                                                   innerThought8,
                                                   "But I should!",
@@ -352,7 +367,7 @@ namespace conscious
                                                   false,
                                                   new MoodState[] {MoodState.None},
                                                   false));
-            ThoughtNode innerThought6 = new ThoughtNode(83, "Its already 12 am. Fuck. I don't want to get up.", 0, true, 30);
+            ThoughtNode innerThought6 = new ThoughtNode(83, "Oh no, I don't wanna know the time right now.", 0, true, 30);
             innerThought6.AddLink(new ThoughtLink(82,
                                             innerThought7,
                                             "First link",
@@ -370,9 +385,9 @@ namespace conscious
             _rooms.Add(2, room);
         }
 
-        private ThoughtNode CreateSimpleThought(int minId, string thoughtText, string[] action, Verb[] verbAction, int[] unlockIDs, bool[] isSuccessList, bool[] isLocked, int containingThingId, MoodState state)
+        private ThoughtNode CreateSimpleThought(int minId, string introText, string thoughtText, string[] action, Verb[] verbAction, int[] unlockIDs, bool[] isSuccessList, bool[] isLocked, int containingThingId, MoodState state)
         {
-            ThoughtNode thought2 = new ThoughtNode(minId, "First node", 0, false, 0);
+            ThoughtNode thought2 = new ThoughtNode(minId, introText, 0, false, 0);
             for(int i = 0; i < action.Length; i++)
             {
                 thought2.AddLink(new FinalThoughtLink(state,

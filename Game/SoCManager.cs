@@ -9,12 +9,15 @@ namespace conscious
     {
         private MoodStateManager _moodStateManager;
         public Queue<ThoughtNode> Thoughts { get; private set; }
+        Random random = new Random();
         private int _maxThoughts;
         private List<ThoughtLink> _currentSubthoughtLinks;
+        private List<ThoughtNode> _randomThoughts;
         private ThoughtNode _currentThought;
         private FinalThoughtLink _finalOption;
         private List<int> _toUnlock = new List<int>();
         private List<int> _alreadyUnlocked = new List<int>();
+        private bool _isStart;
         
         public event EventHandler<VerbActionEventArgs> ActionEvent;
         public event EventHandler<ThoughtNode> AddThoughtEvent;
@@ -28,9 +31,28 @@ namespace conscious
             Thoughts = new Queue<ThoughtNode>();
             _maxThoughts = 2;
             VerbResult = Verb.None;
+
+            _randomThoughts = new List<ThoughtNode>();
+            _randomThoughts.Add(new ThoughtNode(1000, "War? What is it good for?", 0, false, 0));
+            _randomThoughts.Add(new ThoughtNode(1001, "I never died in my sleep. Such a shame.", 0, false, 0));
+            _randomThoughts.Add(new ThoughtNode(1002, "Dadada dada dadada", 0, false, 0));
+            _randomThoughts.Add(new ThoughtNode(1003, "I don't like the ambience right now.", 0, false, 0));
+            _randomThoughts.Add(new ThoughtNode(1004, "The Avatar movie was endlessly overhyped.", 0, false, 0));
+            _isStart = true;
         }
 
-        public void Update(GameTime gameTime){ }
+        public void Update(GameTime gameTime)
+        {
+            // logic to add thoughts randomly some times
+            if(_isStart)
+            {
+                int randomIndex = random.Next(0, _randomThoughts.Count);
+                AddThought(_randomThoughts[randomIndex]);
+                _isStart = false;
+            }
+            // TODO: trigger a random thought at some randomized time intervalls 
+            // (randomly draw a time interval, when it is over randomly draw a thought)
+        }
 
         public void Draw(SpriteBatch spriteBatch){ }
 

@@ -202,7 +202,7 @@ namespace conscious
             //       while the subthought of another is already active
             IsInThoughtMode = true;
             _entityManager.AddEntity(_subthoughtBackground);
-            _currentSubthought = convertNodeToUi(node, doDisplay:false);
+            _currentSubthought = convertNodeToUi(node, doDisplay:true);
             _currentSubthoughtLinks = convertLinksToUi(links);
             calculateSubthoughtPositions();
             addSubthought();
