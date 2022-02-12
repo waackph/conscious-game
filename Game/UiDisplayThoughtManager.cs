@@ -201,6 +201,7 @@ namespace conscious
             // TODO: Restart Thought Mode when another thought is clicked 
             //       while the subthought of another is already active
             IsInThoughtMode = true;
+            _socManager.IsInThoughtMode = true;
             _entityManager.AddEntity(_subthoughtBackground);
             _currentSubthought = convertNodeToUi(node, doDisplay:true);
             _currentSubthoughtLinks = convertLinksToUi(links);
@@ -211,6 +212,7 @@ namespace conscious
         public void EndThoughtMode()
         {
             IsInThoughtMode = false;
+            _socManager.IsInThoughtMode = false;
             removeSubthought();
             _entityManager.RemoveEntity(_subthoughtBackground);
         }

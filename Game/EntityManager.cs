@@ -95,8 +95,8 @@ namespace conscious
         public void AddEntity(Entity entity){
             if(entity is null)
                 throw new ArgumentNullException(nameof(entity), "Null cannot be added as an entity.");
-
-            _entitiesToAdd.Add(entity);
+            if(!_entitiesToAdd.Contains(entity))
+                _entitiesToAdd.Add(entity);
         }
 
         public void RemoveEntity(Entity entity){

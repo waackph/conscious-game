@@ -18,7 +18,11 @@ namespace conscious
         private List<int> _toUnlock = new List<int>();
         private List<int> _alreadyUnlocked = new List<int>();
         private bool _isStart;
+        private int _timeSinceLastRandomThought;
+        private int _timeToWait;
+        private int _maxMinutesToWait;
         
+        public bool IsInThoughtMode;
         public event EventHandler<VerbActionEventArgs> ActionEvent;
         public event EventHandler<ThoughtNode> AddThoughtEvent;
         public event EventHandler<bool> FinishInteractionEvent;
@@ -38,20 +42,46 @@ namespace conscious
             _randomThoughts.Add(new ThoughtNode(1002, "Dadada dada dadada", 0, false, 0));
             _randomThoughts.Add(new ThoughtNode(1003, "I don't like the ambience right now.", 0, false, 0));
             _randomThoughts.Add(new ThoughtNode(1004, "The Avatar movie was endlessly overhyped.", 0, false, 0));
+
             _isStart = true;
+            _maxMinutesToWait = 30;
+
+            _timeToWait = 0;
+            _timeSinceLastRandomThought = 0;
+
+            IsInThoughtMode = false;
         }
 
         public void Update(GameTime gameTime)
         {
+            _timeSinceLastRandomThought += gameTime.ElapsedGameTime.Milliseconds;
             // logic to add thoughts randomly some times
             if(_isStart)
             {
-                int randomIndex = random.Next(0, _randomThoughts.Count);
-                AddThought(_randomThoughts[randomIndex]);
+                drawRandomThought();
                 _isStart = false;
+                _timeToWait = drawTimeInterval();
             }
             // TODO: trigger a random thought at some randomized time intervalls 
             // (randomly draw a time interval, when it is over randomly draw a thought)
+            else if (_timeSinceLastRandomThought > _timeToWait & !IsInThoughtMode)
+            {
+                _timeSinceLastRandomThought = 0;
+                _timeToWait = drawTimeInterval();
+                drawRandomThought();
+            }
+        }
+
+        public void drawRandomThought()
+        {
+            int randomIndex = random.Next(0, _randomThoughts.Count);
+            AddThought(_randomThoughts[randomIndex]);
+        }
+
+        public int drawTimeInterval()
+        {
+            int intervalInMinutes = random.Next(5, _maxMinutesToWait) * 1000 * 60;
+            return intervalInMinutes;
         }
 
         public void Draw(SpriteBatch spriteBatch){ }
@@ -244,6 +274,16 @@ namespace conscious
                     checkUnlockId(node, id);
                 }
             }
+        }
+
+        public void ThoughtModeStart()
+        {
+            IsInThoughtMode = true;
+        }
+
+        public void ThoughtModeFinish()
+        {
+            IsInThoughtMode = false;
         }
 
         protected virtual void OnActionEvent(VerbActionEventArgs e)
