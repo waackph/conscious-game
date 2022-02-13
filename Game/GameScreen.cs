@@ -16,6 +16,7 @@ namespace conscious
         private ControlsManager _controlsManager;
         private RoomManager _roomManager;
         private EntityManager _entityManager;
+        private MoodStateManager _moodStateManager;
         // private VerbManager _verbManager;
         private SoCManager _socManager;
         private InventoryManager _inventoryManager;
@@ -23,7 +24,6 @@ namespace conscious
         private UiDisplayThoughtManager _uiDisplayThoughtManager;
         private RoomInteractionManager _roomInteractionManager;
         private SequenceManager _sequenceManager;
-        private MoodStateManager _moodStateManager;
         private RoomGraph _roomGraph;
         private AStarShortestPath _pathFinder;
         private Player _player;
@@ -36,7 +36,7 @@ namespace conscious
 
         private static JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
 
-        public GameScreen(int preferredBackBufferWidth, int preferredBackBufferHeight, Texture2D pixel, Cursor cursor, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager) 
+        public GameScreen(int preferredBackBufferWidth, int preferredBackBufferHeight, Texture2D pixel, Cursor cursor, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager, MoodStateManager moodStateManager) 
             : base(game, graphicsDevice, content, screenEvent)
         {
             // Initilize
@@ -47,18 +47,21 @@ namespace conscious
 
             _lastKeyboardState = Keyboard.GetState();
 
+            _cursor = cursor;
+
+            _entityManager = entityManager;
+
+            _moodStateManager = moodStateManager;
+
             Vector2 playerPosition = new Vector2(1000, 150);  //Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
             _player = new Player(content.Load<Texture2D>("Player/128_character_animation_walking_draft"),
                                  content.Load<Texture2D>("Player/128_character_animation_sleeping_draft"),
                                  50, 
                                  null,
+                                 _moodStateManager,
                                  "Player",
                                  content.Load<Texture2D>("Player/128_character_animation_idle_draft"),
                                  playerPosition);
-
-            _cursor = cursor;
-
-            _entityManager = entityManager;
 
             _controlsManager = new ControlsManager(_player);
 
@@ -74,8 +77,6 @@ namespace conscious
             _inventoryManager = new InventoryManager(_entityManager);
             _inventoryManager.LoadContent(content.Load<Texture2D>("UI/debug_sprites/inventory_place_background_v2"), 
                                           content.Load<Texture2D>("UI/debug_sprites/inventory_background_v2"));
-
-            _moodStateManager = new MoodStateManager(_entityManager, content.Load<SpriteFont>("Font/Hud"), _pixel);
 
             _roomGraph = new RoomGraph();
             _pathFinder = new AStarShortestPath(_roomGraph);
@@ -268,7 +269,7 @@ namespace conscious
             if(dh.GetType() == typeof(DataHolderThing))
             {
                 DataHolderThing dhThing = (DataHolderThing)dh;
-                entity = new Thing(dhThing.Id, dhThing.Thought, dhThing.Name, 
+                entity = new Thing(dhThing.Id, dhThing.Thought, _moodStateManager, dhThing.Name, 
                                    _content.Load<Texture2D>(dhThing.texturePath), 
                                    new Vector2(dhThing.PositionX, dhThing.PositionY));
             }
@@ -279,7 +280,7 @@ namespace conscious
                                   dhItem.PickUpAble, dhItem.UseAble, 
                                   dhItem.CombineAble, dhItem.GiveAble, 
                                   dhItem.UseWith, dhItem.ExamineText,
-                                  dhItem.Thought,
+                                  dhItem.Thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhItem.texturePath), 
                                   new Vector2(dhItem.PositionX, dhItem.PositionY));
             }
@@ -291,11 +292,11 @@ namespace conscious
                 {
                     items.Add(entry.Key, (Item)InstatiateEntity(entry.Value));
                 }
-                entity = new MorphingItem(_moodStateManager, items,
+                entity = new MorphingItem(items,
                                           dhMorph.Id, dhMorph.Name, dhMorph.PickUpAble,
                                           dhMorph.UseAble, dhMorph.CombineAble,
                                           dhMorph.GiveAble, dhMorph.UseWith, 
-                                          dhMorph.ExamineText, dhMorph.Thought,
+                                          dhMorph.ExamineText, dhMorph.Thought, _moodStateManager, 
                                           _content.Load<Texture2D>(dhMorph.texturePath), 
                                           new Vector2(dhMorph.PositionX, dhMorph.PositionY));
             }
@@ -309,7 +310,7 @@ namespace conscious
                                   dhDoor.ItemDependency, dhDoor.RoomId, dhDoor.DoorId,
                                   new Vector2(dhDoor.InitPlayerPosX, dhDoor.InitPlayerPosY),
                                   _content.Load<Texture2D>(dhDoor.CloseTexturePath),
-                                  dhDoor.IsUnlocked, dhDoor.Thought,
+                                  dhDoor.IsUnlocked, dhDoor.Thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY));
             }
@@ -320,7 +321,7 @@ namespace conscious
                                  dhKey.PickUpAble, dhKey.UseAble, 
                                  dhKey.CombineAble, dhKey.GiveAble, 
                                  dhKey.UseWith, dhKey.ExamineText,
-                                 dhKey.ItemDependency, dhKey.Thought,
+                                 dhKey.ItemDependency, dhKey.Thought, _moodStateManager, 
                                  _content.Load<Texture2D>(dhKey.texturePath), 
                                  new Vector2(dhKey.PositionX, dhKey.PositionY));
             }
@@ -340,7 +341,7 @@ namespace conscious
                                          dhCombinable.PickUpAble, dhCombinable.UseAble, 
                                          dhCombinable.CombineAble, dhCombinable.GiveAble, 
                                          dhCombinable.UseWith, dhCombinable.ExamineText,
-                                         combinedItem, dhCombinable.ItemDependency, dhCombinable.Thought,
+                                         combinedItem, dhCombinable.ItemDependency, dhCombinable.Thought, _moodStateManager, 
                                          _content.Load<Texture2D>(dhCombinable.texturePath), 
                                          new Vector2(dhCombinable.PositionX, dhCombinable.PositionY));
             }
@@ -350,7 +351,7 @@ namespace conscious
                 entity = new Character(dhCharacter.Id, dhCharacter.Name, 
                                        dhCharacter.Pronoun, dhCharacter.CatchPhrase, 
                                        dhCharacter.GiveAble, dhCharacter.TreeStructure, 
-                                       _dialogManager, dhCharacter.Thought,
+                                       _dialogManager, dhCharacter.Thought, _moodStateManager, 
                                        _content.Load<Texture2D>(dhCharacter.texturePath), 
                                        new Vector2(dhCharacter.PositionX, dhCharacter.PositionY));
             }
@@ -361,7 +362,7 @@ namespace conscious
                                              dhPuzzleCharacter.Pronoun, dhPuzzleCharacter.CatchPhrase, 
                                              dhPuzzleCharacter.GiveAble, dhPuzzleCharacter.ItemDependency,
                                              dhPuzzleCharacter.DialogUnlocked, dhPuzzleCharacter.TreeStructure, 
-                                             _dialogManager, dhPuzzleCharacter.Thought,
+                                             _dialogManager, dhPuzzleCharacter.Thought, _moodStateManager, 
                                              _content.Load<Texture2D>(dhPuzzleCharacter.texturePath), 
                                              new Vector2(dhPuzzleCharacter.PositionX, dhPuzzleCharacter.PositionY));
             }

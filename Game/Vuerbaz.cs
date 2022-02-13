@@ -27,6 +27,7 @@ namespace conscious
         private GameScreen _gameScreen;
         private Screen _currentScreen;
         private EntityManager _entityManager;
+        private MoodStateManager _moodStateManager;
         private Texture2D _pixel;
         private Matrix _viewportTransformation;
         private Cursor _cursor;
@@ -81,6 +82,8 @@ namespace conscious
 
             _entityManager = new EntityManager(_viewportTransformation, lightMap, multiplicativeBlend, _pixel);
 
+            _moodStateManager = new MoodStateManager(_entityManager, Content.Load<SpriteFont>("Font/Hud"), _pixel);
+
             _cursor= new Cursor(Content.Load<SpriteFont>("Font/Hud"),
                                 Matrix.Invert(_viewportTransformation),
                                 "Cursor",
@@ -101,7 +104,7 @@ namespace conscious
             // TODO: use this.Content to load your game content here
             _titleScreen = new TitleScreen(new EventHandler(TitleNewEvent), new EventHandler(TitleSaveEvent), 
                                            this, this.GraphicsDevice, this.Content, 
-                                           new EventHandler(TitleContinueEvent), _entityManager);
+                                           new EventHandler(TitleContinueEvent), _entityManager, _moodStateManager);
 
             _gameScreen = new GameScreen(_graphics.PreferredBackBufferWidth, 
                                         _graphics.PreferredBackBufferHeight,
@@ -110,7 +113,7 @@ namespace conscious
                                         this,
                                         this.GraphicsDevice,
                                         this.Content, 
-                                        new EventHandler(GameMenuEvent), _entityManager);
+                                        new EventHandler(GameMenuEvent), _entityManager, _moodStateManager);
             
             _currentScreen = _titleScreen;
             _currentScreen.EnteredScreen = true;

@@ -7,12 +7,11 @@ namespace conscious
 {
     public class MorphingItem : Item
     {
-        private MoodStateManager _moodStateManager;
+        // private MoodStateManager _moodStateManager;
         private Dictionary<MoodState, Item> _items;
         private Item _currentItem;
 
-        public MorphingItem(MoodStateManager moodStateManager, 
-                             Dictionary<MoodState, Item> items,
+        public MorphingItem(Dictionary<MoodState, Item> items,
                              int id,
                              string name, 
                              bool pickUpAble, 
@@ -22,9 +21,10 @@ namespace conscious
                              bool useWith, 
                              string examineText,
                              ThoughtNode thought,
-                             Texture2D texture, Vector2 position) : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, texture, position)
+                             MoodStateManager moodStateManager, 
+                             Texture2D texture, Vector2 position) : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position)
         {
-            _moodStateManager = moodStateManager;
+            // _moodStateManager = moodStateManager;
             _items = items;
             setCurrentItem();
         }

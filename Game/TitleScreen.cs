@@ -11,6 +11,7 @@ namespace conscious
     {
         // fields
         private EntityManager _entityManager;
+        private MoodStateManager _moodStateManager;
         private List<UIComponent> _uiComponents;
 
         // properties
@@ -20,13 +21,14 @@ namespace conscious
         private EventHandler _newEvent;
         private EventHandler _saveEvent;
 
-        public TitleScreen(EventHandler newEvent, EventHandler saveEvent, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager) 
+        public TitleScreen(EventHandler newEvent, EventHandler saveEvent, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager, MoodStateManager moodStateManager) 
             : base(game, graphicsDevice, content, screenEvent)
         {
             // Initilize
             _displayFont = content.Load<SpriteFont>("Font/Hud");
 
             _entityManager = entityManager;
+            _moodStateManager = moodStateManager;
 
             GameLoaded = false;
 
@@ -115,7 +117,7 @@ namespace conscious
             }
 
             Texture2D bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
-            Thing background = new Thing(11, null, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
+            Thing background = new Thing(11, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
             _entityManager.AddEntity(background);
         }
     }

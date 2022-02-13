@@ -21,9 +21,10 @@ namespace conscious
                       Texture2D sleepTexture, 
                       int id,
                       ThoughtNode thought,
+                      MoodStateManager moodStateManager, 
                       string name, 
                       Texture2D texture,
-                      Vector2 position) : base(id, thought, name, texture, position)
+                      Vector2 position) : base(id, thought, moodStateManager, name, texture, position)
         {  
             IdleAnimation = new AnimatedSprite(texture, 1, 2, (Width/2), Height, 0f, 800);
             MoveAnimation = new AnimatedSprite(moveTexture, 4, 2, (Width/2), Height, 0f, 60);

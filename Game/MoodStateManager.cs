@@ -8,10 +8,10 @@ namespace conscious
     public class MoodStateManager : IComponent
     {
         private UIText _moodText;
+        private EntityManager _entityManager;
         public MoodState moodState { get; private set; }
         public MoodState StateChange { get; set; }
-
-        private EntityManager _entityManager;
+        public event EventHandler<MoodState> MoodChangeEvent;
 
         public MoodStateManager(EntityManager entityManager, SpriteFont font, Texture2D pixel)
         {
@@ -26,25 +26,34 @@ namespace conscious
             if(StateChange != MoodState.None && StateChange != moodState)
             {
                 moodState = StateChange;
-                foreach(MorphingItem item in _entityManager.GetEntitiesOfType<MorphingItem>())
-                {
-                    item.setCurrentItem();
-                }
-                foreach(UIInventoryPlace place in _entityManager.GetEntitiesOfType<UIInventoryPlace>())
-                {
-                    if(place.InventoryItem != null)
-                    {
-                        if(IsSameOrSubclass(typeof(MorphingItem), place.InventoryItem.GetType()))
-                        {
-                            MorphingItem morph = (MorphingItem)place.InventoryItem;
-                            morph.setCurrentItem();
-                        }
-                    }
-                }
+
+                OnMoodChangeEvent(moodState);
+
                 _entityManager.RemoveEntity(_moodText);
                 _moodText.UpdateText(generateMoodText());
                 FillEntityManager();
+                // We dont use MorphingItem for now (maybe will not be necessary for game)
+                // foreach(MorphingItem item in _entityManager.GetEntitiesOfType<MorphingItem>())
+                // {
+                //     item.setCurrentItem();
+                // }
+                // foreach(UIInventoryPlace place in _entityManager.GetEntitiesOfType<UIInventoryPlace>())
+                // {
+                //     if(place.InventoryItem != null)
+                //     {
+                //         if(IsSameOrSubclass(typeof(MorphingItem), place.InventoryItem.GetType()))
+                //         {
+                //             MorphingItem morph = (MorphingItem)place.InventoryItem;
+                //             morph.setCurrentItem();
+                //         }
+                //     }
+                // }
             }
+        }
+
+        protected virtual void OnMoodChangeEvent(MoodState e)
+        {
+            MoodChangeEvent?.Invoke(this, e);
         }
 
         private string generateMoodText()

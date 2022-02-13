@@ -17,8 +17,9 @@ namespace conscious
                   string examineText,
                   int itemDependency,
                   ThoughtNode thought,
+                  MoodStateManager moodStateManager, 
                   Texture2D texture, Vector2 position) 
-                : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, texture, position){
+                : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position){
             _itemDependency = itemDependency;
         }
 
