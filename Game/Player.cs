@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace conscious
 {
@@ -10,6 +11,9 @@ namespace conscious
         private bool _isMoving;
         private bool _lastIsMoving;
         private float _playerSpeed;
+        private Dictionary<MoodState, AnimatedSprite> _moodIdleAnimation;
+        private Dictionary<MoodState, AnimatedSprite> _moodMoveAnimation;
+        private Dictionary<MoodState, AnimatedSprite> _moodSleepAnimation;
         
         public PlayerState PlayerState;
         public Vector2 LastPosition;
@@ -37,6 +41,37 @@ namespace conscious
             _lastIsMoving = _isMoving;
             LastPosition = position;
             DrawOrder = 5;
+
+            // Standard case for mood dependent animations
+            _moodIdleAnimation = new Dictionary<MoodState, AnimatedSprite>();
+            _moodIdleAnimation[MoodState.Depressed] = new AnimatedSprite(texture, 1, 2, (Width/2), Height, 0f, 1000);
+            _moodIdleAnimation[MoodState.Regular] = new AnimatedSprite(texture, 1, 2, (Width/2), Height, 0f, 800);
+            _moodIdleAnimation[MoodState.Manic] = new AnimatedSprite(texture, 1, 2, (Width/2), Height, 0f, 600);
+
+            _moodMoveAnimation = new Dictionary<MoodState, AnimatedSprite>();
+            _moodMoveAnimation[MoodState.Depressed] = new AnimatedSprite(moveTexture, 4, 2, (Width/2), Height, 0f, 80);
+            _moodMoveAnimation[MoodState.Regular] = new AnimatedSprite(moveTexture, 4, 2, (Width/2), Height, 0f, 60);
+            _moodMoveAnimation[MoodState.Manic] = new AnimatedSprite(moveTexture, 4, 2, (Width/2), Height, 0f, 40);
+
+            _moodSleepAnimation = new Dictionary<MoodState, AnimatedSprite>();
+            _moodSleepAnimation[MoodState.Depressed] = new AnimatedSprite(sleepTexture, 1, 2, (Width/2), Height, 0f, 1000);
+            _moodSleepAnimation[MoodState.Regular] = new AnimatedSprite(sleepTexture, 1, 2, (Width/2), Height, 0f, 800);
+            _moodSleepAnimation[MoodState.Manic] = new AnimatedSprite(sleepTexture, 1, 2, (Width/2), Height, 0f, 600);
+
+            _moodStateManager.MoodChangeEvent += changeAnimationOnMood;
+            updateAnimationOnMood(_moodStateManager.moodState);
+        }
+
+        private void changeAnimationOnMood(object sender, MoodState e)
+        {
+            updateAnimationOnMood(e);
+        }
+
+        private void updateAnimationOnMood(MoodState moodState)
+        {
+            IdleAnimation = _moodIdleAnimation[moodState];
+            MoveAnimation = _moodMoveAnimation[moodState];
+            SleepAnimation = _moodSleepAnimation[moodState];
         }
 
         public override Rectangle BoundingBox

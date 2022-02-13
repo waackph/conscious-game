@@ -1,8 +1,12 @@
 Notes - 20220213
 - [Todo] Trigger to change world stuff depending on moodState
-- [Todo] Trigger to change player stuff depending on moodState
-- [Todo] Trigger to change item stuff depening on moodState
-- [Question] How to change all objects depending on moodState?
+    => Create an AudioManager
+    => Make lightmap Property of EntityManager Public
+    => Change Audio and lightmap depending on room and in the room store it for different moodStates
+- [Question] How to animate the whole transition of one mood to another (changing light, textures, ...)?
+/- [Todo] Trigger to change player stuff depending on moodState
+/- [Todo] Trigger to change item stuff depening on moodState
+/- [Question] How to change all objects depending on moodState?
     => Maybe it is not necessary to declare different objects depending on moodState for the same entity?
     Using thoughts the capabilities to interact with the entity change. 
     But maybe it is necessary in the game to change gameObject capabilities? 
