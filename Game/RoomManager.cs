@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 using System.Collections.Generic;
 using System;
@@ -15,6 +16,7 @@ namespace conscious
         private UiDialogManager _dialogManager;
         private SequenceManager _sequenceManager;
         private MoodStateManager _moodStateManager;
+        private AudioManager _audioManager;
         private RoomGraph _roomGraph;
         private ContentManager _content;
         private int _preferredBackBufferWidth;
@@ -38,6 +40,7 @@ namespace conscious
                            UiDialogManager dialogManager,
                            SequenceManager sequenceManager,
                            MoodStateManager moodStateManager,
+                           AudioManager audioManager,
                            RoomGraph roomGraph,
                            int preferredBackBufferWidth, 
                            int preferredBackBufferHeight)
@@ -54,10 +57,13 @@ namespace conscious
             _dialogManager = dialogManager;
             _sequenceManager = sequenceManager;
             _moodStateManager = moodStateManager;
+            _audioManager = audioManager;
             _roomGraph = roomGraph;
 
             _player = player;
             _cursor = cursor;
+
+            // _moodStateManager.MoodChangeEvent += changeSongOnMood;
 
             _pixel = pixel;
 
@@ -71,6 +77,44 @@ namespace conscious
         {
             TerminateGameEvent?.Invoke(this, e);
         }
+
+        private void changeRoomOnMood(object sender, MoodState e)
+        {
+            // TODO: Implement mood dependent change of Song and LightMap
+            updateSongOnMood(e);
+            updateLightMapOnMood(e);
+        }
+
+        private void updateSongOnMood(MoodState moodState)
+        {
+            // Song currentSong;
+            // double stretchFactor;
+            // if(currentRoom.MoodSongs.ContainsKey(moodState))
+            // {
+            //     currentSong = currentRoom.MoodSongs[moodState];
+            // }
+            // else
+            // {
+            //     currentSong = currentRoom.MoodSongs[MoodState.None];
+            // }
+            // if(moodState == MoodState.Depressed)
+            // {
+            //     _audioManager.SwitchMusic(currentSong)
+            // }
+        }
+        private void updateLightMapOnMood(MoodState moodState)
+        {
+            // Texture2D currentLightMap;
+            // if(currentRoom.MoodLightMaps.ContainsKey(moodState))
+            // {
+            //     currentLightMap = currentRoom.MoodLightMaps[moodState];
+            // }
+            // else
+            // {
+            //     currentLightMap = currentRoom.MoodLightMaps[MoodState.None];
+            // }
+            // _entityManager.LightMap = currentLightMap;
+        }
         
         public void LoadRooms()
         {
@@ -78,10 +122,14 @@ namespace conscious
             Texture2D bg;
             Room room;
             Thing thing;
+            Song song;
+            Texture2D lightMap;
             
             // Room 1
             bg = _content.Load<Texture2D>("Backgrounds/debug/background");
-            room = new Room(bg.Width, _entityManager, null);
+            song = _content.Load<Song>("Audio/BackgroundNoise");
+            lightMap = _content.Load<Texture2D>("light/light_gimp_v2");
+            room = new Room(bg.Width, _entityManager, null, song, lightMap);
             thing = new Thing(10, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
             room.addThing(thing);
 
@@ -156,7 +204,9 @@ namespace conscious
             ////////////////////////////////////////////////
             // room 2
             bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
-            room = new Room(bg.Width, _entityManager, null);
+            song = _content.Load<Song>("Audio/Red_Curtains");
+            lightMap = _content.Load<Texture2D>("light/light_gimp_v2");
+            room = new Room(bg.Width, _entityManager, null, song, lightMap);
             Thing background = new Thing(11, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
             room.addThing(background);
 
@@ -451,6 +501,9 @@ namespace conscious
             // {
             //     thing.XPosOffset = 0;
             // }
+
+            _audioManager.PlayMusic(currentRoom.SoundFile);
+            _entityManager.LightMap = currentRoom.LightMap;
 
             if(lastRoom != null)
             {

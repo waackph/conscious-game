@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 
@@ -12,16 +13,19 @@ namespace conscious
         // fields
         private EntityManager _entityManager;
         private MoodStateManager _moodStateManager;
+        private AudioManager _audioManager;
         private List<UIComponent> _uiComponents;
 
         // properties
         private SpriteFont _displayFont;
 
+        private Song _titleSong;
+
         public bool GameLoaded { get; set; }
         private EventHandler _newEvent;
         private EventHandler _saveEvent;
 
-        public TitleScreen(EventHandler newEvent, EventHandler saveEvent, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager, MoodStateManager moodStateManager) 
+        public TitleScreen(EventHandler newEvent, EventHandler saveEvent, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager, MoodStateManager moodStateManager, AudioManager audioManager) 
             : base(game, graphicsDevice, content, screenEvent)
         {
             // Initilize
@@ -29,6 +33,9 @@ namespace conscious
 
             _entityManager = entityManager;
             _moodStateManager = moodStateManager;
+            _audioManager = audioManager;
+
+            _titleSong = _content.Load<Song>("Audio/Lounge001");
 
             GameLoaded = false;
 
@@ -80,6 +87,7 @@ namespace conscious
             if(EnteredScreen)
             {
                 InitilizeEntityManager();
+                _audioManager.PlayMusic(_titleSong);
                 EnteredScreen = false;
             }
             _entityManager.Update(gameTime);

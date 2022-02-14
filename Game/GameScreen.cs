@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 using System;
 using System.IO;
@@ -24,6 +25,7 @@ namespace conscious
         private UiDisplayThoughtManager _uiDisplayThoughtManager;
         private RoomInteractionManager _roomInteractionManager;
         private SequenceManager _sequenceManager;
+        private AudioManager _audioManager;
         private RoomGraph _roomGraph;
         private AStarShortestPath _pathFinder;
         private Player _player;
@@ -36,7 +38,7 @@ namespace conscious
 
         private static JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
 
-        public GameScreen(int preferredBackBufferWidth, int preferredBackBufferHeight, Texture2D pixel, Cursor cursor, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager, MoodStateManager moodStateManager) 
+        public GameScreen(int preferredBackBufferWidth, int preferredBackBufferHeight, Texture2D pixel, Cursor cursor, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager, MoodStateManager moodStateManager, AudioManager audioManager) 
             : base(game, graphicsDevice, content, screenEvent)
         {
             // Initilize
@@ -52,6 +54,7 @@ namespace conscious
             _entityManager = entityManager;
 
             _moodStateManager = moodStateManager;
+            _audioManager = audioManager;
 
             Vector2 playerPosition = new Vector2(1000, 150);  //Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
             _player = new Player(content.Load<Texture2D>("Player/128_character_animation_walking_draft"),
@@ -97,7 +100,8 @@ namespace conscious
                                            _entityManager, 
                                            _dialogManager, 
                                            _sequenceManager, 
-                                           _moodStateManager, 
+                                           _moodStateManager,
+                                           _audioManager,
                                            _roomGraph,
                                            _preferredBackBufferWidth, _preferredBackBufferHeight);
 
@@ -248,7 +252,7 @@ namespace conscious
                         things.Add(entity);
                     }
                 }
-                Room room = new Room(dhRoom.RoomWidth, _entityManager, dhRoom.EntrySequence);
+                Room room = new Room(dhRoom.RoomWidth, _entityManager, dhRoom.EntrySequence, _content.Load<Song>(dhRoom.SoundFilePath), _content.Load<Texture2D>(dhRoom.LightMapPath));
                 room.SetThings(things);
                 _roomManager.AddRoom(entry.Key, room);
             }

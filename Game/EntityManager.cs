@@ -17,7 +17,7 @@ namespace conscious
         public Matrix ViewportTransformation;
 
         // Lighting
-        private Texture2D _lightMap;
+        public Texture2D LightMap;
         private BlendState _multiplicativeBlend;
 
         public IEnumerable<Entity> Entities => new ReadOnlyCollection<Entity>(_entities);
@@ -31,7 +31,7 @@ namespace conscious
             _debuggingMode = false;
             _pixel = pixel;
             ViewportTransformation = viewportTransformation;
-            _lightMap = lightMap;
+            LightMap = lightMap;
             _multiplicativeBlend = multiplicativeBlend;
         }
 
@@ -72,7 +72,7 @@ namespace conscious
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Immediate, _multiplicativeBlend);
-            spriteBatch.Draw(_lightMap, new Rectangle(0, 0, 1920, 1080), Color.White);
+            spriteBatch.Draw(LightMap, new Rectangle(0, 0, 1920, 1080), Color.White);
             spriteBatch.End();
 
             spriteBatch.Begin();

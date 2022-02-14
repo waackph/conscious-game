@@ -25,11 +25,23 @@
 /processorParam:Quality=Best
 /build:Audio/ExitReached.wav
 
+#begin Audio/Lounge001.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Lounge001.mp3
+
 #begin Audio/Music.wma
 /importer:WmaImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Audio/Music.wma
+
+#begin Audio/Red_Curtains.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Red_Curtains.mp3
 
 #begin Audio/ShowerSound.wav
 /importer:WavImporter

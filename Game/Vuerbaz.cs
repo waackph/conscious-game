@@ -28,6 +28,7 @@ namespace conscious
         private Screen _currentScreen;
         private EntityManager _entityManager;
         private MoodStateManager _moodStateManager;
+        private AudioManager _audioManager;
         private Texture2D _pixel;
         private Matrix _viewportTransformation;
         private Cursor _cursor;
@@ -84,6 +85,8 @@ namespace conscious
 
             _moodStateManager = new MoodStateManager(_entityManager, Content.Load<SpriteFont>("Font/Hud"), _pixel);
 
+            _audioManager = new AudioManager();
+
             _cursor= new Cursor(Content.Load<SpriteFont>("Font/Hud"),
                                 Matrix.Invert(_viewportTransformation),
                                 "Cursor",
@@ -104,7 +107,8 @@ namespace conscious
             // TODO: use this.Content to load your game content here
             _titleScreen = new TitleScreen(new EventHandler(TitleNewEvent), new EventHandler(TitleSaveEvent), 
                                            this, this.GraphicsDevice, this.Content, 
-                                           new EventHandler(TitleContinueEvent), _entityManager, _moodStateManager);
+                                           new EventHandler(TitleContinueEvent), 
+                                           _entityManager, _moodStateManager, _audioManager);
 
             _gameScreen = new GameScreen(_graphics.PreferredBackBufferWidth, 
                                         _graphics.PreferredBackBufferHeight,
@@ -113,16 +117,11 @@ namespace conscious
                                         this,
                                         this.GraphicsDevice,
                                         this.Content, 
-                                        new EventHandler(GameMenuEvent), _entityManager, _moodStateManager);
+                                        new EventHandler(GameMenuEvent), 
+                                        _entityManager, _moodStateManager, _audioManager);
             
             _currentScreen = _titleScreen;
             _currentScreen.EnteredScreen = true;
-
-            // add test audio file as song (because its mp3 and we just repeat it)
-            StreetAmbient = Content.Load<Song>("Audio/BackgroundNoise");
-            MediaPlayer.Play(StreetAmbient);
-            MediaPlayer.IsRepeating = true;
-
         }
 
         /// <summary>
