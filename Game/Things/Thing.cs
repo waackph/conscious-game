@@ -41,9 +41,9 @@ namespace conscious
             _moodTextures[moodState] = moodTexture;
         }
 
-        private void changeTextureOnMood(object sender, MoodState e)
+        private void changeTextureOnMood(object sender, MoodStateChangeEventArgs e)
         {
-            Texture2D moodTexture = getMoodTexture(e);
+            Texture2D moodTexture = getMoodTexture(e.CurrentMoodState);
             UpdateTexture(moodTexture);
         }
 

@@ -63,7 +63,7 @@ namespace conscious
             _player = player;
             _cursor = cursor;
 
-            // _moodStateManager.MoodChangeEvent += changeSongOnMood;
+            _moodStateManager.MoodChangeEvent += changeRoomOnMood;
 
             _pixel = pixel;
 
@@ -78,42 +78,58 @@ namespace conscious
             TerminateGameEvent?.Invoke(this, e);
         }
 
-        private void changeRoomOnMood(object sender, MoodState e)
+        private void changeRoomOnMood(object sender, MoodStateChangeEventArgs e)
         {
             // TODO: Implement mood dependent change of Song and LightMap
-            updateSongOnMood(e);
-            updateLightMapOnMood(e);
+            updateSongOnMood(e.CurrentMoodState, e.ChangeDirection);
+            updateLightMapOnMood(e.CurrentMoodState);
         }
 
-        private void updateSongOnMood(MoodState moodState)
+        private void updateSongOnMood(MoodState moodState, Direction direction)
         {
-            // Song currentSong;
-            // double stretchFactor;
-            // if(currentRoom.MoodSongs.ContainsKey(moodState))
-            // {
-            //     currentSong = currentRoom.MoodSongs[moodState];
-            // }
-            // else
-            // {
-            //     currentSong = currentRoom.MoodSongs[MoodState.None];
-            // }
-            // if(moodState == MoodState.Depressed)
-            // {
-            //     _audioManager.SwitchMusic(currentSong)
-            // }
+            Song currentSong;
+            double stretchFactor;
+            if(currentRoom.MoodSoundFiles.ContainsKey(moodState))
+            {
+                currentSong = currentRoom.MoodSoundFiles[moodState];
+            }
+            else
+            {
+                currentSong = currentRoom.MoodSoundFiles[MoodState.None];
+            }
+            switch(direction)
+            {
+                case Direction.DoubleDown:
+                    stretchFactor = 1d/4;
+                    break;
+                case Direction.Down:
+                    stretchFactor = 1d/2;
+                    break;
+                case Direction.Up:
+                    stretchFactor = 2d;
+                    break;
+                case Direction.DoubleUp:
+                    stretchFactor = 4d;
+                    break;
+                default:
+                    stretchFactor = 1d;
+                    break;
+            }
+            _audioManager.SwitchMusic(currentSong, stretchFactor);
         }
+
         private void updateLightMapOnMood(MoodState moodState)
         {
-            // Texture2D currentLightMap;
-            // if(currentRoom.MoodLightMaps.ContainsKey(moodState))
-            // {
-            //     currentLightMap = currentRoom.MoodLightMaps[moodState];
-            // }
-            // else
-            // {
-            //     currentLightMap = currentRoom.MoodLightMaps[MoodState.None];
-            // }
-            // _entityManager.LightMap = currentLightMap;
+            Texture2D currentLightMap;
+            if(currentRoom.MoodLightMaps.ContainsKey(moodState))
+            {
+                currentLightMap = currentRoom.MoodLightMaps[moodState];
+            }
+            else
+            {
+                currentLightMap = currentRoom.MoodLightMaps[MoodState.None];
+            }
+            _entityManager.LightMap = currentLightMap;
         }
         
         public void LoadRooms()
@@ -502,8 +518,10 @@ namespace conscious
             //     thing.XPosOffset = 0;
             // }
 
-            _audioManager.PlayMusic(currentRoom.SoundFile);
-            _entityManager.LightMap = currentRoom.LightMap;
+            // _audioManager.PlayMusic(currentRoom.MoodSoundFiles[_moodStateManager.moodState]);
+            // _entityManager.LightMap = currentRoom.MoodLightMaps[_moodStateManager.moodState];
+            updateSongOnMood(_moodStateManager.moodState, Direction.None);
+            updateLightMapOnMood(_moodStateManager.moodState);
 
             if(lastRoom != null)
             {

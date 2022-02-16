@@ -29,9 +29,16 @@ namespace conscious
         {
             if(songFile != null)
             {
-                TimeSpan songPosition = MediaPlayer.PlayPosition;
-                songPosition = songPosition.Multiply(factor);
-                MediaPlayer.Play(songFile, songPosition*factor);
+                if(factor == 1d)
+                {
+                    MediaPlayer.Play(songFile);
+                }
+                else
+                {
+                    TimeSpan songPosition = MediaPlayer.PlayPosition;
+                    songPosition = songPosition.Multiply(factor);
+                    MediaPlayer.Play(songFile, songPosition);
+                }
             }
         }
     }

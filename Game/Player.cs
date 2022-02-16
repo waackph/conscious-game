@@ -62,9 +62,9 @@ namespace conscious
             updateAnimationOnMood(_moodStateManager.moodState);
         }
 
-        private void changeAnimationOnMood(object sender, MoodState e)
+        private void changeAnimationOnMood(object sender, MoodStateChangeEventArgs e)
         {
-            updateAnimationOnMood(e);
+            updateAnimationOnMood(e.CurrentMoodState);
         }
 
         private void updateAnimationOnMood(MoodState moodState)

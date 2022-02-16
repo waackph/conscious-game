@@ -11,10 +11,12 @@ namespace conscious
     {
         private EntityManager _entityManager;
         private List<Thing> _things = new List<Thing>();
-        public Song SoundFile;
         public int RoomWidth;
         public Sequence EntrySequence;
         public Texture2D LightMap;
+        public Song SoundFile;
+        public Dictionary<MoodState, Texture2D> MoodLightMaps;
+        public Dictionary<MoodState, Song> MoodSoundFiles;
 
 
         public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Song soundFile, Texture2D lightMap)
@@ -22,8 +24,14 @@ namespace conscious
             RoomWidth = roomWidth;
             _entityManager = entityManager;
             EntrySequence = sequence;
-            SoundFile = soundFile;
+            
             LightMap = lightMap;
+            MoodLightMaps = new Dictionary<MoodState, Texture2D>();
+            MoodLightMaps[MoodState.None] = LightMap;
+
+            SoundFile = soundFile;
+            MoodSoundFiles = new Dictionary<MoodState, Song>();
+            MoodSoundFiles[MoodState.None] = SoundFile;
         }
 
         public IEnumerable<T> GetThingsOfType<T>() where T : Thing

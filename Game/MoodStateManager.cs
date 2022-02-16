@@ -9,12 +9,14 @@ namespace conscious
     {
         private UIText _moodText;
         private EntityManager _entityManager;
+        private Direction _direction;
         public MoodState moodState { get; private set; }
         public MoodState StateChange { get; set; }
-        public event EventHandler<MoodState> MoodChangeEvent;
+        public event EventHandler<MoodStateChangeEventArgs> MoodChangeEvent;
 
         public MoodStateManager(EntityManager entityManager, SpriteFont font, Texture2D pixel)
         {
+            _direction = Direction.None;
             moodState = MoodState.Depressed;
             _entityManager = entityManager;
             string text = generateMoodText();
@@ -25,9 +27,14 @@ namespace conscious
         {
             if(StateChange != MoodState.None && StateChange != moodState)
             {
+                _direction = setChangeDirection(moodState, StateChange);
                 moodState = StateChange;
 
-                OnMoodChangeEvent(moodState);
+                MoodStateChangeEventArgs moodChangeEventArgs = new MoodStateChangeEventArgs();
+                moodChangeEventArgs.ChangeDirection = _direction;
+                moodChangeEventArgs.CurrentMoodState = moodState;
+
+                OnMoodChangeEvent(moodChangeEventArgs);
 
                 _entityManager.RemoveEntity(_moodText);
                 _moodText.UpdateText(generateMoodText());
@@ -51,9 +58,43 @@ namespace conscious
             }
         }
 
-        protected virtual void OnMoodChangeEvent(MoodState e)
+        protected virtual void OnMoodChangeEvent(MoodStateChangeEventArgs e)
         {
             MoodChangeEvent?.Invoke(this, e);
+        }
+
+        private Direction setChangeDirection(MoodState oldMood, MoodState newMood)
+        {
+            Direction currentDirection;
+            if(oldMood == MoodState.Depressed && newMood == MoodState.Regular)
+            {
+                currentDirection = Direction.Up;
+            }
+            else if(oldMood == MoodState.Depressed && newMood == MoodState.Manic)
+            {
+                currentDirection = Direction.DoubleUp;
+            }
+            else if(oldMood == MoodState.Regular && newMood == MoodState.Depressed)
+            {
+                currentDirection = Direction.Down;
+            }
+            else if(oldMood == MoodState.Regular && newMood == MoodState.Manic)
+            {
+                currentDirection = Direction.Up;
+            }
+            else if(oldMood == MoodState.Manic && newMood == MoodState.Depressed)
+            {
+                currentDirection = Direction.DoubleDown;
+            }
+            else if(oldMood == MoodState.Manic && newMood == MoodState.Regular)
+            {
+                currentDirection = Direction.Down;
+            }
+            else
+            {
+                currentDirection = Direction.None;
+            }
+            return currentDirection;
         }
 
         private string generateMoodText()
