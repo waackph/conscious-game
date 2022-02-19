@@ -174,6 +174,8 @@ namespace conscious
                         FinalEdgeEventArgs finalEdgeData = new FinalEdgeEventArgs();
                         finalEdgeData.verbAction = _finalOption.Verb;
                         finalEdgeData.seq = _finalOption.ThoughtSequence;
+                        finalEdgeData.EdgeMood = _finalOption.MoodChange;
+
                         OnFinalEdgeSelected(finalEdgeData);
                         if(_finalOption.Verb != Verb.None && _finalOption.Verb != Verb.WakeUp)
                         {
@@ -198,7 +200,8 @@ namespace conscious
                                 unlockThoughtLink(_finalOption.UnlockId);
                             OnFinishInteractionEvent(usedThought);
                             option.IsVisited = true;
-                            _moodStateManager.StateChange = _finalOption.MoodChange;
+                            if(_finalOption.ThoughtSequence == null)
+                                _moodStateManager.StateChange = _finalOption.MoodChange;
                         }
                     }
                     // _uiDisplayThought.EndThoughtMode();

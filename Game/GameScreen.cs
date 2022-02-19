@@ -91,7 +91,7 @@ namespace conscious
 
             _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, _player, cursor, content.Load<SpriteFont>("Font/Hud"), _pixel);
 
-            _sequenceManager = new SequenceManager();
+            _sequenceManager = new SequenceManager(_moodStateManager);
 
             _roomManager = new RoomManager(content, 
                                            _player, 

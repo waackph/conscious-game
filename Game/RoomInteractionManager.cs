@@ -227,7 +227,7 @@ namespace conscious
             
             if(e.seq != null)
             {
-                _sequenceManager.StartSequence(e.seq, _player);
+                _sequenceManager.StartSequence(e.seq, _player, e.EdgeMood);
             }
         }
 

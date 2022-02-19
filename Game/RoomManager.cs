@@ -80,7 +80,6 @@ namespace conscious
 
         private void changeRoomOnMood(object sender, MoodStateChangeEventArgs e)
         {
-            // TODO: Implement mood dependent change of Song and LightMap
             updateSongOnMood(e.CurrentMoodState, e.ChangeDirection);
             updateLightMapOnMood(e.CurrentMoodState);
         }
@@ -536,7 +535,7 @@ namespace conscious
 
             if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
             {
-                _sequenceManager.StartSequence(currentRoom.EntrySequence, _player);
+                _sequenceManager.StartSequence(currentRoom.EntrySequence, _player, MoodState.None);
             }
             else if(lastRoom != null && newPlayerPosition != Vector2.Zero)
             {
@@ -555,7 +554,7 @@ namespace conscious
                     command
                 };
                 Sequence seq = new Sequence(coms);
-                _sequenceManager.StartSequence(seq, _player);
+                _sequenceManager.StartSequence(seq, _player, MoodState.None);
             }
         }
 
