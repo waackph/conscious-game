@@ -83,7 +83,9 @@ namespace conscious
 
             _entityManager = new EntityManager(_viewportTransformation, lightMap, multiplicativeBlend, _pixel);
 
-            _moodStateManager = new MoodStateManager(_entityManager, Content.Load<SpriteFont>("Font/Hud"), _pixel);
+            // TODO: Change Transition Texture to something meaningful (also not in moodstatemanager, see to do in that class)
+            Texture2D transitionTexture = Content.Load<Texture2D>("light/light_gimp");
+            _moodStateManager = new MoodStateManager(_entityManager, Content.Load<SpriteFont>("Font/Hud"), transitionTexture, _pixel);
 
             _audioManager = new AudioManager();
 
