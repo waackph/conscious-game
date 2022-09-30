@@ -114,6 +114,9 @@ namespace conscious
                     stretchFactor = 1d;
                     break;
             }
+            // The stretchFactor seems to not work... (factor gets out of range of valid values)
+            // Therefore we set it to default
+            stretchFactor = 1d;
             _audioManager.SwitchMusic(currentSong, stretchFactor);
         }
 
