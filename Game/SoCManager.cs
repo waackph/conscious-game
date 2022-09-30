@@ -9,13 +9,20 @@ namespace conscious
     {
         private MoodStateManager _moodStateManager;
         public Queue<ThoughtNode> Thoughts { get; private set; }
+        Random random = new Random();
         private int _maxThoughts;
         private List<ThoughtLink> _currentSubthoughtLinks;
+        private List<ThoughtNode> _randomThoughts;
         private ThoughtNode _currentThought;
         private FinalThoughtLink _finalOption;
         private List<int> _toUnlock = new List<int>();
         private List<int> _alreadyUnlocked = new List<int>();
+        private bool _isStart;
+        private int _timeSinceLastRandomThought;
+        private int _timeToWait;
+        private int _maxMinutesToWait;
         
+        public bool IsInThoughtMode;
         public event EventHandler<VerbActionEventArgs> ActionEvent;
         public event EventHandler<ThoughtNode> AddThoughtEvent;
         public event EventHandler<bool> FinishInteractionEvent;
@@ -28,9 +35,54 @@ namespace conscious
             Thoughts = new Queue<ThoughtNode>();
             _maxThoughts = 2;
             VerbResult = Verb.None;
+
+            _randomThoughts = new List<ThoughtNode>();
+            _randomThoughts.Add(new ThoughtNode(1000, "War? What is it good for?", 0, false, 0));
+            _randomThoughts.Add(new ThoughtNode(1001, "I never died in my sleep. Such a shame.", 0, false, 0));
+            _randomThoughts.Add(new ThoughtNode(1002, "Dadada dada dadada", 0, false, 0));
+            _randomThoughts.Add(new ThoughtNode(1003, "I don't like the ambience right now.", 0, false, 0));
+            _randomThoughts.Add(new ThoughtNode(1004, "The Avatar movie was endlessly overhyped.", 0, false, 0));
+
+            _isStart = true;
+            _maxMinutesToWait = 30;
+
+            _timeToWait = 0;
+            _timeSinceLastRandomThought = 0;
+
+            IsInThoughtMode = false;
         }
 
-        public void Update(GameTime gameTime){ }
+        public void Update(GameTime gameTime)
+        {
+            _timeSinceLastRandomThought += gameTime.ElapsedGameTime.Milliseconds;
+            // logic to add thoughts randomly some times
+            if(_isStart)
+            {
+                drawRandomThought();
+                _isStart = false;
+                _timeToWait = drawTimeInterval();
+            }
+            // TODO: trigger a random thought at some randomized time intervalls 
+            // (randomly draw a time interval, when it is over randomly draw a thought)
+            else if (_timeSinceLastRandomThought > _timeToWait & !IsInThoughtMode)
+            {
+                _timeSinceLastRandomThought = 0;
+                _timeToWait = drawTimeInterval();
+                drawRandomThought();
+            }
+        }
+
+        public void drawRandomThought()
+        {
+            int randomIndex = random.Next(0, _randomThoughts.Count);
+            AddThought(_randomThoughts[randomIndex]);
+        }
+
+        public int drawTimeInterval()
+        {
+            int intervalInMinutes = random.Next(5, _maxMinutesToWait) * 1000 * 60;
+            return intervalInMinutes;
+        }
 
         public void Draw(SpriteBatch spriteBatch){ }
 
@@ -65,6 +117,7 @@ namespace conscious
         public ThoughtNode SelectThought(string thoughtName)
         {
             ThoughtNode node = GetThought(thoughtName);
+            checkUnlockIds(node);
             // If thought is an Selectable Thought: choose link from root
             if(node.HasLinks())
             {
@@ -74,7 +127,7 @@ namespace conscious
                     node.Links.Sort((x, y) => x.Id.CompareTo(y.Id));
                     foreach(ThoughtLink link in node.Links)
                     {
-                        if(!link.IsLocked)
+                        if(!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
                         {
                             ThoughtNode displayNode = link.NextNode;
                             _currentSubthoughtLinks = displayNode.Links;
@@ -121,6 +174,8 @@ namespace conscious
                         FinalEdgeEventArgs finalEdgeData = new FinalEdgeEventArgs();
                         finalEdgeData.verbAction = _finalOption.Verb;
                         finalEdgeData.seq = _finalOption.ThoughtSequence;
+                        finalEdgeData.EdgeMood = _finalOption.MoodChange;
+
                         OnFinalEdgeSelected(finalEdgeData);
                         if(_finalOption.Verb != Verb.None && _finalOption.Verb != Verb.WakeUp)
                         {
@@ -135,6 +190,7 @@ namespace conscious
                             if(_finalOption.IsSuccessEdge && !_finalOption.IsLocked)
                             {
                                 usedThought = true;
+                                _currentThought.IsUsed = true;
                             }
                             else
                             {
@@ -144,7 +200,8 @@ namespace conscious
                                 unlockThoughtLink(_finalOption.UnlockId);
                             OnFinishInteractionEvent(usedThought);
                             option.IsVisited = true;
-                            _currentThought.IsUsed = true;
+                            if(_finalOption.ThoughtSequence == null)
+                                _moodStateManager.StateChange = _finalOption.MoodChange;
                         }
                     }
                     // _uiDisplayThought.EndThoughtMode();
@@ -220,6 +277,16 @@ namespace conscious
                     checkUnlockId(node, id);
                 }
             }
+        }
+
+        public void ThoughtModeStart()
+        {
+            IsInThoughtMode = true;
+        }
+
+        public void ThoughtModeFinish()
+        {
+            IsInThoughtMode = false;
         }
 
         protected virtual void OnActionEvent(VerbActionEventArgs e)

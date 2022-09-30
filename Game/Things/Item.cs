@@ -23,7 +23,9 @@ namespace conscious
                     bool useWith, 
                     string examineText,
                     ThoughtNode thought, 
-                    Texture2D texture, Vector2 position) : base(id, thought, name, texture, position){            
+                    MoodStateManager moodStateManager, 
+                    Texture2D texture, Vector2 position) : base(id, thought, moodStateManager, name, texture, position)
+        {            
             PickUpAble = pickUpAble;
             UseAble = useAble;
             CombineAble = combineAble;

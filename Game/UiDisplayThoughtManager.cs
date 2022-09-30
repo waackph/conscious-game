@@ -9,6 +9,7 @@ namespace conscious
     public class UiDisplayThoughtManager : IComponent
     {
         private EntityManager _entityManager;
+        private MoodStateManager _moodStateManager;
         private SoCManager _socManager;
         private Cursor _cursor;
         private Queue<UIThought> _thoughts;
@@ -29,9 +30,10 @@ namespace conscious
         private MouseState _lastMouseState;
         public bool IsInThoughtMode { get; protected set; }
 
-        public UiDisplayThoughtManager(EntityManager entityManager, SoCManager socManager, Cursor cursor, SpriteFont font, Texture2D pixel)
+        public UiDisplayThoughtManager(EntityManager entityManager, MoodStateManager moodStateManager, SoCManager socManager, Cursor cursor, SpriteFont font, Texture2D pixel)
         {
             _entityManager = entityManager;
+            _moodStateManager = moodStateManager;
             _socManager = socManager;
             _socManager.AddThoughtEvent += AddThoughtFromSoC;
             _socManager.FinishInteractionEvent += FinishThought;
@@ -199,8 +201,9 @@ namespace conscious
             // TODO: Restart Thought Mode when another thought is clicked 
             //       while the subthought of another is already active
             IsInThoughtMode = true;
+            _socManager.IsInThoughtMode = true;
             _entityManager.AddEntity(_subthoughtBackground);
-            _currentSubthought = convertNodeToUi(node, doDisplay:false);
+            _currentSubthought = convertNodeToUi(node, doDisplay:true);
             _currentSubthoughtLinks = convertLinksToUi(links);
             calculateSubthoughtPositions();
             addSubthought();
@@ -209,6 +212,7 @@ namespace conscious
         public void EndThoughtMode()
         {
             IsInThoughtMode = false;
+            _socManager.IsInThoughtMode = false;
             removeSubthought();
             _entityManager.RemoveEntity(_subthoughtBackground);
         }
@@ -310,7 +314,7 @@ namespace conscious
                                                     node.Thought, node.Thought, 
                                                     _pixel, 
                                                     Vector2.One);
-                if(node.IsRoot && node.IsInnerDialog)
+                if(node.IsRoot)
                     uiThought.IsUsed = node.IsUsed;
                 return uiThought;
             }
@@ -325,7 +329,7 @@ namespace conscious
             List<UIThought> uiOptions = new List<UIThought>();
             foreach(ThoughtLink link in links)
             {
-                if(!link.IsLocked)
+                if(!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
                 {
                     // TODO: add a disabled style, if current moodState is not valid for this option
                     UIThought uiThought = new UIThought(isClickable:true,

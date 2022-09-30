@@ -7,5 +7,7 @@ namespace conscious
         public int RoomWidth { get; set; }
         public List<DataHolderEntity> Things { get; set; }
         public Sequence EntrySequence { get; set; }
+        public string SoundFilePath { get; set; }
+        public string LightMapPath { get; set; }
     }
 }

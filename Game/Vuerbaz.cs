@@ -12,6 +12,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace conscious
 {
@@ -26,9 +27,13 @@ namespace conscious
         private GameScreen _gameScreen;
         private Screen _currentScreen;
         private EntityManager _entityManager;
+        private MoodStateManager _moodStateManager;
+        private AudioManager _audioManager;
         private Texture2D _pixel;
         private Matrix _viewportTransformation;
         private Cursor _cursor;
+
+        public Song StreetAmbient;
 
 
         public Vuerbaz()
@@ -54,7 +59,35 @@ namespace conscious
 
             _viewportTransformation = Matrix.CreateTranslation(0, 0, 0);
 
-            _entityManager = new EntityManager(_viewportTransformation, _pixel);
+            // add lighting
+            Texture2D lightMap = Content.Load<Texture2D>("light/light_gimp_v2");
+            // instatiate the blendState
+            BlendState multiplicativeBlend = new BlendState();
+            // deal with transparency
+            multiplicativeBlend.AlphaBlendFunction = BlendFunction.ReverseSubtract;
+            multiplicativeBlend.AlphaSourceBlend = Blend.SourceAlpha;
+            multiplicativeBlend.AlphaDestinationBlend = Blend.Zero;
+            // deal with color
+            multiplicativeBlend.ColorBlendFunction = BlendFunction.Add;
+            multiplicativeBlend.ColorSourceBlend = Blend.DestinationColor;
+            multiplicativeBlend.ColorDestinationBlend = Blend.Zero;
+
+            // Another blendstate to deal with the lightmap later:
+            // BlendState LightBlend = new BlendState();
+            // LightBlend.ColorBlendFunction = BlendFunction.Subtract;
+            // LightBlend.ColorSourceBlend = Blend.DestinationColor;
+            // LightBlend.ColorDestinationBlend = Blend.Zero;
+
+            // TODO: Do I need the renderTarget2D? -> Do I maybe need one target for light and one for world?
+            // RenderTarget2D GhostLayer = new RenderTarget2D(graphicsDevice, 250, 250);
+
+            _entityManager = new EntityManager(_viewportTransformation, lightMap, multiplicativeBlend, _pixel);
+
+            // TODO: Change Transition Texture to something meaningful (also not in moodstatemanager, see to do in that class)
+            Texture2D transitionTexture = Content.Load<Texture2D>("light/light_gimp");
+            _moodStateManager = new MoodStateManager(_entityManager, Content.Load<SpriteFont>("Font/Hud"), transitionTexture, _pixel);
+
+            _audioManager = new AudioManager();
 
             _cursor= new Cursor(Content.Load<SpriteFont>("Font/Hud"),
                                 Matrix.Invert(_viewportTransformation),
@@ -76,7 +109,8 @@ namespace conscious
             // TODO: use this.Content to load your game content here
             _titleScreen = new TitleScreen(new EventHandler(TitleNewEvent), new EventHandler(TitleSaveEvent), 
                                            this, this.GraphicsDevice, this.Content, 
-                                           new EventHandler(TitleContinueEvent), _entityManager);
+                                           new EventHandler(TitleContinueEvent), 
+                                           _entityManager, _moodStateManager, _audioManager);
 
             _gameScreen = new GameScreen(_graphics.PreferredBackBufferWidth, 
                                         _graphics.PreferredBackBufferHeight,
@@ -85,7 +119,8 @@ namespace conscious
                                         this,
                                         this.GraphicsDevice,
                                         this.Content, 
-                                        new EventHandler(GameMenuEvent), _entityManager);
+                                        new EventHandler(GameMenuEvent), 
+                                        _entityManager, _moodStateManager, _audioManager);
             
             _currentScreen = _titleScreen;
             _currentScreen.EnteredScreen = true;

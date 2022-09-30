@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 namespace conscious
 {
@@ -11,12 +13,25 @@ namespace conscious
         private List<Thing> _things = new List<Thing>();
         public int RoomWidth;
         public Sequence EntrySequence;
+        public Texture2D LightMap;
+        public Song SoundFile;
+        public Dictionary<MoodState, Texture2D> MoodLightMaps;
+        public Dictionary<MoodState, Song> MoodSoundFiles;
 
-        public Room(int roomWidth, EntityManager entityManager, Sequence sequence)
+
+        public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Song soundFile, Texture2D lightMap)
         {
             RoomWidth = roomWidth;
             _entityManager = entityManager;
             EntrySequence = sequence;
+            
+            LightMap = lightMap;
+            MoodLightMaps = new Dictionary<MoodState, Texture2D>();
+            MoodLightMaps[MoodState.None] = LightMap;
+
+            SoundFile = soundFile;
+            MoodSoundFiles = new Dictionary<MoodState, Song>();
+            MoodSoundFiles[MoodState.None] = SoundFile;
         }
 
         public IEnumerable<T> GetThingsOfType<T>() where T : Thing
@@ -131,6 +146,8 @@ namespace conscious
             dataHolderRoom.RoomWidth = RoomWidth;
             dataHolderRoom.Things = dhThings;
             dataHolderRoom.EntrySequence = EntrySequence;
+            dataHolderRoom.SoundFilePath = SoundFile.ToString();
+            dataHolderRoom.LightMapPath = LightMap.ToString();
             return dataHolderRoom;
         }
     }

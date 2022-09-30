@@ -22,8 +22,9 @@ namespace conscious
                          List<Node> treeStructure, 
                          UiDialogManager dialogManager,
                          ThoughtNode thought,
+                         MoodStateManager moodStateManager, 
                          Texture2D texture, Vector2 position)
-                        : base(id, thought, name, texture, position)
+                        : base(id, thought, moodStateManager, name, texture, position)
         {
             _pronoun = pronoun;
             _catchPhrase = catchPhrase;

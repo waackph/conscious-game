@@ -27,6 +27,8 @@ namespace conscious
             _font = font;
             _text = Regex.Replace(text, "(.{" + 45 + "})", "$1" + Environment.NewLine);
             _color = Color.Black;
+
+            DrawOrder = 7;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -41,6 +43,11 @@ namespace conscious
         public float GetStringWidth()
         {
             return _font.MeasureString(_text).X;
+        }
+
+        public void UpdateText(string text)
+        {
+            _text = text;
         }
 
         public float GetStringHeight()

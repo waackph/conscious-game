@@ -18,7 +18,7 @@ namespace conscious
             _cursorFont = cursorFont;
             InverseTransform = inverseTransform;
             InteractionLabel = "";
-            DrawOrder = 3;
+            DrawOrder = 8;
             FixedDrawPosition = true;
             Rotation = 90f;
             _sprite = new Sprite(EntityTexture, Width, Height, Rotation);

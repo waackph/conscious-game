@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 
@@ -11,22 +12,30 @@ namespace conscious
     {
         // fields
         private EntityManager _entityManager;
+        private MoodStateManager _moodStateManager;
+        private AudioManager _audioManager;
         private List<UIComponent> _uiComponents;
 
         // properties
         private SpriteFont _displayFont;
 
+        private Song _titleSong;
+
         public bool GameLoaded { get; set; }
         private EventHandler _newEvent;
         private EventHandler _saveEvent;
 
-        public TitleScreen(EventHandler newEvent, EventHandler saveEvent, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager) 
+        public TitleScreen(EventHandler newEvent, EventHandler saveEvent, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager, MoodStateManager moodStateManager, AudioManager audioManager) 
             : base(game, graphicsDevice, content, screenEvent)
         {
             // Initilize
             _displayFont = content.Load<SpriteFont>("Font/Hud");
 
             _entityManager = entityManager;
+            _moodStateManager = moodStateManager;
+            _audioManager = audioManager;
+
+            _titleSong = _content.Load<Song>("Audio/Lounge001");
 
             GameLoaded = false;
 
@@ -78,6 +87,7 @@ namespace conscious
             if(EnteredScreen)
             {
                 InitilizeEntityManager();
+                _audioManager.PlayMusic(_titleSong);
                 EnteredScreen = false;
             }
             _entityManager.Update(gameTime);
@@ -115,7 +125,7 @@ namespace conscious
             }
 
             Texture2D bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
-            Thing background = new Thing(11, null, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
+            Thing background = new Thing(11, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
             _entityManager.AddEntity(background);
         }
     }

@@ -11,7 +11,7 @@ namespace conscious
         public int DrawOrder { get; protected set; }
         public Vector2 Position;
         public string Name { get; protected set; }
-        public bool FixedDrawPosition { get; protected set; }
+        public bool FixedDrawPosition { get; set; }
         public float Rotation { get; protected set; }
         public float Scale { get; protected set; }
         public virtual int Width 
