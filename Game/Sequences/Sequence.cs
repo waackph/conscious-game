@@ -7,9 +7,7 @@ namespace conscious
 {
     public class Sequence
     {
-        [JsonProperty]
         private List<Command> _commands;
-        [JsonProperty]
         private int _currentIndex;
         public bool SequenceFinished;
 
@@ -32,6 +30,18 @@ namespace conscious
             {
                 SequenceFinished = true;
             }
+        }
+
+        public DataHolderSequence GetDataHolderSequence()
+        {
+            DataHolderSequence dataHolderSequence = new DataHolderSequence();
+            List<DataHolderCommand> dhCommands = new List<DataHolderCommand>();
+            foreach(Command command in _commands)
+            {
+                dhCommands.Add(command.GetDataHolderCommand());
+            }
+            dataHolderSequence.Commands = dhCommands;
+            return dataHolderSequence;
         }
     }
 }

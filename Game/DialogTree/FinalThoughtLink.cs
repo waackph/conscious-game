@@ -29,5 +29,30 @@ namespace conscious
             IsSuccessEdge = isSuccessEdge;
             ThoughtSequence = sequence;
         }
+
+        public override DataHolderThoughtLink GetDataHolderThoughtLink()
+        {
+            DataHolderFinalThoughtLink dataHolderThoughtLink = new DataHolderFinalThoughtLink();
+            dataHolderThoughtLink = (DataHolderFinalThoughtLink)base.GetDataHolderThoughtLink(dataHolderThoughtLink);
+            dataHolderThoughtLink.moodChange = MoodChange;
+            dataHolderThoughtLink.verb = Verb;
+            dataHolderThoughtLink.Animation = Animation?.GetDataHolderAnimatedSprite();
+            dataHolderThoughtLink.sequence = ThoughtSequence?.GetDataHolderSequence();
+            dataHolderThoughtLink.UnlockId = UnlockId;
+            dataHolderThoughtLink.IsSuccessEdge = IsSuccessEdge;
+            return dataHolderThoughtLink;
+        }
+        
+        public DataHolderThoughtLink GetDataHolderThoughtLink(DataHolderFinalThoughtLink dataHolderThoughtLink)
+        {
+            dataHolderThoughtLink = (DataHolderFinalThoughtLink)base.GetDataHolderThoughtLink(dataHolderThoughtLink);
+            dataHolderThoughtLink.moodChange = MoodChange;
+            dataHolderThoughtLink.verb = Verb;
+            dataHolderThoughtLink.Animation = Animation?.GetDataHolderAnimatedSprite();
+            dataHolderThoughtLink.sequence = ThoughtSequence?.GetDataHolderSequence();
+            dataHolderThoughtLink.UnlockId = UnlockId;
+            dataHolderThoughtLink.IsSuccessEdge = IsSuccessEdge;
+            return dataHolderThoughtLink;
+        }
     }
 }

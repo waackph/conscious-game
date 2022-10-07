@@ -119,5 +119,16 @@ namespace conscious
         {
             return _entities.Count.ToString();
         }
+        public Thing GetThingById(int Id)
+        {
+            foreach(Thing thing in GetEntitiesOfType<Thing>())
+            {
+                if(thing.Id == Id)
+                {
+                    return thing;
+                }
+            }
+            return null;
+        }
     }
 }

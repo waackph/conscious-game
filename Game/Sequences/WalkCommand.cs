@@ -5,9 +5,7 @@ namespace conscious
 {
     public class WalkCommand : Command
     {
-        [JsonProperty]
         private float _destinationX;
-        [JsonProperty]
         private float _destinationY;
 
         public WalkCommand(float destinationX, float destinationY) : base()
@@ -31,5 +29,23 @@ namespace conscious
                 CommandFinished = true;
             }
         }
+
+        public override DataHolderCommand GetDataHolderCommand()
+        {
+            DataHolderWalkCommand dataHolderCommand = new DataHolderWalkCommand();
+            dataHolderCommand = (DataHolderWalkCommand)base.GetDataHolderCommand(dataHolderCommand);
+            dataHolderCommand.DestinationX = _destinationX;
+            dataHolderCommand.DestinationY = _destinationY;
+            return dataHolderCommand;
+        }
+        
+        public DataHolderCommand GetDataHolderCommand(DataHolderWalkCommand dataHolderCommand)
+        {
+            dataHolderCommand = (DataHolderWalkCommand)base.GetDataHolderCommand(dataHolderCommand);
+            dataHolderCommand.DestinationX = _destinationX;
+            dataHolderCommand.DestinationY = _destinationY;
+            return dataHolderCommand;
+        }        
+
     }
 }

@@ -8,5 +8,18 @@ namespace conscious
         {
 
         }
+        public override DataHolderCommand GetDataHolderCommand()
+        {
+            DataHolderAnimateCommand dataHolderCommand = new DataHolderAnimateCommand();
+            dataHolderCommand = (DataHolderAnimateCommand)base.GetDataHolderCommand(dataHolderCommand);
+            return dataHolderCommand;
+        }
+        
+        public DataHolderCommand GetDataHolderCommand(DataHolderAnimateCommand dataHolderCommand)
+        {
+            dataHolderCommand = (DataHolderAnimateCommand)base.GetDataHolderCommand(dataHolderCommand);
+            return dataHolderCommand;
+        }
+
     }
 }

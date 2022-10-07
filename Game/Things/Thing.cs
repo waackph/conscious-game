@@ -63,7 +63,7 @@ namespace conscious
         {
             DataHolderThing dataHolderEntity = new DataHolderThing();
             dataHolderEntity = (DataHolderThing)base.GetDataHolderEntity(dataHolderEntity);
-            dataHolderEntity.Thought = Thought;
+            dataHolderEntity.Thought = Thought?.GetDataHolderThoughtNode();
             dataHolderEntity.IsInInventory = IsInInventory;
             return dataHolderEntity;
         }
@@ -72,7 +72,7 @@ namespace conscious
         {
             dataHolderEntity = (DataHolderThing)base.GetDataHolderEntity(dataHolderEntity);
             dataHolderEntity.Id = Id;
-            dataHolderEntity.Thought = Thought;
+            dataHolderEntity.Thought = Thought?.GetDataHolderThoughtNode();
             dataHolderEntity.IsInInventory = IsInInventory;
             return dataHolderEntity;
         }

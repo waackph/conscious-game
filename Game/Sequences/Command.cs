@@ -12,5 +12,16 @@ namespace conscious
         }
 
         public abstract void ExecuteCommand(GameTime gameTime, Thing thing);
+
+        public virtual DataHolderCommand GetDataHolderCommand()
+        {
+            DataHolderCommand dataHolderCommand = new DataHolderCommand();
+            return dataHolderCommand;
+        }
+
+        public virtual DataHolderCommand GetDataHolderCommand(DataHolderCommand dataHolderCommand)
+        {
+            return dataHolderCommand;
+        }
     }
 }

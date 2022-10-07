@@ -60,5 +60,24 @@ namespace conscious
         public void resetAnimation(){
             _currentFrame = 0;
         }
+
+        public DataHolderAnimatedSprite GetDataHolderAnimatedSprite()
+        {
+            DataHolderAnimatedSprite dataHolderAnimatedSprite = new DataHolderAnimatedSprite();
+            dataHolderAnimatedSprite.Texture = Texture.ToString();
+            dataHolderAnimatedSprite.Rows = _atlasRows;
+            dataHolderAnimatedSprite.Columns = _atlasCols;
+            dataHolderAnimatedSprite.SecPerFrame = _millisecondsPerFrame;
+            return dataHolderAnimatedSprite;
+        }
+        
+        public DataHolderAnimatedSprite GetDataHolderAnimatedSprite(DataHolderAnimatedSprite dataHolderAnimatedSprite)
+        {
+            dataHolderAnimatedSprite.Texture = Texture.ToString();
+            dataHolderAnimatedSprite.Rows = _atlasRows;
+            dataHolderAnimatedSprite.Columns = _atlasCols;
+            dataHolderAnimatedSprite.SecPerFrame = _millisecondsPerFrame;
+            return dataHolderAnimatedSprite;
+        }
     }
 }

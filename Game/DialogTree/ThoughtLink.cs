@@ -6,7 +6,6 @@ namespace conscious
     public class ThoughtLink
     {
         public int Id { get; }
-        [JsonProperty]
         private MoodState[] _validMoods;
 
         public string Option { get; }
@@ -39,6 +38,27 @@ namespace conscious
         public bool MoodValid(MoodState mood)
         {
             return Array.Exists(_validMoods, element => element == MoodState.None) || Array.Exists(_validMoods, element => element == mood);
+        }
+
+        public virtual DataHolderThoughtLink GetDataHolderThoughtLink()
+        {
+            DataHolderThoughtLink dataHolderThoughtLink = new DataHolderThoughtLink();
+            dataHolderThoughtLink.Id = Id;
+            dataHolderThoughtLink.NextNode = NextNode?.GetDataHolderThoughtNode();
+            dataHolderThoughtLink.Option = Option;
+            dataHolderThoughtLink.IsLocked = IsLocked;
+            dataHolderThoughtLink.ValidMoods = _validMoods;
+            return dataHolderThoughtLink;
+        }
+
+        public virtual DataHolderThoughtLink GetDataHolderThoughtLink(DataHolderThoughtLink dataHolderThoughtLink)
+        {
+            dataHolderThoughtLink.Id = Id;
+            dataHolderThoughtLink.NextNode = NextNode?.GetDataHolderThoughtNode();
+            dataHolderThoughtLink.Option = Option;
+            dataHolderThoughtLink.IsLocked = IsLocked;
+            dataHolderThoughtLink.ValidMoods = _validMoods;
+            return dataHolderThoughtLink;
         }
     }
 }

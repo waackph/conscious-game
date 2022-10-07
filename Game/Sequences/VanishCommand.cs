@@ -13,5 +13,18 @@ namespace conscious
                 player.PlayerState = PlayerState.None;
             CommandFinished = true;
         }
+
+        public override DataHolderCommand GetDataHolderCommand()
+        {
+            DataHolderVanishCommand dataHolderCommand = new DataHolderVanishCommand();
+            dataHolderCommand = (DataHolderVanishCommand)base.GetDataHolderCommand(dataHolderCommand);
+            return dataHolderCommand;
+        }
+        
+        public DataHolderCommand GetDataHolderCommand(DataHolderVanishCommand dataHolderCommand)
+        {
+            dataHolderCommand = (DataHolderVanishCommand)base.GetDataHolderCommand(dataHolderCommand);
+            return dataHolderCommand;
+        }
     }
 }
