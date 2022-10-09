@@ -5,7 +5,7 @@ namespace conscious
 {
     public class ThoughtNode
     {
-        private int _id;
+        private int Id;
         private int _linkageId;
         public List<ThoughtLink> Links { get; }
 
@@ -17,7 +17,7 @@ namespace conscious
 
         public ThoughtNode(int id, string thought, int linkageId, bool isRoot, int thingId)
         {
-            _id = id;
+            Id = id;
             Thought = thought;
             _linkageId = linkageId;
             Links = new List<ThoughtLink>();
@@ -57,7 +57,7 @@ namespace conscious
                     dhLinks.Add(link.GetDataHolderThoughtLink());
                 }
             }
-            dataHolderThoughtNode.Id = _id;
+            dataHolderThoughtNode.Id = Id;
             dataHolderThoughtNode.Thought = Thought;
             dataHolderThoughtNode.LinkageId = _linkageId;
             dataHolderThoughtNode.IsRoot = IsRoot;
@@ -76,7 +76,7 @@ namespace conscious
                     dhLinks.Add(link.GetDataHolderThoughtLink());
                 }
             }
-            dataHolderThoughtNode.Id = _id;
+            dataHolderThoughtNode.Id = Id;
             dataHolderThoughtNode.Thought = Thought;
             dataHolderThoughtNode.LinkageId = _linkageId;
             dataHolderThoughtNode.IsRoot = IsRoot;

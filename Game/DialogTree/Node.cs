@@ -5,20 +5,20 @@ namespace conscious
 {
     public class Node
     {
-        public int _id { get; set; }
+        public int Id { get; set; }
         [JsonProperty]
         public List<Edge> _edges;
         [JsonProperty]
         private string _dialogLine;
 
         public Node(int id, string dialogLine, List<Edge> edges){
-            _id = id;
+            Id = id;
             _edges = edges;
             _dialogLine = dialogLine;
         }
 
         public int GetId(){
-            return _id;
+            return Id;
         }
 
         public void AddEdge(Edge edge){
