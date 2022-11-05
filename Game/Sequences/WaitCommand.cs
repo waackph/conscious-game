@@ -32,7 +32,7 @@ namespace conscious
             DataHolderWaitCommand dataHolderCommand = new DataHolderWaitCommand();
             dataHolderCommand = (DataHolderWaitCommand)base.GetDataHolderCommand(dataHolderCommand);
             dataHolderCommand.MillisecondsToWait = _millisecondsToWait;
-            dataHolderCommand.SoundFilePath = Sound?.Name;
+            dataHolderCommand.CmdSoundFilePath = Sound?.Name;
             return dataHolderCommand;
         }
         
@@ -40,7 +40,7 @@ namespace conscious
         {
             dataHolderCommand = (DataHolderWaitCommand)base.GetDataHolderCommand(dataHolderCommand);
             dataHolderCommand.MillisecondsToWait = _millisecondsToWait;
-            dataHolderCommand.SoundFilePath = Sound?.Name;
+            dataHolderCommand.CmdSoundFilePath = Sound?.Name;
             return dataHolderCommand;
         }        
     }

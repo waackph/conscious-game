@@ -216,7 +216,7 @@ namespace conscious
             string savePath;
             if(newGame)
             {
-                savePath = "new_states/20221007-1758";
+                savePath = "new_states/20221026-2152";
             }
             else
             {
@@ -239,7 +239,7 @@ namespace conscious
             }
 
             // Room Data
-            Dictionary<int, DataHolderRoom> roomsData = JsonConvert.DeserializeObject<Dictionary<int, DataHolderRoom>>(File.ReadAllText(savePath+"_rooms.json"), settings);
+            Dictionary<int, DataHolderRoom> roomsData = JsonConvert.DeserializeObject<Dictionary<int, DataHolderRoom>>(File.ReadAllText(savePath+"_rooms_gct.json"), settings);
             foreach(KeyValuePair<int, DataHolderRoom> entry in roomsData)
             {
                 DataHolderRoom dhRoom = entry.Value;
@@ -297,7 +297,7 @@ namespace conscious
                 DataHolderWaitCommand dhWait = (DataHolderWaitCommand)dhCommand;
                 WaitCommand wCmd = new WaitCommand(dhWait.MillisecondsToWait);
                 wCmd = new WaitCommand(dhWait.MillisecondsToWait);
-                wCmd.Sound = _content.Load<SoundEffect>("Audio/" + dhWait.SoundFilePath);
+                wCmd.Sound = _content.Load<SoundEffect>("Audio/" + dhWait.CmdSoundFilePath);
                 cmd = wCmd;
             }
             else if(dhCommand.GetType() == typeof(DataHolderWalkCommand))
