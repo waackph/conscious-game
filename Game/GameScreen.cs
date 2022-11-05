@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 using System;
 using System.IO;
@@ -210,17 +211,16 @@ namespace conscious
             File.WriteAllText(savePath+"_player.json", JsonConvert.SerializeObject(GetDataHolderPlayer(), Formatting.Indented, settings));
         }
 
-        // TODO: serialize data of player position and currentRoomIndex of the RoomManager
         public void LoadGame(bool newGame)
         {
             string savePath;
             if(newGame)
             {
-                savePath = "new_states/20210627-0855";
+                savePath = "new_states/20221026-2152";
             }
             else
             {
-                savePath = "save_states/20210627-0858";
+                savePath = "save_states/20221007-1758";
             }
 
             // Clear Data
@@ -239,7 +239,7 @@ namespace conscious
             }
 
             // Room Data
-            Dictionary<int, DataHolderRoom> roomsData = JsonConvert.DeserializeObject<Dictionary<int, DataHolderRoom>>(File.ReadAllText(savePath+"_rooms.json"), settings);
+            Dictionary<int, DataHolderRoom> roomsData = JsonConvert.DeserializeObject<Dictionary<int, DataHolderRoom>>(File.ReadAllText(savePath+"_rooms_gct.json"), settings);
             foreach(KeyValuePair<int, DataHolderRoom> entry in roomsData)
             {
                 DataHolderRoom dhRoom = entry.Value;
@@ -252,7 +252,9 @@ namespace conscious
                         things.Add(entity);
                     }
                 }
-                Room room = new Room(dhRoom.RoomWidth, _entityManager, dhRoom.EntrySequence, _content.Load<Song>(dhRoom.SoundFilePath), _content.Load<Texture2D>(dhRoom.LightMapPath));
+                DataHolderSequence dhSequence = dhRoom.EntrySequence;
+                Sequence entrySequence = InstatiateSequence(dhSequence);
+                Room room = new Room(dhRoom.RoomWidth, _entityManager, entrySequence, _content.Load<Song>("Audio/" + dhRoom.SoundFilePath), _content.Load<Texture2D>(dhRoom.LightMapPath));
                 room.SetThings(things);
                 _roomManager.AddRoom(entry.Key, room);
             }
@@ -262,9 +264,70 @@ namespace conscious
             _roomManager.CurrentRoomIndex = playerData.RoomId;
             
             if(newGame)
+            {
+                _player.Position = new Vector2(playerData.PlayerPositionX, playerData.PlayerPositionY);
                 _roomManager.ResetCurrentRoom();
+            }
             else
                 _player.Position = new Vector2(playerData.PlayerPositionX, playerData.PlayerPositionY);
+        }
+
+        public Sequence InstatiateSequence(DataHolderSequence dhSequence)
+        {
+            if(dhSequence == null)
+                return null;
+            List<Command> cmds = new List<Command>();
+            foreach(DataHolderCommand dhCommand in dhSequence.Commands)
+            {
+                Command cmd = InstatiateCommand(dhCommand);                
+                if(cmd != null)
+                {
+                    cmds.Add(cmd);
+                }
+            }
+            return new Sequence(cmds);
+        }
+        
+        public Command InstatiateCommand(DataHolderCommand dhCommand)
+        {
+            Command cmd;
+            if(dhCommand.GetType() == typeof(DataHolderWaitCommand))
+            {
+                // TODO: Sound File not accessible as command needs to be fixed
+                DataHolderWaitCommand dhWait = (DataHolderWaitCommand)dhCommand;
+                WaitCommand wCmd = new WaitCommand(dhWait.MillisecondsToWait);
+                wCmd = new WaitCommand(dhWait.MillisecondsToWait);
+                wCmd.Sound = _content.Load<SoundEffect>("Audio/" + dhWait.CmdSoundFilePath);
+                cmd = wCmd;
+            }
+            else if(dhCommand.GetType() == typeof(DataHolderWalkCommand))
+            {
+                DataHolderWalkCommand dhWalk = (DataHolderWalkCommand)dhCommand;
+                cmd = new WalkCommand(dhWalk.DestinationX, dhWalk.DestinationY);
+            }
+            else if(dhCommand.GetType() == typeof(DataHolderDoorActionCommand))
+            {
+                DataHolderDoorActionCommand dhDoorAction = (DataHolderDoorActionCommand)dhCommand;
+                int doorId = dhDoorAction.DoorId;
+                cmd = new DoorActionCommand(_entityManager, doorId);
+            }
+            else if(dhCommand.GetType() == typeof(DataHolderAnimateCommand))
+            {
+                cmd = new AnimateCommand();
+            }
+            else if(dhCommand.GetType() == typeof(DataHolderSayCommand))
+            {
+                cmd = new SayCommand();
+            }
+            else if(dhCommand.GetType() == typeof(DataHolderVanishCommand))
+            {
+                cmd = new VanishCommand();
+            }
+            else 
+            {
+                cmd = null;
+            }
+            return cmd;
         }
 
         public Thing InstatiateEntity(DataHolderEntity dh)
@@ -273,18 +336,20 @@ namespace conscious
             if(dh.GetType() == typeof(DataHolderThing))
             {
                 DataHolderThing dhThing = (DataHolderThing)dh;
-                entity = new Thing(dhThing.Id, dhThing.Thought, _moodStateManager, dhThing.Name, 
+                ThoughtNode thought = InstatiateThought(dhThing.Thought);
+                entity = new Thing(dhThing.Id, thought, _moodStateManager, dhThing.Name, 
                                    _content.Load<Texture2D>(dhThing.texturePath), 
                                    new Vector2(dhThing.PositionX, dhThing.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderItem))
             {
                 DataHolderItem dhItem = (DataHolderItem)dh;
+                ThoughtNode thought = InstatiateThought(dhItem.Thought);
                 entity = new Item(dhItem.Id, dhItem.Name, 
                                   dhItem.PickUpAble, dhItem.UseAble, 
                                   dhItem.CombineAble, dhItem.GiveAble, 
                                   dhItem.UseWith, dhItem.ExamineText,
-                                  dhItem.Thought, _moodStateManager, 
+                                  thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhItem.texturePath), 
                                   new Vector2(dhItem.PositionX, dhItem.PositionY));
             }
@@ -292,6 +357,7 @@ namespace conscious
             {
                 DataHolderMorphingItem dhMorph = (DataHolderMorphingItem)dh;
                 Dictionary<MoodState, Item> items = new Dictionary<MoodState, Item>();
+                ThoughtNode thought = InstatiateThought(dhMorph.Thought);
                 foreach(KeyValuePair<MoodState, DataHolderEntity> entry in dhMorph.Items)
                 {
                     items.Add(entry.Key, (Item)InstatiateEntity(entry.Value));
@@ -300,13 +366,14 @@ namespace conscious
                                           dhMorph.Id, dhMorph.Name, dhMorph.PickUpAble,
                                           dhMorph.UseAble, dhMorph.CombineAble,
                                           dhMorph.GiveAble, dhMorph.UseWith, 
-                                          dhMorph.ExamineText, dhMorph.Thought, _moodStateManager, 
+                                          dhMorph.ExamineText, thought, _moodStateManager, 
                                           _content.Load<Texture2D>(dhMorph.texturePath), 
                                           new Vector2(dhMorph.PositionX, dhMorph.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderDoor))
             {
                 DataHolderDoor dhDoor = (DataHolderDoor)dh;
+                ThoughtNode thought = InstatiateThought(dhDoor.Thought);
                 entity = new Door(dhDoor.Id, dhDoor.Name, 
                                   dhDoor.PickUpAble, dhDoor.UseAble, 
                                   dhDoor.CombineAble, dhDoor.GiveAble, 
@@ -314,18 +381,19 @@ namespace conscious
                                   dhDoor.ItemDependency, dhDoor.RoomId, dhDoor.DoorId,
                                   new Vector2(dhDoor.InitPlayerPosX, dhDoor.InitPlayerPosY),
                                   _content.Load<Texture2D>(dhDoor.CloseTexturePath),
-                                  dhDoor.IsUnlocked, dhDoor.Thought, _moodStateManager, 
+                                  dhDoor.IsUnlocked, thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderKey))
             {
                 DataHolderKey dhKey = (DataHolderKey)dh;
+                ThoughtNode thought = InstatiateThought(dhKey.Thought);
                 entity = new Key(dhKey.Id, dhKey.Name, 
                                  dhKey.PickUpAble, dhKey.UseAble, 
                                  dhKey.CombineAble, dhKey.GiveAble, 
                                  dhKey.UseWith, dhKey.ExamineText,
-                                 dhKey.ItemDependency, dhKey.Thought, _moodStateManager, 
+                                 dhKey.ItemDependency, thought, _moodStateManager, 
                                  _content.Load<Texture2D>(dhKey.texturePath), 
                                  new Vector2(dhKey.PositionX, dhKey.PositionY));
             }
@@ -341,32 +409,35 @@ namespace conscious
                 {
                     combinedItem = (Item)InstatiateEntity(dhCombinable.CombineItem);
                 }
+                ThoughtNode thought = InstatiateThought(dhCombinable.Thought);
                 entity = new CombineItem(dhCombinable.Id, dhCombinable.Name, 
                                          dhCombinable.PickUpAble, dhCombinable.UseAble, 
                                          dhCombinable.CombineAble, dhCombinable.GiveAble, 
                                          dhCombinable.UseWith, dhCombinable.ExamineText,
-                                         combinedItem, dhCombinable.ItemDependency, dhCombinable.Thought, _moodStateManager, 
+                                         combinedItem, dhCombinable.ItemDependency, thought, _moodStateManager, 
                                          _content.Load<Texture2D>(dhCombinable.texturePath), 
                                          new Vector2(dhCombinable.PositionX, dhCombinable.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderCharacter))
             {
                 DataHolderCharacter dhCharacter = (DataHolderCharacter)dh;
+                ThoughtNode thought = InstatiateThought(dhCharacter.Thought);
                 entity = new Character(dhCharacter.Id, dhCharacter.Name, 
                                        dhCharacter.Pronoun, dhCharacter.CatchPhrase, 
                                        dhCharacter.GiveAble, dhCharacter.TreeStructure, 
-                                       _dialogManager, dhCharacter.Thought, _moodStateManager, 
+                                       _dialogManager, thought, _moodStateManager, 
                                        _content.Load<Texture2D>(dhCharacter.texturePath), 
                                        new Vector2(dhCharacter.PositionX, dhCharacter.PositionY));
             }
             else if(dh.GetType() == typeof(DataHolderPuzzleCharacter))
             {
                 DataHolderPuzzleCharacter dhPuzzleCharacter = (DataHolderPuzzleCharacter)dh;
+                ThoughtNode thought = InstatiateThought(dhPuzzleCharacter.Thought);
                 entity = new PuzzleCharacter(dhPuzzleCharacter.Id, dhPuzzleCharacter.Name, 
                                              dhPuzzleCharacter.Pronoun, dhPuzzleCharacter.CatchPhrase, 
                                              dhPuzzleCharacter.GiveAble, dhPuzzleCharacter.ItemDependency,
                                              dhPuzzleCharacter.DialogUnlocked, dhPuzzleCharacter.TreeStructure, 
-                                             _dialogManager, dhPuzzleCharacter.Thought, _moodStateManager, 
+                                             _dialogManager, thought, _moodStateManager, 
                                              _content.Load<Texture2D>(dhPuzzleCharacter.texturePath), 
                                              new Vector2(dhPuzzleCharacter.PositionX, dhPuzzleCharacter.PositionY));
             }
@@ -375,6 +446,72 @@ namespace conscious
                 entity = null;
             }
             return entity;
+        }
+
+        public ThoughtNode InstatiateThought(DataHolderThoughtNode dhThought)
+        {
+            if(dhThought == null)
+                return null;
+            ThoughtNode thought = new ThoughtNode(dhThought.Id,
+                                                    dhThought.Thought,
+                                                    dhThought.LinkageId,
+                                                    dhThought.IsRoot,
+                                                    dhThought.ThingId);
+            foreach(DataHolderThoughtLink dhThoughtLink in dhThought.Links)
+            {
+                ThoughtLink link = InstatiateThoughtLink(dhThoughtLink);                
+                if(link != null)
+                {
+                    thought.AddLink(link);
+                }
+            }
+            return thought;
+        }
+
+        public ThoughtLink InstatiateThoughtLink(DataHolderThoughtLink dhLink)
+        {
+            ThoughtLink link;
+            if(dhLink.GetType() == typeof(DataHolderThoughtLink))
+            {
+                ThoughtNode thought = InstatiateThought(dhLink.NextNode);
+                link = new ThoughtLink(dhLink.Id, 
+                                        thought,
+                                        dhLink.Option,
+                                        dhLink.IsLocked,
+                                        dhLink.ValidMoods);
+            }
+            else if(dhLink.GetType() == typeof(DataHolderFinalThoughtLink))
+            {
+                DataHolderFinalThoughtLink dhFinalLink = (DataHolderFinalThoughtLink)dhLink;
+                ThoughtNode thought = InstatiateThought(dhFinalLink.NextNode);
+                Sequence sequence = InstatiateSequence(dhFinalLink.sequence);
+                AnimatedSprite animation = null;
+                if(dhFinalLink.Animation != null)
+                {
+                    DataHolderAnimatedSprite dhAnimation = dhFinalLink.Animation;
+                    Texture2D texture = _content.Load<Texture2D>(dhAnimation.Texture);
+                    animation = new AnimatedSprite(texture,
+                                                                    dhAnimation.Rows, dhAnimation.Columns,
+                                                                    texture.Width, texture.Height, 0f,
+                                                                    dhAnimation.SecPerFrame);
+                }
+                link = new FinalThoughtLink(dhFinalLink.moodChange, 
+                                            dhFinalLink.verb,
+                                            animation,
+                                            sequence,
+                                            dhFinalLink.UnlockId,
+                                            dhFinalLink.Id,
+                                            thought,
+                                            dhFinalLink.Option,
+                                            dhFinalLink.IsLocked,
+                                            dhFinalLink.ValidMoods,
+                                            dhFinalLink.IsSuccessEdge);
+            }
+            else 
+            {
+                link = null;
+            }
+            return link;
         }
     }
 }

@@ -26,5 +26,22 @@ namespace conscious
             if (_timeSinceBeginning > _millisecondsToWait)
                 CommandFinished = true;
         }
+
+        public override DataHolderCommand GetDataHolderCommand()
+        {
+            DataHolderWaitCommand dataHolderCommand = new DataHolderWaitCommand();
+            dataHolderCommand = (DataHolderWaitCommand)base.GetDataHolderCommand(dataHolderCommand);
+            dataHolderCommand.MillisecondsToWait = _millisecondsToWait;
+            dataHolderCommand.CmdSoundFilePath = Sound?.Name;
+            return dataHolderCommand;
+        }
+        
+        public DataHolderCommand GetDataHolderCommand(DataHolderWaitCommand dataHolderCommand)
+        {
+            dataHolderCommand = (DataHolderWaitCommand)base.GetDataHolderCommand(dataHolderCommand);
+            dataHolderCommand.MillisecondsToWait = _millisecondsToWait;
+            dataHolderCommand.CmdSoundFilePath = Sound?.Name;
+            return dataHolderCommand;
+        }        
     }
 }

@@ -70,7 +70,7 @@ namespace conscious
             CurrentRoomIndex = 2;
             _doorEntered = null;
 
-            LoadRooms();
+            // LoadRooms();
         }
 
         protected virtual void OnTerminateGameEvent(bool e)
@@ -139,86 +139,11 @@ namespace conscious
             Vector2 itemPosition;
             Texture2D bg;
             Room room;
-            Thing thing;
+            // Thing thing;
             Song song;
             Texture2D lightMap;
+            Door door;
             
-            // Room 1
-            bg = _content.Load<Texture2D>("Backgrounds/debug/background");
-            song = _content.Load<Song>("Audio/BackgroundNoise");
-            lightMap = _content.Load<Texture2D>("light/light_gimp_v2");
-            room = new Room(bg.Width, _entityManager, null, song, lightMap);
-            thing = new Thing(10, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
-            room.addThing(thing);
-
-            itemPosition = new Vector2(1058, 570);
-            ThoughtNode thought3 = CreateSimpleThought(22, 
-                                                      "Mhh...",
-                                                      "The door to the outside world",
-                                                      new string[]{"Its locked. Maybe I can open it somehow? [use]"}, 
-                                                      new Verb[]{Verb.UseWith},
-                                                      new int[] {0},
-                                                      new bool[] {true},
-                                                      new bool[] {false},
-                                                      1,
-                                                      MoodState.Depressed);
-            Door door = new Door(1, "Door", false, true, false, false, true, "It's a door", 
-                                  4, 2, 30, 
-                                  new Vector2(1058, 579+150+_player.Height), 
-                                  _content.Load<Texture2D>("Objects/debug/door_closed"),
-                                  false, thought3, _moodStateManager, 
-                                  _content.Load<Texture2D>("Objects/debug/door_opened"), 
-                                  itemPosition);
-            room.addThing(door);
-
-            ThoughtNode thought2 = CreateSimpleThought(17, 
-                                                      "Mhh...",
-                                                      "It's a key. There is nothing more mundane",
-                                                      new string[]{"Let's keep it anyway [pick up]"}, 
-                                                      new Verb[]{Verb.PickUp},
-                                                      new int[]{0},
-                                                      new bool[] {true},
-                                                      new bool[] {false},
-                                                      2,
-                                                      MoodState.Regular);
-            Key combinedItem = new Key(4, "Oily Key", true, true, false, false, true, "The key is smooth now",
-                                         1, null, _moodStateManager, _content.Load<Texture2D>("Objects/debug/key_oily"), new Vector2(448, 786+4+50));
-            itemPosition = new Vector2(448, 786+4);
-            Thing key = new CombineItem(2, "Key", true, false, true, false, false, "It's a key", 
-                                        combinedItem, 3, thought2, _moodStateManager, _content.Load<Texture2D>("Objects/debug/key"), itemPosition);
-            room.addThing(key);
-
-            ThoughtNode thought6 = CreateSimpleThought(41, 
-                                                      "Mhh...",
-                                                      "It's a bottle. Wow...",
-                                                      new string[]{"Maybe I can use it for something [combine]"}, 
-                                                      new Verb[]{Verb.Combine},
-                                                      new int[]{0},
-                                                      new bool[] {true},
-                                                      new bool[] {false},
-                                                      3,
-                                                      MoodState.None);
-            itemPosition = new Vector2(200, 786+4);
-            Thing combineItem = new CombineItem(3, "Oil Bottle", true, false, true, false, false, "It's a bottle", 
-                                                null, 2, thought6, _moodStateManager, _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
-            room.addThing(combineItem);
-
-            // --------------------------- Morphing Item ---------------------------
-            itemPosition = new Vector2(1058, 850);
-            Dictionary<MoodState, Item> morphItems = new Dictionary<MoodState, Item>();
-            Key morphItem1 = new Key(45, "Oily Key", true, true, false, false, true, "The key is smooth now", 1, null, _moodStateManager, 
-                                       _content.Load<Texture2D>("Objects/debug/key_oily"), itemPosition);
-            Key morphItem2 = new Key(46, "Oil Bottle", true, true, false, false, true, "The key is smooth now", 1, null, _moodStateManager, 
-                                       _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
-            morphItems[MoodState.Regular] = morphItem1;
-            morphItems[MoodState.Depressed] = morphItem2;
-            Thing morph = new MorphingItem(morphItems, 
-                                           6, "Morph", false, true, false, false, true, "It's morphing", null, _moodStateManager,
-                                           _content.Load<Texture2D>("Objects/debug/oil_bottle"), itemPosition);
-            room.addThing(morph);
-
-            _rooms.Add(1, room);
-
             ////////////////////////////////////////////////
             // room 2
             bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
@@ -315,7 +240,7 @@ namespace conscious
             // Add final link with animation
             // Add sequence going into bathroom, wait x seconds, go back to current room.
             WalkCommand walkToDoor = new WalkCommand(door.Position.X, door.Position.Y);
-            DoorActionCommand useDoor = new DoorActionCommand(door);
+            DoorActionCommand useDoor = new DoorActionCommand(_entityManager, 80);
             VanishCommand playerAppearance = new VanishCommand();
             WaitCommand wait = new WaitCommand(10000);
             SoundEffect sound = _content.Load<SoundEffect>("Audio/ShowerSound");
@@ -672,14 +597,14 @@ namespace conscious
             // currentRoom = _rooms[CurrentRoomIndex];
             
             // Testing: Sequence
-            _player.Position = new Vector2(10, 900);
-            WalkCommand command = new WalkCommand(1000f, 1000f);
-            List<Command> coms = new List<Command>()
-            {
-                command
-            };
-            Sequence seq = new Sequence(coms);
-            _rooms[CurrentRoomIndex].EntrySequence = seq;
+            // _player.Position = new Vector2(10, 900);
+            // WalkCommand command = new WalkCommand(1000f, 1000f);
+            // List<Command> coms = new List<Command>()
+            // {
+            //     command
+            // };
+            // Sequence seq = new Sequence(coms);
+            // _rooms[CurrentRoomIndex].EntrySequence = seq;
 
             // currentRoom = _rooms[CurrentRoomIndex];
             changeRoom(CurrentRoomIndex, Vector2.Zero);

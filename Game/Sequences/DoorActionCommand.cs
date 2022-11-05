@@ -4,20 +4,44 @@ namespace conscious
 {
     public class DoorActionCommand : Command
     {
-        private Door _door;
+        private int _doorId;
+        private EntityManager _entityManager;
 
-        public DoorActionCommand(Door door) : base()
+        public DoorActionCommand(EntityManager entityManager, int doorId) : base()
         {
-            _door = door;
+            _entityManager = entityManager;
+            _doorId = doorId;
         }
 
         public override void ExecuteCommand(GameTime gameTime, Thing thing)
         {
-            if(_door.IsClosed)
-                _door.OpenDoor();
+            // We need to do that at runtime on execution because otherwise the Door is an object that references itself, 
+            // since the door has a thought, and the finalThoughtLink has a Sequence with this particular DoorActionCommand 
+            // which again would contain the door. 
+            // Using the Id at initilization we still have the problem that the entity manager 
+            // is not yet initilized and filled with all the Entities.
+            // TODO: Maybe we need another way of initilizing everything...
+            Door door = (Door)_entityManager.GetThingById(_doorId);
+            if(door.IsClosed)
+                door.OpenDoor();
             else
-                _door.CloseDoor();
+                door.CloseDoor();
             CommandFinished = true;
+        }
+
+        public override DataHolderCommand GetDataHolderCommand()
+        {
+            DataHolderDoorActionCommand dataHolderCommand = new DataHolderDoorActionCommand();
+            dataHolderCommand = (DataHolderDoorActionCommand)base.GetDataHolderCommand(dataHolderCommand);
+            dataHolderCommand.DoorId = _doorId;
+            return dataHolderCommand;
+        }
+        
+        public DataHolderCommand GetDataHolderCommand(DataHolderDoorActionCommand dataHolderCommand)
+        {
+            dataHolderCommand = (DataHolderDoorActionCommand)base.GetDataHolderCommand(dataHolderCommand);
+            dataHolderCommand.DoorId = _doorId;
+            return dataHolderCommand;
         }
     }
 }

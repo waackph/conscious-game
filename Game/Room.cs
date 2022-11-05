@@ -145,9 +145,9 @@ namespace conscious
             }
             dataHolderRoom.RoomWidth = RoomWidth;
             dataHolderRoom.Things = dhThings;
-            dataHolderRoom.EntrySequence = EntrySequence;
-            dataHolderRoom.SoundFilePath = SoundFile.ToString();
-            dataHolderRoom.LightMapPath = LightMap.ToString();
+            dataHolderRoom.EntrySequence = EntrySequence?.GetDataHolderSequence();
+            dataHolderRoom.SoundFilePath = SoundFile?.Name;
+            dataHolderRoom.LightMapPath = LightMap?.ToString();
             return dataHolderRoom;
         }
     }
