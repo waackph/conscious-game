@@ -7,6 +7,10 @@ using System.Linq;
 
 namespace conscious
 {
+    /// <summary>Class <c>UiDialogManager</c> implements a dialog UI system.
+    /// It manages the visibility of dialog options and prompts of the characters.
+    /// </summary>
+    ///
     public class UiDialogManager : IComponent
     {
         private UIText _currentText;

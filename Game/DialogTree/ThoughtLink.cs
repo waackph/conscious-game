@@ -1,8 +1,14 @@
 using System;
-using Newtonsoft.Json;
 
 namespace conscious
 {
+    /// <summary>Class <c>ThoughLink</c> holds data of an option in a monolog (a dialog in thought)
+    /// that the player can choose as an thought answer. An option contains the next node object
+    /// (i.e. something the protagonist things in response) and indicates if the option can be chosen
+    /// given a needed mood the protagonist must be in. 
+    /// A thought option can also be locked. Then something must be done before the thought option appears.
+    /// </summary>
+    ///
     public class ThoughtLink
     {
         public int Id { get; }

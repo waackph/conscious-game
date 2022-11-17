@@ -4,6 +4,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace conscious
 {
+    /// <summary>Class <c>ControlsManagerr</c> implements a basic controls system 
+    /// for the player to control the protagonist via mouse and keyboard.
+    /// </summary>
+    ///
     public class ControlsManager : IComponent
     {
         private Player _player;

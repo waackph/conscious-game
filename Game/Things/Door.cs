@@ -3,6 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace conscious
 {
+    /// <summary>Class <c>Door</c> holds data and logic of an Item 
+    /// that can lead from one Room to another.
+    /// </summary>
+    ///
     public class Door : Item
     {
         private int _itemDependency;

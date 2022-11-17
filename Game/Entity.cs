@@ -3,6 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace conscious
 {
+    /// <summary>Abstract class <c>Entity</c> implements the most basic Entity in the game. 
+    /// It can be a Thing in the Room or a UI Element.
+    /// </summary>
+    ///
     public abstract class Entity : IComponent
     {
         protected Sprite _sprite;

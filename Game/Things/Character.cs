@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>Character</c> holds data and logic of a Character in the Room.
+    /// A character is an interactable Thing that also has a pronoun and a dialog mechanic.
+    /// </summary>
+    ///
     public class Character : Thing
     {
         protected List<Node> _treeStructure;

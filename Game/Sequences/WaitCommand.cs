@@ -3,6 +3,10 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace conscious
 {
+    /// <summary>Class <c>VanishCommand</c> holds data and logic
+    /// for the protagonist to wait for a given amount of seconds.
+    /// </summary>
+    ///
     public class WaitCommand : Command
     {
         private int _timeSinceBeginning;

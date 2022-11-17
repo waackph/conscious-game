@@ -3,10 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
 using System;
-// using System.TimeSpan;
 
 namespace conscious
 {
+    /// <summary>Class <c>AudioManager</c> implements a basic audio player system to play music and sounds.
+    /// </summary>
+    ///
     public class AudioManager : IComponent
     {
         // Mood Dependent change: get the PlayPosition and multiply/devide by the factor it was slowed down or fastened

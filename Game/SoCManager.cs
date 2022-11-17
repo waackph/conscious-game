@@ -5,6 +5,11 @@ using System;
 
 namespace conscious
 {
+    /// <summary>Class <c>SoCManager</c> implements a thought dialog system.
+    /// It handles the stream of consciousness that is represented in a thought tree that is  
+    /// triggered by a clicked Item for the protagonist.
+    /// </summary>
+    ///
     public class SoCManager : IComponent
     {
         private MoodStateManager _moodStateManager;

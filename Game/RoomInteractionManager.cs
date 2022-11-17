@@ -7,6 +7,10 @@ using System;
 
 namespace conscious
 {
+    /// <summary>Class <c>RoomInteractionManager</c> implements a interaction system 
+    /// that manages all interactions between the player and the current Room and its Things.
+    /// </summary>
+    ///
     public class RoomInteractionManager : IComponent
     {
         private EntityManager _entityManager;

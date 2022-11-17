@@ -9,6 +9,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace conscious
 {
+    /// <summary>Class <c>Camera2D</c> implements a basic Camera system.
+    /// </summary>
+    ///
     public class Camera2D
     {
         #region Fields

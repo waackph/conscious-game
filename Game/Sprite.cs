@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace conscious
 {
+    /// <summary>Class <c>Sprite</c> models a sprite that each visible object has.
+    /// </summary>
+    ///
     public class Sprite
     {
         public Texture2D Texture{ get; set; }

@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace conscious
 {
+    /// <summary>Class <c>AnimatedSprite</c> holds data and logic to animate a sprite from a sprite atlas.
+    /// </summary>
+    ///
     public class AnimatedSprite : Sprite
     {
         private int _atlasRows;

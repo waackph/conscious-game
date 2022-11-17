@@ -8,6 +8,9 @@ using System.Linq;
 
 namespace conscious
 {
+    /// <summary>Class <c>EntityManager</c> implements a rendering system for all Entities.
+    /// </summary>
+    ///
     public class EntityManager : IComponent
     {
         private readonly List<Entity> _entities = new List<Entity>();

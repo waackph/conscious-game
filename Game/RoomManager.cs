@@ -9,6 +9,10 @@ using System;
 
 namespace conscious
 {
+    /// <summary>Class <c>RoomManager</c> implements a level system.
+    /// It manages the change of rooms and its initilization as well as change depending on mood state.
+    /// </summary>
+    ///
     public class RoomManager : IComponent
     {
         private Dictionary<int, Room> _rooms = new Dictionary<int, Room>();

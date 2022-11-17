@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>AStarShortestPath</c> holds data and logic
+    /// to find the shortest path to a destination given the graph of the room with the Things in it.
+    /// </summary>
+    ///
     public class AStarShortestPath
     {
         private RoomGraph _graph;

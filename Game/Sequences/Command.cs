@@ -2,6 +2,10 @@ using Microsoft.Xna.Framework;
 
 namespace conscious
 {
+    /// <summary>Abstract Class <c>Command</c> holds data and logic
+    /// to execute a command.
+    /// </summary>
+    ///
     public abstract class Command
     {
         public bool CommandFinished;

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>Vertex</c> holds data for a position in the given Room 
+    /// and is e.g. representing a vertex of a bounding box.
+    /// </summary>
+    ///
     public class Vertex
     {
         public Vector2 RoomPosition;

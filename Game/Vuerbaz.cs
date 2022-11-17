@@ -17,7 +17,8 @@ using Microsoft.Xna.Framework.Media;
 namespace conscious
 {
     /// <summary>
-    /// This is the main type for your game
+    /// This is the main class of the Game. Here, the basic settings are set up 
+    /// and menu and in-game screen is initialized.
     /// </summary>
     public class Vuerbaz : Game
     {
@@ -49,7 +50,6 @@ namespace conscious
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
 
             // debugging
             _pixel = new Texture2D(GraphicsDevice,1,1);

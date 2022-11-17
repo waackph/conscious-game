@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>VerbManager</c> implements a verb interaction system.
+    /// Depending on the clicked UI representation of a verb, an interaction is executed.
+    /// </summary>
+    ///
+
+    /// This class is deprecated, since the verbs interactions are executed via thoughts.
     public class VerbManager : IComponent
     {
         private float _margin = 5f;

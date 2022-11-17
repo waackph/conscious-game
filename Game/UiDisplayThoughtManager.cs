@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>UiDisplayThoughtManager</c> implements a thought UI system.
+    /// It manages the visibility of thought options and thoughts of the protagonist.
+    /// </summary>
+    ///
     public class UiDisplayThoughtManager : IComponent
     {
         private EntityManager _entityManager;

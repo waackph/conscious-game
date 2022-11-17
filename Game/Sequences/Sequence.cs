@@ -1,10 +1,13 @@
 using Microsoft.Xna.Framework;
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace conscious
 {
+    /// <summary>Class <c>Sequence</c> holds data and logic
+    /// to play a sequence of commands a character in the Room executes.
+    /// </summary>
+    ///
     public class Sequence
     {
         private List<Command> _commands;

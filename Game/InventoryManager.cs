@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>EntityManager</c> implements an inventory system.
+    /// If the player picks some Item up, it is shown and interactable via the Inventory.
+    /// </summary>
+    ///
     public class InventoryManager : IComponent
     {
         private float _marginWidth = 60f;

@@ -8,6 +8,10 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>TitleScreen</c> implements a menu system.
+    /// It manages menu functionality and UI elements that trigger the functionality.
+    /// </summary>
+    ///
     public class TitleScreen : Screen
     {
         // fields

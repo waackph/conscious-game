@@ -7,6 +7,10 @@ using Microsoft.Xna.Framework.Media;
 
 namespace conscious
 {
+    /// <summary>Class <c>Room</c> holds data and logic for a room and the Things that are in a Room.
+    /// It also includes light maps and music.
+    /// </summary>
+    ///
     public class Room
     {
         private EntityManager _entityManager;

@@ -3,6 +3,11 @@ using Newtonsoft.Json;
 
 namespace conscious
 {
+    /// <summary>Class <c>Node</c> holds data of a node from a dialog tree.
+    /// The node indicates what a NPC characters is saying and it holds a 
+    /// reference to possible options the player has to answer (_edges).
+    /// </summary>
+    ///
     public class Node
     {
         public int Id { get; set; }

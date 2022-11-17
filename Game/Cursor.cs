@@ -5,6 +5,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace conscious
 {
+    /// <summary>Class <c>Cursor</c> implements a UI representation of the cursor 
+    /// to interact with Things in the Room.
+    /// </summary>
+    ///
     public class Cursor : UIComponent
     {
         private SpriteFont _cursorFont;

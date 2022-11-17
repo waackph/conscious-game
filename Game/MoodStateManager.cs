@@ -5,6 +5,10 @@ using System;
 
 namespace conscious
 {
+    /// <summary>Class <c>MoodStateManager</c> implements the handling of a change of the mood state. 
+    /// It handles events and triggers events according to the current mood state.
+    /// </summary>
+    ///
     public class MoodStateManager : IComponent
     {
         private UIText _moodText;

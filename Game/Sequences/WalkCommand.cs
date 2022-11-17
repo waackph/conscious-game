@@ -1,8 +1,11 @@
 using Microsoft.Xna.Framework;
-using Newtonsoft.Json;
 
 namespace conscious
 {
+    /// <summary>Class <c>WalkCommand</c> holds data and logic
+    /// for the protagonist to walk to a given destination point in the room.
+    /// </summary>
+    ///
     public class WalkCommand : Command
     {
         private float _destinationX;

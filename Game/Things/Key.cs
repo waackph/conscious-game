@@ -3,6 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace conscious
 {
+    /// <summary>Class <c>Key</c> holds data and logic of an Item 
+    /// that can be used with another object to unlock something in the Room.
+    /// </summary>
+    ///
     public class Key : Item
     {
         private int _itemDependency;

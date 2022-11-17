@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>PuzzleCharacter</c> holds data and logic of a specific type of Character in the Room.
+    /// A specific Item must be given to it, to unlock a specific dialog option.
+    /// </summary>
+    ///
     public class PuzzleCharacter : Character
     {
         private int _itemDependency;

@@ -4,6 +4,12 @@ using System;
 
 namespace conscious
 {
+    /// <summary>Class <c>RoomGraph</c> holds data and logic
+    /// to generate a graph from the current room the player is in with all bounding boxes of Things in the room as vertices.
+    /// Given a starting point, the protagonist is at, the graph is evaluated for walkable paths 
+    /// to vertices and the length of an edge between vertices.
+    /// </summary>
+    ///
     public class RoomGraph
     {
         private List<Rectangle> _boundingBoxes = new List<Rectangle>();
@@ -19,6 +25,8 @@ namespace conscious
 
         public RoomGraph(){ }
 
+        // Create the Graph of the room, taking into account all bounding boxes of Things in the Room
+        // as well as the Rooms dimensions.
         public void GenerateRoomGraph(List<Rectangle> boundingBoxes, float minX, float maxX, float minY, float maxY)
         {
             _boundingBoxes = boundingBoxes;
@@ -50,6 +58,7 @@ namespace conscious
             }
         }
 
+        // Set start and goal vertex in the room and remove those from the Graph.
         public void SetStartGoal(Vector2 start, Vector2 goal)
         {
             if(Start != null && Goal != null)
@@ -69,6 +78,8 @@ namespace conscious
             }
         }
 
+        // Evaluate a link in terms of if it is walkable (or something is in the way) 
+        // and a evenly weighted cost of 1.
         private void evaluateLink(Vertex v1, Vertex v2)
         {
             if(!vertexNotWalkable(v1) &&
@@ -80,6 +91,7 @@ namespace conscious
             }
         }
 
+        // Evaluate if a path to a vertex is outside of the Rooms dimensions.
         private bool vertexNotWalkable(Vertex v)
         {
             if(v.RoomPosition.X < _minRoomLimitX || 
@@ -95,6 +107,7 @@ namespace conscious
             }
         }
 
+        // Remove a vertex from the Room Graph.
         private void removeVertex(Vertex v)
         {
             if(Graph.Contains(v))
@@ -110,6 +123,7 @@ namespace conscious
             }
         }
 
+        // Calculate the visibility of bounding boxes
         private bool isNotVisible(Vector2 v1, Vector2 v2, List<Rectangle> boundingBoxes)
         {
             float slope = calculateSlope(v1.X, v1.Y, v2.X, v2.Y);

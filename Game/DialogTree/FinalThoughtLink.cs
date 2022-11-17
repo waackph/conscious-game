@@ -1,5 +1,13 @@
 namespace conscious
 {
+    /// <summary>Class <c>FinalThoughtLink</c> holds data of an option in a monolog (a dialog in thought)
+    /// that is a final option that finishes a thought of the protagonist.
+    /// A final thought link option holds also a possible change in the mood state, 
+    /// a verb that is executed on the given Thing in the world, 
+    /// an animation that is executed of the thing or a sequence that is played.
+    /// A final thought link might be the success edge in a tree that finishes interaction with a Thing.
+    /// </summary>
+    ///
     public class FinalThoughtLink : ThoughtLink
     {
         public MoodState MoodChange { get; }

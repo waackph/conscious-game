@@ -3,6 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace conscious
 {
+    /// <summary>Class <c>SequenceManager</c> implements a sequence player system.
+    /// Here, a sequence played is managed.
+    /// </summary>
+    ///
     public class SequenceManager : IComponent
     {
         private MoodStateManager _moodStateManager;

@@ -2,6 +2,10 @@ using Microsoft.Xna.Framework;
 
 namespace conscious
 {
+    /// <summary>Class <c>VanishCommand</c> holds data and logic
+    /// for the protagonist to vanish from or appear to the scene by changing the player state to none.
+    /// </summary>
+    ///
     public class VanishCommand : Command
     {
         public override void ExecuteCommand(GameTime gameTime, Thing thing)

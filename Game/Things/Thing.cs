@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>Thing</c> holds data and logic for an entity visible in a Room.
+    /// </summary>
+    ///
     public class Thing : Entity
     {
         private Dictionary<MoodState, Texture2D> _moodTextures;

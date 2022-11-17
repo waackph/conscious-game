@@ -3,7 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace conscious
 {
-    //[JsonObject(MemberSerialization.OptIn)]
+    /// <summary>Class <c>Item</c> holds data and logic of an Item.
+    /// an Item is interactable and acts upon data about if it is 
+    /// pickupable, useable, combineable, giveable, or can be used with some other item.
+    /// </summary>
+    ///
     public class Item : Thing
     {
         protected string _examineText;

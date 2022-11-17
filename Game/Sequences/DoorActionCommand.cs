@@ -2,6 +2,10 @@ using Microsoft.Xna.Framework;
 
 namespace conscious
 {
+    /// <summary>Class <c>DoorActionCommand</c> holds data and logic
+    /// for the protagonist to interact with a door as a command.
+    /// </summary>
+    ///
     public class DoorActionCommand : Command
     {
         private int _doorId;

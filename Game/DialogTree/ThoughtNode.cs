@@ -1,8 +1,14 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace conscious
 {
+    /// <summary>Class <c>ThoughNode</c> holds data of something the protagonist thinks 
+    /// given a thing in the world the player draws the protagonists attention to or in response
+    /// to a thought option chosen by the player in a monolog (a dialog in thought).
+    /// A thought node is a node in a thought tree. It can be the start of an inner dialog
+    /// (a more complex tree of thought options and answers).
+    /// </summary>
+    ///
     public class ThoughtNode
     {
         private int Id;

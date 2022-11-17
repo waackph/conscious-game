@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>Player</c> implements the basic player mechanics,
+    /// such as idle and moving animations and communication with controls class
+    /// </summary>
+    ///
     public class Player : Thing
     {
         private SpriteEffects _flip;

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>PriorityQueue</c> implements a priority queue data structure
+    /// that is used for the A* path finding algorithm.
+    /// </summary>
+    ///
     public class PriorityQueue<T>
     {
         private List<Tuple<T, float>> elements = new List<Tuple<T, float>>();

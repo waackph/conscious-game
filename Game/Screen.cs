@@ -5,6 +5,9 @@ using System;
 
 namespace conscious
 {
+    /// <summary>Abstrract class <c>Screen</c> implements the basic screen system.
+    /// </summary>
+    ///
     public abstract class Screen
     {
         protected EventHandler _screenEvent;

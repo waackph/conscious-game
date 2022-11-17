@@ -12,6 +12,10 @@ using Newtonsoft.Json;
 
 namespace conscious
 {
+    /// <summary>Class <c>GameScreen</c> implements the in-game screen.
+    /// Here, the content of the game is initilized from the JSON files and everything in-game related is set up.
+    /// </summary>
+    ///
     public class GameScreen : Screen
     {
         private KeyboardState _lastKeyboardState;

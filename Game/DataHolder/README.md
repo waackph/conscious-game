@@ -1,0 +1,1 @@
+This folder contains Data Holder classes for each Object that is either holding some state for game progress or is that should be creatable from the conscious content tool for creating new rooms and eventually new games.

@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace conscious
 {
+    /// <summary>Class <c>MorphingItem</c> holds data and logic for an Item that morphs depending on mood state.
+    /// It holds different Item types where only one is active, depending on the mood state.
+    /// </summary>
+    ///
     public class MorphingItem : Item
     {
         // private MoodStateManager _moodStateManager;

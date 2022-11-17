@@ -4,6 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace conscious
 {
+    /// <summary>Class <c>CombineItem</c> holds data and logic of an Item 
+    /// that can be combined with a specific other Item to create a locked Item (combinedItem object).
+    /// </summary>
+    ///
     public class CombineItem : Item
     {
         private Item _combinedItem;
