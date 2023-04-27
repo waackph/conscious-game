@@ -1,0 +1,712 @@
+{
+  "2": {
+    "RoomWidth": 3840,
+    "SoundFilePath": "Red_Curtains",
+    "LightMapPath": "light/light_gimp_v2",
+    "EntrySequence": null,
+    "Things": [
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "Id": 2490,
+        "Name": "Background",
+        "texturePath": "Backgrounds/480_270_Room_double_Concept_Draft",
+        "Rotation": 0,
+        "PositionX": 1920,
+        "PositionY": 540,
+        "DrawOrder": 1,
+        "ExamineText": "",
+        "IsInInventory": false,
+        "UseAble": false,
+        "PickUpAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "RoomId": -1,
+        "InitPlayerPosX": -1,
+        "InitPlayerPosY": -1,
+        "CloseTexturePath": "",
+        "Thought": null
+      },
+      {
+        "$type": "conscious.DataHolderItem, conscious",
+        "Id": 3242,
+        "Name": "Alarm Clock",
+        "texturePath": "Objects/alarm_clock_draft",
+        "Rotation": 0,
+        "PositionX": 1576,
+        "PositionY": 578,
+        "DrawOrder": 3,
+        "ExamineText": "Its my alarm clock",
+        "IsInInventory": false,
+        "UseAble": false,
+        "PickUpAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "RoomId": -1,
+        "InitPlayerPosX": -1,
+        "InitPlayerPosY": -1,
+        "CloseTexturePath": "",
+        "Thought": {
+          "$type": "conscious.DataHolderThoughtNode, conscious",
+          "Id": 1538,
+          "Thought": "[Alarm Clock] Oh no, I don't wanna know the time right now.",
+          "IsRoot": true,
+          "ThingId": 3242,
+          "LinkageId": 0,
+          "Links": [
+            {
+              "$type": "conscious.DataHolderThoughtLink, conscious",
+              "Id": 8226,
+              "ValidMoods": [
+                0
+              ],
+              "Option": "First link",
+              "IsLocked": false,
+              "NextNode": {
+                "$type": "conscious.DataHolderThoughtNode, conscious",
+                "Id": 6437,
+                "Thought": "Its already 12 am. Fuck. I don't want to get up.",
+                "IsRoot": false,
+                "LinkageId": 0,
+                "ThingId": 3242,
+                "Links": [
+                  {
+                    "$type": "conscious.DataHolderThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 3877,
+                    "NextNode": {
+                      "$type": "conscious.DataHolderThoughtNode, conscious",
+                      "IsRoot": false,
+                      "LinkageId": 0,
+                      "Id": 5041,
+                      "Thought": "But why? There is only struggle awaiting me.",
+                      "ThingId": 3242,
+                      "Links": [
+                        {
+                          "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                          "IsLocked": false,
+                          "ValidMoods": [
+                            0
+                          ],
+                          "Id": 5856,
+                          "NextNode": {
+                            "$type": "conscious.DataHolderThoughtNode, conscious",
+                            "IsRoot": false,
+                            "LinkageId": 0,
+                            "Id": 3604,
+                            "Thought": "No. Exhausting is the right word. Maybe I try some time later again.",
+                            "ThingId": 3242,
+                            "Links": []
+                          },
+                          "Option": "Thats what makes it interessting!",
+                          "IsFinal": true,
+                          "ThoughtSequence": {
+                            "Commands": []
+                          },
+                          "MoodChange": 0
+                        },
+                        {
+                          "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                          "IsLocked": false,
+                          "ValidMoods": [
+                            0
+                          ],
+                          "Id": 7483,
+                          "NextNode": {
+                            "$type": "conscious.DataHolderThoughtNode, conscious",
+                            "IsRoot": false,
+                            "LinkageId": 0,
+                            "Id": 9437,
+                            "Thought": "Right. Just like in the last days. (Sigh) Ok. Here we go.",
+                            "ThingId": 3242,
+                            "Links": []
+                          },
+                          "Option": "If I don't get up now I struggle with myself the rest of the day that I can't get up. Is that better?",
+                          "IsFinal": true,
+                          "ThoughtSequence": {
+                            "Commands": []
+                          },
+                          "Verb": 9,
+                          "IsSuccessEdge": true,
+                          "MoodChange": 0,
+                          "UnlockId": "1178",
+                          "sequence": null
+                        }
+                      ]
+                    },
+                    "Option": "But I should!"
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 2811,
+                    "NextNode": null,
+                    "Option": "Right. I just continue laying. Maybe I fall asleep again.",
+                    "IsFinal": true,
+                    "ThoughtSequence": {
+                      "Commands": []
+                    },
+                    "MoodChange": 0,
+                    "Verb": 0
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "$type": "conscious.DataHolderDoor, conscious",
+        "Id": 9847,
+        "Name": "Bathroom Door",
+        "texturePath": "Objects/bath_door_open",
+        "Rotation": 0,
+        "PositionX": 2500,
+        "PositionY": 475,
+        "DrawOrder": 3,
+        "ExamineText": "It's a door",
+        "IsInInventory": false,
+        "UseAble": true,
+        "PickUpAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "RoomId": -1,
+        "DoorId": 0,
+        "IsUnlocked": true,
+        "InitPlayerPosX": 2500,
+        "InitPlayerPosY": 1127,
+        "CloseTexturePath": "Objects/bath_door",
+        "Thought": {
+          "$type": "conscious.DataHolderThoughtNode, conscious",
+          "Id": 8756,
+          "Thought": "[Bathroom Door] The door to the Bathroom.",
+          "IsRoot": true,
+          "ThingId": 9847,
+          "LinkageId": 0,
+          "Links": [
+            {
+              "$type": "conscious.DataHolderThoughtLink, conscious",
+              "Id": 1632,
+              "ValidMoods": [
+                0
+              ],
+              "Option": "First link",
+              "IsLocked": false,
+              "NextNode": {
+                "$type": "conscious.DataHolderThoughtNode, conscious",
+                "Id": 9880,
+                "Thought": "Cleaning is so annoying",
+                "IsRoot": false,
+                "LinkageId": 0,
+                "ThingId": 9847,
+                "Links": [
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 5826,
+                    "Option": "Im to exhausted. Maybe back to bed?",
+                    "IsFinal": true,
+                    "ThoughtSequence": {
+                      "Commands": []
+                    },
+                    "NextNode": null,
+                    "sequence": null
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": true,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 8623,
+                    "NextNode": null,
+                    "IsFinal": true,
+                    "ThoughtSequence": {
+                      "Commands": [
+                        {
+                          "$type": "conscious.DataHolderWalkCommand, conscious",
+                          "index": 0.6806545433075541,
+                          "_destinationX": "2500",
+                          "_destinationY": "475"
+                        },
+                        {
+                          "$type": "conscious.DataHolderDoorActionCommand, conscious",
+                          "index": 0.8997304209880075,
+                          "_destinationX": 0,
+                          "_destinationY": 0,
+                          "DoorId": "9847"
+                        },
+                        {
+                          "$type": "conscious.DataHolderVanishCommand, conscious",
+                          "index": 0.7592160013302408,
+                          "_destinationX": 0,
+                          "_destinationY": 0
+                        },
+                        {
+                          "$type": "conscious.DataHolderWaitCommand, conscious",
+                          "index": 0.40649905271804143,
+                          "_destinationX": 0,
+                          "_destinationY": 0,
+                          "MillisecondsToWait": "10000",
+                          "CmdSoundFilePath": "ShowerSound"
+                        },
+                        {
+                          "$type": "conscious.DataHolderDoorActionCommand, conscious",
+                          "index": 0.6320216075436205,
+                          "_destinationX": 0,
+                          "_destinationY": 0,
+                          "DoorId": "9847"
+                        },
+                        {
+                          "$type": "conscious.DataHolderVanishCommand, conscious",
+                          "index": 0.10473648061523888,
+                          "_destinationX": 0,
+                          "_destinationY": 0
+                        },
+                        {
+                          "$type": "conscious.DataHolderWalkCommand, conscious",
+                          "index": 0.6453761949843652,
+                          "_destinationX": "2500",
+                          "_destinationY": "1000"
+                        }
+                      ]
+                    },
+                    "IsSuccessEdge": true,
+                    "Verb": 0,
+                    "MoodChange": 2,
+                    "sequence": {
+                      "Commands": [
+                        {
+                          "$type": "conscious.DataHolderWalkCommand, conscious",
+                          "index": 0.02854016046164043,
+                          "_destinationX": "2500",
+                          "_destinationY": "475",
+                          "DestinationX": "2500",
+                          "DestinationY": "475"
+                        },
+                        {
+                          "$type": "conscious.DataHolderDoorActionCommand, conscious",
+                          "index": 0.5482554090857384,
+                          "_destinationX": 0,
+                          "_destinationY": 0,
+                          "DoorId": "9847"
+                        },
+                        {
+                          "$type": "conscious.DataHolderVanishCommand, conscious",
+                          "index": 0.3117256043515153,
+                          "_destinationX": 0,
+                          "_destinationY": 0
+                        },
+                        {
+                          "$type": "conscious.DataHolderWaitCommand, conscious",
+                          "index": 0.582520814726121,
+                          "_destinationX": 0,
+                          "_destinationY": 0,
+                          "MillisecondsToWait": "10000",
+                          "CmdSoundFilePath": "ShowerSound"
+                        },
+                        {
+                          "$type": "conscious.DataHolderDoorActionCommand, conscious",
+                          "index": 0.38767232342754565,
+                          "_destinationX": 0,
+                          "_destinationY": 0,
+                          "DoorId": "9847"
+                        },
+                        {
+                          "$type": "conscious.DataHolderVanishCommand, conscious",
+                          "index": 0.6309580024846707,
+                          "_destinationX": "2500",
+                          "_destinationY": "1000"
+                        },
+                        {
+                          "$type": "conscious.DataHolderWalkCommand, conscious",
+                          "index": 0.9807422871182792,
+                          "DestinationX": "2500",
+                          "DestinationY": "1000"
+                        }
+                      ]
+                    },
+                    "Option": "Puh.. But I need to take a shower [use]"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "$type": "conscious.DataHolderDoor, conscious",
+        "Id": 3019,
+        "Name": "Front Door",
+        "texturePath": "Objects/front_door_open",
+        "Rotation": 0,
+        "PositionX": 260,
+        "PositionY": 475,
+        "DrawOrder": 3,
+        "ExamineText": "It's a door",
+        "IsInInventory": false,
+        "UseAble": true,
+        "PickUpAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "RoomId": -1,
+        "DoorId": 1,
+        "IsUnlocked": true,
+        "InitPlayerPosX": 260,
+        "InitPlayerPosY": 1127,
+        "CloseTexturePath": "Objects/front_door",
+        "Thought": {
+          "$type": "conscious.DataHolderThoughtNode, conscious",
+          "Id": 1288,
+          "Thought": "[Front Door] The door to the outside world.",
+          "IsRoot": true,
+          "ThingId": 3019,
+          "LinkageId": 0,
+          "Links": [
+            {
+              "$type": "conscious.DataHolderThoughtLink, conscious",
+              "Id": 3372,
+              "ValidMoods": [
+                0
+              ],
+              "Option": "First link",
+              "IsLocked": false,
+              "NextNode": {
+                "$type": "conscious.DataHolderThoughtNode, conscious",
+                "Id": 211,
+                "Thought": "I don't know if I'm ready.",
+                "IsRoot": false,
+                "LinkageId": 0,
+                "ThingId": 3019,
+                "Links": [
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 3080,
+                    "Option": "I can't. I'm just feeling to ugly",
+                    "IsFinal": true,
+                    "ThoughtSequence": {
+                      "Commands": []
+                    },
+                    "Verb": 0,
+                    "MoodChange": 0,
+                    "NextNode": null
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 7802,
+                    "NextNode": null,
+                    "Option": "Nah. Let's go back to bed again!",
+                    "IsFinal": true,
+                    "ThoughtSequence": {
+                      "Commands": []
+                    },
+                    "MoodChange": 0,
+                    "Verb": 0
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      2
+                    ],
+                    "Id": 1872,
+                    "NextNode": null,
+                    "Option": "Ok. Let's go! [use]",
+                    "IsFinal": true,
+                    "ThoughtSequence": {
+                      "Commands": []
+                    },
+                    "IsSuccessEdge": true,
+                    "Verb": 4,
+                    "MoodChange": 0
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "$type": "conscious.DataHolderCharacter, conscious",
+        "Id": 3219,
+        "Name": "Phone",
+        "texturePath": "NPCs/phone_draft",
+        "Rotation": 0,
+        "PositionX": 1488,
+        "PositionY": 600,
+        "ItemDependency": "-1",
+        "DialogUnlocked": false,
+        "Pronoun": "She Yeah, seems to help. I'll be there as soon as I can. Bye.",
+        "CatchPhrase": "Riiing",
+        "GiveAble": false,
+        "MoodChange": 0,
+        "TreeStructure": [
+          {
+            "Id": 1,
+            "_dialogLine": "Hey Lola, how are you?",
+            "_edges": [
+              {
+                "_nextNodeId": 975,
+                "_dialogLine": "Like puke. But its nice that you called.",
+                "MoodDependence": 0
+              },
+              {
+                "_nextNodeId": 7503,
+                "_dialogLine": "Won't complain. You?",
+                "MoodDependence": 0
+              }
+            ]
+          },
+          {
+            "Id": 975,
+            "_dialogLine": "Well, you need to get out of your room. Im trying to reach you for days now.",
+            "_edges": [
+              {
+                "_nextNodeId": 5920,
+                "_dialogLine": "Sorry.",
+                "MoodDependence": 0
+              }
+            ]
+          },
+          {
+            "Id": 7503,
+            "_dialogLine": "Just meet me in the park. It will be nice. I promise!",
+            "_edges": [
+              {
+                "_nextNodeId": 931,
+                "_dialogLine": "Do I have to?",
+                "MoodDependence": 0
+              }
+            ]
+          },
+          {
+            "Id": 2286,
+            "_dialogLine": "lastnode",
+            "_edges": []
+          },
+          {
+            "Id": 5920,
+            "_dialogLine": "It helps.. yes! Meet you there.",
+            "_edges": [
+              {
+                "_nextNodeId": 0,
+                "_dialogLine": "Yeah, seems to help. I'll be there as soon as I can. Bye.",
+                "MoodDependence": 0,
+                "isFinalDialogOption": true
+              }
+            ]
+          },
+          {
+            "Id": 6851,
+            "_dialogLine": "lastnode",
+            "_edges": []
+          },
+          {
+            "Id": 931,
+            "_dialogLine": "It helps.. yes! Meet you there.",
+            "_edges": [
+              {
+                "_nextNodeId": 0,
+                "_dialogLine": "Yeah, seems to help. I'll be there as soon as I can. Bye.",
+                "MoodDependence": 0,
+                "isFinalDialogOption": true
+              }
+            ]
+          }
+        ],
+        "Thought": {
+          "$type": "conscious.DataHolderThoughtNode, conscious",
+          "Id": 6323,
+          "Thought": "[Phone] My phone means only trouble to me",
+          "IsRoot": true,
+          "ThingId": 3219,
+          "LinkageId": 0,
+          "Links": [
+            {
+              "$type": "conscious.DataHolderThoughtLink, conscious",
+              "Id": 6397,
+              "ValidMoods": [
+                0
+              ],
+              "Option": "First link",
+              "IsLocked": false,
+              "NextNode": {
+                "$type": "conscious.DataHolderThoughtNode, conscious",
+                "Id": 4150,
+                "Thought": "Oh no. Mara called... 10 times.",
+                "IsRoot": false,
+                "LinkageId": 0,
+                "ThingId": 3219,
+                "Links": [
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 5335,
+                    "Option": "Just ignore it. Don't start thinking about it.",
+                    "NextNode": null,
+                    "IsFinal": true,
+                    "ThoughtSequence": {
+                      "Commands": []
+                    },
+                    "sequence": null
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": true,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 1178,
+                    "Option": "I need to call her now. She surely is angry with me by now [talk]",
+                    "NextNode": null,
+                    "IsFinal": true,
+                    "ThoughtSequence": {
+                      "Commands": []
+                    },
+                    "IsSuccessEdge": true,
+                    "UnlockId": "8623",
+                    "Verb": 8,
+                    "sequence": null
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 2018,
+                    "NextNode": null,
+                    "Option": "I'll rather feel alone then [leave it]",
+                    "IsFinal": true,
+                    "ThoughtSequence": {
+                      "Commands": []
+                    },
+                    "IsSuccessEdge": false,
+                    "sequence": null
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "3": {
+    "RoomWidth": 1920,
+    "SoundFilePath": "Red_Curtains",
+    "LightMapPath": "light/light_gimp_v2",
+    "EntrySequence": null,
+    "Things": [
+      {
+        "$type": "conscious.DataHolderDoor, conscious",
+        "Id": 6041,
+        "Name": "Coridor Living Room Door",
+        "texturePath": "Objects/living_room_door_closed",
+        "Rotation": 0,
+        "PositionX": 1024,
+        "PositionY": 104,
+        "DrawOrder": 3,
+        "ExamineText": "Its the door to the living room",
+        "IsInInventory": false,
+        "UseAble": true,
+        "PickUpAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "RoomId": 1,
+        "DoorId": 2,
+        "IsUnlocked": true,
+        "InitPlayerPosX": 880,
+        "InitPlayerPosY": 2744,
+        "CloseTexturePath": "Objects/living_room_door_opened",
+        "Thought": {
+          "$type": "conscious.DataHolderThoughtNode, conscious",
+          "Id": 594,
+          "Thought": "[Living Room Door] This door should lead to the living room, if I remember correctly.",
+          "IsRoot": true,
+          "ThingId": 6041,
+          "LinkageId": 0,
+          "Links": [
+            {
+              "$type": "conscious.DataHolderThoughtLink, conscious",
+              "Id": 5497,
+              "ValidMoods": [
+                0
+              ],
+              "Option": "First link",
+              "IsLocked": false,
+              "NextNode": {
+                "$type": "conscious.DataHolderThoughtNode, conscious",
+                "Id": 8269,
+                "Thought": "I remember watching TV after school all the time.",
+                "IsRoot": false,
+                "LinkageId": 0,
+                "ThingId": 6041,
+                "Links": [
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 3638,
+                    "NextNode": null,
+                    "IsFinal": true,
+                    "sequence": null,
+                    "Verb": 0,
+                    "MoodChange": 0,
+                    "Option": "Maybe later"
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 8743,
+                    "IsFinal": true,
+                    "sequence": null,
+                    "Option": "Lets have a look. [Use]",
+                    "IsSuccessEdge": false,
+                    "Verb": 4,
+                    "MoodChange": 0,
+                    "NextNode": null
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

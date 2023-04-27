@@ -71,7 +71,7 @@ namespace conscious
 
             _pixel = pixel;
 
-            CurrentRoomIndex = 2;
+            CurrentRoomIndex = 3;
             _doorEntered = null;
 
             // LoadRooms();
@@ -138,6 +138,197 @@ namespace conscious
             _entityManager.LightMap = currentLightMap;
         }
         
+        public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId=0)
+        {
+            Room lastRoom = currentRoom;
+            currentRoom = _rooms[roomId];
+
+            float xPos = 0f;
+            Matrix transform = Matrix.CreateTranslation(xPos, 0, 0);
+            _entityManager.ViewportTransformation = transform;
+            _cursor.InverseTransform = Matrix.Invert(transform);
+            // foreach(Thing thing in currentRoom.GetThings())
+            // {
+            //     thing.XPosOffset = 0;
+            // }
+
+            // _audioManager.PlayMusic(currentRoom.MoodSoundFiles[_moodStateManager.moodState]);
+            // _entityManager.LightMap = currentRoom.MoodLightMaps[_moodStateManager.moodState];
+            updateSongOnMood(_moodStateManager.moodState, Direction.None);
+            updateLightMapOnMood(_moodStateManager.moodState);
+
+            if(lastRoom != null)
+            {
+                lastRoom.ClearRoomEntityManager();
+                currentRoom.FillEntityManager();
+            }
+
+            // Create path graph of room here
+            _roomGraph.GenerateRoomGraph(currentRoom.GetBoundingBoxes(), 
+                                         0, currentRoom.RoomWidth, 
+                                         0, _preferredBackBufferHeight);
+
+            if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
+            {
+                _sequenceManager.StartSequence(currentRoom.EntrySequence, _player, MoodState.None);
+            }
+            else if(lastRoom != null && newPlayerPosition != Vector2.Zero)
+            {
+                if(doorId != 0)
+                {
+                    _doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
+                    _doorEntered.OpenDoor();
+                }
+                // Set player to middle of door (for now quick fix)
+                _player.Position = newPlayerPosition;
+                _player.Position.Y = _player.Position.Y-100f;
+
+                WalkCommand command = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
+                List<Command> coms = new List<Command>()
+                {
+                    command
+                };
+                Sequence seq = new Sequence(coms);
+                _sequenceManager.StartSequence(seq, _player, MoodState.None);
+            }
+        }
+
+        public void Update(GameTime gameTime){
+
+            if(currentRoom == null)
+            {
+                // Testing: Sequence
+                // if(_rooms[CurrentRoomIndex].EntrySequence == null && CurrentRoomIndex == 2)
+                // {
+                //     _player.Position = new Vector2(10, 786);
+                //     WalkCommand command = new WalkCommand(1000f, 786f);
+                //     List<Command> coms = new List<Command>()
+                //     {
+                //         command
+                //     };
+                //     Sequence seq = new Sequence(coms);
+                //     _rooms[CurrentRoomIndex].EntrySequence = seq;
+                // }
+
+                // currentRoom = _rooms[CurrentRoomIndex];
+                changeRoom(CurrentRoomIndex, Vector2.Zero);
+            }
+
+            // Close the door when entered
+            if(_doorEntered != null && !_sequenceManager.SequenceActive)
+            {
+                _doorEntered.CloseDoor();
+                _doorEntered = null;
+            }
+ 
+            // Scroll room and thing positions
+            if(currentRoom.RoomWidth != _preferredBackBufferWidth)
+            {
+                ScrollRoom();
+            }
+
+            LimitRoom();
+
+            if(currentRoom.checkBoundingBoxes(_player.CollisionBox))
+            {
+                _player.Position = _player.LastPosition;
+            }
+
+            // Decide player draw order
+            _player.UpdateDrawOrder(currentRoom.getDrawOrderInRoom(_player.CollisionBox));
+            
+            foreach(Door door in _entityManager.GetEntitiesOfType<Door>())
+            {
+                if(door.currentlyUsed == true)
+                {
+                    door.currentlyUsed = false;
+                    // changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
+                    OnTerminateGameEvent(true);
+                    break;
+                }
+            }
+        }
+
+        public void LimitRoom()
+        {
+            int roomEnding = currentRoom.RoomWidth;
+            if(_player.Position.X > roomEnding - (_player.Width/6) / 2)
+                _player.Position.X = roomEnding - (_player.Width/6) / 2;
+            else if(_player.Position.X < (_player.Width/6) / 2)
+                _player.Position.X = (_player.Width/6) / 2;
+            if(_player.Position.Y > _preferredBackBufferHeight - (_player.Height/1.75f))
+                _player.Position.Y = _preferredBackBufferHeight - (_player.Height/1.75f);
+            else if(_player.Position.Y < _preferredBackBufferHeight * .55f)
+                _player.Position.Y = _preferredBackBufferHeight *.55f;
+        }
+
+        public void ScrollRoom()
+        {
+            float horizontalMiddleBegin = (float)_preferredBackBufferWidth/2f;
+            float horizontalMiddleEnd = (float)currentRoom.RoomWidth - horizontalMiddleBegin;
+            if(_player.Position.X > horizontalMiddleBegin && _player.Position.X < horizontalMiddleEnd)
+            {
+                float xPos = -_player.Position.X+horizontalMiddleBegin;
+                Matrix transform = Matrix.CreateTranslation(xPos, 0, 0);
+                _entityManager.ViewportTransformation = transform;
+                _cursor.InverseTransform = Matrix.Invert(transform);
+                // _player.XPosOffset = (int)xPos;
+                
+                // foreach(Thing thing in _entityManager.GetEntitiesOfType<Thing>())
+                // {
+                //     if(!thing.FixedDrawPosition)
+                //         thing.XPosOffset = (int)xPos;
+                // }
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch){ }
+
+        public void AddRoom(int index, Room room)
+        {
+            _rooms.Add(index, room);
+        }
+
+        public void ClearRooms()
+        {
+            _rooms.Clear();
+        }
+
+        public void SetCurrentRoomIndex(int roomIndex)
+        {
+            CurrentRoomIndex = roomIndex;
+        }
+
+        public void ResetCurrentRoom()
+        {
+            // currentRoom = _rooms[CurrentRoomIndex];
+            
+            // Testing: Sequence
+            // _player.Position = new Vector2(10, 900);
+            // WalkCommand command = new WalkCommand(1000f, 1000f);
+            // List<Command> coms = new List<Command>()
+            // {
+            //     command
+            // };
+            // Sequence seq = new Sequence(coms);
+            // _rooms[CurrentRoomIndex].EntrySequence = seq;
+
+            // currentRoom = _rooms[CurrentRoomIndex];
+            changeRoom(CurrentRoomIndex, Vector2.Zero);
+
+        }
+
+        public Dictionary<int, DataHolderRoom> GetDataHolderRooms()
+        {
+            Dictionary<int, DataHolderRoom> dhRooms = new Dictionary<int, DataHolderRoom>();
+            foreach(KeyValuePair<int, Room> entry in _rooms)
+            {
+                dhRooms.Add(entry.Key, entry.Value.GetDataHolderRoom());
+            }
+            return dhRooms;
+        }
+
+
         public void LoadRooms()
         {
             Vector2 itemPosition;
@@ -435,194 +626,5 @@ namespace conscious
         //     return thought;
         // }
 
-        public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId=0)
-        {
-            Room lastRoom = currentRoom;
-            currentRoom = _rooms[roomId];
-
-            float xPos = 0f;
-            Matrix transform = Matrix.CreateTranslation(xPos, 0, 0);
-            _entityManager.ViewportTransformation = transform;
-            _cursor.InverseTransform = Matrix.Invert(transform);
-            // foreach(Thing thing in currentRoom.GetThings())
-            // {
-            //     thing.XPosOffset = 0;
-            // }
-
-            // _audioManager.PlayMusic(currentRoom.MoodSoundFiles[_moodStateManager.moodState]);
-            // _entityManager.LightMap = currentRoom.MoodLightMaps[_moodStateManager.moodState];
-            updateSongOnMood(_moodStateManager.moodState, Direction.None);
-            updateLightMapOnMood(_moodStateManager.moodState);
-
-            if(lastRoom != null)
-            {
-                lastRoom.ClearRoomEntityManager();
-                currentRoom.FillEntityManager();
-            }
-
-            // Create path graph of room here
-            _roomGraph.GenerateRoomGraph(currentRoom.GetBoundingBoxes(), 
-                                         0, currentRoom.RoomWidth, 
-                                         0, _preferredBackBufferHeight);
-
-            if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
-            {
-                _sequenceManager.StartSequence(currentRoom.EntrySequence, _player, MoodState.None);
-            }
-            else if(lastRoom != null && newPlayerPosition != Vector2.Zero)
-            {
-                if(doorId != 0)
-                {
-                    _doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
-                    _doorEntered.OpenDoor();
-                }
-                // Set player to middle of door (for now quick fix)
-                _player.Position = newPlayerPosition;
-                _player.Position.Y = _player.Position.Y-100f;
-
-                WalkCommand command = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
-                List<Command> coms = new List<Command>()
-                {
-                    command
-                };
-                Sequence seq = new Sequence(coms);
-                _sequenceManager.StartSequence(seq, _player, MoodState.None);
-            }
-        }
-
-        public void Update(GameTime gameTime){
-
-            if(currentRoom == null)
-            {
-                // Testing: Sequence
-                // if(_rooms[CurrentRoomIndex].EntrySequence == null && CurrentRoomIndex == 2)
-                // {
-                //     _player.Position = new Vector2(10, 786);
-                //     WalkCommand command = new WalkCommand(1000f, 786f);
-                //     List<Command> coms = new List<Command>()
-                //     {
-                //         command
-                //     };
-                //     Sequence seq = new Sequence(coms);
-                //     _rooms[CurrentRoomIndex].EntrySequence = seq;
-                // }
-
-                // currentRoom = _rooms[CurrentRoomIndex];
-                changeRoom(CurrentRoomIndex, Vector2.Zero);
-            }
-
-            // Close the door when entered
-            if(_doorEntered != null && !_sequenceManager.SequenceActive)
-            {
-                _doorEntered.CloseDoor();
-                _doorEntered = null;
-            }
- 
-            // Scroll room and thing positions
-            if(currentRoom.RoomWidth != _preferredBackBufferWidth)
-            {
-                ScrollRoom();
-            }
-
-            LimitRoom();
-
-            if(currentRoom.checkBoundingBoxes(_player.CollisionBox))
-            {
-                _player.Position = _player.LastPosition;
-            }
-
-            // Decide player draw order
-            _player.UpdateDrawOrder(currentRoom.getDrawOrderInRoom(_player.CollisionBox));
-            
-            foreach(Door door in _entityManager.GetEntitiesOfType<Door>())
-            {
-                if(door.currentlyUsed == true)
-                {
-                    door.currentlyUsed = false;
-                    // changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
-                    OnTerminateGameEvent(true);
-                    break;
-                }
-            }
-        }
-
-        public void LimitRoom()
-        {
-            int roomEnding = currentRoom.RoomWidth;
-            if(_player.Position.X > roomEnding - (_player.Width/6) / 2)
-                _player.Position.X = roomEnding - (_player.Width/6) / 2;
-            else if(_player.Position.X < (_player.Width/6) / 2)
-                _player.Position.X = (_player.Width/6) / 2;
-            if(_player.Position.Y > _preferredBackBufferHeight - (_player.Height/1.75f))
-                _player.Position.Y = _preferredBackBufferHeight - (_player.Height/1.75f);
-            else if(_player.Position.Y < _preferredBackBufferHeight * .55f)
-                _player.Position.Y = _preferredBackBufferHeight *.55f;
-        }
-
-        public void ScrollRoom()
-        {
-            float horizontalMiddleBegin = (float)_preferredBackBufferWidth/2f;
-            float horizontalMiddleEnd = (float)currentRoom.RoomWidth - horizontalMiddleBegin;
-            if(_player.Position.X > horizontalMiddleBegin && _player.Position.X < horizontalMiddleEnd)
-            {
-                float xPos = -_player.Position.X+horizontalMiddleBegin;
-                Matrix transform = Matrix.CreateTranslation(xPos, 0, 0);
-                _entityManager.ViewportTransformation = transform;
-                _cursor.InverseTransform = Matrix.Invert(transform);
-                // _player.XPosOffset = (int)xPos;
-                
-                // foreach(Thing thing in _entityManager.GetEntitiesOfType<Thing>())
-                // {
-                //     if(!thing.FixedDrawPosition)
-                //         thing.XPosOffset = (int)xPos;
-                // }
-            }
-        }
-
-        public void Draw(SpriteBatch spriteBatch){ }
-
-        public void AddRoom(int index, Room room)
-        {
-            _rooms.Add(index, room);
-        }
-
-        public void ClearRooms()
-        {
-            _rooms.Clear();
-        }
-
-        public void SetCurrentRoomIndex(int roomIndex)
-        {
-            CurrentRoomIndex = roomIndex;
-        }
-
-        public void ResetCurrentRoom()
-        {
-            // currentRoom = _rooms[CurrentRoomIndex];
-            
-            // Testing: Sequence
-            // _player.Position = new Vector2(10, 900);
-            // WalkCommand command = new WalkCommand(1000f, 1000f);
-            // List<Command> coms = new List<Command>()
-            // {
-            //     command
-            // };
-            // Sequence seq = new Sequence(coms);
-            // _rooms[CurrentRoomIndex].EntrySequence = seq;
-
-            // currentRoom = _rooms[CurrentRoomIndex];
-            changeRoom(CurrentRoomIndex, Vector2.Zero);
-
-        }
-
-        public Dictionary<int, DataHolderRoom> GetDataHolderRooms()
-        {
-            Dictionary<int, DataHolderRoom> dhRooms = new Dictionary<int, DataHolderRoom>();
-            foreach(KeyValuePair<int, Room> entry in _rooms)
-            {
-                dhRooms.Add(entry.Key, entry.Value.GetDataHolderRoom());
-            }
-            return dhRooms;
-        }
     }
 }

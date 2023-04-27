@@ -220,7 +220,7 @@ namespace conscious
             string savePath;
             if(newGame)
             {
-                savePath = "new_states/20221026-2152";
+                savePath = "new_states/20230427-1146";
             }
             else
             {
@@ -243,7 +243,7 @@ namespace conscious
             }
 
             // Room Data
-            Dictionary<int, DataHolderRoom> roomsData = JsonConvert.DeserializeObject<Dictionary<int, DataHolderRoom>>(File.ReadAllText(savePath+"_rooms_gct.json"), settings);
+            Dictionary<int, DataHolderRoom> roomsData = JsonConvert.DeserializeObject<Dictionary<int, DataHolderRoom>>(File.ReadAllText(savePath+"_rooms_gct_extended.json"), settings);
             foreach(KeyValuePair<int, DataHolderRoom> entry in roomsData)
             {
                 DataHolderRoom dhRoom = entry.Value;
