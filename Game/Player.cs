@@ -189,6 +189,8 @@ namespace conscious
 
         public void MoveToDirection(Vector2 direction)
         {
+            // TODO: Maybe modify position to something else, depending on the point we use as a reference point
+            // See also computation of direction in RoomInteractionManager Update-Method and in Player GetDistance-Method
             if(PlayerState == PlayerState.Idle || PlayerState == PlayerState.Walk)
                 Position = Position + direction*5;
         }
@@ -211,7 +213,8 @@ namespace conscious
 
         public float GetDistance(Entity entity)
         {
-            return Vector2.Distance(entity.Position, Position);
+            Vector2 entityDest = new Vector2(entity.BoundingBox.Right, entity.BoundingBox.Bottom);  // new Vector2(entity.CollisionBox.X + entity.Width/2, entity.CollisionBox.Y + entity.Height/2); // entity.Position;
+            return Vector2.Distance(entityDest, Position);  // this.BoundingBox.Center.ToVector2());
         }
     }
 }

@@ -22,6 +22,7 @@ namespace conscious
             Player player = (Player)thing;
             float xDist = MathHelper.Distance(player.Position.X, _destinationX);
             float yDist = MathHelper.Distance(player.Position.Y, _destinationY);
+            // TODO: find a reasonable metric for the condition of reaching the destination point
             if(xDist >= 15f || yDist >= 220f) // (xDist >= 15f || yDist >= 15f)
             {
                 float totalSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;

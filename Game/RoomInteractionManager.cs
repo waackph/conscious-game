@@ -39,6 +39,8 @@ namespace conscious
         private List<Vector2> _path;
         private int _currentPathPoint;
 
+        private double threshDiff = 20f;
+
         public RoomInteractionManager(EntityManager entityManager, 
                                       SoCManager socManager, 
                                       InventoryManager inventoryManager, 
@@ -200,14 +202,19 @@ namespace conscious
                     }
                     else
                     {
-                        // TODO: Add code to walk towards shortest path (?)
                         // direction = Vector2.Normalize(_thingClickedInRoom.Position - _player.Position);
-                        Vector2 diff = _path[_currentPathPoint] - _player.Position;
-                        if(Math.Abs(diff.X) < 5 && Math.Abs(diff.Y) < 5 && _path.Count > _currentPathPoint+1)
+                        // TODO: Find reasonable condition criteria
+                        //_thingClickedInRoom.CollisionBox.X + _thingClickedInRoom.Width/2, _thingClickedInRoom.CollisionBox.Y + _thingClickedInRoom.Height/2
+                        Vector2 diff = _path[_currentPathPoint] - _player.Position;  // _player.BoundingBox.Center.ToVector2();
+                        Console.WriteLine(diff);
+                        if(Math.Abs(diff.X) < threshDiff && Math.Abs(diff.Y) < threshDiff && _path.Count > _currentPathPoint+1)
                         {
                             _currentPathPoint++;
                         }
-                        direction = Vector2.Normalize(_path[_currentPathPoint] - _player.Position);
+                        direction = Vector2.Normalize(diff);
+                        Console.WriteLine(_player.Position);
+                        Console.WriteLine(_path[_currentPathPoint]);
+                        Console.WriteLine(direction);
                     }
                 }
             }
@@ -281,7 +288,9 @@ namespace conscious
         {
             bool isNear;
             float distance = _player.GetDistance(entity);
-            if(distance <= Math.Max(entity.Height, entity.Width)*0.66 + (_player.Width/2)*0.66)
+            Console.WriteLine(distance);
+            // TODO: Find reasonable distance metric
+            if(distance <= threshDiff)  // Math.Max(entity.Height, entity.Width)*0.66 + (_player.Width/2)*0.66)
                 isNear = true;
             else
                 isNear = false;
@@ -333,9 +342,12 @@ namespace conscious
             _isWalking = true;
             _thingClickedInRoom = thing;
             _lastVerbChosen = verb;
-            // TODO: Initilize and compute shortest path here (?)
             _currentPathPoint = 0;
-            _path = _pathfinder.AStarSearch(_player.BoundingBox.Center.ToVector2(), new Vector2(_thingClickedInRoom.BoundingBox.Right, _thingClickedInRoom.BoundingBox.Bottom));
+            // TODO: Initilize better start and finish point
+            _path = _pathfinder.AStarSearch(_player.Position,  // _player.BoundingBox.Center.ToVector2(), 
+                                            // new Vector2(_thingClickedInRoom.CollisionBox.X + _thingClickedInRoom.Width/2, _thingClickedInRoom.CollisionBox.Y + _thingClickedInRoom.Height/2)
+                                            new Vector2(_thingClickedInRoom.BoundingBox.Right, _thingClickedInRoom.BoundingBox.Bottom)
+                                            );
         }
 
         #endregion

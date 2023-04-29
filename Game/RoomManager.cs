@@ -178,12 +178,18 @@ namespace conscious
                 {
                     _doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
                     _doorEntered.OpenDoor();
+                    // Set player to middle of door (for now quick fix)
+                    _player.Position = _doorEntered.Position;
                 }
-                // Set player to middle of door (for now quick fix)
-                _player.Position = newPlayerPosition;
-                // TODO: Change value or even newPlayerPos variable to the new door not the old one
-                // TODO: disable setting the player pos to the room limit, if player in walk sequence
-                _player.Position.Y = _player.Position.Y-500f;
+                else
+                {
+                    // set player to given destination position and substract an amount
+                    // to have a way to walk, if no entry-door is specified
+                    _player.Position = newPlayerPosition;
+                    // TODO: Find a better way to determine the starting position
+                    // in case a destination door is not defined
+                    _player.Position.Y = _player.Position.Y-500f;
+                }
 
                 WalkCommand command = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
                 List<Command> coms = new List<Command>()
@@ -228,8 +234,11 @@ namespace conscious
             {
                 ScrollRoom();
             }
-
-            LimitRoom();
+            
+            if(!_sequenceManager.SequenceActive)
+            {
+                LimitRoom();
+            }
 
             if(currentRoom.checkBoundingBoxes(_player.CollisionBox))
             {
