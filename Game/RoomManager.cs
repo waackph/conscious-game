@@ -71,7 +71,7 @@ namespace conscious
 
             _pixel = pixel;
 
-            CurrentRoomIndex = 3;
+            CurrentRoomIndex = 0;
             _doorEntered = null;
 
             // LoadRooms();
@@ -181,7 +181,9 @@ namespace conscious
                 }
                 // Set player to middle of door (for now quick fix)
                 _player.Position = newPlayerPosition;
-                _player.Position.Y = _player.Position.Y-100f;
+                // TODO: Change value or even newPlayerPos variable to the new door not the old one
+                // TODO: disable setting the player pos to the room limit, if player in walk sequence
+                _player.Position.Y = _player.Position.Y-500f;
 
                 WalkCommand command = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
                 List<Command> coms = new List<Command>()
@@ -237,13 +239,14 @@ namespace conscious
             // Decide player draw order
             _player.UpdateDrawOrder(currentRoom.getDrawOrderInRoom(_player.CollisionBox));
             
+            // TODO: move game terminated logic somewhere else (maybe a scripting api?)
             foreach(Door door in _entityManager.GetEntitiesOfType<Door>())
             {
                 if(door.currentlyUsed == true)
                 {
                     door.currentlyUsed = false;
-                    // changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
-                    OnTerminateGameEvent(true);
+                    changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
+                    // OnTerminateGameEvent(true);
                     break;
                 }
             }

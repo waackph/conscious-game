@@ -41,7 +41,7 @@ namespace conscious
             _flip = SpriteEffects.None;
             _playerSpeed = 400f;
             _isMoving = false;
-            PlayerState = PlayerState.Sleep;
+            PlayerState = PlayerState.Idle; // PlayerState.Sleep;
             _lastIsMoving = _isMoving;
             LastPosition = position;
             DrawOrder = 5;

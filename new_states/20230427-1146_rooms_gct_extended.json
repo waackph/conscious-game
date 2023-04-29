@@ -1,5 +1,5 @@
 {
-  "2": {
+  "1": {
     "RoomWidth": 3840,
     "SoundFilePath": "Red_Curtains",
     "LightMapPath": "light/light_gimp_v2",
@@ -619,7 +619,7 @@
       }
     ]
   },
-  "3": {
+  "2": {
     "RoomWidth": 1920,
     "SoundFilePath": "Red_Curtains",
     "LightMapPath": "light/light_gimp_v2",
@@ -631,8 +631,8 @@
         "Name": "Coridor Living Room Door",
         "texturePath": "Objects/living_room_door_closed",
         "Rotation": 0,
-        "PositionX": 1024,
-        "PositionY": 104,
+        "PositionX": 1147.5,
+        "PositionY": 378.5,
         "DrawOrder": 3,
         "ExamineText": "Its the door to the living room",
         "IsInInventory": false,
@@ -643,10 +643,10 @@
         "UseWith": false,
         "ItemDependency": "-1",
         "RoomId": 1,
-        "DoorId": 2,
+        "DoorId": 3019,
         "IsUnlocked": true,
-        "InitPlayerPosX": 880,
-        "InitPlayerPosY": 2744,
+        "InitPlayerPosX": 260,
+        "InitPlayerPosY": 900,
         "CloseTexturePath": "Objects/living_room_door_opened",
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
@@ -706,6 +706,31 @@
             }
           ]
         }
+      },
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "Id": 4988,
+        "Name": "Background Corridor",
+        "texturePath": "Backgrounds/Haus_Flur",
+        "Rotation": 0,
+        "PositionX": 960,
+        "PositionY": 540,
+        "DrawOrder": 1,
+        "ExamineText": "",
+        "IsInInventory": false,
+        "UseAble": false,
+        "PickUpAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "RoomId": 0,
+        "DoorId": 0,
+        "IsUnlocked": false,
+        "InitPlayerPosX": -1,
+        "InitPlayerPosY": -1,
+        "CloseTexturePath": "",
+        "Thought": null
       }
     ]
   }
