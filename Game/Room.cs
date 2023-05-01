@@ -65,7 +65,7 @@ namespace conscious
             {
                 Rectangle thingBoxProjected = thing.CollisionBox;
                 thingBoxProjected.Y = 0;
-                if(thing.Name != "Background" && thingBoxProjected.Intersects(bboxProjected))
+                if(!thing.Name.Contains("Background") && thingBoxProjected.Intersects(bboxProjected))
                 {
                     if(thing.CollisionBox.Y >= collisionBox.Y)
                     {

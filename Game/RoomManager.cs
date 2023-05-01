@@ -71,7 +71,7 @@ namespace conscious
 
             _pixel = pixel;
 
-            CurrentRoomIndex = 3;
+            CurrentRoomIndex = 0;
             _doorEntered = null;
 
             // LoadRooms();
@@ -178,10 +178,18 @@ namespace conscious
                 {
                     _doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
                     _doorEntered.OpenDoor();
+                    // Set player to middle of door (for now quick fix)
+                    _player.Position = _doorEntered.Position;
                 }
-                // Set player to middle of door (for now quick fix)
-                _player.Position = newPlayerPosition;
-                _player.Position.Y = _player.Position.Y-100f;
+                else
+                {
+                    // set player to given destination position and substract an amount
+                    // to have a way to walk, if no entry-door is specified
+                    _player.Position = newPlayerPosition;
+                    // TODO: Find a better way to determine the starting position
+                    // in case a destination door is not defined
+                    _player.Position.Y = _player.Position.Y-500f;
+                }
 
                 WalkCommand command = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
                 List<Command> coms = new List<Command>()
@@ -226,8 +234,11 @@ namespace conscious
             {
                 ScrollRoom();
             }
-
-            LimitRoom();
+            
+            if(!_sequenceManager.SequenceActive)
+            {
+                LimitRoom();
+            }
 
             if(currentRoom.checkBoundingBoxes(_player.CollisionBox))
             {
@@ -237,13 +248,14 @@ namespace conscious
             // Decide player draw order
             _player.UpdateDrawOrder(currentRoom.getDrawOrderInRoom(_player.CollisionBox));
             
+            // TODO: move game terminated logic somewhere else (maybe a scripting api?)
             foreach(Door door in _entityManager.GetEntitiesOfType<Door>())
             {
                 if(door.currentlyUsed == true)
                 {
                     door.currentlyUsed = false;
-                    // changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
-                    OnTerminateGameEvent(true);
+                    changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
+                    // OnTerminateGameEvent(true);
                     break;
                 }
             }
@@ -251,6 +263,7 @@ namespace conscious
 
         public void LimitRoom()
         {
+            // TODO: Find better way to limit a room in y-position (e.g. each room has a Y-Position for the limit)
             int roomEnding = currentRoom.RoomWidth;
             if(_player.Position.X > roomEnding - (_player.Width/6) / 2)
                 _player.Position.X = roomEnding - (_player.Width/6) / 2;
@@ -258,8 +271,8 @@ namespace conscious
                 _player.Position.X = (_player.Width/6) / 2;
             if(_player.Position.Y > _preferredBackBufferHeight - (_player.Height/1.75f))
                 _player.Position.Y = _preferredBackBufferHeight - (_player.Height/1.75f);
-            else if(_player.Position.Y < _preferredBackBufferHeight * .55f)
-                _player.Position.Y = _preferredBackBufferHeight *.55f;
+            else if(_player.Position.Y < _preferredBackBufferHeight * .45f)
+                _player.Position.Y = _preferredBackBufferHeight *.45f;
         }
 
         public void ScrollRoom()
@@ -570,8 +583,6 @@ namespace conscious
                                    "Its my alarm clock", innerThought6, _moodStateManager, 
                                    _content.Load<Texture2D>("Objects/alarm_clock_draft"), itemPosition);
             room.addThing(clock);
-
-            // TODO: Add Phone with dialog and animation (picking up phone and holding it to ear while dialog!)
 
             _rooms.Add(2, room);
         }

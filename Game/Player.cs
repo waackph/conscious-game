@@ -41,7 +41,7 @@ namespace conscious
             _flip = SpriteEffects.None;
             _playerSpeed = 400f;
             _isMoving = false;
-            PlayerState = PlayerState.Sleep;
+            PlayerState = PlayerState.Idle; // PlayerState.Sleep;
             _lastIsMoving = _isMoving;
             LastPosition = position;
             DrawOrder = 5;
@@ -211,7 +211,9 @@ namespace conscious
 
         public float GetDistance(Entity entity)
         {
-            return Vector2.Distance(entity.Position, Position);
+            int positionAdjustment = 50;
+            Vector2 entityDest = new Vector2(entity.BoundingBox.Right, entity.BoundingBox.Bottom - this.Height/2 + this.CollisionBox.Height + positionAdjustment);
+            return Vector2.Distance(entityDest, Position);
         }
     }
 }

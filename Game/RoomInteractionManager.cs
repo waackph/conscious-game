@@ -39,6 +39,8 @@ namespace conscious
         private List<Vector2> _path;
         private int _currentPathPoint;
 
+        private double threshDiff = 20f;
+
         public RoomInteractionManager(EntityManager entityManager, 
                                       SoCManager socManager, 
                                       InventoryManager inventoryManager, 
@@ -200,14 +202,12 @@ namespace conscious
                     }
                     else
                     {
-                        // TODO: Add code to walk towards shortest path (?)
-                        // direction = Vector2.Normalize(_thingClickedInRoom.Position - _player.Position);
                         Vector2 diff = _path[_currentPathPoint] - _player.Position;
-                        if(Math.Abs(diff.X) < 5 && Math.Abs(diff.Y) < 5 && _path.Count > _currentPathPoint+1)
+                        if(Math.Abs(diff.X) < threshDiff && Math.Abs(diff.Y) < threshDiff && _path.Count > _currentPathPoint+1)
                         {
                             _currentPathPoint++;
                         }
-                        direction = Vector2.Normalize(_path[_currentPathPoint] - _player.Position);
+                        direction = Vector2.Normalize(diff);
                     }
                 }
             }
@@ -281,7 +281,7 @@ namespace conscious
         {
             bool isNear;
             float distance = _player.GetDistance(entity);
-            if(distance <= Math.Max(entity.Height, entity.Width)*0.66 + (_player.Width/2)*0.66)
+            if(distance <= threshDiff)
                 isNear = true;
             else
                 isNear = false;
@@ -333,9 +333,16 @@ namespace conscious
             _isWalking = true;
             _thingClickedInRoom = thing;
             _lastVerbChosen = verb;
-            // TODO: Initilize and compute shortest path here (?)
             _currentPathPoint = 0;
-            _path = _pathfinder.AStarSearch(_player.BoundingBox.Center.ToVector2(), new Vector2(_thingClickedInRoom.BoundingBox.Right, _thingClickedInRoom.BoundingBox.Bottom));
+            int positionAdjustment = 50;
+            // TODO: Player should go to middle of object
+            // => X-Value of entityDest to entity.BoundingBox.Center.X 
+            // Do the same in Player.GetDistance Function
+            // (Currently, this leads to an KeyNotFoundException in AStartShortestPath)
+            float destYPos = _thingClickedInRoom.BoundingBox.Bottom - _player.Height/2 + _player.CollisionBox.Height + positionAdjustment;
+            _path = _pathfinder.AStarSearch(_player.Position,
+                                            new Vector2(_thingClickedInRoom.BoundingBox.Right, destYPos)
+                                            );
         }
 
         #endregion

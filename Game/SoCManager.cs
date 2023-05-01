@@ -67,8 +67,6 @@ namespace conscious
                 _isStart = false;
                 _timeToWait = drawTimeInterval();
             }
-            // TODO: trigger a random thought at some randomized time intervalls 
-            // (randomly draw a time interval, when it is over randomly draw a thought)
             else if (_timeSinceLastRandomThought > _timeToWait & !IsInThoughtMode)
             {
                 _timeSinceLastRandomThought = 0;
