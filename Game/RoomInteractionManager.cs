@@ -202,19 +202,12 @@ namespace conscious
                     }
                     else
                     {
-                        // direction = Vector2.Normalize(_thingClickedInRoom.Position - _player.Position);
-                        // TODO: Find reasonable condition criteria
-                        //_thingClickedInRoom.CollisionBox.X + _thingClickedInRoom.Width/2, _thingClickedInRoom.CollisionBox.Y + _thingClickedInRoom.Height/2
-                        Vector2 diff = _path[_currentPathPoint] - _player.Position;  // _player.BoundingBox.Center.ToVector2();
-                        Console.WriteLine(diff);
+                        Vector2 diff = _path[_currentPathPoint] - _player.Position;
                         if(Math.Abs(diff.X) < threshDiff && Math.Abs(diff.Y) < threshDiff && _path.Count > _currentPathPoint+1)
                         {
                             _currentPathPoint++;
                         }
                         direction = Vector2.Normalize(diff);
-                        Console.WriteLine(_player.Position);
-                        Console.WriteLine(_path[_currentPathPoint]);
-                        Console.WriteLine(direction);
                     }
                 }
             }
@@ -288,9 +281,7 @@ namespace conscious
         {
             bool isNear;
             float distance = _player.GetDistance(entity);
-            Console.WriteLine(distance);
-            // TODO: Find reasonable distance metric
-            if(distance <= threshDiff)  // Math.Max(entity.Height, entity.Width)*0.66 + (_player.Width/2)*0.66)
+            if(distance <= threshDiff)
                 isNear = true;
             else
                 isNear = false;
@@ -343,10 +334,14 @@ namespace conscious
             _thingClickedInRoom = thing;
             _lastVerbChosen = verb;
             _currentPathPoint = 0;
-            // TODO: Initilize better start and finish point
-            _path = _pathfinder.AStarSearch(_player.Position,  // _player.BoundingBox.Center.ToVector2(), 
-                                            // new Vector2(_thingClickedInRoom.CollisionBox.X + _thingClickedInRoom.Width/2, _thingClickedInRoom.CollisionBox.Y + _thingClickedInRoom.Height/2)
-                                            new Vector2(_thingClickedInRoom.BoundingBox.Right, _thingClickedInRoom.BoundingBox.Bottom)
+            int positionAdjustment = 50;
+            // TODO: Player should go to middle of object
+            // => X-Value of entityDest to entity.BoundingBox.Center.X 
+            // Do the same in Player.GetDistance Function
+            // (Currently, this leads to an KeyNotFoundException in AStartShortestPath)
+            float destYPos = _thingClickedInRoom.BoundingBox.Bottom - _player.Height/2 + _player.CollisionBox.Height + positionAdjustment;
+            _path = _pathfinder.AStarSearch(_player.Position,
+                                            new Vector2(_thingClickedInRoom.BoundingBox.Right, destYPos)
                                             );
         }
 

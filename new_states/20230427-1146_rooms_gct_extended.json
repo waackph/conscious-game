@@ -629,7 +629,7 @@
         "$type": "conscious.DataHolderDoor, conscious",
         "Id": 6041,
         "Name": "Coridor Living Room Door",
-        "texturePath": "Objects/living_room_door_closed",
+        "texturePath": "Objects/living_room_door_opened",
         "Rotation": 0,
         "PositionX": 1147.5,
         "PositionY": 378.5,
@@ -647,7 +647,7 @@
         "IsUnlocked": true,
         "InitPlayerPosX": 260,
         "InitPlayerPosY": 900,
-        "CloseTexturePath": "Objects/living_room_door_opened",
+        "CloseTexturePath": "Objects/living_room_door_closed",
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
           "Id": 594,

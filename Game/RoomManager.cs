@@ -263,6 +263,7 @@ namespace conscious
 
         public void LimitRoom()
         {
+            // TODO: Find better way to limit a room in y-position (e.g. each room has a Y-Position for the limit)
             int roomEnding = currentRoom.RoomWidth;
             if(_player.Position.X > roomEnding - (_player.Width/6) / 2)
                 _player.Position.X = roomEnding - (_player.Width/6) / 2;
@@ -270,8 +271,8 @@ namespace conscious
                 _player.Position.X = (_player.Width/6) / 2;
             if(_player.Position.Y > _preferredBackBufferHeight - (_player.Height/1.75f))
                 _player.Position.Y = _preferredBackBufferHeight - (_player.Height/1.75f);
-            else if(_player.Position.Y < _preferredBackBufferHeight * .55f)
-                _player.Position.Y = _preferredBackBufferHeight *.55f;
+            else if(_player.Position.Y < _preferredBackBufferHeight * .45f)
+                _player.Position.Y = _preferredBackBufferHeight *.45f;
         }
 
         public void ScrollRoom()
@@ -582,8 +583,6 @@ namespace conscious
                                    "Its my alarm clock", innerThought6, _moodStateManager, 
                                    _content.Load<Texture2D>("Objects/alarm_clock_draft"), itemPosition);
             room.addThing(clock);
-
-            // TODO: Add Phone with dialog and animation (picking up phone and holding it to ear while dialog!)
 
             _rooms.Add(2, room);
         }
