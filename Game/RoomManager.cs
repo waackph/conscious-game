@@ -251,7 +251,7 @@ namespace conscious
             // TODO: move game terminated logic somewhere else (maybe a scripting api?)
             foreach(Door door in _entityManager.GetEntitiesOfType<Door>())
             {
-                if(door.currentlyUsed == true)
+                if(door.currentlyUsed && door.IsRoomChangeDoor)
                 {
                     door.currentlyUsed = false;
                     changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
@@ -414,7 +414,7 @@ namespace conscious
             door = new Door(30, "Front Door", false, true, false, false, false, "It's a door", 
                             2, 1, 1,
                             new Vector2(260, 475+140+_player.Height), 
-                            _content.Load<Texture2D>("Objects/front_door"),
+                            _content.Load<Texture2D>("Objects/front_door"), true,
                             true, innerThought, _moodStateManager, 
                             _content.Load<Texture2D>("Objects/front_door_open"), itemPosition);
             room.addThing(door);
@@ -441,7 +441,7 @@ namespace conscious
             door = new Door(80, "Bathroom Door", false, true, false, false, false, "It's a door", 
                             2, 1, 1,
                             new Vector2(2500, 475+140+_player.Height), 
-                            _content.Load<Texture2D>("Objects/bath_door"),
+                            _content.Load<Texture2D>("Objects/bath_door"), true,
                             true, innerThought11, _moodStateManager, 
                             _content.Load<Texture2D>("Objects/bath_door_open"), itemPosition);
 

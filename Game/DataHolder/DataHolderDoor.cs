@@ -9,5 +9,6 @@ namespace conscious
         public float InitPlayerPosX { get; set; }
         public float InitPlayerPosY { get; set; }
         public string CloseTexturePath { get; set; }
+        public bool IsRoomChangeDoor { get; set; }
     }
 }

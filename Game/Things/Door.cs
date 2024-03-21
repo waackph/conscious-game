@@ -15,6 +15,7 @@ namespace conscious
         public bool IsClosed;
 
         public bool currentlyUsed = false;
+        public bool IsRoomChangeDoor;
         public int RoomId;
         public int DoorId;
         public Vector2 InitPlayerPos;
@@ -31,6 +32,7 @@ namespace conscious
                     int doorId,
                     Vector2 initPlayerPos,
                     Texture2D closeTexture,
+                    bool isRoomChangeDoor,
                     bool isUnlocked,
                     ThoughtNode thought,
                     MoodStateManager moodStateManager, 
@@ -42,6 +44,7 @@ namespace conscious
             InitPlayerPos = initPlayerPos;
             _isUnlocked = isUnlocked;
             _closeTexture = closeTexture;
+            IsRoomChangeDoor = isRoomChangeDoor;
             this.CloseDoor();
         }
 
@@ -51,10 +54,14 @@ namespace conscious
                 if(_isUnlocked != true && item != null && item.Id == _itemDependency){
                     _isUnlocked = true;
                     UseWith = false;
-                    currentlyUsed = true;
                 }
                 if(_isUnlocked == true){
-                    currentlyUsed = true;
+                    if(!IsRoomChangeDoor)
+                        // We dont need to change room, so just change texture
+                        UseDoor();
+                    else
+                        // just set bool so the roomManager can change the room
+                        currentlyUsed = true;
                 }
             }
             return false;
@@ -65,6 +72,8 @@ namespace conscious
             if(UseAble == true){
                 if(_isUnlocked == true){
                     currentlyUsed = true;
+                    if(!IsRoomChangeDoor)
+                        UseDoor();
                 }
             }
             return false;
@@ -81,6 +90,14 @@ namespace conscious
             _sprite.Texture = _closeTexture;
             IsClosed = true;
         }
+
+        private void UseDoor()
+        {
+            if(IsClosed)
+                this.OpenDoor();
+            else
+                this.CloseDoor();
+        }
         
         public override DataHolderEntity GetDataHolderEntity()
         {
@@ -94,6 +111,7 @@ namespace conscious
             dataHolderEntity.InitPlayerPosX = InitPlayerPos.X;
             dataHolderEntity.InitPlayerPosY = InitPlayerPos.Y;
             dataHolderEntity.CloseTexturePath = _closeTexture.ToString();
+            dataHolderEntity.IsRoomChangeDoor = IsRoomChangeDoor;
             return dataHolderEntity;
         }
 
@@ -108,6 +126,7 @@ namespace conscious
             dataHolderEntity.InitPlayerPosX = InitPlayerPos.X;
             dataHolderEntity.InitPlayerPosY = InitPlayerPos.Y;
             dataHolderEntity.CloseTexturePath = _closeTexture.ToString();
+            dataHolderEntity.IsRoomChangeDoor = IsRoomChangeDoor;
             return dataHolderEntity;
         }
     }

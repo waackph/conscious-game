@@ -385,6 +385,7 @@ namespace conscious
                                   dhDoor.ItemDependency, dhDoor.RoomId, dhDoor.DoorId,
                                   new Vector2(dhDoor.InitPlayerPosX, dhDoor.InitPlayerPosY),
                                   _content.Load<Texture2D>(dhDoor.CloseTexturePath),
+                                  dhDoor.IsRoomChangeDoor,
                                   dhDoor.IsUnlocked, thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY));
