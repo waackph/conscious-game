@@ -154,7 +154,7 @@
         "IsUnlocked": true,
         "InitPlayerPosX": 260,
         "InitPlayerPosY": 900,
-        "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Bath_Room_closed_306x511_pos_5073x294.png",
+        "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Bath_Room_closed_306x511_pos_5073x294",
         "IsRoomChangeDoor": true,
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
@@ -222,7 +222,7 @@
         "IsUnlocked": true,
         "InitPlayerPosX": 1788,
         "InitPlayerPosY": 475,
-        "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Dining_Room_closed_306x511_pos_2843x288.png",
+        "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Dining_Room_closed_306x511_pos_2843x288",
         "IsRoomChangeDoor": true,
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
@@ -304,7 +304,7 @@
         "IsUnlocked": false,
         "InitPlayerPosX": -1,
         "InitPlayerPosY": -1,
-        "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Front_closed_183x832_pos_100x394.png",
+        "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Front_closed_183x832_pos_100x394",
         "IsRoomChangeDoor": true,
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
@@ -372,7 +372,7 @@
         "IsUnlocked": true,
         "InitPlayerPosX": 86,
         "InitPlayerPosY": 501,
-        "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Living_Room_closed_306x511_pos_1606x287.png",
+        "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Living_Room_closed_306x511_pos_1606x287",
         "IsRoomChangeDoor": true,
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
@@ -454,7 +454,7 @@
         "IsUnlocked": true,
         "InitPlayerPosX": -1,
         "InitPlayerPosY": -1,
-        "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Stairs_closed_158x835_pos_5576x413.png",
+        "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Stairs_closed_158x835_pos_5576x413",
         "IsRoomChangeDoor": true,
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
@@ -1183,7 +1183,7 @@
         "IsUnlocked": true,
         "InitPlayerPosX": 1606,
         "InitPlayerPosY": 287,
-        "CloseTexturePath": "clear_out/rooms/living_room/objects/living_room_door_closed_scaled_outline_150x795_pos_85x504.png",
+        "CloseTexturePath": "clear_out/rooms/living_room/objects/living_room_door_closed_scaled_outline_150x795_pos_85x504",
         "IsRoomChangeDoor": true,
         "Thought": null
       },
@@ -2821,7 +2821,7 @@
         "IsUnlocked": true,
         "InitPlayerPosX": 2843,
         "InitPlayerPosY": 288,
-        "CloseTexturePath": "clear_out/rooms/dining_room/objects/dining_room_door_closed_scaled_outline_170x742_pos_1755x482.png",
+        "CloseTexturePath": "clear_out/rooms/dining_room/objects/dining_room_door_closed_scaled_outline_170x742_pos_1755x482",
         "IsRoomChangeDoor": true,
         "Thought": null
       },
@@ -2928,7 +2928,7 @@
         "IsUnlocked": true,
         "InitPlayerPosX": -1,
         "InitPlayerPosY": -1,
-        "CloseTexturePath": "clear_out/rooms/dining_room/objects/fridge_265x511_pos_1480x432.png",
+        "CloseTexturePath": "clear_out/rooms/dining_room/objects/fridge_265x511_pos_1480x432",
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
           "Id": 9457,
@@ -3139,7 +3139,7 @@
         "IsUnlocked": true,
         "InitPlayerPosX": -1,
         "InitPlayerPosY": -1,
-        "CloseTexturePath": "clear_out/rooms/dining_room/objects/small_shelve_closed_261x178_pos_566x126.png",
+        "CloseTexturePath": "clear_out/rooms/dining_room/objects/small_shelve_closed_261x178_pos_566x126",
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
           "Id": 1685,
