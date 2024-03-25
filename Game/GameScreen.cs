@@ -107,6 +107,7 @@ namespace conscious
                                            _sequenceManager, 
                                            _moodStateManager,
                                            _audioManager,
+                                           _socManager,
                                            _roomGraph,
                                            _preferredBackBufferWidth, _preferredBackBufferHeight);
 
@@ -220,7 +221,7 @@ namespace conscious
             string savePath;
             if(newGame)
             {
-                savePath = "new_states/20230427-1146";
+                savePath = "new_states/20240325-1200";
             }
             else
             {
@@ -258,7 +259,9 @@ namespace conscious
                 }
                 DataHolderSequence dhSequence = dhRoom.EntrySequence;
                 Sequence entrySequence = InstatiateSequence(dhSequence);
-                Room room = new Room(dhRoom.RoomWidth, _entityManager, entrySequence, _content.Load<Song>("Audio/" + dhRoom.SoundFilePath), _content.Load<Texture2D>(dhRoom.LightMapPath));
+                DataHolderThoughtNode dhThought =  dhRoom.Thought;
+                ThoughtNode thought = InstatiateThought(dhThought);
+                Room room = new Room(dhRoom.RoomWidth, _entityManager, entrySequence, _content.Load<Song>("Audio/" + dhRoom.SoundFilePath), _content.Load<Texture2D>(dhRoom.LightMapPath), thought);
                 room.SetThings(things);
                 _roomManager.AddRoom(entry.Key, room);
             }
