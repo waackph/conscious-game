@@ -21,6 +21,7 @@ namespace conscious
         private SequenceManager _sequenceManager;
         private MoodStateManager _moodStateManager;
         private AudioManager _audioManager;
+        private SoCManager _socManager;
         private RoomGraph _roomGraph;
         private ContentManager _content;
         private int _preferredBackBufferWidth;
@@ -45,6 +46,7 @@ namespace conscious
                            SequenceManager sequenceManager,
                            MoodStateManager moodStateManager,
                            AudioManager audioManager,
+                           SoCManager socManager,
                            RoomGraph roomGraph,
                            int preferredBackBufferWidth, 
                            int preferredBackBufferHeight)
@@ -73,6 +75,10 @@ namespace conscious
 
             CurrentRoomIndex = 0;
             _doorEntered = null;
+
+            _socManager = socManager;
+            // _socManager.ActionEvent += executeThoughtInteraction;
+            // _socManager.FinalEdgeSelected += doPlayerFinalThoughtActions;
 
             // LoadRooms();
         }
@@ -167,6 +173,8 @@ namespace conscious
             _roomGraph.GenerateRoomGraph(currentRoom.GetBoundingBoxes(), 
                                          0, currentRoom.RoomWidth, 
                                          0, _preferredBackBufferHeight);
+
+            triggerThought(currentRoom);
 
             if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
             {
@@ -331,6 +339,14 @@ namespace conscious
 
         }
 
+        private void triggerThought(Room room)
+        {
+            if(room.Thought != null)
+            {
+                _socManager.AddThought(room.Thought);
+            }
+        }
+
         public Dictionary<int, DataHolderRoom> GetDataHolderRooms()
         {
             Dictionary<int, DataHolderRoom> dhRooms = new Dictionary<int, DataHolderRoom>();
@@ -357,7 +373,7 @@ namespace conscious
             bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
             song = _content.Load<Song>("Audio/Red_Curtains");
             lightMap = _content.Load<Texture2D>("light/light_gimp_v2");
-            room = new Room(bg.Width, _entityManager, null, song, lightMap);
+            room = new Room(bg.Width, _entityManager, null, song, lightMap, null);
             Thing background = new Thing(11, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
             room.addThing(background);
 

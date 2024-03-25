@@ -21,9 +21,9 @@ namespace conscious
         public Song SoundFile;
         public Dictionary<MoodState, Texture2D> MoodLightMaps;
         public Dictionary<MoodState, Song> MoodSoundFiles;
+        public ThoughtNode Thought { get; protected set; }
 
-
-        public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Song soundFile, Texture2D lightMap)
+        public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Song soundFile, Texture2D lightMap, ThoughtNode thought)
         {
             RoomWidth = roomWidth;
             _entityManager = entityManager;
@@ -36,6 +36,8 @@ namespace conscious
             SoundFile = soundFile;
             MoodSoundFiles = new Dictionary<MoodState, Song>();
             MoodSoundFiles[MoodState.None] = SoundFile;
+
+            Thought = thought;
         }
 
         public IEnumerable<T> GetThingsOfType<T>() where T : Thing
@@ -139,6 +141,7 @@ namespace conscious
                 _entityManager.RemoveEntity(thing);
             }
         }
+        
         public DataHolderRoom GetDataHolderRoom()
         {
             DataHolderRoom dataHolderRoom = new DataHolderRoom();
@@ -152,6 +155,7 @@ namespace conscious
             dataHolderRoom.EntrySequence = EntrySequence?.GetDataHolderSequence();
             dataHolderRoom.SoundFilePath = SoundFile?.Name;
             dataHolderRoom.LightMapPath = LightMap?.ToString();
+            dataHolderRoom.Thought = Thought?.GetDataHolderThoughtNode();
             return dataHolderRoom;
         }
     }
