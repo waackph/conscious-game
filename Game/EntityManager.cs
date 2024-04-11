@@ -65,9 +65,9 @@ namespace conscious
                 if(!entity.FixedDrawPosition)
                 {
                     entity.Draw(spriteBatch);
-                    if(_debuggingMode && entity.Name != "Background")
+                    if(_debuggingMode && entity.Width < 1900)
                     {
-                        spriteBatch.Draw(_pixel, entity.CollisionBox, Color.White);
+                        spriteBatch.Draw(_pixel, entity.BoundingBox, Color.White);
                     }
                 }
                     
@@ -86,9 +86,9 @@ namespace conscious
                     entity.Draw(spriteBatch);
                     if(entity.Name == "moodText")
                         entity.ToString();
-                    if(_debuggingMode && entity.Name != "Background")
+                    if(_debuggingMode && (entity.Width < 1900 && !entity.Name.ToLower().Contains("background") && !entity.Name.ToLower().Contains("hintergrund")))
                     {
-                        spriteBatch.Draw(_pixel, entity.CollisionBox, Color.White);
+                        spriteBatch.Draw(_pixel, entity.BoundingBox, Color.White);
                     }
                 }
             }
