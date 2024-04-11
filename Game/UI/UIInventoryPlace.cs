@@ -7,7 +7,8 @@ namespace conscious
     {
         public Item InventoryItem { set; get; }
 
-        public UIInventoryPlace(string name, Texture2D texture, Vector2 position) : base(name, texture, position){
+        public UIInventoryPlace(string name, Texture2D texture, Vector2 position, int drawOrder) 
+        : base(name, texture, position, drawOrder){
             InventoryItem = null;
             Collidable = true;
         }

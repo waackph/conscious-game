@@ -9,8 +9,8 @@ namespace conscious
         private Cursor _cursor;
         public Edge ResponseEdge { get; set; }
 
-        public UIResponse(Edge responseEdge, Cursor cursor, SpriteFont font, string text, string name, Texture2D texture, Vector2 position) 
-                         : base(font, text, name, texture, position)
+        public UIResponse(Edge responseEdge, Cursor cursor, SpriteFont font, string text, string name, Texture2D texture, Vector2 position, int drawOrder) 
+                        : base(font, text, name, texture, position, drawOrder)
         {
             ResponseEdge = responseEdge;
             _cursor = cursor;
