@@ -5,7 +5,8 @@ namespace conscious
 {
     public class UIArea : UIComponent
     {
-        public UIArea(string name, Texture2D texture, Vector2 position) : base(name, texture, position)
+        public UIArea(string name, Texture2D texture, Vector2 position, int drawOrder) 
+        : base(name, texture, position, drawOrder)
         {
             Collidable = false;
         }
@@ -23,9 +24,9 @@ namespace conscious
         {
             get
             {
-                return new Rectangle((int)Position.X - Width, 
-                                     (int)Position.Y - Height,
-                                     Width*2, Height*2);
+                return new Rectangle((int)Position.X - Width/2, 
+                                     (int)Position.Y - Height/2,
+                                     Width, Height);
             }
         }
     }

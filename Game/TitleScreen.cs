@@ -51,28 +51,28 @@ namespace conscious
                                                    "Continue",
                                                    "Continue",
                                                    _content.Load<Texture2D>("UI/debug_sprites/ui_button"),
-                                                   new Vector2(350, 200));
+                                                   new Vector2(350, 200), 1);
 
             UIButton newButton = new UIButton(new EventHandler(NewButton_Click),
                                                    _displayFont,
                                                    "New",
                                                    "New",
                                                    _content.Load<Texture2D>("UI/debug_sprites/ui_button"),
-                                                   new Vector2(350, 250));
+                                                   new Vector2(350, 250), 1);
 
             UIButton saveButton = new UIButton(new EventHandler(SaveButton_Click),
                                                    _displayFont,
                                                    "Save",
                                                    "Save",
                                                    _content.Load<Texture2D>("UI/debug_sprites/ui_button"),
-                                                   new Vector2(350, 300));
+                                                   new Vector2(350, 300), 1);
 
             UIButton quitButton = new UIButton(new EventHandler(QuitButton_Click),
                                                _displayFont,
                                                "Quit",
                                                "Quit",
                                                _content.Load<Texture2D>("UI/debug_sprites/ui_button"),
-                                               new Vector2(350, 350));
+                                               new Vector2(350, 350), 1);
 
             _uiComponents = new List<UIComponent>()
             {
@@ -129,7 +129,7 @@ namespace conscious
             }
 
             Texture2D bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
-            Thing background = new Thing(11, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
+            Thing background = new Thing(11, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2), 1);
             _entityManager.AddEntity(background);
         }
     }

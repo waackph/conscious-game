@@ -37,7 +37,7 @@ namespace conscious
         public void LoadContent(Texture2D inventoryPlaceTexture, Texture2D inventoryBackground)
         {
             Vector2 bgPosition = new Vector2(780, 500);
-            _inventoryBackground = new UIArea("Inventory Background", inventoryBackground, bgPosition);
+            _inventoryBackground = new UIArea("Inventory Background", inventoryBackground, bgPosition, 1);
             for(int iHeight=_nrSlotRows; iHeight>=1; iHeight--)
             {
                 for(int iWidth=_nrSlotCols; iWidth>=1; iWidth--)
@@ -46,7 +46,7 @@ namespace conscious
                                                         _startHeight - inventoryPlaceTexture.Height*iHeight - _marginHeight*iHeight);
                     UIInventoryPlace place = new UIInventoryPlace(iHeight.ToString()+"x"+iWidth.ToString(),
                                                                   inventoryPlaceTexture, 
-                                                                  placePosition);
+                                                                  placePosition, 1);
                     place.UpdateDrawOrder(2);
                     _slots.Add(place);
                 }

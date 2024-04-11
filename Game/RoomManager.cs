@@ -374,7 +374,7 @@ namespace conscious
             song = _content.Load<Song>("Audio/Red_Curtains");
             lightMap = _content.Load<Texture2D>("light/light_gimp_v2");
             room = new Room(bg.Width, _entityManager, null, song, lightMap, null);
-            Thing background = new Thing(11, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2));
+            Thing background = new Thing(11, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2), 1);
             room.addThing(background);
 
             // ThoughtNode thought = CreateSimpleThought(12, 
@@ -432,7 +432,7 @@ namespace conscious
                             new Vector2(260, 475+140+_player.Height), 
                             _content.Load<Texture2D>("Objects/front_door"), true,
                             true, innerThought, _moodStateManager, 
-                            _content.Load<Texture2D>("Objects/front_door_open"), itemPosition);
+                            _content.Load<Texture2D>("Objects/front_door_open"), itemPosition, 3);
             room.addThing(door);
 
             ThoughtNode innerThought12 = new ThoughtNode(49, "Cleaning is so annoying", 0, false, 0);
@@ -459,7 +459,7 @@ namespace conscious
                             new Vector2(2500, 475+140+_player.Height), 
                             _content.Load<Texture2D>("Objects/bath_door"), true,
                             true, innerThought11, _moodStateManager, 
-                            _content.Load<Texture2D>("Objects/bath_door_open"), itemPosition);
+                            _content.Load<Texture2D>("Objects/bath_door_open"), itemPosition, 3);
 
             // Add final link with animation
             // Add sequence going into bathroom, wait x seconds, go back to current room.
@@ -531,7 +531,7 @@ namespace conscious
             Thing character = new Character(5, "Phone", "She", "Riiiing", 
                                             false, dialogTree, _dialogManager, 
                                             thought4, _moodStateManager, 
-                                            _content.Load<Texture2D>("NPCs/phone_draft"), itemPosition);
+                                            _content.Load<Texture2D>("NPCs/phone_draft"), itemPosition, 3);
             room.addThing(character);
 
             ThoughtNode innerThought10 = new ThoughtNode(90, "Right. Just like in the last days. (Sigh) Ok. Here we go", 0, false, 0);
@@ -597,7 +597,7 @@ namespace conscious
             itemPosition = new Vector2(1576, 578);
             Thing clock = new Item(81, "Alarm Clock", false, false, false, false, false, 
                                    "Its my alarm clock", innerThought6, _moodStateManager, 
-                                   _content.Load<Texture2D>("Objects/alarm_clock_draft"), itemPosition);
+                                   _content.Load<Texture2D>("Objects/alarm_clock_draft"), itemPosition, 3);
             room.addThing(clock);
 
             _rooms.Add(2, room);

@@ -93,7 +93,7 @@ namespace conscious
                                 Matrix.Invert(_viewportTransformation),
                                 "Cursor",
                                 Content.Load<Texture2D>("Cursor/Gem"), 
-                                new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
+                                new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 1);
 
             base.Initialize();
         }

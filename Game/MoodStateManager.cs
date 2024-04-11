@@ -29,9 +29,9 @@ namespace conscious
             moodState = MoodState.Depressed;
             _entityManager = entityManager;
             string text = generateMoodText();
-            _moodText = new UIText(font, text, "moodText", pixel, new Vector2(20, 40));
+            _moodText = new UIText(font, text, "moodText", pixel, new Vector2(20, 40), 1);
             _transitionSprite = new Thing(200, null, this, "MoodTransition", transitionTexture, 
-                                          new Vector2(transitionTexture.Width/2, transitionTexture.Height/2));
+                                          new Vector2(transitionTexture.Width/2, transitionTexture.Height/2), 1);
             _transitionActive = false;
             _timeSinceBeginning = 0;
             _millisecondsToWait = 2000;

@@ -153,7 +153,7 @@ namespace conscious
                                                         edge.GetLine(), 
                                                         "Response_" + (offset/20f).ToString(), 
                                                         _pixel, 
-                                                        responsePosition);
+                                                        responsePosition, 1);
                     response.FixedDrawPosition = false;
                     AddText(response);
                 }
@@ -203,7 +203,7 @@ namespace conscious
             Vector2 nodePosition = character.Position;
             nodePosition.Y = nodePosition.Y - character.Height/2 - 50; // 50 is the arbitrary offset for now
             nodePosition.X = nodePosition.X + character.Width/2;
-            UIText text = new UIText(_displayFont, displayText, "Display Text", _pixel, nodePosition);
+            UIText text = new UIText(_displayFont, displayText, "Display Text", _pixel, nodePosition, 1);
             text.FixedDrawPosition = false;
             RemoveText();
             _currentText = text;
