@@ -20,3 +20,14 @@ Windows: `dotnet publish -r win-x64 -c Release --self-contained --output artifac
 Start game by executing the .exe file
 
 To automate build process, see: https://learn-monogame.github.io/how-to/automate-release/
+
+
+# Things to note about monogame
+
+## Spritefont
+
+A spritefont has a character range. It is necessary to define the needed characters e.g. using a unicode decimal table like [this](https://www.ssec.wisc.edu/~tomw/java/unicode.html) and [character codes](https://en.wikipedia.org/wiki/List_of_Unicode_characters).
+
+## Run game in Dev Mode
+- Either use C# Debugger
+- Or if this does not work use the command line: `dotnet run --project conscious.csproj`
