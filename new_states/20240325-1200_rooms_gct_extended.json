@@ -1,5 +1,5 @@
 {
-  "1": {
+  "3": {
     "RoomWidth": 5760,
     "SoundFilePath": "Red_Curtains",
     "LightMapPath": "light/light_gimp_v2",
@@ -140,7 +140,7 @@
         "Rotation": 0,
         "PositionX": 5073,
         "PositionY": 294,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Die T\u00fcr zum Badezimmer im Erdgeschoss",
         "IsInInventory": false,
         "UseAble": true,
@@ -208,7 +208,7 @@
         "Rotation": 0,
         "PositionX": 2843,
         "PositionY": 288,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Hier gehts zur K\u00fcche und zum Esszimmer",
         "IsInInventory": false,
         "UseAble": true,
@@ -290,7 +290,7 @@
         "Rotation": 0,
         "PositionX": 155,
         "PositionY": 400,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Die Haust\u00fcr nach drau\u00dfen",
         "IsInInventory": false,
         "UseAble": true,
@@ -358,7 +358,7 @@
         "Rotation": 0,
         "PositionX": 1606,
         "PositionY": 287,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Die T\u00fcr zum Wohnzimmer",
         "IsInInventory": false,
         "UseAble": true,
@@ -440,7 +440,7 @@
         "Rotation": 0,
         "PositionX": 5580,
         "PositionY": 414,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Treppe zum Obergeschoss",
         "IsInInventory": false,
         "UseAble": true,
@@ -536,7 +536,7 @@
         "Rotation": 0,
         "PositionX": 2880,
         "PositionY": 540,
-        "DrawOrder": 3,
+        "DrawOrder": 0,
         "ExamineText": "",
         "IsInInventory": false,
         "UseAble": false,
@@ -561,7 +561,7 @@
         "Rotation": 0,
         "PositionX": 3420,
         "PositionY": 380,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Die Pflanzen sind schon ganz welk",
         "IsInInventory": false,
         "UseAble": false,
@@ -687,7 +687,7 @@
         "Rotation": 0,
         "PositionX": 863,
         "PositionY": 385,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Das sind Schuhe und Jacken von Lydia.",
         "IsInInventory": false,
         "UseAble": false,
@@ -899,10 +899,208 @@
             }
           ]
         }
+      },
+      {
+        "$type": "conscious.DataHolderItem, conscious",
+        "Id": 2981,
+        "Name": "Umzugskartons",
+        "texturePath": "",
+        "Rotation": 0,
+        "PositionX": 640,
+        "PositionY": 510,
+        "DrawOrder": 2,
+        "ExamineText": "Die Umzugskartons f\u00fcr Lydias Sachen.",
+        "IsInInventory": false,
+        "UseAble": false,
+        "PickUpAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "RoomId": 0,
+        "DoorId": 0,
+        "IsUnlocked": false,
+        "InitPlayerPosX": -1,
+        "InitPlayerPosY": -1,
+        "CloseTexturePath": "",
+        "Thought": {
+          "$type": "conscious.DataHolderThoughtNode, conscious",
+          "Id": 1436,
+          "Thought": "Die Umzugskartons f\u00fcr Lydias Sachen.",
+          "IsRoot": true,
+          "ThingId": 2981,
+          "LinkageId": 0,
+          "Links": [
+            {
+              "$type": "conscious.DataHolderThoughtLink, conscious",
+              "Id": 3561,
+              "ValidMoods": [
+                0
+              ],
+              "Option": "First link",
+              "IsLocked": false,
+              "NextNode": {
+                "$type": "conscious.DataHolderThoughtNode, conscious",
+                "Id": 9907,
+                "Thought": "Ich muss das ganze Haus ausr\u00e4umen. Das wird anstrengend.",
+                "IsRoot": false,
+                "LinkageId": 0,
+                "ThingId": 2981,
+                "Links": [
+                  {
+                    "$type": "conscious.DataHolderThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 6596,
+                    "NextNode": {
+                      "$type": "conscious.DataHolderThoughtNode, conscious",
+                      "IsRoot": false,
+                      "LinkageId": 0,
+                      "Id": 7723,
+                      "Thought": "Das f\u00fchlt sich falsch an. Ich hatte doch schon so lange keinen Kontakt mehr zu meiner Mutter.",
+                      "Links": [
+                        {
+                          "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                          "IsLocked": false,
+                          "ValidMoods": [
+                            0
+                          ],
+                          "Id": 7347,
+                          "Option": "Ich bin die Tochter. Das ist schon richtig so.",
+                          "IsFinal": true,
+                          "sequence": null,
+                          "Verb": 0,
+                          "MoodChange": 0,
+                          "NextNode": null
+                        },
+                        {
+                          "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                          "IsLocked": false,
+                          "ValidMoods": [
+                            0
+                          ],
+                          "Id": 5803,
+                          "Option": "Ich f\u00fchle mich wie eine Grabr\u00e4uberin.",
+                          "IsFinal": true,
+                          "sequence": null,
+                          "Verb": 0,
+                          "MoodChange": 0,
+                          "NextNode": null
+                        }
+                      ],
+                      "ThingId": 2981
+                    },
+                    "Option": "Die ganzen Sachen geh\u00f6ren jetzt mir."
+                  },
+                  {
+                    "$type": "conscious.DataHolderThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 7057,
+                    "NextNode": {
+                      "$type": "conscious.DataHolderThoughtNode, conscious",
+                      "IsRoot": false,
+                      "LinkageId": 0,
+                      "Id": 1684,
+                      "Thought": "Ich wei\u00df auch nicht genau. Es kostet Geld.",
+                      "Links": [
+                        {
+                          "$type": "conscious.DataHolderThoughtLink, conscious",
+                          "IsLocked": false,
+                          "ValidMoods": [
+                            0
+                          ],
+                          "Id": 545,
+                          "NextNode": {
+                            "$type": "conscious.DataHolderThoughtNode, conscious",
+                            "IsRoot": false,
+                            "LinkageId": 0,
+                            "Id": 8613,
+                            "Thought": "Ich habe das Gef\u00fchl, dass ich noch irgendwas in diesem Haus zu kl\u00e4ren habe. Es ist als w\u00fcrde ich hier nach etwas suchen. Ich wei\u00df aber auch nicht wonach.",
+                            "Links": [
+                              {
+                                "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                                "IsLocked": false,
+                                "ValidMoods": [
+                                  0
+                                ],
+                                "Id": 277,
+                                "Option": "Vielleicht habe ich ja doch noch nicht mit meiner Mutter abgeschlossen.",
+                                "IsFinal": true,
+                                "sequence": null,
+                                "Verb": 0,
+                                "MoodChange": 0,
+                                "NextNode": null
+                              },
+                              {
+                                "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                                "IsLocked": false,
+                                "ValidMoods": [
+                                  0
+                                ],
+                                "Id": 6809,
+                                "Option": "M\u00f6glicherweise wertvoller Schmuck.",
+                                "IsFinal": true,
+                                "sequence": null,
+                                "Verb": 0,
+                                "MoodChange": 0,
+                                "NextNode": null
+                              }
+                            ],
+                            "ThingId": 2981
+                          },
+                          "Option": "Ist das wirklich der Grund?"
+                        },
+                        {
+                          "$type": "conscious.DataHolderThoughtLink, conscious",
+                          "IsLocked": false,
+                          "ValidMoods": [
+                            0
+                          ],
+                          "Id": 5006,
+                          "Option": "Stimmt. F\u00fcr sowas gebe ich doch kein Geld aus.",
+                          "NextNode": {
+                            "$type": "conscious.DataHolderThoughtNode, conscious",
+                            "IsRoot": false,
+                            "LinkageId": 0,
+                            "Id": 9711,
+                            "Thought": "lastnode",
+                            "Links": [],
+                            "ThingId": 2981
+                          }
+                        }
+                      ],
+                      "ThingId": 2981
+                    },
+                    "Option": "Och n\u00f6... Warum habe ich nicht einfach eine Entr\u00fcmplungsfirma engagiert?"
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 8393,
+                    "Option": "Darum bin ich hier.",
+                    "IsFinal": true,
+                    "sequence": null,
+                    "Verb": 0,
+                    "MoodChange": 0,
+                    "NextNode": null
+                  }
+                ]
+              }
+            }
+          ]
+        }
       }
     ]
   },
-  "2": {
+  "4": {
     "RoomWidth": 1920,
     "SoundFilePath": "Red_Curtains",
     "LightMapPath": "light/light_gimp_v2",
@@ -971,7 +1169,7 @@
         "Rotation": 0,
         "PositionX": 86,
         "PositionY": 501,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "",
         "IsInInventory": false,
         "UseAble": true,
@@ -987,7 +1185,63 @@
         "InitPlayerPosY": 287,
         "CloseTexturePath": "clear_out/rooms/living_room/objects/living_room_door_closed_scaled_outline_150x795_pos_85x504",
         "IsRoomChangeDoor": true,
-        "Thought": null
+        "Thought": {
+          "$type": "conscious.DataHolderThoughtNode, conscious",
+          "Id": 3125,
+          "Thought": "Der Weg zum Flur",
+          "IsRoot": true,
+          "ThingId": 1584,
+          "LinkageId": 0,
+          "Links": [
+            {
+              "$type": "conscious.DataHolderThoughtLink, conscious",
+              "Id": 5519,
+              "ValidMoods": [
+                0
+              ],
+              "Option": "First link",
+              "IsLocked": false,
+              "NextNode": {
+                "$type": "conscious.DataHolderThoughtNode, conscious",
+                "Id": 8779,
+                "Thought": "Weiter an die Arbeit?",
+                "IsRoot": false,
+                "LinkageId": 0,
+                "ThingId": 1584,
+                "Links": [
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 1283,
+                    "Option": "Auf geht's.",
+                    "IsFinal": true,
+                    "sequence": null,
+                    "Verb": 4,
+                    "MoodChange": 0,
+                    "NextNode": null
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 1967,
+                    "Option": "Ich schaue mich hier lieber weiter um.",
+                    "IsFinal": true,
+                    "sequence": null,
+                    "Verb": 0,
+                    "MoodChange": 0,
+                    "NextNode": null
+                  }
+                ]
+              }
+            }
+          ]
+        }
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -995,9 +1249,9 @@
         "Name": "Lampe",
         "texturePath": "clear_out/rooms/living_room/objects/light_scaled_outline_322x687_pos_1470x344",
         "Rotation": 0,
-        "PositionX": 322,
-        "PositionY": 687,
-        "DrawOrder": 3,
+        "PositionX": 1470,
+        "PositionY": 344,
+        "DrawOrder": 2,
         "ExamineText": "",
         "IsInInventory": false,
         "UseAble": false,
@@ -1022,7 +1276,7 @@
         "Rotation": 0,
         "PositionX": 391,
         "PositionY": 107,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Regal mit Kunstobjekten",
         "IsInInventory": false,
         "UseAble": false,
@@ -1268,7 +1522,7 @@
         "Rotation": 0,
         "PositionX": 742,
         "PositionY": 502,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Ein gem\u00fctliches Sofa",
         "IsInInventory": false,
         "UseAble": true,
@@ -1414,7 +1668,7 @@
         "Rotation": 0,
         "PositionX": 1165,
         "PositionY": 804,
-        "DrawOrder": 3,
+        "DrawOrder": 6,
         "ExamineText": "",
         "IsInInventory": false,
         "UseAble": false,
@@ -1439,7 +1693,7 @@
         "Rotation": 0,
         "PositionX": 526,
         "PositionY": 919,
-        "DrawOrder": 3,
+        "DrawOrder": 12,
         "ExamineText": "Der alte Fernseher im DDR Stil",
         "IsInInventory": false,
         "UseAble": false,
@@ -1633,7 +1887,7 @@
         "Rotation": 0,
         "PositionX": 960,
         "PositionY": 540,
-        "DrawOrder": 3,
+        "DrawOrder": 0,
         "ExamineText": "",
         "IsInInventory": false,
         "UseAble": false,
@@ -1658,7 +1912,7 @@
         "Rotation": 0,
         "PositionX": 1583,
         "PositionY": 653,
-        "DrawOrder": 3,
+        "DrawOrder": 4,
         "ExamineText": "Ein sehr in die Jahre gekommener Sessel.",
         "IsInInventory": false,
         "UseAble": false,
@@ -1772,7 +2026,7 @@
         "Rotation": 0,
         "PositionX": 1096,
         "PositionY": 153,
-        "DrawOrder": 3,
+        "DrawOrder": 0,
         "ExamineText": "Fenster zum Garten",
         "IsInInventory": false,
         "UseAble": false,
@@ -2013,7 +2267,7 @@
         "Rotation": 0,
         "PositionX": 1293,
         "PositionY": 849,
-        "DrawOrder": 3,
+        "DrawOrder": 4,
         "ExamineText": "Ein gro\u00dfer, br\u00e4unlicher Fleck ist auf dem Teppich.",
         "IsInInventory": false,
         "UseAble": false,
@@ -2306,10 +2560,116 @@
             }
           ]
         }
+      },
+      {
+        "$type": "conscious.DataHolderCharacter, conscious",
+        "Id": 3961,
+        "Name": "Chef",
+        "texturePath": "",
+        "Rotation": 0,
+        "PositionX": 0,
+        "PositionY": 0,
+        "ItemDependency": "-1",
+        "DialogUnlocked": false,
+        "Pronoun": "er",
+        "CatchPhrase": "Ich bin's Frank",
+        "GiveAble": false,
+        "MoodChange": 0,
+        "TreeStructure": [
+          {
+            "Id": 4106,
+            "_dialogLine": "Und Tsch\u00fcss.",
+            "_edges": []
+          },
+          {
+            "Id": 1,
+            "_dialogLine": "Hallo Marla, Frank hier.",
+            "_edges": [
+              {
+                "_nextNodeId": 5512,
+                "_dialogLine": "Hallo Frank",
+                "MoodDependence": 0,
+                "isFinalDialogOption": false
+              },
+              {
+                "_nextNodeId": 0,
+                "_dialogLine": "Oh. Hallo.",
+                "MoodDependence": 0,
+                "isFinalDialogOption": true
+              }
+            ]
+          },
+          {
+            "Id": 5512,
+            "_dialogLine": "Ich wei\u00df du hast dir frei genommen. Ich habe aber gerade festgestellt, dass deine Arbeit an der Statue noch gar nicht fertig ist. Die muss doch aber in drei Wochen bereit zur R\u00fcckgabe sein.",
+            "_edges": [
+              {
+                "_nextNodeId": 3142,
+                "_dialogLine": "Ich dachte, das \u00fcbernimmt jemand f\u00fcr mich. Da hatten wir doch dr\u00fcber gesprochen oder?",
+                "MoodDependence": 0,
+                "isFinalDialogOption": false
+              }
+            ]
+          },
+          {
+            "Id": 3142,
+            "_dialogLine": "Nein! Ich bin davon ausgegangen dass du die Arbeit vorher beendest. Das geht nat\u00fcrlich nicht so. Ist doch klar.",
+            "_edges": [
+              {
+                "_nextNodeId": 9510,
+                "_dialogLine": "Ok",
+                "MoodDependence": 0,
+                "isFinalDialogOption": false
+              }
+            ]
+          },
+          {
+            "Id": 9510,
+            "_dialogLine": "Also so war das nicht abgemacht. Du bekommst zwei Wochen Zeit. Danach musst du wieder hier sein und die Arbeit beenden. Schaffst du das in einer Woche",
+            "_edges": [
+              {
+                "_nextNodeId": 4404,
+                "_dialogLine": "...",
+                "MoodDependence": 0,
+                "isFinalDialogOption": false
+              }
+            ]
+          },
+          {
+            "Id": 4404,
+            "_dialogLine": "Marla?",
+            "_edges": [
+              {
+                "_nextNodeId": 4788,
+                "_dialogLine": "Ja.",
+                "MoodDependence": 0,
+                "isFinalDialogOption": false
+              }
+            ]
+          },
+          {
+            "Id": 1497,
+            "_dialogLine": "Tsch\u00fcss.",
+            "_edges": []
+          },
+          {
+            "Id": 4788,
+            "_dialogLine": "Gut. Sonst musst du dir danach nochmal frei nehmen, falls du noch etwas Zeit brauchst. Nur so geht es nicht. Dann sehen wir uns in zwei Wochen. Ok",
+            "_edges": [
+              {
+                "_nextNodeId": 0,
+                "_dialogLine": "Ja, bis dann.",
+                "MoodDependence": 0,
+                "isFinalDialogOption": true
+              }
+            ]
+          }
+        ],
+        "Thought": null
       }
     ]
   },
-  "3": {
+  "5": {
     "RoomWidth": 1920,
     "SoundFilePath": "Red_Curtains",
     "LightMapPath": "light/light_gimp_v2",
@@ -2428,7 +2788,7 @@
         "Rotation": 0,
         "PositionX": 556,
         "PositionY": 502,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Ein Schrank mit Geschirr",
         "IsInInventory": false,
         "UseAble": false,
@@ -2453,7 +2813,7 @@
         "Rotation": 0,
         "PositionX": 1107,
         "PositionY": 867,
-        "DrawOrder": 3,
+        "DrawOrder": 10,
         "ExamineText": "",
         "IsInInventory": false,
         "UseAble": false,
@@ -2478,7 +2838,7 @@
         "Rotation": 0,
         "PositionX": 476,
         "PositionY": 782,
-        "DrawOrder": 3,
+        "DrawOrder": 10,
         "ExamineText": "",
         "IsInInventory": false,
         "UseAble": false,
@@ -2503,7 +2863,7 @@
         "Rotation": 0,
         "PositionX": 1745,
         "PositionY": 487,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "T\u00fcr zum Flur",
         "IsInInventory": false,
         "UseAble": true,
@@ -2529,7 +2889,7 @@
         "Rotation": 0,
         "PositionX": 625,
         "PositionY": 817,
-        "DrawOrder": 3,
+        "DrawOrder": 12,
         "ExamineText": "Am Tisch ist meine Mutter einfach zusammengesackt.",
         "IsInInventory": false,
         "UseAble": false,
@@ -2610,7 +2970,7 @@
         "Rotation": 0,
         "PositionX": 1480,
         "PositionY": 432,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Das ist der K\u00fchlschrank",
         "IsInInventory": false,
         "UseAble": true,
@@ -2796,7 +3156,7 @@
         "Rotation": 0,
         "PositionX": 154,
         "PositionY": 487,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "",
         "IsInInventory": false,
         "UseAble": false,
@@ -2821,7 +3181,7 @@
         "Rotation": 0,
         "PositionX": 566,
         "PositionY": 126,
-        "DrawOrder": 3,
+        "DrawOrder": 2,
         "ExamineText": "Das ge\u00f6ffnete Regal mit sch\u00f6nem Keramikgeschirr",
         "IsInInventory": false,
         "UseAble": true,
@@ -3050,7 +3410,7 @@
         "Rotation": 0,
         "PositionX": 960,
         "PositionY": 540,
-        "DrawOrder": 3,
+        "DrawOrder": 0,
         "ExamineText": "",
         "IsInInventory": false,
         "UseAble": false,
