@@ -18,7 +18,8 @@ namespace conscious
                          string text, 
                          string name, 
                          Texture2D texture, 
-                         Vector2 position) : base(font, text, name, texture, position)
+                         Vector2 position, int drawOrder) 
+                         : base(font, text, name, texture, position, drawOrder)
         {
             Collidable = true;
             IsActive = false;

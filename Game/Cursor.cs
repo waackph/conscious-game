@@ -17,7 +17,8 @@ namespace conscious
         public Vector2 MouseCoordinates { get; set; }
         public Matrix InverseTransform { get; set; }
 
-        public Cursor(SpriteFont cursorFont, Matrix inverseTransform, string name, Texture2D texture, Vector2 position) : base(name, texture, position)
+        public Cursor(SpriteFont cursorFont, Matrix inverseTransform, string name, Texture2D texture, Vector2 position, int drawOrder) 
+        : base(name, texture, position, drawOrder)
         {
             _cursorFont = cursorFont;
             InverseTransform = inverseTransform;

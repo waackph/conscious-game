@@ -46,7 +46,7 @@ namespace conscious
             }
         }
 
-        public Entity(string name, Texture2D texture, Vector2 position)
+        public Entity(string name, Texture2D texture, Vector2 position, int drawOrder)
         {
             EntityTexture = texture;
             Rotation = 0f;
@@ -55,7 +55,7 @@ namespace conscious
             Name = name;
             FixedDrawPosition = false;
             Collidable = false;
-            DrawOrder = 1;
+            DrawOrder = drawOrder;
         }
 
         public virtual void Update(GameTime gameTime){ }

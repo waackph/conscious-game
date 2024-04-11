@@ -26,8 +26,8 @@ namespace conscious
             }
         }
 
-        public UIButton(EventHandler clickEvent, SpriteFont font, string text, string name, Texture2D texture, Vector2 position) 
-                        : base(font, text, name, texture, position)
+        public UIButton(EventHandler clickEvent, SpriteFont font, string text, string name, Texture2D texture, Vector2 position, int drawOrder) 
+                        : base(font, text, name, texture, position, drawOrder)
         {
             _clickEvent = clickEvent;
             _penColor = Color.Black;

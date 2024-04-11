@@ -69,11 +69,11 @@ namespace conscious
         public void LoadContent(Texture2D consciousnessBackground, Texture2D consciousnessBackgroundSubthought)
         {
             Vector2 bgPosition = new Vector2(_bgX, _bgY);
-            _consciousnessBackground = new UIArea("SoC Background", consciousnessBackground, bgPosition);
+            _consciousnessBackground = new UIArea("SoC Background", consciousnessBackground, bgPosition, 1);
 
             Vector2 thoughtBgPosition = new Vector2(_bgX + _thoughtOffsetX, 
                                                     _bgY + _consciousnessBackground.Height + _consciousnessBackground.Height/2 + _thoughtOffsetY);
-            _subthoughtBackground = new UIArea("Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition);
+            _subthoughtBackground = new UIArea("Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition, 1);
         }
 
         public void Update(GameTime gameTime)
@@ -317,7 +317,7 @@ namespace conscious
                                                     _font, 
                                                     node.Thought, node.Thought, 
                                                     _pixel, 
-                                                    Vector2.One);
+                                                    Vector2.One, 1);
                 if(node.IsRoot)
                     uiThought.IsUsed = node.IsUsed;
                 return uiThought;
@@ -342,7 +342,7 @@ namespace conscious
                                                         _font, 
                                                         link.Option, link.Option, 
                                                         _pixel, 
-                                                        Vector2.One);
+                                                        Vector2.One, 1);
                     if(typeof(FinalThoughtLink) == link.GetType() && link.IsVisited)
                     {
                         FinalThoughtLink finalLink = (FinalThoughtLink)link;

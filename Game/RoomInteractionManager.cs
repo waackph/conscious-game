@@ -39,7 +39,7 @@ namespace conscious
         private List<Vector2> _path;
         private int _currentPathPoint;
 
-        private double threshDiff = 20f;
+        private double threshDiff = 200f;
 
         public RoomInteractionManager(EntityManager entityManager, 
                                       SoCManager socManager, 
@@ -250,27 +250,29 @@ namespace conscious
 
         private Thing CheckCursorHoversThing()
         {
-            bool entityHit = false;
 
             // Get entity the mouse is hovering over
             foreach(UIInventoryPlace entity in _entityManager.GetEntitiesOfType<UIInventoryPlace>())
             {
                 if(entity.BoundingBox.Contains(_cursor.Position.X, _cursor.Position.Y) && entity.Collidable)
                 {
-                    entityHit = true;
                     return entity.InventoryItem;
                 }
             }
 
-            if(!entityHit)
+            foreach(UIArea entity in _entityManager.GetEntitiesOfType<UIArea>())
             {
-                foreach(Thing entity in _entityManager.GetEntitiesOfType<Thing>())
+                if(entity.BoundingBox.Contains(_cursor.Position.X, _cursor.Position.Y))
                 {
-                    if(entity.BoundingBox.Contains(_cursor.MouseCoordinates.X, _cursor.MouseCoordinates.Y) && entity.Collidable)
-                    {
-                        entityHit = true;
-                        return entity;
-                    }
+                    return null;
+                }
+            }
+
+            foreach(Thing entity in _entityManager.GetEntitiesOfType<Thing>())
+            {
+                if(entity.BoundingBox.Contains(_cursor.MouseCoordinates.X, _cursor.MouseCoordinates.Y) && entity.Collidable)
+                {
+                    return entity;
                 }
             }
             

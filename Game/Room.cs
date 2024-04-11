@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,9 +22,9 @@ namespace conscious
         public Song SoundFile;
         public Dictionary<MoodState, Texture2D> MoodLightMaps;
         public Dictionary<MoodState, Song> MoodSoundFiles;
+        public ThoughtNode Thought { get; protected set; }
 
-
-        public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Song soundFile, Texture2D lightMap)
+        public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Song soundFile, Texture2D lightMap, ThoughtNode thought)
         {
             RoomWidth = roomWidth;
             _entityManager = entityManager;
@@ -36,6 +37,8 @@ namespace conscious
             SoundFile = soundFile;
             MoodSoundFiles = new Dictionary<MoodState, Song>();
             MoodSoundFiles[MoodState.None] = SoundFile;
+
+            Thought = thought;
         }
 
         public IEnumerable<T> GetThingsOfType<T>() where T : Thing
@@ -58,14 +61,16 @@ namespace conscious
         {
             // project collision boxes onto X Axis
             // start with highest draw order and decrease if something is in front of player
-            int currentDrawOrder = 5;
+            int currentDrawOrder = 12;
             Rectangle bboxProjected = collisionBox;
             bboxProjected.Y = 0;
             foreach(Thing thing in _things)
             {
                 Rectangle thingBoxProjected = thing.CollisionBox;
                 thingBoxProjected.Y = 0;
-                if(!thing.Name.Contains("Background") && thingBoxProjected.Intersects(bboxProjected))
+                // TODO: Find more general solution (eg data class singleton to get screensize or field isBackground for thing)
+                // If thing is not a background (min 1920 in width)
+                if((thing.Width < 1900 && !thing.Name.ToLower().Contains("background") && !thing.Name.ToLower().Contains("hintergrund")) && thingBoxProjected.Intersects(bboxProjected))
                 {
                     if(thing.CollisionBox.Y >= collisionBox.Y)
                     {
@@ -139,6 +144,7 @@ namespace conscious
                 _entityManager.RemoveEntity(thing);
             }
         }
+        
         public DataHolderRoom GetDataHolderRoom()
         {
             DataHolderRoom dataHolderRoom = new DataHolderRoom();
@@ -152,6 +158,7 @@ namespace conscious
             dataHolderRoom.EntrySequence = EntrySequence?.GetDataHolderSequence();
             dataHolderRoom.SoundFilePath = SoundFile?.Name;
             dataHolderRoom.LightMapPath = LightMap?.ToString();
+            dataHolderRoom.Thought = Thought?.GetDataHolderThoughtNode();
             return dataHolderRoom;
         }
     }

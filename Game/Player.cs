@@ -32,7 +32,8 @@ namespace conscious
                       MoodStateManager moodStateManager, 
                       string name, 
                       Texture2D texture,
-                      Vector2 position) : base(id, thought, moodStateManager, name, texture, position)
+                      Vector2 position, int drawOrder) 
+                      : base(id, thought, moodStateManager, name, texture, position, drawOrder)
         {  
             IdleAnimation = new AnimatedSprite(texture, 1, 2, (Width/2), Height, 0f, 800);
             MoveAnimation = new AnimatedSprite(moveTexture, 4, 2, (Width/2), Height, 0f, 60);
@@ -44,7 +45,7 @@ namespace conscious
             PlayerState = PlayerState.Idle; // PlayerState.Sleep;
             _lastIsMoving = _isMoving;
             LastPosition = position;
-            DrawOrder = 5;
+            DrawOrder = 10;
 
             // Standard case for mood dependent animations
             _moodIdleAnimation = new Dictionary<MoodState, AnimatedSprite>();
@@ -212,7 +213,7 @@ namespace conscious
         public float GetDistance(Entity entity)
         {
             int positionAdjustment = 50;
-            Vector2 entityDest = new Vector2(entity.BoundingBox.Right, entity.BoundingBox.Bottom - this.Height/2 + this.CollisionBox.Height + positionAdjustment);
+            Vector2 entityDest = new Vector2(entity.BoundingBox.Right, entity.BoundingBox.Bottom - this.Height/2); // + this.CollisionBox.Height + positionAdjustment);
             return Vector2.Distance(entityDest, Position);
         }
     }

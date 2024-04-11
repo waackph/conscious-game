@@ -69,7 +69,7 @@ namespace conscious
                                  _moodStateManager,
                                  "Player",
                                  content.Load<Texture2D>("Player/128_character_animation_idle_draft"),
-                                 playerPosition);
+                                 playerPosition, 10);
 
             _controlsManager = new ControlsManager(_player);
 
@@ -107,6 +107,7 @@ namespace conscious
                                            _sequenceManager, 
                                            _moodStateManager,
                                            _audioManager,
+                                           _socManager,
                                            _roomGraph,
                                            _preferredBackBufferWidth, _preferredBackBufferHeight);
 
@@ -220,7 +221,7 @@ namespace conscious
             string savePath;
             if(newGame)
             {
-                savePath = "new_states/20230427-1146";
+                savePath = "new_states/20240325-1200";
             }
             else
             {
@@ -258,7 +259,9 @@ namespace conscious
                 }
                 DataHolderSequence dhSequence = dhRoom.EntrySequence;
                 Sequence entrySequence = InstatiateSequence(dhSequence);
-                Room room = new Room(dhRoom.RoomWidth, _entityManager, entrySequence, _content.Load<Song>("Audio/" + dhRoom.SoundFilePath), _content.Load<Texture2D>(dhRoom.LightMapPath));
+                DataHolderThoughtNode dhThought =  dhRoom.Thought;
+                ThoughtNode thought = InstatiateThought(dhThought);
+                Room room = new Room(dhRoom.RoomWidth, _entityManager, entrySequence, _content.Load<Song>("Audio/" + dhRoom.SoundFilePath), _content.Load<Texture2D>(dhRoom.LightMapPath), thought);
                 room.SetThings(things);
                 _roomManager.AddRoom(entry.Key, room);
             }
@@ -343,7 +346,7 @@ namespace conscious
                 ThoughtNode thought = InstatiateThought(dhThing.Thought);
                 entity = new Thing(dhThing.Id, thought, _moodStateManager, dhThing.Name, 
                                    _content.Load<Texture2D>(dhThing.texturePath), 
-                                   new Vector2(dhThing.PositionX, dhThing.PositionY));
+                                   new Vector2(dhThing.PositionX, dhThing.PositionY), dhThing.DrawOrder);
             }
             else if(dh.GetType() == typeof(DataHolderItem))
             {
@@ -355,7 +358,7 @@ namespace conscious
                                   dhItem.UseWith, dhItem.ExamineText,
                                   thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhItem.texturePath), 
-                                  new Vector2(dhItem.PositionX, dhItem.PositionY));
+                                  new Vector2(dhItem.PositionX, dhItem.PositionY), dhItem.DrawOrder);
             }
             else if(dh.GetType() == typeof(DataHolderMorphingItem))
             {
@@ -372,7 +375,7 @@ namespace conscious
                                           dhMorph.GiveAble, dhMorph.UseWith, 
                                           dhMorph.ExamineText, thought, _moodStateManager, 
                                           _content.Load<Texture2D>(dhMorph.texturePath), 
-                                          new Vector2(dhMorph.PositionX, dhMorph.PositionY));
+                                          new Vector2(dhMorph.PositionX, dhMorph.PositionY), dhMorph.DrawOrder);
             }
             else if(dh.GetType() == typeof(DataHolderDoor))
             {
@@ -385,9 +388,10 @@ namespace conscious
                                   dhDoor.ItemDependency, dhDoor.RoomId, dhDoor.DoorId,
                                   new Vector2(dhDoor.InitPlayerPosX, dhDoor.InitPlayerPosY),
                                   _content.Load<Texture2D>(dhDoor.CloseTexturePath),
+                                  dhDoor.IsRoomChangeDoor,
                                   dhDoor.IsUnlocked, thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
-                                  new Vector2(dhDoor.PositionX, dhDoor.PositionY));
+                                  new Vector2(dhDoor.PositionX, dhDoor.PositionY), dhDoor.DrawOrder);
             }
             else if(dh.GetType() == typeof(DataHolderKey))
             {
@@ -399,7 +403,7 @@ namespace conscious
                                  dhKey.UseWith, dhKey.ExamineText,
                                  dhKey.ItemDependency, thought, _moodStateManager, 
                                  _content.Load<Texture2D>(dhKey.texturePath), 
-                                 new Vector2(dhKey.PositionX, dhKey.PositionY));
+                                 new Vector2(dhKey.PositionX, dhKey.PositionY), dhKey.DrawOrder);
             }
             else if(dh.GetType() == typeof(DataHolderCombineItem))
             {
@@ -420,7 +424,7 @@ namespace conscious
                                          dhCombinable.UseWith, dhCombinable.ExamineText,
                                          combinedItem, dhCombinable.ItemDependency, thought, _moodStateManager, 
                                          _content.Load<Texture2D>(dhCombinable.texturePath), 
-                                         new Vector2(dhCombinable.PositionX, dhCombinable.PositionY));
+                                         new Vector2(dhCombinable.PositionX, dhCombinable.PositionY), dhCombinable.DrawOrder);
             }
             else if(dh.GetType() == typeof(DataHolderCharacter))
             {
@@ -431,7 +435,7 @@ namespace conscious
                                        dhCharacter.GiveAble, dhCharacter.TreeStructure, 
                                        _dialogManager, thought, _moodStateManager, 
                                        _content.Load<Texture2D>(dhCharacter.texturePath), 
-                                       new Vector2(dhCharacter.PositionX, dhCharacter.PositionY));
+                                       new Vector2(dhCharacter.PositionX, dhCharacter.PositionY), dhCharacter.DrawOrder);
             }
             else if(dh.GetType() == typeof(DataHolderPuzzleCharacter))
             {
@@ -443,7 +447,7 @@ namespace conscious
                                              dhPuzzleCharacter.DialogUnlocked, dhPuzzleCharacter.TreeStructure, 
                                              _dialogManager, thought, _moodStateManager, 
                                              _content.Load<Texture2D>(dhPuzzleCharacter.texturePath), 
-                                             new Vector2(dhPuzzleCharacter.PositionX, dhPuzzleCharacter.PositionY));
+                                             new Vector2(dhPuzzleCharacter.PositionX, dhPuzzleCharacter.PositionY), dhPuzzleCharacter.DrawOrder);
             }
             else
             {

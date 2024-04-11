@@ -9,5 +9,6 @@ namespace conscious
         public DataHolderSequence EntrySequence { get; set; }
         public string SoundFilePath { get; set; }
         public string LightMapPath { get; set; }
+        public DataHolderThoughtNode Thought { get; set; }
     }
 }

@@ -24,8 +24,8 @@ namespace conscious
                                UiDialogManager dialogManager,
                                ThoughtNode thought,
                                MoodStateManager moodStateManager, 
-                               Texture2D texture, Vector2 position)
-                            : base(id, name, pronoun, catchPhrase, giveAble, treeStructure, dialogManager, thought, moodStateManager, texture, position)
+                               Texture2D texture, Vector2 position, int drawOrder)
+                            : base(id, name, pronoun, catchPhrase, giveAble, treeStructure, dialogManager, thought, moodStateManager, texture, position, drawOrder)
         {
             _itemDependency = itemDependency;
             _dialogUnlocked = dialogUnlocked;

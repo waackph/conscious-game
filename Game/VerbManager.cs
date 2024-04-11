@@ -34,7 +34,7 @@ namespace conscious
             int iHeight = 2;
             Vector2 verbPosition = new Vector2(_startWidth+verbBackground.Width*iWidth+_margin*iWidth, 
                                                _startHeight-verbBackground.Height*iHeight-_margin*iHeight);
-            UIVerb action = new UIVerb(Verb.Examine, examineTexture, "Examine", verbBackground, verbPosition);
+            UIVerb action = new UIVerb(Verb.Examine, examineTexture, "Examine", verbBackground, verbPosition, 1);
             action.UpdateDrawOrder(2);
             _verbs.Add(action);
 
@@ -43,7 +43,7 @@ namespace conscious
             iHeight = 2;
             verbPosition = new Vector2(_startWidth+verbBackground.Width*iWidth+_margin*iWidth, 
                                        _startHeight-verbBackground.Height*iHeight-_margin*iHeight);
-            action = new UIVerb(Verb.PickUp, pickUpTexture, "Pick up", verbBackground, verbPosition);
+            action = new UIVerb(Verb.PickUp, pickUpTexture, "Pick up", verbBackground, verbPosition, 1);
             action.UpdateDrawOrder(2);
             _verbs.Add(action);
 
@@ -52,7 +52,7 @@ namespace conscious
             iHeight = 2;
             verbPosition = new Vector2(_startWidth+verbBackground.Width*iWidth+_margin*iWidth, 
                                        _startHeight-verbBackground.Height*iHeight-_margin*iHeight);
-            action = new UIVerb(Verb.Use, useTexture, "Use", verbBackground, verbPosition);
+            action = new UIVerb(Verb.Use, useTexture, "Use", verbBackground, verbPosition, 1);
             action.UpdateDrawOrder(2);
             _verbs.Add(action);
 
@@ -61,7 +61,7 @@ namespace conscious
             iHeight = 1;
             verbPosition = new Vector2(_startWidth+verbBackground.Width*iWidth+_margin*iWidth, 
                                        _startHeight-verbBackground.Height*iHeight-_margin*iHeight);
-            action = new UIVerb(Verb.Combine, combineTexture, "Combine", verbBackground, verbPosition);
+            action = new UIVerb(Verb.Combine, combineTexture, "Combine", verbBackground, verbPosition, 1);
             action.UpdateDrawOrder(2);
             _verbs.Add(action);
 
@@ -70,7 +70,7 @@ namespace conscious
             iHeight = 1;
             verbPosition = new Vector2(_startWidth+verbBackground.Width*iWidth+_margin*iWidth, 
                                        _startHeight-verbBackground.Height*iHeight-_margin*iHeight);
-            action = new UIVerb(Verb.TalkTo, talkToTexture, "Talk to", verbBackground, verbPosition);
+            action = new UIVerb(Verb.TalkTo, talkToTexture, "Talk to", verbBackground, verbPosition, 1);
             action.UpdateDrawOrder(2);
             _verbs.Add(action);
 
@@ -79,7 +79,7 @@ namespace conscious
             iHeight = 1;
             verbPosition = new Vector2(_startWidth+verbBackground.Width*iWidth+_margin*iWidth, 
                                        _startHeight-verbBackground.Height*iHeight-_margin*iHeight);
-            action = new UIVerb(Verb.Give, giveToTexture, "Give", verbBackground, verbPosition);
+            action = new UIVerb(Verb.Give, giveToTexture, "Give", verbBackground, verbPosition, 1);
             action.UpdateDrawOrder(2);
             _verbs.Add(action);
         }

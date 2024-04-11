@@ -10,7 +10,8 @@ namespace conscious
         private Sprite _verbSprite;
         public Verb VerbText { get; set; }
 
-        public UIVerb(Verb verbText, Texture2D verbFont, string name, Texture2D texture, Vector2 position) : base(name, texture, position)
+        public UIVerb(Verb verbText, Texture2D verbFont, string name, Texture2D texture, Vector2 position, int drawOrder) 
+        : base(name, texture, position, drawOrder)
         {
             _verbSprite = new Sprite(verbFont, verbFont.Width, verbFont.Height, 0f);
             VerbText = verbText;

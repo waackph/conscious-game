@@ -28,8 +28,9 @@ namespace conscious
                     string examineText,
                     ThoughtNode thought, 
                     MoodStateManager moodStateManager, 
-                    Texture2D texture, Vector2 position) : base(id, thought, moodStateManager, name, texture, position)
-        {            
+                    Texture2D texture, Vector2 position, int drawOrder)
+                    : base(id, thought, moodStateManager, name, texture, position, drawOrder)
+        {
             PickUpAble = pickUpAble;
             UseAble = useAble;
             CombineAble = combineAble;
@@ -38,7 +39,7 @@ namespace conscious
             _examineText = examineText;
 
             Collidable = true;
-            DrawOrder = 3;
+            DrawOrder = drawOrder;
         }
 
         public virtual string Examine(){
