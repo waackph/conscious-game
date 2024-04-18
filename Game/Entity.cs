@@ -87,6 +87,7 @@ namespace conscious
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             dataHolderEntity.DrawOrder = DrawOrder;
             dataHolderEntity.Collidable = Collidable;
+            dataHolderEntity.CollisionBoxHeight = CollisionBoxHeight;
             return dataHolderEntity;
         }
 
@@ -99,6 +100,7 @@ namespace conscious
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             dataHolderEntity.DrawOrder = DrawOrder;
             dataHolderEntity.Collidable = Collidable;
+            dataHolderEntity.CollisionBoxHeight = CollisionBoxHeight;
             return dataHolderEntity;
         }
     }

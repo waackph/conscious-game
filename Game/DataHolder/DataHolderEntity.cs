@@ -10,5 +10,6 @@ namespace conscious
         public string Name { get; set; }
         public int DrawOrder { get; set; }
         public bool Collidable { get; set; }
+        public int CollisionBoxHeight { get; set;}
     }
 }
