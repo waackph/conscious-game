@@ -75,7 +75,7 @@ namespace conscious
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Immediate, _multiplicativeBlend);
-            spriteBatch.Draw(LightMap, new Rectangle(0, 0, 1920, 1080), Color.White);
+            spriteBatch.Draw(LightMap, new Rectangle(0, 0, GlobalData.ScreenWidth, GlobalData.ScreenHeight), Color.White);
             spriteBatch.End();
 
             spriteBatch.Begin();

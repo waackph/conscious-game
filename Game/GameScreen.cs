@@ -268,8 +268,8 @@ namespace conscious
 
             // Player data
             DataHolderPlayer playerData = JsonConvert.DeserializeObject<DataHolderPlayer>(File.ReadAllText(savePath+"_player.json"), settings);
-            _roomManager.CurrentRoomIndex = playerData.RoomId;
-            
+            _roomManager.CurrentRoomIndex = GlobalData.InitRoomId;
+
             if(newGame)
             {
                 _player.Position = new Vector2(playerData.PlayerPositionX, playerData.PlayerPositionY);
