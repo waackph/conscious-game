@@ -28,8 +28,8 @@ namespace conscious
                     string examineText,
                     ThoughtNode thought, 
                     MoodStateManager moodStateManager, 
-                    Texture2D texture, Vector2 position, int drawOrder, bool collidable = true)
-                    : base(id, thought, moodStateManager, name, texture, position, drawOrder, collidable)
+                    Texture2D texture, Vector2 position, int drawOrder, bool collidable = true, int collBoxHeight = 20)
+                    : base(id, thought, moodStateManager, name, texture, position, drawOrder, collidable, collBoxHeight)
         {
             PickUpAble = pickUpAble;
             UseAble = useAble;

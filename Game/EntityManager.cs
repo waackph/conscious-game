@@ -86,7 +86,7 @@ namespace conscious
                     entity.Draw(spriteBatch);
                     if(entity.Name == "moodText")
                         entity.ToString();
-                    if(_debuggingMode && (entity.Width < 1900 && !entity.Name.ToLower().Contains("background") && !entity.Name.ToLower().Contains("hintergrund")))
+                    if(_debuggingMode && GlobalData.IsNotBackgroundOrPlayer(entity))
                     {
                         spriteBatch.Draw(_pixel, entity.CollisionBox, Color.White);
                     }

@@ -270,7 +270,7 @@ namespace conscious
 
             foreach(Thing entity in _entityManager.GetEntitiesOfType<Thing>())
             {
-                if(entity.BoundingBox.Contains(_cursor.MouseCoordinates.X, _cursor.MouseCoordinates.Y))// && entity.Collidable)
+                if(entity.BoundingBox.Contains(_cursor.MouseCoordinates.X, _cursor.MouseCoordinates.Y) && GlobalData.IsNotBackgroundOrPlayer(entity))// && entity.Collidable)
                 {
                     return entity;
                 }
