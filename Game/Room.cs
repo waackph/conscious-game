@@ -70,7 +70,7 @@ namespace conscious
                 thingBoxProjected.Y = 0;
                 // TODO: Find more general solution (eg data class singleton to get screensize or field isBackground for thing)
                 // If thing is not a background (min 1920 in width)
-                if(thing.Width < 1900 && !thing.Name.ToLower().Contains("background") && !thing.Name.ToLower().Contains("hintergrund") && thingBoxProjected.Intersects(bboxProjected))
+                if(thing.Width < 1900 && !thing.Name.ToLower().Contains("background") && !thing.Name.ToLower().Contains("hintergrund") && thingBoxProjected.Intersects(bboxProjected) && thing.Collidable)
                 {
                     if(thing.CollisionBox.Y >= collisionBox.Y)
                     {

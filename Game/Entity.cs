@@ -41,12 +41,12 @@ namespace conscious
             get
             {
                 return new Rectangle((int)Position.X - Width/2, 
-                                     (int)Position.Y + Height/2,
+                                     (int)Position.Y + Height/2 - 20,
                                      Width, 20);
             }
         }
 
-        public Entity(string name, Texture2D texture, Vector2 position, int drawOrder)
+        public Entity(string name, Texture2D texture, Vector2 position, int drawOrder, bool collidable = false)
         {
             EntityTexture = texture;
             Rotation = 0f;
@@ -54,7 +54,7 @@ namespace conscious
             Position = position;
             Name = name;
             FixedDrawPosition = false;
-            Collidable = false;
+            Collidable = collidable;
             DrawOrder = drawOrder;
         }
 
@@ -84,6 +84,7 @@ namespace conscious
             dataHolderEntity.Rotation = Rotation;
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             dataHolderEntity.DrawOrder = DrawOrder;
+            dataHolderEntity.Collidable = Collidable;
             return dataHolderEntity;
         }
 
@@ -95,6 +96,7 @@ namespace conscious
             dataHolderEntity.Rotation = Rotation;
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             dataHolderEntity.DrawOrder = DrawOrder;
+            dataHolderEntity.Collidable = Collidable;
             return dataHolderEntity;
         }
     }

@@ -27,8 +27,8 @@ namespace conscious
                          UiDialogManager dialogManager,
                          ThoughtNode thought,
                          MoodStateManager moodStateManager, 
-                         Texture2D texture, Vector2 position, int drawOrder)
-                        : base(id, thought, moodStateManager, name, texture, position, drawOrder)
+                         Texture2D texture, Vector2 position, int drawOrder, bool collidable = true)
+                        : base(id, thought, moodStateManager, name, texture, position, drawOrder, collidable)
         {
             _pronoun = pronoun;
             _catchPhrase = catchPhrase;
@@ -38,7 +38,6 @@ namespace conscious
             _treeStructure = treeStructure;
             _dialogManager = dialogManager;
 
-            Collidable = true;
             DrawOrder = 4;
         }
 

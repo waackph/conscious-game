@@ -31,7 +31,7 @@ namespace conscious
 
         public EntityManager(Matrix viewportTransformation, Texture2D lightMap, BlendState multiplicativeBlend, Texture2D pixel)
         {
-            _debuggingMode = false;
+            _debuggingMode = true;
             _pixel = pixel;
             ViewportTransformation = viewportTransformation;
             LightMap = lightMap;
@@ -67,7 +67,7 @@ namespace conscious
                     entity.Draw(spriteBatch);
                     if(_debuggingMode && entity.Width < 1900)
                     {
-                        spriteBatch.Draw(_pixel, entity.BoundingBox, Color.White);
+                        spriteBatch.Draw(_pixel, entity.CollisionBox, Color.White);
                     }
                 }
                     
@@ -88,7 +88,7 @@ namespace conscious
                         entity.ToString();
                     if(_debuggingMode && (entity.Width < 1900 && !entity.Name.ToLower().Contains("background") && !entity.Name.ToLower().Contains("hintergrund")))
                     {
-                        spriteBatch.Draw(_pixel, entity.BoundingBox, Color.White);
+                        spriteBatch.Draw(_pixel, entity.CollisionBox, Color.White);
                     }
                 }
             }

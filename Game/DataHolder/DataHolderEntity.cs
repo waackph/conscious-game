@@ -9,5 +9,6 @@ namespace conscious
         public float PositionY { get; set; }
         public string Name { get; set; }
         public int DrawOrder { get; set; }
+        public bool Collidable { get; set; }
     }
 }

@@ -26,7 +26,8 @@ namespace conscious
                              string examineText,
                              ThoughtNode thought,
                              MoodStateManager moodStateManager, 
-                             Texture2D texture, Vector2 position, int drawOrder) : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position, drawOrder)
+                             Texture2D texture, Vector2 position, int drawOrder, bool collidable = true)
+                             : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position, drawOrder, collidable)
         {
             // _moodStateManager = moodStateManager;
             _items = items;
