@@ -31,7 +31,7 @@ namespace conscious
 
         public EntityManager(Matrix viewportTransformation, Texture2D lightMap, BlendState multiplicativeBlend, Texture2D pixel)
         {
-            _debuggingMode = true;
+            _debuggingMode = false;
             _pixel = pixel;
             ViewportTransformation = viewportTransformation;
             LightMap = lightMap;

@@ -202,11 +202,11 @@ namespace conscious
                     }
                     else
                     {
-                        Vector2 diff = _path[_currentPathPoint] - _player.Position;
-                        if(Math.Abs(diff.X) < threshDiff && Math.Abs(diff.Y) < threshDiff && _path.Count > _currentPathPoint+1)
+                        if(CheckPositionsNear(_path[_currentPathPoint], _player.Position) && _path.Count > _currentPathPoint+1)
                         {
                             _currentPathPoint++;
                         }
+                        Vector2 diff = _path[_currentPathPoint] - _player.Position;
                         direction = Vector2.Normalize(diff);
                     }
                 }
@@ -218,6 +218,14 @@ namespace conscious
 
             // Set values for next iteration
             _lastButtonState = Mouse.GetState().LeftButton;
+        }
+
+        private Vector2 getThingCenterTopBottomPos(Entity entity, bool bottom=true)
+        {
+            if(bottom)
+                return entity.CollisionBox.Center.ToVector2() + new Vector2(0, entity.CollisionBox.Height/2);
+            else
+                return entity.CollisionBox.Center.ToVector2() - new Vector2(0, entity.CollisionBox.Height/2);
         }
 
         public void Draw(SpriteBatch spriteBatch) {}
@@ -281,13 +289,31 @@ namespace conscious
 
         private bool IsEntityNearPlayer(Entity entity)
         {
-            bool isNear;
-            float distance = _player.GetDistance(entity);
-            if(distance <= threshDiff)
-                isNear = true;
+        //     bool isNear;
+        //     // float distance = _player.GetDistance(entity);
+        //     // if(distance <= threshDiff)
+        //     //     isNear = true;
+        //     // else
+        //     //     isNear = false;
+        //     return isNear;
+        return CheckPositionsNear(_player.CollisionBox.Center.ToVector2(), 
+                                                     getThingCenterTopBottomPos(entity, bottom: true))
+               || 
+               CheckPositionsNear(_player.CollisionBox.Center.ToVector2(), 
+                                  getThingCenterTopBottomPos(entity, bottom: false));
+        }
+
+        private bool CheckPositionsNear(Vector2 pos1, Vector2 pos2)
+        {
+            Vector2 diff = pos1 - pos2;
+            if(Math.Abs(diff.X) < threshDiff && Math.Abs(diff.Y) < threshDiff)
+            {
+                return true;
+            }
             else
-                isNear = false;
-            return isNear;
+            {
+                return false;
+            }
         }
 
         private void addClickedThing(Thing thing)
@@ -379,6 +405,7 @@ namespace conscious
                 else if(isOnePartInteraction(verb))
                 {
                     bool isNear = IsEntityNearPlayer(thing);
+                    
                     if(isNear || thing.IsInInventory)
                     {
                         doInteraction(thing, verb);
