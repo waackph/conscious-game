@@ -29,8 +29,6 @@ namespace conscious
         {
             _graph.SetStartGoal(start, goal);
 
-            Console.WriteLine("------------------- Start A*");
-
             cameFrom.Clear();
             costSoFar.Clear();
             PriorityQueue<Vertex> frontier = new PriorityQueue<Vertex>();
@@ -41,14 +39,10 @@ namespace conscious
 
             while(frontier.Count > 0)
             {
-                Console.WriteLine("Frontier Count: " + frontier.Count.ToString());
                 Vertex current = frontier.Dequeue();
-
-                Console.WriteLine("current neighbors: " + current.Neighbors.Count.ToString());
 
                 if(current.Equals(_graph.Goal))
                 {
-                    Console.WriteLine("Current = Goal");
                     break;
                 }
 
@@ -57,7 +51,6 @@ namespace conscious
                     int newCost = costSoFar[current] + next.Value;
                     if(next.Key.Equals(_graph.Goal))
                     {
-                        System.Console.WriteLine("Next is goal");
                         costSoFar[next.Key] = newCost;
                         float priority = newCost + heuristic(next.Key.RoomPosition, _graph.Goal.RoomPosition);
                         frontier.Enqueue(next.Key, priority);

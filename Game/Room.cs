@@ -106,7 +106,7 @@ namespace conscious
             foreach(Thing thing in _things)
             {
                 if(thing.Collidable)
-                    bbs.Add(thing.BoundingBox);
+                    bbs.Add(thing.CollisionBox);
             }
             return bbs;
         }
