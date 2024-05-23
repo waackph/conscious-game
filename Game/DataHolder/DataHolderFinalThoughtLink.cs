@@ -8,5 +8,6 @@ namespace conscious
         public DataHolderSequence sequence { get; set; }
         public int UnlockId { get; set; }
         public bool IsSuccessEdge { get; set; }
+        public DataHolderThoughtNode EventThought { get; set; }
     }
 }

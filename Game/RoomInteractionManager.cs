@@ -243,6 +243,10 @@ namespace conscious
             {
                 _sequenceManager.StartSequence(e.seq, _player, e.EdgeMood);
             }
+            if(e.EventThought != null)
+            {
+                _socManager.AddThought(e.EventThought);
+            }
         }
 
         #endregion

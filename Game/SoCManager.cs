@@ -178,6 +178,7 @@ namespace conscious
                         finalEdgeData.verbAction = _finalOption.Verb;
                         finalEdgeData.seq = _finalOption.ThoughtSequence;
                         finalEdgeData.EdgeMood = _finalOption.MoodChange;
+                        finalEdgeData.EventThought = _finalOption.EventThought;
 
                         OnFinalEdgeSelected(finalEdgeData);
                         if(_finalOption.Verb != Verb.None && _finalOption.Verb != Verb.WakeUp)

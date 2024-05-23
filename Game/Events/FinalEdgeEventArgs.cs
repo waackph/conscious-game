@@ -13,5 +13,6 @@ namespace conscious
         public Verb verbAction { get; set; }
         public Sequence seq { get; set; }
         public MoodState EdgeMood { get; set; }
+        public ThoughtNode EventThought { get; set; }
     }
 }

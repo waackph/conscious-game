@@ -506,15 +506,16 @@ namespace conscious
                 DataHolderFinalThoughtLink dhFinalLink = (DataHolderFinalThoughtLink)dhLink;
                 ThoughtNode thought = InstatiateThought(dhFinalLink.NextNode);
                 Sequence sequence = InstatiateSequence(dhFinalLink.sequence);
+                ThoughtNode eventThought = InstatiateThought(dhFinalLink.EventThought);
                 AnimatedSprite animation = null;
                 if(dhFinalLink.Animation != null)
                 {
                     DataHolderAnimatedSprite dhAnimation = dhFinalLink.Animation;
                     Texture2D texture = _content.Load<Texture2D>(dhAnimation.Texture);
                     animation = new AnimatedSprite(texture,
-                                                                    dhAnimation.Rows, dhAnimation.Columns,
-                                                                    texture.Width, texture.Height, 0f,
-                                                                    dhAnimation.SecPerFrame);
+                                                   dhAnimation.Rows, dhAnimation.Columns,
+                                                   texture.Width, texture.Height, 0f,
+                                                   dhAnimation.SecPerFrame);
                 }
                 link = new FinalThoughtLink(dhFinalLink.moodChange, 
                                             dhFinalLink.verb,
@@ -526,7 +527,8 @@ namespace conscious
                                             dhFinalLink.Option,
                                             dhFinalLink.IsLocked,
                                             dhFinalLink.ValidMoods,
-                                            dhFinalLink.IsSuccessEdge);
+                                            dhFinalLink.IsSuccessEdge,
+                                            eventThought);
             }
             else 
             {
