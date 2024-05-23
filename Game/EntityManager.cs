@@ -67,7 +67,7 @@ namespace conscious
                     entity.Draw(spriteBatch);
                     if(_debuggingMode && entity.Width < 1900)
                     {
-                        spriteBatch.Draw(_pixel, entity.BoundingBox, Color.White);
+                        spriteBatch.Draw(_pixel, entity.CollisionBox, Color.White);
                     }
                 }
                     
@@ -75,7 +75,7 @@ namespace conscious
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Immediate, _multiplicativeBlend);
-            spriteBatch.Draw(LightMap, new Rectangle(0, 0, 1920, 1080), Color.White);
+            spriteBatch.Draw(LightMap, new Rectangle(0, 0, GlobalData.ScreenWidth, GlobalData.ScreenHeight), Color.White);
             spriteBatch.End();
 
             spriteBatch.Begin();
@@ -86,9 +86,9 @@ namespace conscious
                     entity.Draw(spriteBatch);
                     if(entity.Name == "moodText")
                         entity.ToString();
-                    if(_debuggingMode && (entity.Width < 1900 && !entity.Name.ToLower().Contains("background") && !entity.Name.ToLower().Contains("hintergrund")))
+                    if(_debuggingMode && GlobalData.IsNotBackgroundOrPlayer(entity))
                     {
-                        spriteBatch.Draw(_pixel, entity.BoundingBox, Color.White);
+                        spriteBatch.Draw(_pixel, entity.CollisionBox, Color.White);
                     }
                 }
             }

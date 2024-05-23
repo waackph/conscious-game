@@ -14,6 +14,7 @@ namespace conscious
         public Texture2D EntityTexture { get; protected set; }
         public int DrawOrder { get; protected set; }
         public Vector2 Position;
+        public int CollisionBoxHeight;
         public string Name { get; protected set; }
         public bool FixedDrawPosition { get; set; }
         public float Rotation { get; protected set; }
@@ -41,20 +42,21 @@ namespace conscious
             get
             {
                 return new Rectangle((int)Position.X - Width/2, 
-                                     (int)Position.Y + Height/2,
-                                     Width, 20);
+                                     (int)Position.Y + Height/2 - CollisionBoxHeight,
+                                     Width, CollisionBoxHeight);
             }
         }
 
-        public Entity(string name, Texture2D texture, Vector2 position, int drawOrder)
+        public Entity(string name, Texture2D texture, Vector2 position, int drawOrder, bool collidable = false, int collBoxHeight = 20)
         {
             EntityTexture = texture;
             Rotation = 0f;
             _sprite = new Sprite(EntityTexture, Width, Height, Rotation);
             Position = position;
+            CollisionBoxHeight = collBoxHeight;
             Name = name;
             FixedDrawPosition = false;
-            Collidable = false;
+            Collidable = collidable;
             DrawOrder = drawOrder;
         }
 
@@ -84,6 +86,8 @@ namespace conscious
             dataHolderEntity.Rotation = Rotation;
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             dataHolderEntity.DrawOrder = DrawOrder;
+            dataHolderEntity.Collidable = Collidable;
+            dataHolderEntity.CollisionBoxHeight = CollisionBoxHeight;
             return dataHolderEntity;
         }
 
@@ -95,6 +99,8 @@ namespace conscious
             dataHolderEntity.Rotation = Rotation;
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             dataHolderEntity.DrawOrder = DrawOrder;
+            dataHolderEntity.Collidable = Collidable;
+            dataHolderEntity.CollisionBoxHeight = CollisionBoxHeight;
             return dataHolderEntity;
         }
     }

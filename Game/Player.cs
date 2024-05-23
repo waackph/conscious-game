@@ -45,7 +45,7 @@ namespace conscious
             PlayerState = PlayerState.Idle; // PlayerState.Sleep;
             _lastIsMoving = _isMoving;
             LastPosition = position;
-            DrawOrder = 10;
+            DrawOrder = GlobalData.PlayerDrawOrder;
 
             // Standard case for mood dependent animations
             _moodIdleAnimation = new Dictionary<MoodState, AnimatedSprite>();
@@ -208,13 +208,6 @@ namespace conscious
             {
                 SleepAnimation.Draw(spriteBatch, Position, _flip);
             }
-        }
-
-        public float GetDistance(Entity entity)
-        {
-            int positionAdjustment = 50;
-            Vector2 entityDest = new Vector2(entity.BoundingBox.Right, entity.BoundingBox.Bottom - this.Height/2); // + this.CollisionBox.Height + positionAdjustment);
-            return Vector2.Distance(entityDest, Position);
         }
     }
 }

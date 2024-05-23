@@ -40,8 +40,8 @@ namespace conscious
         public Vuerbaz()
         {
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 1920;
-            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.PreferredBackBufferWidth = GlobalData.ScreenWidth;
+            _graphics.PreferredBackBufferHeight = GlobalData.ScreenHeight;
             _graphics.IsFullScreen = false;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;

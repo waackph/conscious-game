@@ -17,6 +17,8 @@ namespace conscious
         private EntityManager _entityManager;
         private List<Thing> _things = new List<Thing>();
         public int RoomWidth;
+        public Vector2 xLimits;
+        public Vector2 yLimits;
         public Sequence EntrySequence;
         public Texture2D LightMap;
         public Song SoundFile;
@@ -24,11 +26,15 @@ namespace conscious
         public Dictionary<MoodState, Song> MoodSoundFiles;
         public ThoughtNode Thought { get; protected set; }
 
-        public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Song soundFile, Texture2D lightMap, ThoughtNode thought)
+        public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Song soundFile, Texture2D lightMap, ThoughtNode thought, 
+                    int xLimStart = 0, int xLimEnd = 1920, int yLimStart = 0, int yLimEnd = 1080)
         {
             RoomWidth = roomWidth;
             _entityManager = entityManager;
             EntrySequence = sequence;
+
+            xLimits = new Vector2(xLimStart, xLimEnd);
+            yLimits = new Vector2(yLimStart, yLimEnd);
             
             LightMap = lightMap;
             MoodLightMaps = new Dictionary<MoodState, Texture2D>();
@@ -68,9 +74,7 @@ namespace conscious
             {
                 Rectangle thingBoxProjected = thing.CollisionBox;
                 thingBoxProjected.Y = 0;
-                // TODO: Find more general solution (eg data class singleton to get screensize or field isBackground for thing)
-                // If thing is not a background (min 1920 in width)
-                if((thing.Width < 1900 && !thing.Name.ToLower().Contains("background") && !thing.Name.ToLower().Contains("hintergrund")) && thingBoxProjected.Intersects(bboxProjected))
+                if(GlobalData.IsNotBackgroundOrPlayer(thing) && thingBoxProjected.Intersects(bboxProjected) && thing.Collidable)
                 {
                     if(thing.CollisionBox.Y >= collisionBox.Y)
                     {
@@ -108,7 +112,7 @@ namespace conscious
             foreach(Thing thing in _things)
             {
                 if(thing.Collidable)
-                    bbs.Add(thing.BoundingBox);
+                    bbs.Add(thing.CollisionBox);
             }
             return bbs;
         }

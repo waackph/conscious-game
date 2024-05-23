@@ -18,7 +18,8 @@ namespace conscious
         
 
         public Thing(int id, ThoughtNode thought, MoodStateManager moodStateManager,
-                     string name, Texture2D texture, Vector2 position, int drawOrder) : base(name, texture, position, drawOrder)
+                     string name, Texture2D texture, Vector2 position, int drawOrder, bool collidable = false, int collBoxHeight = 20) 
+                     : base(name, texture, position, drawOrder, collidable, collBoxHeight)
         {
             _moodStateManager = moodStateManager;
             Thought = thought;

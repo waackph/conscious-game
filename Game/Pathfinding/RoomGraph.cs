@@ -38,10 +38,12 @@ namespace conscious
             
             foreach(Rectangle bb in boundingBoxes)
             {
-                Graph.Add(new Vertex(bb.X - 50, bb.Y));
-                Graph.Add(new Vertex(bb.X + bb.Width + 50, bb.Y));
-                Graph.Add(new Vertex(bb.X - 50, bb.Y + bb.Height));
-                Graph.Add(new Vertex(bb.X + bb.Width + 50, bb.Y + bb.Height));
+                // add padding for bounding boxes
+                int padding = 50;
+                Graph.Add(new Vertex(bb.X - padding, bb.Y - padding));
+                Graph.Add(new Vertex(bb.X + bb.Width + padding, bb.Y - padding));
+                Graph.Add(new Vertex(bb.X - padding, bb.Y + bb.Height + padding));
+                Graph.Add(new Vertex(bb.X + bb.Width + padding, bb.Y + bb.Height + padding));
             }
 
             List<Vertex> verticesChecked = new List<Vertex>();

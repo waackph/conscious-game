@@ -189,7 +189,10 @@ namespace conscious
             {
                 if(_isWalking && _interactionActive && _thingClickedInRoom != null)
                 {
-                    if(IsEntityNearPlayer(_thingClickedInRoom))
+                    Vector2 diff = _path[_currentPathPoint] - _player.CollisionBox.Center.ToVector2();
+                    if(IsEntityNearPlayer(_thingClickedInRoom) || 
+                       (CheckCheckpointNear(_player, _path[_currentPathPoint]) && _path.Count == _currentPathPoint + 1)
+                    )
                     {
                         if(isTwoPartInteraction(_lastVerbChosen))
                         {
@@ -202,8 +205,7 @@ namespace conscious
                     }
                     else
                     {
-                        Vector2 diff = _path[_currentPathPoint] - _player.Position;
-                        if(Math.Abs(diff.X) < threshDiff && Math.Abs(diff.Y) < threshDiff && _path.Count > _currentPathPoint+1)
+                        if(CheckCheckpointNear(_player, _path[_currentPathPoint]) && _path.Count > _currentPathPoint + 1)
                         {
                             _currentPathPoint++;
                         }
@@ -218,6 +220,14 @@ namespace conscious
 
             // Set values for next iteration
             _lastButtonState = Mouse.GetState().LeftButton;
+        }
+
+        private Vector2 getThingCenterTopBottomPos(Entity entity, bool bottom=true)
+        {
+            if(bottom)
+                return entity.CollisionBox.Center.ToVector2() + new Vector2(0, entity.CollisionBox.Height/2);
+            else
+                return entity.CollisionBox.Center.ToVector2() - new Vector2(0, entity.CollisionBox.Height/2);
         }
 
         public void Draw(SpriteBatch spriteBatch) {}
@@ -270,7 +280,7 @@ namespace conscious
 
             foreach(Thing entity in _entityManager.GetEntitiesOfType<Thing>())
             {
-                if(entity.BoundingBox.Contains(_cursor.MouseCoordinates.X, _cursor.MouseCoordinates.Y) && entity.Collidable)
+                if(entity.BoundingBox.Contains(_cursor.MouseCoordinates.X, _cursor.MouseCoordinates.Y) && GlobalData.IsNotBackgroundOrPlayer(entity))// && entity.Collidable)
                 {
                     return entity;
                 }
@@ -279,15 +289,31 @@ namespace conscious
             return null;
         }
 
+        private bool CheckPositionsNear(Vector2 pos1, Vector2 pos2)
+        {
+            Vector2 diff = pos1 - pos2;
+            if(Math.Abs(diff.X) < threshDiff && Math.Abs(diff.Y) < threshDiff)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private bool IsEntityNearPlayer(Entity entity)
         {
-            bool isNear;
-            float distance = _player.GetDistance(entity);
-            if(distance <= threshDiff)
-                isNear = true;
-            else
-                isNear = false;
-            return isNear;
+            return CheckPositionsNear(_player.CollisionBox.Center.ToVector2(), 
+                                      getThingCenterTopBottomPos(entity, bottom: true))
+                    || 
+                    CheckPositionsNear(_player.CollisionBox.Center.ToVector2(), 
+                                       getThingCenterTopBottomPos(entity, bottom: false));
+        }
+
+        private bool CheckCheckpointNear(Player player, Vector2 checkPos)
+        {
+            return CheckPositionsNear(player.CollisionBox.Center.ToVector2(), checkPos);
         }
 
         private void addClickedThing(Thing thing)
@@ -336,15 +362,10 @@ namespace conscious
             _thingClickedInRoom = thing;
             _lastVerbChosen = verb;
             _currentPathPoint = 0;
-            int positionAdjustment = 50;
-            // TODO: Player should go to middle of object
-            // => X-Value of entityDest to entity.BoundingBox.Center.X 
-            // Do the same in Player.GetDistance Function
-            // (Currently, this leads to an KeyNotFoundException in AStartShortestPath)
-            float destYPos = _thingClickedInRoom.BoundingBox.Bottom - _player.Height/2 + _player.CollisionBox.Height + positionAdjustment;
-            _path = _pathfinder.AStarSearch(_player.Position,
-                                            new Vector2(_thingClickedInRoom.BoundingBox.Right, destYPos)
-                                            );
+
+            Vector2 playerPos = _player.CollisionBox.Center.ToVector2();
+            Vector2 thingPos = getThingCenterTopBottomPos(_thingClickedInRoom, bottom: true); // _thingClickedInRoom.CollisionBox.Center.ToVector2();
+            _path = _pathfinder.AStarSearch(playerPos, thingPos);
         }
 
         #endregion
@@ -379,6 +400,7 @@ namespace conscious
                 else if(isOnePartInteraction(verb))
                 {
                     bool isNear = IsEntityNearPlayer(thing);
+                    
                     if(isNear || thing.IsInInventory)
                     {
                         doInteraction(thing, verb);

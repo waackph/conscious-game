@@ -48,11 +48,14 @@ namespace conscious
 
                 foreach(KeyValuePair<Vertex, int> next in current.Neighbors)
                 {
+                    int newCost = costSoFar[current] + next.Value;
                     if(next.Key.Equals(_graph.Goal))
                     {
-                        
+                        costSoFar[next.Key] = newCost;
+                        float priority = newCost + heuristic(next.Key.RoomPosition, _graph.Goal.RoomPosition);
+                        frontier.Enqueue(next.Key, priority);
+                        cameFrom[next.Key] = current;
                     }
-                    int newCost = costSoFar[current] + next.Value;
                     if(!costSoFar.ContainsKey(next.Key) || newCost < costSoFar[next.Key])
                     {
                         costSoFar[next.Key] = newCost;
@@ -72,7 +75,7 @@ namespace conscious
                 currentV = cameFrom[currentV];
             }
             // I think we do not need the start in the path
-            // path.Add(_graph.Start);
+            // path.Add(cameFrom[_graph.Start].RoomPosition);
             path.Reverse();
             return path;
         }

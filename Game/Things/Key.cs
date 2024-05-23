@@ -22,8 +22,8 @@ namespace conscious
                   int itemDependency,
                   ThoughtNode thought,
                   MoodStateManager moodStateManager, 
-                  Texture2D texture, Vector2 position, int drawOrder) 
-                : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position, drawOrder){
+                  Texture2D texture, Vector2 position, int drawOrder, bool collidable = true, int collBoxHeight = 20)
+                : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position, drawOrder, collidable, collBoxHeight){
             _itemDependency = itemDependency;
         }
 
