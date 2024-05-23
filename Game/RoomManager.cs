@@ -271,16 +271,18 @@ namespace conscious
 
         public void LimitRoom()
         {
-            // TODO: Find better way to limit a room in y-position (e.g. each room has a Y-Position for the limit)
-            int roomEnding = currentRoom.RoomWidth;
-            if(_player.Position.X > roomEnding - (_player.Width/6) / 2)
-                _player.Position.X = roomEnding - (_player.Width/6) / 2;
-            else if(_player.Position.X < (_player.Width/6) / 2)
-                _player.Position.X = (_player.Width/6) / 2;
-            if(_player.Position.Y > _preferredBackBufferHeight - (_player.Height/1.75f))
-                _player.Position.Y = _preferredBackBufferHeight - (_player.Height/1.75f);
-            else if(_player.Position.Y < _preferredBackBufferHeight * .45f)
-                _player.Position.Y = _preferredBackBufferHeight *.45f;
+            Vector2 xLimits = currentRoom.xLimits;
+            Vector2 yLimits = currentRoom.yLimits;
+            // xLimits = new Vector2(0, roomEnding);
+            // yLimits = new Vector2(_preferredBackBufferHeight*.45f, _preferredBackBufferHeight);
+            if(_player.Position.X > xLimits.Y - (_player.Width/6) / 2)
+                _player.Position.X = xLimits.Y - (_player.Width/6) / 2;
+            else if(_player.Position.X < xLimits.X + (_player.Width/6) / 2)
+                _player.Position.X = xLimits.X + (_player.Width/6) / 2;
+            if(_player.Position.Y > yLimits.Y - (_player.Height/1.75f))
+                _player.Position.Y = yLimits.Y - (_player.Height/1.75f);
+            else if(_player.Position.Y < yLimits.X - (_player.Height/1.75f))
+                _player.Position.Y = yLimits.X - (_player.Height/1.75f);
         }
 
         public void ScrollRoom()
