@@ -348,15 +348,17 @@ namespace conscious
             {
                 DataHolderThing dhThing = (DataHolderThing)dh;
                 ThoughtNode thought = InstatiateThought(dhThing.Thought);
+                ThoughtNode eventThought = InstatiateThought(dhThing.EventThought);
                 entity = new Thing(dhThing.Id, thought, _moodStateManager, dhThing.Name, 
                                    _content.Load<Texture2D>(dhThing.texturePath), 
                                    new Vector2(dhThing.PositionX, dhThing.PositionY), dhThing.DrawOrder, 
-                                   dhThing.Collidable, dhThing.CollisionBoxHeight);
+                                   dhThing.Collidable, dhThing.CollisionBoxHeight, eventThought);
             }
             else if(dh.GetType() == typeof(DataHolderItem))
             {
                 DataHolderItem dhItem = (DataHolderItem)dh;
                 ThoughtNode thought = InstatiateThought(dhItem.Thought);
+                ThoughtNode eventThought = InstatiateThought(dhItem.EventThought);
                 entity = new Item(dhItem.Id, dhItem.Name, 
                                   dhItem.PickUpAble, dhItem.UseAble, 
                                   dhItem.CombineAble, dhItem.GiveAble, 
@@ -364,14 +366,15 @@ namespace conscious
                                   thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhItem.texturePath), 
                                   new Vector2(dhItem.PositionX, dhItem.PositionY), dhItem.DrawOrder,
-                                  dhItem.Collidable, dhItem.CollisionBoxHeight);
+                                  dhItem.Collidable, dhItem.CollisionBoxHeight, eventThought);
             }
             else if(dh.GetType() == typeof(DataHolderMorphingItem))
             {
                 DataHolderMorphingItem dhMorph = (DataHolderMorphingItem)dh;
                 Dictionary<MoodState, Item> items = new Dictionary<MoodState, Item>();
                 ThoughtNode thought = InstatiateThought(dhMorph.Thought);
-                foreach(KeyValuePair<MoodState, DataHolderEntity> entry in dhMorph.Items)
+                ThoughtNode eventThought = InstatiateThought(dhMorph.EventThought);
+               foreach(KeyValuePair<MoodState, DataHolderEntity> entry in dhMorph.Items)
                 {
                     items.Add(entry.Key, (Item)InstatiateEntity(entry.Value));
                 }
@@ -382,12 +385,13 @@ namespace conscious
                                           dhMorph.ExamineText, thought, _moodStateManager, 
                                           _content.Load<Texture2D>(dhMorph.texturePath), 
                                           new Vector2(dhMorph.PositionX, dhMorph.PositionY), dhMorph.DrawOrder,
-                                          dhMorph.Collidable, dhMorph.CollisionBoxHeight);
+                                          dhMorph.Collidable, dhMorph.CollisionBoxHeight, eventThought);
             }
             else if(dh.GetType() == typeof(DataHolderDoor))
             {
                 DataHolderDoor dhDoor = (DataHolderDoor)dh;
                 ThoughtNode thought = InstatiateThought(dhDoor.Thought);
+                ThoughtNode eventThought = InstatiateThought(dhDoor.EventThought);
                 entity = new Door(dhDoor.Id, dhDoor.Name, 
                                   dhDoor.PickUpAble, dhDoor.UseAble, 
                                   dhDoor.CombineAble, dhDoor.GiveAble, 
@@ -399,12 +403,13 @@ namespace conscious
                                   dhDoor.IsUnlocked, thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY), dhDoor.DrawOrder,
-                                  dhDoor.Collidable, dhDoor.CollisionBoxHeight);
+                                  dhDoor.Collidable, dhDoor.CollisionBoxHeight, eventThought);
             }
             else if(dh.GetType() == typeof(DataHolderKey))
             {
                 DataHolderKey dhKey = (DataHolderKey)dh;
                 ThoughtNode thought = InstatiateThought(dhKey.Thought);
+                ThoughtNode eventThought = InstatiateThought(dhKey.EventThought);
                 entity = new Key(dhKey.Id, dhKey.Name, 
                                  dhKey.PickUpAble, dhKey.UseAble, 
                                  dhKey.CombineAble, dhKey.GiveAble, 
@@ -412,7 +417,7 @@ namespace conscious
                                  dhKey.ItemDependency, thought, _moodStateManager, 
                                  _content.Load<Texture2D>(dhKey.texturePath), 
                                  new Vector2(dhKey.PositionX, dhKey.PositionY), dhKey.DrawOrder,
-                                 dhKey.Collidable, dhKey.CollisionBoxHeight);
+                                 dhKey.Collidable, dhKey.CollisionBoxHeight, eventThought);
             }
             else if(dh.GetType() == typeof(DataHolderCombineItem))
             {
@@ -427,6 +432,7 @@ namespace conscious
                     combinedItem = (Item)InstatiateEntity(dhCombinable.CombineItem);
                 }
                 ThoughtNode thought = InstatiateThought(dhCombinable.Thought);
+                ThoughtNode eventThought = InstatiateThought(dhCombinable.EventThought);
                 entity = new CombineItem(dhCombinable.Id, dhCombinable.Name, 
                                          dhCombinable.PickUpAble, dhCombinable.UseAble, 
                                          dhCombinable.CombineAble, dhCombinable.GiveAble, 
@@ -434,7 +440,7 @@ namespace conscious
                                          combinedItem, dhCombinable.ItemDependency, thought, _moodStateManager, 
                                          _content.Load<Texture2D>(dhCombinable.texturePath), 
                                          new Vector2(dhCombinable.PositionX, dhCombinable.PositionY), dhCombinable.DrawOrder,
-                                         dhCombinable.Collidable, dhCombinable.CollisionBoxHeight);
+                                         dhCombinable.Collidable, dhCombinable.CollisionBoxHeight, eventThought);
             }
             else if(dh.GetType() == typeof(DataHolderCharacter))
             {
@@ -473,11 +479,16 @@ namespace conscious
         {
             if(dhThought == null)
                 return null;
+            SoundEffect eventSound = null;
+            if(dhThought.SoundPath != null && dhThought.SoundPath != "")
+                eventSound = _content.Load<SoundEffect>(dhThought.SoundPath);
             ThoughtNode thought = new ThoughtNode(dhThought.Id,
                                                     dhThought.Thought,
                                                     dhThought.LinkageId,
                                                     dhThought.IsRoot,
-                                                    dhThought.ThingId);
+                                                    dhThought.ThingId,
+                                                    eventSound,
+                                                    dhThought.RepeatedSound);
             foreach(DataHolderThoughtLink dhThoughtLink in dhThought.Links)
             {
                 ThoughtLink link = InstatiateThoughtLink(dhThoughtLink);                
@@ -506,7 +517,7 @@ namespace conscious
                 DataHolderFinalThoughtLink dhFinalLink = (DataHolderFinalThoughtLink)dhLink;
                 ThoughtNode thought = InstatiateThought(dhFinalLink.NextNode);
                 Sequence sequence = InstatiateSequence(dhFinalLink.sequence);
-                ThoughtNode eventThought = InstatiateThought(dhFinalLink.EventThought);
+                // ThoughtNode eventThought = InstatiateThought(dhFinalLink.EventThought);
                 AnimatedSprite animation = null;
                 if(dhFinalLink.Animation != null)
                 {
@@ -528,7 +539,7 @@ namespace conscious
                                             dhFinalLink.IsLocked,
                                             dhFinalLink.ValidMoods,
                                             dhFinalLink.IsSuccessEdge,
-                                            eventThought);
+                                            dhFinalLink.EventThoughtId);
             }
             else 
             {
