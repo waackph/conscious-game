@@ -13,12 +13,15 @@ namespace conscious
         protected MoodStateManager _moodStateManager;
 
         public ThoughtNode Thought { get; protected set; }
+        public ThoughtNode EventThought { get; protected set; }
         public int Id { get; protected set; }
         public bool IsInInventory { get; set; }
         
 
         public Thing(int id, ThoughtNode thought, MoodStateManager moodStateManager,
-                     string name, Texture2D texture, Vector2 position, int drawOrder, bool collidable = false, int collBoxHeight = 20) 
+                     string name, Texture2D texture, Vector2 position, int drawOrder, 
+                     bool collidable = false, int collBoxHeight = 20,
+                     ThoughtNode eventThought = null) 
                      : base(name, texture, position, drawOrder, collidable, collBoxHeight)
         {
             _moodStateManager = moodStateManager;
@@ -27,6 +30,7 @@ namespace conscious
             {
                 Thought.Thought = "[" + name + "] " + Thought.Thought;
             }
+            EventThought = eventThought;
             Id = id;
             IsInInventory = false;
 
@@ -68,6 +72,7 @@ namespace conscious
             DataHolderThing dataHolderEntity = new DataHolderThing();
             dataHolderEntity = (DataHolderThing)base.GetDataHolderEntity(dataHolderEntity);
             dataHolderEntity.Thought = Thought?.GetDataHolderThoughtNode();
+            dataHolderEntity.EventThought = EventThought?.GetDataHolderThoughtNode();
             dataHolderEntity.IsInInventory = IsInInventory;
             return dataHolderEntity;
         }
@@ -77,6 +82,7 @@ namespace conscious
             dataHolderEntity = (DataHolderThing)base.GetDataHolderEntity(dataHolderEntity);
             dataHolderEntity.Id = Id;
             dataHolderEntity.Thought = Thought?.GetDataHolderThoughtNode();
+            dataHolderEntity.EventThought = EventThought?.GetDataHolderThoughtNode();
             dataHolderEntity.IsInInventory = IsInInventory;
             return dataHolderEntity;
         }

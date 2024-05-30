@@ -36,8 +36,9 @@ namespace conscious
                     bool isUnlocked,
                     ThoughtNode thought,
                     MoodStateManager moodStateManager, 
-                    Texture2D texture, Vector2 position, int drawOrder, bool collidable = false, int collBoxHeight = 20)
-                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position, drawOrder, collidable, collBoxHeight){
+                    Texture2D texture, Vector2 position, int drawOrder, bool collidable = false, int collBoxHeight = 20,
+                    ThoughtNode eventThought = null)
+                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position, drawOrder, collidable, collBoxHeight, eventThought){
             _itemDependency = itemDependency;
             RoomId = roomId;
             DoorId = doorId;
