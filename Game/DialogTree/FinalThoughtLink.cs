@@ -16,7 +16,7 @@ namespace conscious
         public Sequence ThoughtSequence { get; }
         public int UnlockId { get; }
         public bool IsSuccessEdge { get; }
-        public ThoughtNode EventThought { get; }
+        public int EventThoughtId { get; }
 
         public FinalThoughtLink(MoodState moodChange,
                                 Verb verb,
@@ -28,7 +28,7 @@ namespace conscious
                                 string option, 
                                 bool isLocked, 
                                 MoodState[] validMoods,
-                                bool isSuccessEdge, ThoughtNode eventThought = null)
+                                bool isSuccessEdge, int eventThoughtId = -1)
                 : base(id, nextNode, option, isLocked, validMoods)
         {
             MoodChange = moodChange;
@@ -37,7 +37,7 @@ namespace conscious
             UnlockId = unlockId;
             IsSuccessEdge = isSuccessEdge;
             ThoughtSequence = sequence;
-            EventThought = eventThought;
+            EventThoughtId = eventThoughtId;
         }
 
         public override DataHolderThoughtLink GetDataHolderThoughtLink()
@@ -50,7 +50,7 @@ namespace conscious
             dataHolderThoughtLink.sequence = ThoughtSequence?.GetDataHolderSequence();
             dataHolderThoughtLink.UnlockId = UnlockId;
             dataHolderThoughtLink.IsSuccessEdge = IsSuccessEdge;
-            dataHolderThoughtLink.EventThought = EventThought;
+            dataHolderThoughtLink.EventThoughtId = EventThoughtId;
             return dataHolderThoughtLink;
         }
         
@@ -63,7 +63,7 @@ namespace conscious
             dataHolderThoughtLink.sequence = ThoughtSequence?.GetDataHolderSequence();
             dataHolderThoughtLink.UnlockId = UnlockId;
             dataHolderThoughtLink.IsSuccessEdge = IsSuccessEdge;
-            dataHolderThoughtLink.EventThought = EventThought;
+            dataHolderThoughtLink.EventThoughtId = EventThoughtId;
             return dataHolderThoughtLink;
         }
     }
