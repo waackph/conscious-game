@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
+
 
 namespace conscious
 {
@@ -12,7 +14,7 @@ namespace conscious
     ///
     public class ThoughtNode
     {
-        private int Id;
+        public int Id { get; set; }
         private int _linkageId;
         public List<ThoughtLink> Links { get; }
 
@@ -21,11 +23,11 @@ namespace conscious
         public bool IsUsed { get; set; }
         public bool IsInnerDialog { get; set; }
         public int ThingId { get; }
-        public SoundEffect EventSound { get; }
+        public Song EventSound { get; }
         public bool RepeatedSound { get; }
 
         public ThoughtNode(int id, string thought, int linkageId, bool isRoot, int thingId, 
-                           SoundEffect eventSound = null, bool repeatedSound = false)
+                           Song eventSound = null, bool repeatedSound = false)
         {
             Id = id;
             Thought = thought;

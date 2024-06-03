@@ -221,7 +221,7 @@ namespace conscious
             string savePath;
             if(newGame)
             {
-                savePath = "new_states/20240507-1200";
+                savePath = "new_states/20240603-1200";
             }
             else
             {
@@ -479,9 +479,9 @@ namespace conscious
         {
             if(dhThought == null)
                 return null;
-            SoundEffect eventSound = null;
+            Song eventSound = null;
             if(dhThought.SoundPath != null && dhThought.SoundPath != "")
-                eventSound = _content.Load<SoundEffect>(dhThought.SoundPath);
+                eventSound = _content.Load<Song>(dhThought.SoundPath);
             ThoughtNode thought = new ThoughtNode(dhThought.Id,
                                                     dhThought.Thought,
                                                     dhThought.LinkageId,
@@ -539,7 +539,7 @@ namespace conscious
                                             dhFinalLink.IsLocked,
                                             dhFinalLink.ValidMoods,
                                             dhFinalLink.IsSuccessEdge,
-                                            dhFinalLink.EventThoughtId);
+                                            dhFinalLink.EventThought);
             }
             else 
             {

@@ -243,9 +243,17 @@ namespace conscious
             {
                 _sequenceManager.StartSequence(e.seq, _player, e.EdgeMood);
             }
-            if(e.EventThought != null)
+            if(e.EventThoughtId > 0)
             {
-                _socManager.AddThought(e.EventThought);
+                // TODO: add thingId to link properties to get connected thing
+                foreach(Thing tmp in _roomManager.currentRoom.GetThings())
+                {
+                    if(tmp.EventThought != null && tmp.EventThought.Id == e.EventThoughtId)
+                    {
+                        _socManager.AddThought(tmp.EventThought);
+                        break;
+                    }
+                }                    
             }
         }
 

@@ -50,7 +50,7 @@ namespace conscious
             dataHolderThoughtLink.sequence = ThoughtSequence?.GetDataHolderSequence();
             dataHolderThoughtLink.UnlockId = UnlockId;
             dataHolderThoughtLink.IsSuccessEdge = IsSuccessEdge;
-            dataHolderThoughtLink.EventThoughtId = EventThoughtId;
+            dataHolderThoughtLink.EventThought = EventThoughtId;
             return dataHolderThoughtLink;
         }
         
@@ -63,7 +63,7 @@ namespace conscious
             dataHolderThoughtLink.sequence = ThoughtSequence?.GetDataHolderSequence();
             dataHolderThoughtLink.UnlockId = UnlockId;
             dataHolderThoughtLink.IsSuccessEdge = IsSuccessEdge;
-            dataHolderThoughtLink.EventThoughtId = EventThoughtId;
+            dataHolderThoughtLink.EventThought = EventThoughtId;
             return dataHolderThoughtLink;
         }
     }

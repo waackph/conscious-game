@@ -100,6 +100,8 @@ namespace conscious
                     Thoughts.Dequeue();
                 }
                 Thoughts.Enqueue(thought);
+                // TODO: If thought has sound, play it
+
                 // Invoke event for UiDisplayThoughtManager to add the thought UI Element as well
                 OnAddThoughtEvent(thought);
             }
@@ -120,6 +122,8 @@ namespace conscious
         public ThoughtNode SelectThought(string thoughtName)
         {
             ThoughtNode node = GetThought(thoughtName);
+            // TODO: If Sound is active and it is soundname of node, then stop sound
+
             checkUnlockIds(node);
             // If thought is an Selectable Thought: choose link from root
             if(node.HasLinks())
@@ -178,8 +182,7 @@ namespace conscious
                         finalEdgeData.verbAction = _finalOption.Verb;
                         finalEdgeData.seq = _finalOption.ThoughtSequence;
                         finalEdgeData.EdgeMood = _finalOption.MoodChange;
-                        finalEdgeData.EventThought = _finalOption.EventThought;
-
+                        finalEdgeData.EventThoughtId = _finalOption.EventThoughtId;
                         OnFinalEdgeSelected(finalEdgeData);
                         if(_finalOption.Verb != Verb.None && _finalOption.Verb != Verb.WakeUp)
                         {
