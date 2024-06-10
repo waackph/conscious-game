@@ -579,7 +579,7 @@
 
 #begin clear_out/rooms/living_room/sounds/ring.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:clear_out/rooms/living_room/sounds/ring.mp3
 

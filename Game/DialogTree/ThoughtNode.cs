@@ -23,11 +23,11 @@ namespace conscious
         public bool IsUsed { get; set; }
         public bool IsInnerDialog { get; set; }
         public int ThingId { get; }
-        public Song EventSound { get; }
+        public SoundEffect EventSound { get; }
         public bool RepeatedSound { get; }
 
         public ThoughtNode(int id, string thought, int linkageId, bool isRoot, int thingId, 
-                           Song eventSound = null, bool repeatedSound = false)
+                           SoundEffect eventSound = null, bool repeatedSound = false)
         {
             Id = id;
             Thought = thought;
