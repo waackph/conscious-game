@@ -13,6 +13,7 @@ namespace conscious
     public class SoCManager : IComponent
     {
         private MoodStateManager _moodStateManager;
+        private AudioManager _audioManager;
         public Queue<ThoughtNode> Thoughts { get; private set; }
         Random random = new Random();
         private int _maxThoughts;
@@ -34,9 +35,10 @@ namespace conscious
         public event EventHandler<FinalEdgeEventArgs> FinalEdgeSelected;
         public Verb VerbResult { get; private set; }
 
-        public SoCManager(MoodStateManager moodStateManager)
+        public SoCManager(MoodStateManager moodStateManager, AudioManager audioManager)
         {
             _moodStateManager = moodStateManager;
+            _audioManager = audioManager;
             Thoughts = new Queue<ThoughtNode>();
             _maxThoughts = 2;
             VerbResult = Verb.None;
@@ -100,6 +102,12 @@ namespace conscious
                     Thoughts.Dequeue();
                 }
                 Thoughts.Enqueue(thought);
+                // If thought has sound, play it
+                if(thought.EventSound != null)
+                {
+                    _audioManager.PlaySoundEffect(thought.EventSound, true);
+                }
+
                 // Invoke event for UiDisplayThoughtManager to add the thought UI Element as well
                 OnAddThoughtEvent(thought);
             }
@@ -120,6 +128,9 @@ namespace conscious
         public ThoughtNode SelectThought(string thoughtName)
         {
             ThoughtNode node = GetThought(thoughtName);
+            // If Sound is active and it is soundname of node, then stop sound
+            _audioManager.StopSoundEffect(node.EventSound);
+
             checkUnlockIds(node);
             // If thought is an Selectable Thought: choose link from root
             if(node.HasLinks())
@@ -178,7 +189,7 @@ namespace conscious
                         finalEdgeData.verbAction = _finalOption.Verb;
                         finalEdgeData.seq = _finalOption.ThoughtSequence;
                         finalEdgeData.EdgeMood = _finalOption.MoodChange;
-
+                        finalEdgeData.EventThoughtId = _finalOption.EventThoughtId;
                         OnFinalEdgeSelected(finalEdgeData);
                         if(_finalOption.Verb != Verb.None && _finalOption.Verb != Verb.WakeUp)
                         {
