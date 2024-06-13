@@ -609,6 +609,16 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/Hud.spritefont
 
+#begin Font/LucidaHandwritingStdRg.TTF
+/copy:Font/LucidaHandwritingStdRg.TTF
+
+#begin Font/Thought_UI.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/Thought_UI.spritefont
+
 #begin Inventory/debug/inventory_background.png
 /importer:TextureImporter
 /processor:TextureProcessor

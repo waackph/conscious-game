@@ -49,7 +49,7 @@ namespace conscious
             }
             else
             {
-                _color = Color.DarkGreen;
+                _color = Color.Black;
             }
         }
 
