@@ -46,7 +46,7 @@ namespace conscious
 
             _thoughts = new Queue<UIThought>();
 
-            _maxThoughts = 2;
+            _maxThoughts = 3;
             // Main SoC Area
             _bgX = 1600f; // 150f;
             _bgY = 200f; // 500f;
@@ -137,14 +137,19 @@ namespace conscious
             float uiYPos = _bgY - _consciousnessBackground.Height/2;
             int thoughtNumber = 0;
             float heightOffset = 0f;
+            float topPadding = 0f;
             
             //Update position of thoughts in queue
             foreach(UIThought th in _thoughts)
             {
+                if(thoughtNumber == 0)
+                    topPadding = 50f;
+                else
+                    topPadding = 0;
                 _entityManager.RemoveEntity(th);
                 th.SetPosition(uiXPos,
-                               uiYPos + thoughtNumber * _offsetY + heightOffset);
-                heightOffset += th.BoundingBox.Height;
+                               uiYPos + thoughtNumber * _offsetY + heightOffset + topPadding);
+                heightOffset += th.BoundingBox.Height + topPadding;
                 _entityManager.AddEntity(th);
                 thoughtNumber++;
             }

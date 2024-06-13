@@ -40,7 +40,7 @@ namespace conscious
             _moodStateManager = moodStateManager;
             _audioManager = audioManager;
             Thoughts = new Queue<ThoughtNode>();
-            _maxThoughts = 2;
+            _maxThoughts = 3;
             VerbResult = Verb.None;
 
             _randomThoughts = new List<ThoughtNode>();

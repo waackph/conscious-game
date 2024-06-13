@@ -91,8 +91,8 @@ namespace conscious
 
             _socManager = new SoCManager(_moodStateManager, audioManager);
             _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _moodStateManager, _socManager, _cursor, content.Load<SpriteFont>("Font/Thought_UI"), _pixel);
-            _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("UI/debug_sprites/soc_background_main"),
-                                                 content.Load<Texture2D>("UI/debug_sprites/soc_background_sub"));
+            _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("clear_out/UI/UI_Thought_Canvas_scaled_500x250"),
+                                                 content.Load<Texture2D>("UI/debug_sprites/soc_background_sub_beige"));
 
             _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, _player, cursor, content.Load<SpriteFont>("Font/Hud"), _pixel);
 
