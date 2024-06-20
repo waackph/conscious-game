@@ -1,3 +1,5 @@
+using System;
+
 namespace conscious
 {
     public static class GlobalData
@@ -12,6 +14,12 @@ namespace conscious
             // If thing is not a background (min 1920 in width)
             return entity.Width < 1900 && !entity.Name.ToLower().Contains("background") && !entity.Name.ToLower().Contains("hintergrund") && entity.Name != "Player";
         }
+
+        public static bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
+        {
+            return potentialDescendant.IsSubclassOf(potentialBase) || potentialDescendant == potentialBase;
+        }
+
     }
 
 }

@@ -18,6 +18,7 @@ namespace conscious
         private readonly List<Entity> _entitiesToRemove = new List<Entity>();
         
         public Matrix ViewportTransformation;
+        private Matrix _mainThoughtUITranslation = Matrix.Identity;
 
         // Lighting
         public Texture2D LightMap;
@@ -58,6 +59,9 @@ namespace conscious
         }
 
         public void Draw(SpriteBatch spriteBatch){
+
+            // Draw game entities
+
             // TODO: Maybe split up entities into different types to have better control over draw order and batchmode
             spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null,null, ViewportTransformation);
             foreach(Entity entity in _entities.OrderBy(e => e.DrawOrder))
@@ -74,15 +78,57 @@ namespace conscious
             }
             spriteBatch.End();
 
+            // Draw lightmaps
             spriteBatch.Begin(SpriteSortMode.Immediate, _multiplicativeBlend);
             spriteBatch.Draw(LightMap, new Rectangle(0, 0, GlobalData.ScreenWidth, GlobalData.ScreenHeight), Color.White);
             spriteBatch.End();
 
-            spriteBatch.Begin();
+            // Draw Thought UI Background (clipping background for UI Thoughts)
+            UIComponent socBackground = GetUIByName("SoC Background");
+            RasterizerState initRasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+            if(socBackground != null)
+            {
+                spriteBatch.Begin();
+                socBackground.Draw(spriteBatch);
+                if(_debuggingMode)
+                {
+                    spriteBatch.Draw(_pixel, socBackground.CollisionBox, Color.White);
+                }
+                spriteBatch.End();
+
+                // Draw UI Thoughts (clipped, therefore set clipping rect options)
+                Rectangle initRect = spriteBatch.GraphicsDevice.ScissorRectangle;
+                RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
+                spriteBatch.GraphicsDevice.ScissorRectangle = socBackground.BoundingBox;
+
+                spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, rasterizerState: _rasterizerState, null, transformMatrix: _mainThoughtUITranslation);
+                foreach(UIThought thought in GetEntitiesOfType<UIThought>())
+                {
+                    if(!thought.IsRootThought)
+                        continue;
+                    thought.Draw(spriteBatch);
+                    if(_debuggingMode)
+                    {
+                        spriteBatch.Draw(_pixel, thought.CollisionBox, Color.White);
+                    }
+                }
+                spriteBatch.End();
+
+                spriteBatch.GraphicsDevice.ScissorRectangle = initRect;
+            }
+
+            // Draw rest of UI
+            spriteBatch.Begin(rasterizerState: initRasterizerState);
             foreach(Entity entity in _entities.OrderBy(e => e.DrawOrder))
             {
-                if(entity.FixedDrawPosition)
+                if(entity.FixedDrawPosition && entity.Name != "SoC Background")
                 {
+                    if(GlobalData.IsSameOrSubclass(typeof(UIThought), entity.GetType()))
+                    {
+                        UIThought tmp = (UIThought)entity;
+                        if(tmp.IsRootThought)
+                            continue;
+                    }
                     entity.Draw(spriteBatch);
                     if(entity.Name == "moodText")
                         entity.ToString();
@@ -132,6 +178,22 @@ namespace conscious
                 }
             }
             return null;
+        }
+        public UIComponent GetUIByName(string name)
+        {
+            foreach(UIComponent uiComponent in GetEntitiesOfType<UIComponent>())
+            {
+                if(uiComponent.Name == name)
+                {
+                    return uiComponent;
+                }
+            }
+            return null;
+        }
+
+        public void SetMainThoughtUITranslation(float scrollOffset)
+        {
+            _mainThoughtUITranslation = Matrix.CreateTranslation(new Vector3(0, scrollOffset, 0));
         }
     }
 }

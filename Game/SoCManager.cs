@@ -16,7 +16,7 @@ namespace conscious
         private AudioManager _audioManager;
         public Queue<ThoughtNode> Thoughts { get; private set; }
         Random random = new Random();
-        private int _maxThoughts;
+        public int _maxThoughts;
         private List<ThoughtLink> _currentSubthoughtLinks;
         private List<ThoughtNode> _randomThoughts;
         private ThoughtNode _currentThought;
@@ -44,11 +44,11 @@ namespace conscious
             VerbResult = Verb.None;
 
             _randomThoughts = new List<ThoughtNode>();
-            _randomThoughts.Add(new ThoughtNode(1000, "War? What is it good for?", 0, false, 0));
-            _randomThoughts.Add(new ThoughtNode(1001, "I never died in my sleep. Such a shame.", 0, false, 0));
-            _randomThoughts.Add(new ThoughtNode(1002, "Dadada dada dadada", 0, false, 0));
-            _randomThoughts.Add(new ThoughtNode(1003, "I don't like the ambience right now.", 0, false, 0));
-            _randomThoughts.Add(new ThoughtNode(1004, "The Avatar movie was endlessly overhyped.", 0, false, 0));
+            _randomThoughts.Add(new ThoughtNode(1000, "War? What is it good for?", 0, true, 0));
+            _randomThoughts.Add(new ThoughtNode(1001, "I never died in my sleep. Such a shame.", 0, true, 0));
+            _randomThoughts.Add(new ThoughtNode(1002, "Dadada dada dadada", 0, true, 0));
+            _randomThoughts.Add(new ThoughtNode(1003, "I don't like the ambience right now.", 0, true, 0));
+            _randomThoughts.Add(new ThoughtNode(1004, "The Avatar movie was endlessly overhyped.", 0, true, 0));
 
             _isStart = true;
             _maxMinutesToWait = 30;

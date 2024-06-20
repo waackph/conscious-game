@@ -1,8 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace conscious
 {
@@ -25,6 +26,9 @@ namespace conscious
         private float _offsetX;
         private float _thoughtOffsetY;
         private float _thoughtOffsetX;
+        private float _topPadding;
+        private float _scrollOffset;
+        private float _scrollAmount;
         private int _maxThoughts;
         private UIArea _consciousnessBackground;
         private UIArea _subthoughtBackground;
@@ -46,7 +50,7 @@ namespace conscious
 
             _thoughts = new Queue<UIThought>();
 
-            _maxThoughts = 3;
+            _maxThoughts = _socManager._maxThoughts;
             // Main SoC Area
             _bgX = 1600f; // 150f;
             _bgY = 200f; // 500f;
@@ -55,6 +59,11 @@ namespace conscious
             // In Thought Area
             _thoughtOffsetY = 55;
             _thoughtOffsetX = 0; //_bgX + 210f;
+
+            _scrollOffset = 0;
+            _scrollAmount = 5;
+
+            _topPadding = 50;
             
             _font = font;
             _pixel = pixel;
@@ -79,6 +88,8 @@ namespace conscious
         public void Update(GameTime gameTime)
         {
             CheckThoughtClicked();
+            // Check and update scroll of thoughts
+            ManageUIAreaScroll();
             _lastMouseState = Mouse.GetState();
         }
 
@@ -94,6 +105,50 @@ namespace conscious
         //         }
         //     }
         // }
+
+        public void ManageUIAreaScroll()
+        {
+            _scrollOffset = 0;
+            // UI Area where thoughts are visible
+            float uiStartYPos = _bgY - _consciousnessBackground.Height/2 + _topPadding;
+            float uiEndYPos = _bgY + _consciousnessBackground.Height/2 - _offsetY;
+
+            // Area where thoughts are positioned (first and last thought yield limits)
+            float topScrollPos = _thoughts.First<UIThought>().Position.Y;
+            float bottomScrollPos = _thoughts.Last<UIThought>().Position.Y + _thoughts.Last<UIThought>().BoundingBox.Height;
+
+            float scrollAreaHeight = bottomScrollPos - topScrollPos;
+            float uiAreaHeight = uiEndYPos - uiStartYPos;
+
+            bool enableScrolling = false;
+            if(scrollAreaHeight > uiAreaHeight && _consciousnessBackground.BoundingBox.Intersects(_cursor.BoundingBox))
+                enableScrolling = true;
+            // doScrollDown
+            if(Mouse.GetState().ScrollWheelValue < _lastMouseState.ScrollWheelValue && enableScrolling)
+            {
+                // if we are at bottom, do nothing
+                if(topScrollPos + _scrollAmount < uiStartYPos)
+                {
+                    _scrollOffset += _scrollAmount;
+                }
+            }
+            // doScrollUp
+            else if(Mouse.GetState().ScrollWheelValue > _lastMouseState.ScrollWheelValue && enableScrolling)
+            {
+                // if we are at top, do nothing
+                if(bottomScrollPos - _scrollAmount > uiEndYPos)
+                {
+                    _scrollOffset -= _scrollAmount;
+                }
+            }
+            // TODO: Find out why translation matrix does only update texture/string but not boundingbox...
+            // _entityManager.SetMainThoughtUITranslation(_scrollOffset);
+            // For now, quickfix: update all positions of thoughts directly
+            foreach(UIThought thought in _thoughts)
+            {
+                thought.Position = new Vector2(thought.Position.X, thought.Position.Y + _scrollOffset);
+            }
+        }
 
         public void AddThoughtFromSoC(object sender, ThoughtNode e)
         {
@@ -143,7 +198,7 @@ namespace conscious
             foreach(UIThought th in _thoughts)
             {
                 if(thoughtNumber == 0)
-                    topPadding = 50f;
+                    topPadding = _topPadding;
                 else
                     topPadding = 0;
                 _entityManager.RemoveEntity(th);
@@ -311,18 +366,22 @@ namespace conscious
         {
             if(node != null)
             {
+                bool isRootThought = false;
                 bool isClickable = false;
                 if(node.HasLinks() && node.IsRoot)
                 {
                     isClickable = true;
                 }
+                if(node.IsRoot)
+                    isRootThought = true;
                 UIThought uiThought = new UIThought(isClickable,
                                                     false,
                                                     doDisplay,
                                                     _font, 
                                                     node.Thought, node.Thought, 
                                                     _pixel, 
-                                                    Vector2.One, 1);
+                                                    Vector2.One, 1,
+                                                    isRootThought);
                 if(node.IsRoot)
                     uiThought.IsUsed = node.IsUsed;
                 return uiThought;

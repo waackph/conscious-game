@@ -10,6 +10,7 @@ namespace conscious
         public bool IsActive { get; set; }
         public bool IsUsed { get; set; }
         public bool IsVisited { get; set; }
+        public bool IsRootThought { get; set; }
         public bool DoDisplay;
         public UIThought(bool isClickable,
                          bool isVisited,
@@ -18,13 +19,15 @@ namespace conscious
                          string text, 
                          string name, 
                          Texture2D texture, 
-                         Vector2 position, int drawOrder) 
+                         Vector2 position, int drawOrder,
+                         bool isRootThought = false) 
                          : base(font, text, name, texture, position, drawOrder)
         {
             Collidable = true;
             IsActive = false;
             IsClickable = isClickable;
             IsVisited = isVisited;
+            IsRootThought = isRootThought;
 
             DoDisplay = doDisplay;
         }
