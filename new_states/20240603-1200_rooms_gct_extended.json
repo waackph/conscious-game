@@ -2942,7 +2942,63 @@
         "InitPlayerPosY": 288,
         "CloseTexturePath": "clear_out/rooms/dining_room/objects/dining_room_door_closed_scaled_outline_170x742_pos_1755x482",
         "IsRoomChangeDoor": true,
-        "Thought": null,
+        "Thought": {
+          "$type": "conscious.DataHolderThoughtNode, conscious",
+          "Id": 4404,
+          "Thought": "Die T\u00fcr zum Flur",
+          "IsRoot": true,
+          "ThingId": 9055,
+          "LinkageId": 0,
+          "Links": [
+            {
+              "$type": "conscious.DataHolderThoughtLink, conscious",
+              "Id": 7136,
+              "ValidMoods": [
+                0
+              ],
+              "Option": "First link",
+              "IsLocked": false,
+              "NextNode": {
+                "$type": "conscious.DataHolderThoughtNode, conscious",
+                "Id": 1721,
+                "Thought": "Ich k\u00f6nnte mich nochmal weiter umschauen.",
+                "IsRoot": false,
+                "LinkageId": 0,
+                "ThingId": 9055,
+                "Links": [
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 7536,
+                    "Option": "Dann mal los",
+                    "IsFinal": true,
+                    "sequence": null,
+                    "Verb": 4,
+                    "MoodChange": 0,
+                    "NextNode": null
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 3938,
+                    "Option": "Gerade nicht.",
+                    "IsFinal": true,
+                    "sequence": null,
+                    "Verb": 0,
+                    "MoodChange": 0,
+                    "NextNode": null
+                  }
+                ]
+              }
+            }
+          ]
+        },
         "EventThought": null
       },
       {
@@ -3034,7 +3090,7 @@
         "Name": "K\u00fchlschrank",
         "texturePath": "clear_out/rooms/dining_room/objects/fridge_open_scaled_outline_442x532_pos_1575x427",
         "Rotation": 0,
-        "PositionX": 1413,
+        "PositionX": 1570,
         "PositionY": 372,
         "DrawOrder": 2,
         "Collidable": true,
