@@ -149,6 +149,8 @@ namespace conscious
             Room lastRoom = currentRoom;
             currentRoom = _rooms[roomId];
 
+            _socManager.RemoveThoughts();
+
             float xPos = 0f;
             Matrix transform = Matrix.CreateTranslation(xPos, 0, 0);
             _entityManager.ViewportTransformation = transform;

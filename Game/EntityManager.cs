@@ -155,6 +155,11 @@ namespace conscious
             _entitiesToRemove.Add(entity);
         }
 
+        public void RemoveEntities(List<Entity> entities)
+        {
+            _entitiesToRemove.AddRange(entities);
+        }
+
         public void Clear(){
             _entitiesToRemove.AddRange(_entities);
         }

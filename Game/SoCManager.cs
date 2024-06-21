@@ -33,6 +33,7 @@ namespace conscious
         public event EventHandler<ThoughtNode> AddThoughtEvent;
         public event EventHandler<bool> FinishInteractionEvent;
         public event EventHandler<FinalEdgeEventArgs> FinalEdgeSelected;
+        public event EventHandler RemoveThoughtsEvent;
         public Verb VerbResult { get; private set; }
 
         public SoCManager(MoodStateManager moodStateManager, AudioManager audioManager)
@@ -321,6 +322,17 @@ namespace conscious
         protected virtual void OnFinalEdgeSelected(FinalEdgeEventArgs e)
         {
             FinalEdgeSelected?.Invoke(this, e);
+        }
+
+        protected virtual void OnRemoveThoughts()
+        {
+            RemoveThoughtsEvent?.Invoke(this, new EventArgs());
+        }
+
+        public void RemoveThoughts()
+        {
+            Thoughts.Clear();
+            OnRemoveThoughts();
         }
 
         private Node FindLinkById(int id)

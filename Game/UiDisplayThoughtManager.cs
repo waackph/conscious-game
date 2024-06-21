@@ -45,6 +45,7 @@ namespace conscious
             _socManager = socManager;
             _socManager.AddThoughtEvent += AddThoughtFromSoC;
             _socManager.FinishInteractionEvent += FinishThought;
+            _socManager.RemoveThoughtsEvent += RemoveThoughtFromUI;
 
             _cursor = cursor;
 
@@ -168,6 +169,12 @@ namespace conscious
             }
         }
 
+        public void RemoveThoughtFromUI(object sender, EventArgs e)
+        {
+            _entityManager.RemoveEntities(_thoughts.ToList<Entity>());
+            _thoughts.Clear();
+        }
+
         public void AddThought(ThoughtNode thought)
         {
             // Add if the UI not already contains the thought
@@ -179,8 +186,8 @@ namespace conscious
                     RemoveThought();
                 }
                 // render new positions of thoughts
-                uiThought = CalculateThoughtPositions(uiThought);
                 // add new thought
+                uiThought = CalculateThoughtPositions(uiThought);
                 _thoughts.Enqueue(uiThought);
                 _entityManager.AddEntity(uiThought);
             }
@@ -208,6 +215,9 @@ namespace conscious
                 _entityManager.AddEntity(th);
                 thoughtNumber++;
             }
+
+            if(thoughtNumber == 0)
+                heightOffset += _topPadding;
             thought.SetPosition(uiXPos,
                                 uiYPos + thoughtNumber * _offsetY + heightOffset);
             return thought;
