@@ -41,7 +41,7 @@ namespace conscious
             _moodStateManager = moodStateManager;
             _audioManager = audioManager;
             Thoughts = new Queue<ThoughtNode>();
-            _maxThoughts = 3;
+            _maxThoughts = -1;
             VerbResult = Verb.None;
 
             _randomThoughts = new List<ThoughtNode>();
@@ -98,7 +98,7 @@ namespace conscious
             checkUnlockIds(thought);
             if(!containsThoughtNode(Thoughts, thought))
             {
-                if(Thoughts.Count + 1 > _maxThoughts)
+                if(_maxThoughts > 0 && Thoughts.Count + 1 > _maxThoughts)
                 {
                     Thoughts.Dequeue();
                 }

@@ -151,6 +151,44 @@ namespace conscious
             }
         }
 
+        public void ScrollToNewestThought()
+        {
+            float topScrollPos = _thoughts.First<UIThought>().Position.Y;
+            float bottomScrollPos = _thoughts.Last<UIThought>().Position.Y + _thoughts.Last<UIThought>().BoundingBox.Height;
+            float scrollAreaHeight = bottomScrollPos - topScrollPos;
+
+            float uiStartYPos = _bgY - _consciousnessBackground.Height/2 + _topPadding;
+            float uiEndYPos = _bgY + _consciousnessBackground.Height/2 - _offsetY;
+            float uiAreaHeight = uiEndYPos - uiStartYPos;
+
+            bool enableScrolling = false;
+            if(scrollAreaHeight > uiAreaHeight)
+                enableScrolling = true;
+            if(enableScrolling)
+            {
+                // We need to calculate positions backwards, starting with last thought, 
+                // arranged so the boundingbox bottom is aligned with uiEndYPos
+                // and then, simply substract each thought position
+                int i = 0;
+                float startingPosition = 0;
+                float heightOffset = 0;
+                foreach(UIThought thought in _thoughts.Reverse())
+                {
+                    if(i == 0)
+                    {
+                        startingPosition = uiEndYPos - thought.BoundingBox.Height;
+                        thought.Position = new Vector2(thought.Position.X, startingPosition);
+                    }
+                    else
+                    {
+                        heightOffset += thought.BoundingBox.Height;
+                        thought.Position = new Vector2(thought.Position.X, startingPosition - i * _offsetY - heightOffset);
+                    }
+                    i++;
+                }
+            }
+        }
+
         public void AddThoughtFromSoC(object sender, ThoughtNode e)
         {
             AddThought(e);
@@ -181,7 +219,7 @@ namespace conscious
             if(!containsThoughtNode(_thoughts, thought))
             {
                 UIThought uiThought = convertNodeToUi(thought);
-                if(_thoughts.Count + 1 > _maxThoughts)
+                if(_maxThoughts > 0 && _thoughts.Count + 1 > _maxThoughts)
                 {
                     RemoveThought();
                 }
@@ -190,6 +228,7 @@ namespace conscious
                 uiThought = CalculateThoughtPositions(uiThought);
                 _thoughts.Enqueue(uiThought);
                 _entityManager.AddEntity(uiThought);
+                ScrollToNewestThought();
             }
         }
 

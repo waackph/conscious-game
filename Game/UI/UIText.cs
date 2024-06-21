@@ -38,7 +38,7 @@ namespace conscious
 
             if(!string.IsNullOrEmpty(_text))  // && !_text.Contains('\r') && !_text.Contains('\n') && !isInvalid)
             {
-                base.Draw(spriteBatch);
+                // base.Draw(spriteBatch);
                 spriteBatch.DrawString(_font, _text, Position, _color);
             }
         }
