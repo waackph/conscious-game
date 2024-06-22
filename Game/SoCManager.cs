@@ -31,6 +31,7 @@ namespace conscious
         public bool IsInThoughtMode;
         public event EventHandler<VerbActionEventArgs> ActionEvent;
         public event EventHandler<ThoughtNode> AddThoughtEvent;
+        public event EventHandler<ThoughtNode> IncludedThoughtClicked;
         public event EventHandler<bool> FinishInteractionEvent;
         public event EventHandler<FinalEdgeEventArgs> FinalEdgeSelected;
         public event EventHandler RemoveThoughtsEvent;
@@ -111,6 +112,10 @@ namespace conscious
 
                 // Invoke event for UiDisplayThoughtManager to add the thought UI Element as well
                 OnAddThoughtEvent(thought);
+            }
+            else
+            {
+                OnIncludedThoughtClicked(thought);
             }
         }
 
@@ -312,6 +317,11 @@ namespace conscious
         protected virtual void OnAddThoughtEvent(ThoughtNode e)
         {
             AddThoughtEvent?.Invoke(this, e);
+        }
+
+        protected virtual void OnIncludedThoughtClicked(ThoughtNode e)
+        {
+            IncludedThoughtClicked?.Invoke(this, e);
         }
 
         protected virtual void OnFinishInteractionEvent(bool e)

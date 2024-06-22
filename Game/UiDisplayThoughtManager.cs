@@ -17,7 +17,7 @@ namespace conscious
         private MoodStateManager _moodStateManager;
         private SoCManager _socManager;
         private Cursor _cursor;
-        private Queue<UIThought> _thoughts;
+        private List<UIThought> _thoughts;
         private SpriteFont _font;
         private Texture2D _pixel;
         private float _bgX;
@@ -46,10 +46,11 @@ namespace conscious
             _socManager.AddThoughtEvent += AddThoughtFromSoC;
             _socManager.FinishInteractionEvent += FinishThought;
             _socManager.RemoveThoughtsEvent += RemoveThoughtFromUI;
+            _socManager.IncludedThoughtClicked += MoveThoughtToBottom;
 
             _cursor = cursor;
 
-            _thoughts = new Queue<UIThought>();
+            _thoughts = new List<UIThought>();
 
             _maxThoughts = _socManager._maxThoughts;
             // Main SoC Area
@@ -95,17 +96,6 @@ namespace conscious
         }
 
         public void Draw(SpriteBatch spriteBatch){ }
-
-        // private void UpdateThoughtQueue()
-        // {
-        //     if(!_thoughts.ToList().ConvertAll<string>(_thoughts => _thoughts.Name).Equals(_socManager.Thoughts.ToList().ConvertAll<string>(Thoughts => Thoughts.Thought)))
-        //     {
-        //         foreach(ThoughtNode node in _socManager.Thoughts)
-        //         {
-        //             AddThought(node);
-        //         }
-        //     }
-        // }
 
         public void ManageUIAreaScroll()
         {
@@ -169,12 +159,13 @@ namespace conscious
                 // We need to calculate positions backwards, starting with last thought, 
                 // arranged so the boundingbox bottom is aligned with uiEndYPos
                 // and then, simply substract each thought position
-                int i = 0;
+                int n_thoughts = 0;
                 float startingPosition = 0;
                 float heightOffset = 0;
-                foreach(UIThought thought in _thoughts.Reverse())
+                for (int j = _thoughts.Count-1; j >= 0; j--)
                 {
-                    if(i == 0)
+                    UIThought thought = _thoughts[j];
+                    if(n_thoughts == 0)
                     {
                         startingPosition = uiEndYPos - thought.BoundingBox.Height;
                         thought.Position = new Vector2(thought.Position.X, startingPosition);
@@ -182,9 +173,9 @@ namespace conscious
                     else
                     {
                         heightOffset += thought.BoundingBox.Height;
-                        thought.Position = new Vector2(thought.Position.X, startingPosition - i * _offsetY - heightOffset);
+                        thought.Position = new Vector2(thought.Position.X, startingPosition - n_thoughts * _offsetY - heightOffset);
                     }
-                    i++;
+                    n_thoughts++;
                 }
             }
         }
@@ -192,6 +183,17 @@ namespace conscious
         public void AddThoughtFromSoC(object sender, ThoughtNode e)
         {
             AddThought(e);
+        }
+
+        public void MoveThoughtToBottom(object sender, ThoughtNode e)
+        {
+            UIThought uiThought = GetUIThoughtFromNode(e);
+            _thoughts.Remove(uiThought);
+            uiThought = CalculateThoughtPositions(uiThought);
+            _thoughts.Add(uiThought);
+            // _entityManager.AddEntity(uiThought);
+            ScrollToNewestThought();
+
         }
 
         public void FinishThought(object sender, bool e)
@@ -226,7 +228,7 @@ namespace conscious
                 // render new positions of thoughts
                 // add new thought
                 uiThought = CalculateThoughtPositions(uiThought);
-                _thoughts.Enqueue(uiThought);
+                _thoughts.Add(uiThought);
                 _entityManager.AddEntity(uiThought);
                 ScrollToNewestThought();
             }
@@ -390,7 +392,7 @@ namespace conscious
             }
         }
 
-        private bool containsThoughtNode(Queue<UIThought> thoughts, ThoughtNode node)
+        private bool containsThoughtNode(List<UIThought> thoughts, ThoughtNode node)
         {
             foreach(UIThought thought in thoughts)
             {
@@ -402,9 +404,22 @@ namespace conscious
             return false;
         }
 
+        private UIThought GetUIThoughtFromNode(ThoughtNode node)
+        {
+            foreach(UIThought thought in _thoughts)
+            {
+                if(thought.Name == node.Thought)
+                {
+                    return thought;
+                }
+            }
+            return null;
+        }
+
         public void RemoveThought()
         {
-            UIThought thought = _thoughts.Dequeue();
+            UIThought thought = _thoughts[0];
+            _thoughts.Remove(thought);
             if(thought != null)
             {
                 _entityManager.RemoveEntity(thought);
