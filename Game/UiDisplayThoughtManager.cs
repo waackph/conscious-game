@@ -27,10 +27,9 @@ namespace conscious
         private float _thoughtOffsetY;
         private float _thoughtOffsetX;
         private float _topPadding;
-        private float _scrollOffset;
         private float _scrollAmount;
         private int _maxThoughts;
-        private UIArea _consciousnessBackground;
+        private UIAreaScrollable _consciousnessBackground;
         private UIArea _subthoughtBackground;
         private List<UIThought> _currentSubthoughtLinks;
         private UIThought _currentSubthought;
@@ -62,7 +61,6 @@ namespace conscious
             _thoughtOffsetY = 55;
             _thoughtOffsetX = 0; //_bgX + 210f;
 
-            _scrollOffset = 0;
             _scrollAmount = 5;
 
             _topPadding = 50;
@@ -80,7 +78,9 @@ namespace conscious
         public void LoadContent(Texture2D consciousnessBackground, Texture2D consciousnessBackgroundSubthought)
         {
             Vector2 bgPosition = new Vector2(_bgX, _bgY);
-            _consciousnessBackground = new UIArea("SoC Background", consciousnessBackground, bgPosition, 1);
+            _consciousnessBackground = new UIAreaScrollable(_thoughts, _topPadding, _offsetY,
+                                                            _cursor, _scrollAmount,
+                                                            "SoC Background", consciousnessBackground, bgPosition, 1);
 
             Vector2 thoughtBgPosition = new Vector2(_bgX + _thoughtOffsetX, 
                                                     _bgY + _consciousnessBackground.Height + _consciousnessBackground.Height/2 + _thoughtOffsetY);
@@ -90,95 +90,11 @@ namespace conscious
         public void Update(GameTime gameTime)
         {
             CheckThoughtClicked();
-            // Check and update scroll of thoughts
-            ManageUIAreaScroll();
+            _consciousnessBackground.ManageUIAreaScroll();
             _lastMouseState = Mouse.GetState();
         }
 
         public void Draw(SpriteBatch spriteBatch){ }
-
-        public void ManageUIAreaScroll()
-        {
-            _scrollOffset = 0;
-            // UI Area where thoughts are visible
-            float uiStartYPos = _bgY - _consciousnessBackground.Height/2 + _topPadding;
-            float uiEndYPos = _bgY + _consciousnessBackground.Height/2 - _offsetY;
-
-            // Area where thoughts are positioned (first and last thought yield limits)
-            float topScrollPos = _thoughts.First<UIThought>().Position.Y;
-            float bottomScrollPos = _thoughts.Last<UIThought>().Position.Y + _thoughts.Last<UIThought>().BoundingBox.Height;
-
-            float scrollAreaHeight = bottomScrollPos - topScrollPos;
-            float uiAreaHeight = uiEndYPos - uiStartYPos;
-
-            bool enableScrolling = false;
-            if(scrollAreaHeight > uiAreaHeight && _consciousnessBackground.BoundingBox.Intersects(_cursor.BoundingBox))
-                enableScrolling = true;
-            // doScrollDown
-            if(Mouse.GetState().ScrollWheelValue < _lastMouseState.ScrollWheelValue && enableScrolling)
-            {
-                // if we are at bottom, do nothing
-                if(topScrollPos + _scrollAmount < uiStartYPos)
-                {
-                    _scrollOffset += _scrollAmount;
-                }
-            }
-            // doScrollUp
-            else if(Mouse.GetState().ScrollWheelValue > _lastMouseState.ScrollWheelValue && enableScrolling)
-            {
-                // if we are at top, do nothing
-                if(bottomScrollPos - _scrollAmount > uiEndYPos)
-                {
-                    _scrollOffset -= _scrollAmount;
-                }
-            }
-            // TODO: Find out why translation matrix does only update texture/string but not boundingbox...
-            // _entityManager.SetMainThoughtUITranslation(_scrollOffset);
-            // For now, quickfix: update all positions of thoughts directly
-            foreach(UIThought thought in _thoughts)
-            {
-                thought.Position = new Vector2(thought.Position.X, thought.Position.Y + _scrollOffset);
-            }
-        }
-
-        public void ScrollToNewestThought()
-        {
-            float topScrollPos = _thoughts.First<UIThought>().Position.Y;
-            float bottomScrollPos = _thoughts.Last<UIThought>().Position.Y + _thoughts.Last<UIThought>().BoundingBox.Height;
-            float scrollAreaHeight = bottomScrollPos - topScrollPos;
-
-            float uiStartYPos = _bgY - _consciousnessBackground.Height/2 + _topPadding;
-            float uiEndYPos = _bgY + _consciousnessBackground.Height/2 - _offsetY;
-            float uiAreaHeight = uiEndYPos - uiStartYPos;
-
-            bool enableScrolling = false;
-            if(scrollAreaHeight > uiAreaHeight)
-                enableScrolling = true;
-            if(enableScrolling)
-            {
-                // We need to calculate positions backwards, starting with last thought, 
-                // arranged so the boundingbox bottom is aligned with uiEndYPos
-                // and then, simply substract each thought position
-                int n_thoughts = 0;
-                float startingPosition = 0;
-                float heightOffset = 0;
-                for (int j = _thoughts.Count-1; j >= 0; j--)
-                {
-                    UIThought thought = _thoughts[j];
-                    if(n_thoughts == 0)
-                    {
-                        startingPosition = uiEndYPos - thought.BoundingBox.Height;
-                        thought.Position = new Vector2(thought.Position.X, startingPosition);
-                    }
-                    else
-                    {
-                        heightOffset += thought.BoundingBox.Height;
-                        thought.Position = new Vector2(thought.Position.X, startingPosition - n_thoughts * _offsetY - heightOffset);
-                    }
-                    n_thoughts++;
-                }
-            }
-        }
 
         public void AddThoughtFromSoC(object sender, ThoughtNode e)
         {
@@ -192,7 +108,7 @@ namespace conscious
             uiThought = CalculateThoughtPositions(uiThought);
             _thoughts.Add(uiThought);
             // _entityManager.AddEntity(uiThought);
-            ScrollToNewestThought();
+            _consciousnessBackground.ScrollToNewestUIComponent();
 
         }
 
@@ -230,7 +146,7 @@ namespace conscious
                 uiThought = CalculateThoughtPositions(uiThought);
                 _thoughts.Add(uiThought);
                 _entityManager.AddEntity(uiThought);
-                ScrollToNewestThought();
+                _consciousnessBackground.ScrollToNewestUIComponent();
             }
         }
 
