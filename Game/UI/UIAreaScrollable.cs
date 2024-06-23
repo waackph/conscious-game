@@ -54,7 +54,7 @@ namespace conscious
 
         public void ManageUIAreaScroll()
         {
-            if(UIComponents.Count == 0)
+            if(UIComponents == null || UIComponents.Count == 0)
                 return;
             _scrollOffset = 0;
             // UI Area where components are visible
@@ -101,7 +101,7 @@ namespace conscious
 
         public void ScrollToNewestUIComponent()
         {
-            if(UIComponents.Count == 0)
+            if(UIComponents == null || UIComponents.Count == 0)
                 return;
             float topScrollPos = UIComponents.First<UIComponent>().Position.Y;
             float bottomScrollPos = UIComponents.Last<UIComponent>().Position.Y + UIComponents.Last<UIComponent>().BoundingBox.Height;

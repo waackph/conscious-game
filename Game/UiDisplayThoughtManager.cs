@@ -30,7 +30,7 @@ namespace conscious
         private float _scrollAmount;
         private int _maxThoughts;
         private UIAreaScrollable _consciousnessBackground;
-        private UIArea _subthoughtBackground;
+        private UIAreaScrollable _subthoughtBackground;
         private List<UIThought> _currentSubthoughtLinks;
         private UIThought _currentSubthought;
         private UIThought _currentThought;
@@ -84,13 +84,16 @@ namespace conscious
 
             Vector2 thoughtBgPosition = new Vector2(_bgX + _thoughtOffsetX, 
                                                     _bgY + _consciousnessBackground.Height + _consciousnessBackground.Height/2 + _thoughtOffsetY);
-            _subthoughtBackground = new UIArea("Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition, 1);
+            _subthoughtBackground = new UIAreaScrollable(_currentSubthoughtLinks, _topPadding, _offsetY,
+                                                         _cursor, _scrollAmount,
+                                                         "Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition, 1);
         }
 
         public void Update(GameTime gameTime)
         {
             CheckThoughtClicked();
             _consciousnessBackground.ManageUIAreaScroll();
+            _subthoughtBackground.ManageUIAreaScroll();
             _lastMouseState = Mouse.GetState();
         }
 
