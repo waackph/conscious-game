@@ -31,6 +31,7 @@ namespace conscious
         private int _maxThoughts;
         private UIAreaScrollable _consciousnessBackground;
         private UIAreaScrollable _subthoughtBackground;
+        private UIArea _consciousnessPortrait;
         private List<UIThought> _currentSubthoughtLinks;
         private UIThought _currentSubthought;
         private UIThought _currentThought;
@@ -75,7 +76,7 @@ namespace conscious
             IsInThoughtMode = false;
         }
 
-        public void LoadContent(Texture2D consciousnessBackground, Texture2D consciousnessBackgroundSubthought)
+        public void LoadContent(Texture2D consciousnessBackground, Texture2D consciousnessBackgroundSubthought, Texture2D consciousnessPortraitImage)
         {
             Vector2 bgPosition = new Vector2(_bgX, _bgY);
             _consciousnessBackground = new UIAreaScrollable(_thoughts, _topPadding, _offsetY,
@@ -87,6 +88,10 @@ namespace conscious
             _subthoughtBackground = new UIAreaScrollable(_currentSubthoughtLinks, _topPadding, _offsetY,
                                                          _cursor, _scrollAmount,
                                                          "Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition, 1);
+
+            Vector2 portraitBgPosition = new Vector2(_bgX + _thoughtOffsetX - _consciousnessBackground.Width/2 - consciousnessPortraitImage.Width/2,
+                                                     _bgY + _consciousnessBackground.Height);
+            _consciousnessPortrait = new UIArea("Thought Portrait", consciousnessPortraitImage, portraitBgPosition, 1);
         }
 
         public void Update(GameTime gameTime)
@@ -237,10 +242,18 @@ namespace conscious
             IsInThoughtMode = true;
             _socManager.IsInThoughtMode = true;
             _entityManager.AddEntity(_subthoughtBackground);
+
             _currentSubthought = convertNodeToUi(node, doDisplay:true);
             _currentSubthoughtLinks = convertLinksToUi(links);
             calculateSubthoughtPositions();
             addSubthought();
+
+            // add thought portrait
+            if(node.ThoughtPortrait != null)
+            {
+                _consciousnessPortrait.UpdateTexture(node.ThoughtPortrait);
+                _entityManager.AddEntity(_consciousnessPortrait);
+            }
         }
 
         public void EndThoughtMode()
@@ -249,6 +262,7 @@ namespace conscious
             _socManager.IsInThoughtMode = false;
             removeSubthought();
             _entityManager.RemoveEntity(_subthoughtBackground);
+            _entityManager.RemoveEntity(_consciousnessPortrait);
         }
 
         public void ChangeSubthought(ThoughtNode node, List<ThoughtLink> links)
