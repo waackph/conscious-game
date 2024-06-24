@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
 
@@ -25,14 +26,18 @@ namespace conscious
         public int ThingId { get; }
         public SoundEffect EventSound { get; }
         public bool RepeatedSound { get; }
+        public Texture2D ThoughtPortrait { get; }
 
         public ThoughtNode(int id, string thought, int linkageId, bool isRoot, int thingId, 
-                           SoundEffect eventSound = null, bool repeatedSound = false)
+                           SoundEffect eventSound = null, bool repeatedSound = false, Texture2D thoughtPortrait = null)
         {
             Id = id;
             Thought = thought;
             EventSound = eventSound;
             RepeatedSound = repeatedSound;
+
+            ThoughtPortrait = thoughtPortrait;
+
             _linkageId = linkageId;
             Links = new List<ThoughtLink>();
             IsRoot = isRoot;
@@ -78,6 +83,7 @@ namespace conscious
             dataHolderThoughtNode.ThingId = ThingId;
             dataHolderThoughtNode.Links = dhLinks;
             dataHolderThoughtNode.SoundPath = EventSound?.Name;
+            dataHolderThoughtNode.ThoughtPortrait = ThoughtPortrait.ToString();
             return dataHolderThoughtNode;
         }
 
@@ -98,6 +104,7 @@ namespace conscious
             dataHolderThoughtNode.ThingId = ThingId;
             dataHolderThoughtNode.Links = dhLinks;
             dataHolderThoughtNode.SoundPath = EventSound?.Name;
+            dataHolderThoughtNode.ThoughtPortrait = ThoughtPortrait.ToString();
            return dataHolderThoughtNode;
         }
     }

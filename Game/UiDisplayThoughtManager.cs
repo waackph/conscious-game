@@ -1,8 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace conscious
 {
@@ -16,7 +17,7 @@ namespace conscious
         private MoodStateManager _moodStateManager;
         private SoCManager _socManager;
         private Cursor _cursor;
-        private Queue<UIThought> _thoughts;
+        private List<UIThought> _thoughts;
         private SpriteFont _font;
         private Texture2D _pixel;
         private float _bgX;
@@ -25,9 +26,12 @@ namespace conscious
         private float _offsetX;
         private float _thoughtOffsetY;
         private float _thoughtOffsetX;
+        private float _topPadding;
+        private float _scrollAmount;
         private int _maxThoughts;
-        private UIArea _consciousnessBackground;
-        private UIArea _subthoughtBackground;
+        private UIAreaScrollable _consciousnessBackground;
+        private UIAreaScrollable _subthoughtBackground;
+        private UIArea _consciousnessPortrait;
         private List<UIThought> _currentSubthoughtLinks;
         private UIThought _currentSubthought;
         private UIThought _currentThought;
@@ -41,12 +45,14 @@ namespace conscious
             _socManager = socManager;
             _socManager.AddThoughtEvent += AddThoughtFromSoC;
             _socManager.FinishInteractionEvent += FinishThought;
+            _socManager.RemoveThoughtsEvent += RemoveThoughtFromUI;
+            _socManager.IncludedThoughtClicked += MoveThoughtToBottom;
 
             _cursor = cursor;
 
-            _thoughts = new Queue<UIThought>();
+            _thoughts = new List<UIThought>();
 
-            _maxThoughts = 2;
+            _maxThoughts = _socManager._maxThoughts;
             // Main SoC Area
             _bgX = 1600f; // 150f;
             _bgY = 200f; // 500f;
@@ -55,6 +61,10 @@ namespace conscious
             // In Thought Area
             _thoughtOffsetY = 55;
             _thoughtOffsetX = 0; //_bgX + 210f;
+
+            _scrollAmount = 5;
+
+            _topPadding = 50;
             
             _font = font;
             _pixel = pixel;
@@ -66,38 +76,48 @@ namespace conscious
             IsInThoughtMode = false;
         }
 
-        public void LoadContent(Texture2D consciousnessBackground, Texture2D consciousnessBackgroundSubthought)
+        public void LoadContent(Texture2D consciousnessBackground, Texture2D consciousnessBackgroundSubthought, Texture2D consciousnessPortraitImage)
         {
             Vector2 bgPosition = new Vector2(_bgX, _bgY);
-            _consciousnessBackground = new UIArea("SoC Background", consciousnessBackground, bgPosition, 1);
+            _consciousnessBackground = new UIAreaScrollable(_thoughts, _topPadding, _offsetY,
+                                                            _cursor, _scrollAmount,
+                                                            "SoC Background", consciousnessBackground, bgPosition, 1);
 
             Vector2 thoughtBgPosition = new Vector2(_bgX + _thoughtOffsetX, 
                                                     _bgY + _consciousnessBackground.Height + _consciousnessBackground.Height/2 + _thoughtOffsetY);
-            _subthoughtBackground = new UIArea("Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition, 1);
+            _subthoughtBackground = new UIAreaScrollable(_currentSubthoughtLinks, _topPadding, _offsetY,
+                                                         _cursor, _scrollAmount,
+                                                         "Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition, 1);
+
+            Vector2 portraitBgPosition = new Vector2(_bgX + _thoughtOffsetX - _consciousnessBackground.Width/2 - consciousnessPortraitImage.Width/2,
+                                                     _bgY + _consciousnessBackground.Height);
+            _consciousnessPortrait = new UIArea("Thought Portrait", consciousnessPortraitImage, portraitBgPosition, 1);
         }
 
         public void Update(GameTime gameTime)
         {
             CheckThoughtClicked();
+            _consciousnessBackground.ManageUIAreaScroll();
+            _subthoughtBackground.ManageUIAreaScroll();
             _lastMouseState = Mouse.GetState();
         }
 
         public void Draw(SpriteBatch spriteBatch){ }
 
-        // private void UpdateThoughtQueue()
-        // {
-        //     if(!_thoughts.ToList().ConvertAll<string>(_thoughts => _thoughts.Name).Equals(_socManager.Thoughts.ToList().ConvertAll<string>(Thoughts => Thoughts.Thought)))
-        //     {
-        //         foreach(ThoughtNode node in _socManager.Thoughts)
-        //         {
-        //             AddThought(node);
-        //         }
-        //     }
-        // }
-
         public void AddThoughtFromSoC(object sender, ThoughtNode e)
         {
             AddThought(e);
+        }
+
+        public void MoveThoughtToBottom(object sender, ThoughtNode e)
+        {
+            UIThought uiThought = GetUIThoughtFromNode(e);
+            _thoughts.Remove(uiThought);
+            uiThought = CalculateThoughtPositions(uiThought);
+            _thoughts.Add(uiThought);
+            // _entityManager.AddEntity(uiThought);
+            _consciousnessBackground.ScrollToNewestUIComponent();
+
         }
 
         public void FinishThought(object sender, bool e)
@@ -113,21 +133,28 @@ namespace conscious
             }
         }
 
+        public void RemoveThoughtFromUI(object sender, EventArgs e)
+        {
+            _entityManager.RemoveEntities(_thoughts.ToList<Entity>());
+            _thoughts.Clear();
+        }
+
         public void AddThought(ThoughtNode thought)
         {
             // Add if the UI not already contains the thought
             if(!containsThoughtNode(_thoughts, thought))
             {
                 UIThought uiThought = convertNodeToUi(thought);
-                if(_thoughts.Count + 1 > _maxThoughts)
+                if(_maxThoughts > 0 && _thoughts.Count + 1 > _maxThoughts)
                 {
                     RemoveThought();
                 }
                 // render new positions of thoughts
-                uiThought = CalculateThoughtPositions(uiThought);
                 // add new thought
-                _thoughts.Enqueue(uiThought);
+                uiThought = CalculateThoughtPositions(uiThought);
+                _thoughts.Add(uiThought);
                 _entityManager.AddEntity(uiThought);
+                _consciousnessBackground.ScrollToNewestUIComponent();
             }
         }
 
@@ -137,17 +164,25 @@ namespace conscious
             float uiYPos = _bgY - _consciousnessBackground.Height/2;
             int thoughtNumber = 0;
             float heightOffset = 0f;
+            float topPadding = 0f;
             
             //Update position of thoughts in queue
             foreach(UIThought th in _thoughts)
             {
+                if(thoughtNumber == 0)
+                    topPadding = _topPadding;
+                else
+                    topPadding = 0;
                 _entityManager.RemoveEntity(th);
                 th.SetPosition(uiXPos,
-                               uiYPos + thoughtNumber * _offsetY + heightOffset);
-                heightOffset += th.BoundingBox.Height;
+                               uiYPos + thoughtNumber * _offsetY + heightOffset + topPadding);
+                heightOffset += th.BoundingBox.Height + topPadding;
                 _entityManager.AddEntity(th);
                 thoughtNumber++;
             }
+
+            if(thoughtNumber == 0)
+                heightOffset += _topPadding;
             thought.SetPosition(uiXPos,
                                 uiYPos + thoughtNumber * _offsetY + heightOffset);
             return thought;
@@ -207,10 +242,18 @@ namespace conscious
             IsInThoughtMode = true;
             _socManager.IsInThoughtMode = true;
             _entityManager.AddEntity(_subthoughtBackground);
+
             _currentSubthought = convertNodeToUi(node, doDisplay:true);
             _currentSubthoughtLinks = convertLinksToUi(links);
             calculateSubthoughtPositions();
             addSubthought();
+
+            // add thought portrait
+            if(node.ThoughtPortrait != null)
+            {
+                _consciousnessPortrait.UpdateTexture(node.ThoughtPortrait);
+                _entityManager.AddEntity(_consciousnessPortrait);
+            }
         }
 
         public void EndThoughtMode()
@@ -219,6 +262,7 @@ namespace conscious
             _socManager.IsInThoughtMode = false;
             removeSubthought();
             _entityManager.RemoveEntity(_subthoughtBackground);
+            _entityManager.RemoveEntity(_consciousnessPortrait);
         }
 
         public void ChangeSubthought(ThoughtNode node, List<ThoughtLink> links)
@@ -281,7 +325,7 @@ namespace conscious
             }
         }
 
-        private bool containsThoughtNode(Queue<UIThought> thoughts, ThoughtNode node)
+        private bool containsThoughtNode(List<UIThought> thoughts, ThoughtNode node)
         {
             foreach(UIThought thought in thoughts)
             {
@@ -293,9 +337,22 @@ namespace conscious
             return false;
         }
 
+        private UIThought GetUIThoughtFromNode(ThoughtNode node)
+        {
+            foreach(UIThought thought in _thoughts)
+            {
+                if(thought.Name == node.Thought)
+                {
+                    return thought;
+                }
+            }
+            return null;
+        }
+
         public void RemoveThought()
         {
-            UIThought thought = _thoughts.Dequeue();
+            UIThought thought = _thoughts[0];
+            _thoughts.Remove(thought);
             if(thought != null)
             {
                 _entityManager.RemoveEntity(thought);
@@ -306,18 +363,22 @@ namespace conscious
         {
             if(node != null)
             {
+                bool isRootThought = false;
                 bool isClickable = false;
                 if(node.HasLinks() && node.IsRoot)
                 {
                     isClickable = true;
                 }
+                if(node.IsRoot)
+                    isRootThought = true;
                 UIThought uiThought = new UIThought(isClickable,
                                                     false,
                                                     doDisplay,
                                                     _font, 
                                                     node.Thought, node.Thought, 
                                                     _pixel, 
-                                                    Vector2.One, 1);
+                                                    Vector2.One, 1,
+                                                    isRootThought);
                 if(node.IsRoot)
                     uiThought.IsUsed = node.IsUsed;
                 return uiThought;

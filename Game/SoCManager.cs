@@ -16,7 +16,7 @@ namespace conscious
         private AudioManager _audioManager;
         public Queue<ThoughtNode> Thoughts { get; private set; }
         Random random = new Random();
-        private int _maxThoughts;
+        public int _maxThoughts;
         private List<ThoughtLink> _currentSubthoughtLinks;
         private List<ThoughtNode> _randomThoughts;
         private ThoughtNode _currentThought;
@@ -31,8 +31,10 @@ namespace conscious
         public bool IsInThoughtMode;
         public event EventHandler<VerbActionEventArgs> ActionEvent;
         public event EventHandler<ThoughtNode> AddThoughtEvent;
+        public event EventHandler<ThoughtNode> IncludedThoughtClicked;
         public event EventHandler<bool> FinishInteractionEvent;
         public event EventHandler<FinalEdgeEventArgs> FinalEdgeSelected;
+        public event EventHandler RemoveThoughtsEvent;
         public Verb VerbResult { get; private set; }
 
         public SoCManager(MoodStateManager moodStateManager, AudioManager audioManager)
@@ -40,15 +42,15 @@ namespace conscious
             _moodStateManager = moodStateManager;
             _audioManager = audioManager;
             Thoughts = new Queue<ThoughtNode>();
-            _maxThoughts = 2;
+            _maxThoughts = -1;
             VerbResult = Verb.None;
 
             _randomThoughts = new List<ThoughtNode>();
-            _randomThoughts.Add(new ThoughtNode(1000, "War? What is it good for?", 0, false, 0));
-            _randomThoughts.Add(new ThoughtNode(1001, "I never died in my sleep. Such a shame.", 0, false, 0));
-            _randomThoughts.Add(new ThoughtNode(1002, "Dadada dada dadada", 0, false, 0));
-            _randomThoughts.Add(new ThoughtNode(1003, "I don't like the ambience right now.", 0, false, 0));
-            _randomThoughts.Add(new ThoughtNode(1004, "The Avatar movie was endlessly overhyped.", 0, false, 0));
+            _randomThoughts.Add(new ThoughtNode(1000, "War? What is it good for?", 0, true, 0));
+            _randomThoughts.Add(new ThoughtNode(1001, "I never died in my sleep. Such a shame.", 0, true, 0));
+            _randomThoughts.Add(new ThoughtNode(1002, "Dadada dada dadada", 0, true, 0));
+            _randomThoughts.Add(new ThoughtNode(1003, "I don't like the ambience right now.", 0, true, 0));
+            _randomThoughts.Add(new ThoughtNode(1004, "The Avatar movie was endlessly overhyped.", 0, true, 0));
 
             _isStart = true;
             _maxMinutesToWait = 30;
@@ -97,7 +99,7 @@ namespace conscious
             checkUnlockIds(thought);
             if(!containsThoughtNode(Thoughts, thought))
             {
-                if(Thoughts.Count + 1 > _maxThoughts)
+                if(_maxThoughts > 0 && Thoughts.Count + 1 > _maxThoughts)
                 {
                     Thoughts.Dequeue();
                 }
@@ -110,6 +112,10 @@ namespace conscious
 
                 // Invoke event for UiDisplayThoughtManager to add the thought UI Element as well
                 OnAddThoughtEvent(thought);
+            }
+            else
+            {
+                OnIncludedThoughtClicked(thought);
             }
         }
 
@@ -313,6 +319,11 @@ namespace conscious
             AddThoughtEvent?.Invoke(this, e);
         }
 
+        protected virtual void OnIncludedThoughtClicked(ThoughtNode e)
+        {
+            IncludedThoughtClicked?.Invoke(this, e);
+        }
+
         protected virtual void OnFinishInteractionEvent(bool e)
         {
             FinishInteractionEvent?.Invoke(this, e);
@@ -321,6 +332,17 @@ namespace conscious
         protected virtual void OnFinalEdgeSelected(FinalEdgeEventArgs e)
         {
             FinalEdgeSelected?.Invoke(this, e);
+        }
+
+        protected virtual void OnRemoveThoughts()
+        {
+            RemoveThoughtsEvent?.Invoke(this, new EventArgs());
+        }
+
+        public void RemoveThoughts()
+        {
+            Thoughts.Clear();
+            OnRemoveThoughts();
         }
 
         private Node FindLinkById(int id)
