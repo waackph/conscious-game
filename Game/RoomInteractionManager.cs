@@ -296,7 +296,10 @@ namespace conscious
             {
                 if(entity.BoundingBox.Contains(_cursor.MouseCoordinates.X, _cursor.MouseCoordinates.Y) && GlobalData.IsNotBackgroundOrPlayer(entity))// && entity.Collidable)
                 {
-                    return entity;
+                    if(entity.Thought == null)
+                        return null;
+                    else
+                        return entity;
                 }
             }
             
