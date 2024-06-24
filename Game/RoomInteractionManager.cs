@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace conscious
 {
@@ -290,7 +291,8 @@ namespace conscious
                 }
             }
 
-            foreach(Thing entity in _entityManager.GetEntitiesOfType<Thing>())
+            List<Thing> things = new List<Thing>(_entityManager.GetEntitiesOfType<Thing>());
+            foreach(Thing entity in things.OrderBy(e => -e.DrawOrder))
             {
                 if(entity.BoundingBox.Contains(_cursor.MouseCoordinates.X, _cursor.MouseCoordinates.Y) && GlobalData.IsNotBackgroundOrPlayer(entity))// && entity.Collidable)
                 {
