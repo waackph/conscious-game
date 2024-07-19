@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System;
 using System.Linq;
 
-
 namespace conscious
 {
     /// <summary>Class <c>EntityManager</c> implements a rendering system for all Entities.
@@ -17,12 +16,36 @@ namespace conscious
         private readonly List<Entity> _entitiesToAdd = new List<Entity>();
         private readonly List<Entity> _entitiesToRemove = new List<Entity>();
         
-        public Matrix ViewportTransformation;
+        public Matrix ViewTransform;
         private Matrix _mainThoughtUITranslation = Matrix.Identity;
 
         // Lighting
-        public Texture2D LightMap;
-        private BlendState _multiplicativeBlend;
+        // public Texture2D LightMap;
+        public List<Texture2D> Lights;
+        // private BlendState _multiplicativeBlend;
+
+        // Effects
+        GraphicsDevice _graphicsDevice;
+        private Effect _lightShader;
+        private Effect _moodTransitionEffect;
+        private Effect _depressedEffect;
+        private Effect _manicEffect;
+        private Effect _entityEffect;
+        RenderTarget2D _worldTarget;
+        RenderTarget2D _lightTarget;
+        RenderTarget2D _renderTarget;
+        List<RenderTarget2D> _intermediateTargets;
+        float currentTime = 0f;
+
+        public bool doTransition = false;
+        public MoodState newMood = MoodState.Regular;
+        bool isDepressed = false;
+        bool isManic = false;
+
+        bool maxNoiseReached = false;
+        bool transitionStarted = false;
+        bool newRound = false;
+        float nLast = 0f;
 
         public IEnumerable<Entity> Entities => new ReadOnlyCollection<Entity>(_entities);
 
@@ -30,16 +53,42 @@ namespace conscious
         private Texture2D _pixel;
         private bool _debuggingMode;
 
-        public EntityManager(Matrix viewportTransformation, Texture2D lightMap, BlendState multiplicativeBlend, Texture2D pixel)
+        public EntityManager(Matrix viewportTransformation, 
+                             List<Texture2D> lights, 
+                            //  BlendState multiplicativeBlend, 
+                             GraphicsDevice graphicsDevice, 
+                             RenderTarget2D worldTarget,
+                             RenderTarget2D lightTarget,
+                             RenderTarget2D renderTarget,
+                             List<RenderTarget2D> intermediateTargets,
+                             Effect lightShader,
+                             Effect moodTransitionEffect,
+                             Effect depressedEffect,
+                             Effect manicEffect,
+                             Effect entityEffect,
+                             Texture2D pixel)
         {
             _debuggingMode = false;
             _pixel = pixel;
-            ViewportTransformation = viewportTransformation;
-            LightMap = lightMap;
-            _multiplicativeBlend = multiplicativeBlend;
+            ViewTransform = viewportTransformation;
+            Lights = lights;
+            // _multiplicativeBlend = multiplicativeBlend;
+            _graphicsDevice = graphicsDevice;
+            _worldTarget = worldTarget;
+            _lightTarget = lightTarget;
+            _renderTarget = renderTarget;
+            _intermediateTargets = intermediateTargets;
+            _moodTransitionEffect = moodTransitionEffect;
+            _lightShader = lightShader;
+            _depressedEffect = depressedEffect;
+            _manicEffect = manicEffect;
+            _entityEffect = entityEffect;
         }
 
         public void Update(GameTime gameTime){
+            // set timer
+            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update()
+
             foreach(Entity entity in _entities){
                 if(_entitiesToRemove.Contains(entity))
                     continue;
@@ -58,12 +107,240 @@ namespace conscious
             _entitiesToRemove.Clear();
         }
 
-        public void Draw(SpriteBatch spriteBatch){
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            // Draw the world with all its entities to a render target texture
+            DrawGameWorldToTexture(_worldTarget, spriteBatch);
+            
+            // TODO: Bug - if there is no light on start screen and later there is light, the screen is black
+            bool hasLights = DrawLightMap(_lightTarget, spriteBatch);
+            // Console.WriteLine("Draw lights: " + hasLights.ToString());
+            if(hasLights)
+                CombineWorldWithLight(_worldTarget, _lightTarget, _renderTarget, spriteBatch);
+            else
+                _renderTarget = _worldTarget;
+
+            List<Effect> effects = DecideEffects();
+
+            // // Apply post processing shaders
+            _graphicsDevice.Clear(Color.Black);
+
+            // // use list of render targets instead
+            List<RenderTarget2D> targets = new List<RenderTarget2D>();
+            targets.Add(_renderTarget);
+
+            int i = 0;
+            foreach(Effect effect in effects)
+            {
+                targets.Add(_intermediateTargets[i]);
+                DrawShaderEffect(spriteBatch, effect, targets[i+1], targets[i]);
+                i += 1;
+            }
+
+            DrawShaderEffect(spriteBatch, null, null, targets[i]);
+
+            // Draw UI that should be not affected by post shaders
+            DrawUI(spriteBatch);
+        }
+
+        void DrawShaderEffect(SpriteBatch spriteBatch, Effect effect, RenderTarget2D targetToUse, RenderTarget2D targetToDraw)
+        {
+            if(targetToUse != null)
+            {
+                _graphicsDevice.SetRenderTarget(targetToUse);
+                _graphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+                _graphicsDevice.Clear(Color.Black);
+            }
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, 
+                    SamplerState.LinearClamp, DepthStencilState.Default, 
+                    RasterizerState.CullNone, effect);
+            spriteBatch.Draw(targetToDraw, 
+                new Rectangle(0, 0, _graphicsDevice.Viewport.Width, _graphicsDevice.Viewport.Height), 
+                Color.White);
+            spriteBatch.End();
+
+            _graphicsDevice.SetRenderTarget(null);
+        }
+
+        List<Effect> DecideEffects()
+        {
+            List<Effect> effects = new List<Effect>();
+
+            if(isDepressed)
+            {
+                // _depressedEffect.Parameters["Brightness"].SetValue(1f);
+                effects.Add(_depressedEffect);
+            }
+
+            if(isManic)
+            {
+                // _manicEffect.Parameters["BrightThreshold"].SetValue(1f);
+                _manicEffect.Parameters["BlurDistance"].SetValue(0.001f);
+                effects.Add(_manicEffect);
+            }
+
+            if(doTransition)
+            {
+                // increase/decrease noise depending on time
+                // TODO: Use time steps instead of contiuous (maybe effect looks nicer)
+                float tMin = 0;
+                float tMax = 3;
+                float nMin = 0.001f;
+                float nMax = 0.01f; //0.5f;
+                float t = currentTime % tMax;
+                float nRange = nMax - nMin;
+                float tRange = tMax - tMin;
+                float scaled = ( t - tMin) / tRange;
+                float mapped = nMin + (scaled * nRange);
+                float mapped_new = float.Parse(mapped.ToString("0.000"));
+
+                if(mapped < nLast)
+                    newRound = true;
+
+                if(!transitionStarted)
+                {
+                    transitionStarted = true;
+                }
+                // terminate transition
+                else if(maxNoiseReached && newRound)
+                {
+                    doTransition = false;
+                    maxNoiseReached = false;
+                    transitionStarted = false;
+                }
+                else if(transitionStarted && !maxNoiseReached && newRound)
+                {
+                    maxNoiseReached = true;
+                    if(newMood == MoodState.Depressed)
+                    {
+                        isDepressed = true;
+                        isManic = false;
+                    }
+                    else if(newMood == MoodState.Manic)
+                    {
+                        isManic = true;
+                        isDepressed = false;
+                    }
+                    else if(newMood == MoodState.Regular)
+                    {
+                        isDepressed = false;
+                        isManic = false;
+                    }
+                }
+                else if(maxNoiseReached)
+                {
+                    mapped_new = float.Parse((nMax - mapped).ToString("0.000"));
+                }
+
+                if(newRound)
+                    newRound = false;
+
+                if(mapped_new == 0)
+                    mapped_new = nMin;
+
+                nLast = mapped;
+
+                // value between 0.001 and 0.5
+                _moodTransitionEffect.Parameters["fNoiseAmount"].SetValue(mapped_new);
+                _moodTransitionEffect.Parameters["fTimer"].SetValue(currentTime);
+                _moodTransitionEffect.Parameters["iSeed"].SetValue(5);
+
+                // if transition still active
+                if(doTransition)
+                    effects.Add(_moodTransitionEffect);
+            }
+
+            return effects;
+        }
+
+        void CombineWorldWithLight(RenderTarget2D worldTarget, RenderTarget2D lightTarget, RenderTarget2D renderTarget, SpriteBatch spriteBatch)
+        {
+
+            _graphicsDevice.SetRenderTarget(_renderTarget);
+        
+            _graphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+        
+            _graphicsDevice.Clear(Color.Black);
+            _lightShader.Parameters["MaskTexture"].SetValue(lightTarget);
+
+            spriteBatch.Begin(blendState: BlendState.AlphaBlend, effect: _lightShader);
+            spriteBatch.Draw(worldTarget, Vector2.Zero, Color.Red);
+            spriteBatch.End();
+
+            _graphicsDevice.SetRenderTarget(null);
+        }
+
+        bool DrawLightMap(RenderTarget2D renderTarget, SpriteBatch spriteBatch)
+        {
+            bool hasLights = false;
+            // Set the render target
+            _graphicsDevice.SetRenderTarget(renderTarget);
+        
+            _graphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+        
+            // Draw the scene
+            _graphicsDevice.Clear(Color.Black);
+            
+            //  Transform positions so correct lights are shown in viewport
+            spriteBatch.Begin(blendState: BlendState.Additive, transformMatrix: ViewTransform);
+
+            // TODO: add logic to draw lights stored in entities and rooms
+            foreach(Thing thing in GetEntitiesOfType<Thing>())
+            {
+                if(thing.LightMask != null)
+                {
+                    hasLights = true;
+                    spriteBatch.Draw(thing.LightMask, thing.Position, Color.White);
+                }
+            }
+
+            Vector2 lightMaskPos = new Vector2(0, 0);
+            foreach(Texture2D light in Lights)
+            {
+                hasLights = true;
+                spriteBatch.Draw(light, lightMaskPos, Color.White);
+            }
+
+            spriteBatch.End();
+        
+            // Drop the render target
+            _graphicsDevice.SetRenderTarget(null);
+            return hasLights;
+        }
+
+        void DrawGameWorldToTexture(RenderTarget2D renderTarget, SpriteBatch spriteBatch)
+        {
+            // Set the render target
+            _graphicsDevice.SetRenderTarget(renderTarget);
+        
+            _graphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+        
+            // Draw the scene
+            _graphicsDevice.Clear(Color.CornflowerBlue);
+            DrawGameWorld(spriteBatch);
+        
+            // Drop the render target
+            _graphicsDevice.SetRenderTarget(null);
+        }
+
+        public void DrawGameWorld(SpriteBatch spriteBatch){
+
+            // The view transformation matrix
+            Matrix view = ViewTransform;  // Matrix.Identity;
+
+            // The projection transformation matrix
+            Matrix projection = Matrix.CreateOrthographicOffCenter(0, GlobalData.ScreenWidth, GlobalData.ScreenHeight, 0, 0, 1);
+
+            _entityEffect.Parameters["view_projection"].SetValue(view * projection);
+            // _entityEffect.Parameters["AmbientColor"].SetValue(Color.White.ToVector4());
+            // _entityEffect.Parameters["AmbientIntensity"].SetValue(1f);
 
             // Draw game entities
-
-            // TODO: Maybe split up entities into different types to have better control over draw order and batchmode
-            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null,null, ViewportTransformation);
+            // spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null,null, ViewTransform);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, 
+                SamplerState.LinearClamp, DepthStencilState.Default, 
+                RasterizerState.CullNone, _entityEffect);  // effect: _entityEffect, samplerState: SamplerState.LinearClamp);
             foreach(Entity entity in _entities.OrderBy(e => e.DrawOrder))
             {
                 if(!entity.FixedDrawPosition)
@@ -78,11 +355,14 @@ namespace conscious
             }
             spriteBatch.End();
 
-            // Draw lightmaps
-            spriteBatch.Begin(SpriteSortMode.Immediate, _multiplicativeBlend);
-            spriteBatch.Draw(LightMap, new Rectangle(0, 0, GlobalData.ScreenWidth, GlobalData.ScreenHeight), Color.White);
-            spriteBatch.End();
+            // // Draw lightmaps
+            // spriteBatch.Begin(SpriteSortMode.Immediate, _multiplicativeBlend);
+            // spriteBatch.Draw(LightMap, new Rectangle(0, 0, GlobalData.ScreenWidth, GlobalData.ScreenHeight), Color.White);
+            // spriteBatch.End();
+        }
 
+        public void DrawUI(SpriteBatch spriteBatch)
+        {
             // Draw Thought UI Background (clipping background for UI Thoughts)
             UIComponent socBackground = GetUIByName("SoC Background");
             RasterizerState initRasterizerState = spriteBatch.GraphicsDevice.RasterizerState;

@@ -141,7 +141,7 @@ namespace conscious
             {
                 currentLightMap = currentRoom.MoodLightMaps[MoodState.None];
             }
-            _entityManager.LightMap = currentLightMap;
+            _entityManager.Lights = new List<Texture2D> { currentLightMap };
         }
         
         public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId=0)
@@ -153,7 +153,7 @@ namespace conscious
 
             float xPos = 0f;
             Matrix transform = Matrix.CreateTranslation(xPos, 0, 0);
-            _entityManager.ViewportTransformation = transform;
+            _entityManager.ViewTransform = transform;
             _cursor.InverseTransform = Matrix.Invert(transform);
             // foreach(Thing thing in currentRoom.GetThings())
             // {
@@ -295,7 +295,7 @@ namespace conscious
             {
                 float xPos = -_player.Position.X+horizontalMiddleBegin;
                 Matrix transform = Matrix.CreateTranslation(xPos, 0, 0);
-                _entityManager.ViewportTransformation = transform;
+                _entityManager.ViewTransform = transform;
                 _cursor.InverseTransform = Matrix.Invert(transform);
                 // _player.XPosOffset = (int)xPos;
                 

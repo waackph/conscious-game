@@ -31,3 +31,4 @@ A spritefont has a character range. It is necessary to define the needed charact
 ## Run game in Dev Mode
 - Either use C# Debugger
 - Or if this does not work use the command line: `dotnet run --project conscious.csproj`
+- Start Game Content Tool via `dotnet mgcb-editor Content/Content.mgcb` to enable shader compilation

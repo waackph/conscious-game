@@ -607,6 +607,36 @@
 /processorParam:TextureFormat=Color
 /build:Cursor/Gem.png
 
+#begin Effects/depressed-effect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/depressed-effect.fx
+
+#begin Effects/entity-effect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/entity-effect.fx
+
+#begin Effects/light-effect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/light-effect.fx
+
+#begin Effects/manic-effect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/manic-effect.fx
+
+#begin Effects/mood-transition-effect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/mood-transition-effect.fx
+
 #begin Font/File.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
