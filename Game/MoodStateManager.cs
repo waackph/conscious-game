@@ -41,7 +41,7 @@ namespace conscious
         {
             if(StateChange != MoodState.None && StateChange != moodState)
             {
-                _transitionActive = true;
+                // _transitionActive = true;
                 _direction = setChangeDirection(moodState, StateChange);
                 moodState = StateChange;
 
@@ -54,6 +54,14 @@ namespace conscious
                 _entityManager.RemoveEntity(_moodText);
                 _moodText.UpdateText(generateMoodText());
                 FillEntityManager();
+
+                _entityManager.newMood = moodState;
+                _entityManager.doTransition = true;
+
+                // TODO: Set up connection between entity manager and mood state manager
+                // to apply the shader correctly
+
+
                 // We dont use MorphingItem for now (maybe will not be necessary for game)
                 // foreach(MorphingItem item in _entityManager.GetEntitiesOfType<MorphingItem>())
                 // {

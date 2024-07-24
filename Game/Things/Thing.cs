@@ -16,12 +16,13 @@ namespace conscious
         public ThoughtNode EventThought { get; protected set; }
         public int Id { get; protected set; }
         public bool IsInInventory { get; set; }
+        public Texture2D LightMask { get; protected set; }
         
 
         public Thing(int id, ThoughtNode thought, MoodStateManager moodStateManager,
                      string name, Texture2D texture, Vector2 position, int drawOrder, 
                      bool collidable = false, int collBoxHeight = 20,
-                     ThoughtNode eventThought = null) 
+                     ThoughtNode eventThought = null, Texture2D lightMask = null) 
                      : base(name, texture, position, drawOrder, collidable, collBoxHeight)
         {
             _moodStateManager = moodStateManager;
@@ -33,6 +34,7 @@ namespace conscious
             EventThought = eventThought;
             Id = id;
             IsInInventory = false;
+            LightMask = lightMask;
 
             // Standard case for mood dependent textures
             _moodTextures = new Dictionary<MoodState, Texture2D>()

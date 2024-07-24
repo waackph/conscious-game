@@ -141,7 +141,7 @@ namespace conscious
             {
                 currentLightMap = currentRoom.MoodLightMaps[MoodState.None];
             }
-            _entityManager.LightMap = currentLightMap;
+            _entityManager.Lights = new List<Texture2D> { currentLightMap };
         }
         
         public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId=0)
@@ -153,7 +153,7 @@ namespace conscious
 
             float xPos = 0f;
             Matrix transform = Matrix.CreateTranslation(xPos, 0, 0);
-            _entityManager.ViewportTransformation = transform;
+            _entityManager.ViewTransform = transform;
             _cursor.InverseTransform = Matrix.Invert(transform);
             // foreach(Thing thing in currentRoom.GetThings())
             // {
@@ -295,7 +295,7 @@ namespace conscious
             {
                 float xPos = -_player.Position.X+horizontalMiddleBegin;
                 Matrix transform = Matrix.CreateTranslation(xPos, 0, 0);
-                _entityManager.ViewportTransformation = transform;
+                _entityManager.ViewTransform = transform;
                 _cursor.InverseTransform = Matrix.Invert(transform);
                 // _player.XPosOffset = (int)xPos;
                 
@@ -376,7 +376,7 @@ namespace conscious
             // room 2
             bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
             song = _content.Load<Song>("Audio/Red_Curtains");
-            lightMap = _content.Load<Texture2D>("light/light_gimp_v2");
+            lightMap = _content.Load<Texture2D>("light/light_map_default");
             room = new Room(bg.Width, _entityManager, null, song, lightMap, null);
             Thing background = new Thing(11, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2), 1);
             room.addThing(background);

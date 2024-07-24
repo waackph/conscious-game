@@ -2,7 +2,7 @@
   "3": {
     "RoomWidth": 5760,
     "SoundFilePath": "Red_Curtains",
-    "LightMapPath": "light/light_gimp_v2",
+    "LightMapPath": "light/light_mask_corridor",
     "EntrySequence": null,
     "Thought": {
       "$type": "conscious.DataHolderThoughtNode, conscious",
@@ -1114,7 +1114,7 @@
   "4": {
     "RoomWidth": 1920,
     "SoundFilePath": "Red_Curtains",
-    "LightMapPath": "light/light_gimp_v2",
+    "LightMapPath": "light/living_room_light_mask",
     "EntrySequence": null,
     "Thought": {
       "$type": "conscious.DataHolderThoughtNode, conscious",
@@ -2723,7 +2723,7 @@
   "5": {
     "RoomWidth": 1920,
     "SoundFilePath": "Red_Curtains",
-    "LightMapPath": "light/light_gimp_v2",
+    "LightMapPath": "light/room_kitchen_dining_light_mask",
     "EntrySequence": null,
     "Thought": {
       "$type": "conscious.DataHolderThoughtNode, conscious",

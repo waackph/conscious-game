@@ -8,7 +8,7 @@
 #endregion
 
 using System;
-
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -34,6 +34,13 @@ namespace conscious
         private Matrix _viewportTransformation;
         private Cursor _cursor;
 
+        RenderTarget2D renderTarget;
+        RenderTarget2D lightTarget;
+        RenderTarget2D worldTarget;
+        List<RenderTarget2D> intermediateTargets;
+        // Effect _moodTransitionEffect;
+
+
         public Song StreetAmbient;
 
 
@@ -43,6 +50,7 @@ namespace conscious
             _graphics.PreferredBackBufferWidth = GlobalData.ScreenWidth;
             _graphics.PreferredBackBufferHeight = GlobalData.ScreenHeight;
             _graphics.IsFullScreen = false;
+            _graphics.GraphicsProfile = GraphicsProfile.HiDef;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             System.Console.WriteLine("Screen Size - Width[" + _graphics.PreferredBackBufferWidth + "] Height [" + _graphics.PreferredBackBufferHeight + "]");
@@ -60,7 +68,7 @@ namespace conscious
             _viewportTransformation = Matrix.CreateTranslation(0, 0, 0);
 
             // add lighting
-            Texture2D lightMap = Content.Load<Texture2D>("light/light_gimp_v2");
+            Texture2D lightMap = Content.Load<Texture2D>("light/light_map_default");
             // instatiate the blendState
             BlendState multiplicativeBlend = new BlendState();
             // deal with transparency
@@ -72,6 +80,44 @@ namespace conscious
             multiplicativeBlend.ColorSourceBlend = Blend.DestinationColor;
             multiplicativeBlend.ColorDestinationBlend = Blend.Zero;
 
+            // add render target to render scene to texture for post shaders
+            renderTarget = new RenderTarget2D(
+                GraphicsDevice,
+                GraphicsDevice.PresentationParameters.BackBufferWidth,
+                GraphicsDevice.PresentationParameters.BackBufferHeight,
+                false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24);
+
+            worldTarget = new RenderTarget2D(
+                GraphicsDevice,
+                GraphicsDevice.PresentationParameters.BackBufferWidth,
+                GraphicsDevice.PresentationParameters.BackBufferHeight,
+                false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24);
+
+            lightTarget = new RenderTarget2D(
+                GraphicsDevice,
+                GraphicsDevice.PresentationParameters.BackBufferWidth,
+                GraphicsDevice.PresentationParameters.BackBufferHeight,
+                false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24);
+
+            intermediateTargets = new List<RenderTarget2D>();
+            for(int i = 0; i < 3; i++)
+            {
+                intermediateTargets.Add(
+                    new RenderTarget2D(
+                        GraphicsDevice,
+                        GraphicsDevice.PresentationParameters.BackBufferWidth,
+                        GraphicsDevice.PresentationParameters.BackBufferHeight,
+                        false,
+                        GraphicsDevice.PresentationParameters.BackBufferFormat,
+                        DepthFormat.Depth24)
+                );
+            }
             // Another blendstate to deal with the lightmap later:
             // BlendState LightBlend = new BlendState();
             // LightBlend.ColorBlendFunction = BlendFunction.Subtract;
@@ -81,7 +127,18 @@ namespace conscious
             // TODO: Do I need the renderTarget2D? -> Do I maybe need one target for light and one for world?
             // RenderTarget2D GhostLayer = new RenderTarget2D(graphicsDevice, 250, 250);
 
-            _entityManager = new EntityManager(_viewportTransformation, lightMap, multiplicativeBlend, _pixel);
+            List<Texture2D> lights = new List<Texture2D>();
+            lights.Add(lightMap);
+            _entityManager = new EntityManager(_viewportTransformation, lights, //new List<Texture2D>{lightMap},
+                                                // multiplicativeBlend, 
+                                                GraphicsDevice, 
+                                                worldTarget, lightTarget, renderTarget, intermediateTargets,
+                                                Content.Load<Effect>("Effects/light-effect"),
+                                                Content.Load<Effect>("Effects/mood-transition-effect"),
+                                                Content.Load<Effect>("Effects/depressed-effect"),
+                                                Content.Load<Effect>("Effects/manic-effect"),
+                                                Content.Load<Effect>("Effects/entity-effect"),
+                                                _pixel);
 
             // TODO: Change Transition Texture to something meaningful (also not in moodstatemanager, see to do in that class)
             Texture2D transitionTexture = Content.Load<Texture2D>("light/light_gimp");
@@ -121,6 +178,8 @@ namespace conscious
                                         this.Content, 
                                         new EventHandler(GameMenuEvent), 
                                         _entityManager, _moodStateManager, _audioManager);
+
+            // _moodTransitionEffect = Content.Load<Effect>("Effects/mood-transition-effect");
             
             _currentScreen = _titleScreen;
             _currentScreen.EnteredScreen = true;
