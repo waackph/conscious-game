@@ -68,7 +68,7 @@ namespace conscious
             _viewportTransformation = Matrix.CreateTranslation(0, 0, 0);
 
             // add lighting
-            Texture2D lightMap = Content.Load<Texture2D>("light/light_gimp_v2");
+            Texture2D lightMap = Content.Load<Texture2D>("light/light_map_default");
             // instatiate the blendState
             BlendState multiplicativeBlend = new BlendState();
             // deal with transparency

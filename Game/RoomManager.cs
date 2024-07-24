@@ -376,7 +376,7 @@ namespace conscious
             // room 2
             bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
             song = _content.Load<Song>("Audio/Red_Curtains");
-            lightMap = _content.Load<Texture2D>("light/light_gimp_v2");
+            lightMap = _content.Load<Texture2D>("light/light_map_default");
             room = new Room(bg.Width, _entityManager, null, song, lightMap, null);
             Thing background = new Thing(11, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2), 1);
             room.addThing(background);

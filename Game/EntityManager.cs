@@ -42,6 +42,7 @@ namespace conscious
         bool isDepressed = false;
         bool isManic = false;
 
+        bool useTransition = true;
         bool maxNoiseReached = false;
         bool transitionStarted = false;
         bool newRound = false;
@@ -160,7 +161,10 @@ namespace conscious
                 Color.White);
             spriteBatch.End();
 
-            _graphicsDevice.SetRenderTarget(null);
+            if(targetToUse != null)
+            {
+                _graphicsDevice.SetRenderTarget(null);
+            }
         }
 
         List<Effect> DecideEffects()
@@ -170,6 +174,8 @@ namespace conscious
             if(isDepressed)
             {
                 // _depressedEffect.Parameters["Brightness"].SetValue(1f);
+                // _depressedEffect.Parameters["AmbientColor"].SetValue(Color.White.ToVector4());
+                // _depressedEffect.Parameters["AmbientIntensity"].SetValue(0.5f);
                 effects.Add(_depressedEffect);
             }
 
@@ -182,64 +188,72 @@ namespace conscious
 
             if(doTransition)
             {
-                // increase/decrease noise depending on time
-                // TODO: Use time steps instead of contiuous (maybe effect looks nicer)
-                float tMin = 0;
-                float tMax = 3;
-                float nMin = 0.001f;
-                float nMax = 0.01f; //0.5f;
-                float t = currentTime % tMax;
-                float nRange = nMax - nMin;
-                float tRange = tMax - tMin;
-                float scaled = ( t - tMin) / tRange;
-                float mapped = nMin + (scaled * nRange);
-                float mapped_new = float.Parse(mapped.ToString("0.000"));
+                float mapped_new = 0f;
+                if(!useTransition)
+                {
+                    // increase/decrease noise depending on time
+                    // TODO: Use time steps instead of contiuous (maybe effect looks nicer)
+                    float tMin = 0;
+                    float tMax = 3;
+                    float nMin = 0.001f;
+                    float nMax = 0.01f; //0.5f;
+                    float t = currentTime % tMax;
+                    float nRange = nMax - nMin;
+                    float tRange = tMax - tMin;
+                    float scaled = ( t - tMin) / tRange;
+                    float mapped = nMin + (scaled * nRange);
+                    mapped_new = float.Parse(mapped.ToString("0.000"));
 
-                if(mapped < nLast)
-                    newRound = true;
+                    if(mapped < nLast)
+                        newRound = true;
 
-                if(!transitionStarted)
-                {
-                    transitionStarted = true;
-                }
-                // terminate transition
-                else if(maxNoiseReached && newRound)
-                {
-                    doTransition = false;
-                    maxNoiseReached = false;
-                    transitionStarted = false;
-                }
-                else if(transitionStarted && !maxNoiseReached && newRound)
-                {
-                    maxNoiseReached = true;
-                    if(newMood == MoodState.Depressed)
+                    if(!transitionStarted)
                     {
-                        isDepressed = true;
-                        isManic = false;
+                        transitionStarted = true;
                     }
-                    else if(newMood == MoodState.Manic)
+                    // terminate transition
+                    else if(maxNoiseReached && newRound)
                     {
-                        isManic = true;
-                        isDepressed = false;
+                        doTransition = false;
+                        maxNoiseReached = false;
+                        transitionStarted = false;
                     }
-                    else if(newMood == MoodState.Regular)
+                    else if(transitionStarted && !maxNoiseReached && newRound)
                     {
-                        isDepressed = false;
-                        isManic = false;
+                        maxNoiseReached = true;
+                        if(newMood == MoodState.Depressed)
+                        {
+                            isDepressed = true;
+                            isManic = false;
+                        }
+                        else if(newMood == MoodState.Manic)
+                        {
+                            isManic = true;
+                            isDepressed = false;
+                        }
+                        else if(newMood == MoodState.Regular)
+                        {
+                            isDepressed = false;
+                            isManic = false;
+                        }
                     }
+                    else if(maxNoiseReached)
+                    {
+                        mapped_new = float.Parse((nMax - mapped).ToString("0.000"));
+                    }
+
+                    if(newRound)
+                        newRound = false;
+
+                    if(mapped_new == 0)
+                        mapped_new = nMin;
+
+                    nLast = mapped;
                 }
-                else if(maxNoiseReached)
+                else
                 {
-                    mapped_new = float.Parse((nMax - mapped).ToString("0.000"));
+                    mapped_new = 0.01f;
                 }
-
-                if(newRound)
-                    newRound = false;
-
-                if(mapped_new == 0)
-                    mapped_new = nMin;
-
-                nLast = mapped;
 
                 // value between 0.001 and 0.5
                 _moodTransitionEffect.Parameters["fNoiseAmount"].SetValue(mapped_new);
