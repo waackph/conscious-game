@@ -18,7 +18,7 @@ namespace conscious
         public AudioManager()
         {
             soundEffects = new List<Tuple<string, SoundEffectInstance>>();
-            MediaPlayer.Volume = 0.2f;
+            MediaPlayer.Volume = 0.1f;
         }
 
         public virtual void Update(GameTime gameTime){ }

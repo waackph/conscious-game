@@ -12,7 +12,7 @@ namespace conscious
     {
         private SpriteEffects _flip;
         private float _currentPositionDelta;
-        private bool _isMoving;
+        public bool IsMoving;
         private bool _lastIsMoving;
         private float _playerSpeed;
         private Dictionary<MoodState, AnimatedSprite> _moodIdleAnimation;
@@ -36,14 +36,14 @@ namespace conscious
                       : base(id, thought, moodStateManager, name, texture, position, drawOrder)
         {  
             IdleAnimation = new AnimatedSprite(texture, 1, 2, (Width/2), Height, 0f, 800);
-            MoveAnimation = new AnimatedSprite(moveTexture, 4, 2, (Width/2), Height, 0f, 60);
+            MoveAnimation = new AnimatedSprite(moveTexture, 4, 2, (Width/2), Height, 0f, 100);
             SleepAnimation = new AnimatedSprite(sleepTexture, 1, 2, (Width/2), Height, 0f, 800);
 
             _flip = SpriteEffects.None;
             _playerSpeed = 400f;
-            _isMoving = false;
+            IsMoving = false;
             PlayerState = PlayerState.Idle; // PlayerState.Sleep;
-            _lastIsMoving = _isMoving;
+            _lastIsMoving = IsMoving;
             LastPosition = position;
             DrawOrder = GlobalData.PlayerDrawOrder;
 
@@ -116,22 +116,22 @@ namespace conscious
                 if(Position == LastPosition)
                 {
                     IdleAnimation.Update(gameTime);
-                    _isMoving = false;
+                    IsMoving = false;
                     PlayerState = PlayerState.Idle;
                 }
                 else
                 {
                     MoveAnimation.Update(gameTime);
-                    _isMoving = true;
+                    IsMoving = true;
                     PlayerState = PlayerState.Walk;
                 }
-                if(_lastIsMoving != _isMoving){
+                if(_lastIsMoving != IsMoving){
                     IdleAnimation.resetAnimation();
                     MoveAnimation.resetAnimation();
                 }
 
                 LastPosition = Position;
-                _lastIsMoving = _isMoving;
+                _lastIsMoving = IsMoving;
             }
             else if(PlayerState == PlayerState.Sleep) 
             {

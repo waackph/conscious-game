@@ -98,7 +98,10 @@ namespace conscious
             _dialogManager = new UiDialogManager(_entityManager, _moodStateManager, _player, cursor, content.Load<SpriteFont>("Font/Hud"), _pixel);
 
             _sequenceManager = new SequenceManager(_moodStateManager);
-
+            
+            SoundEffect defaultWalkingSound = content.Load<SoundEffect>("Audio/default_walking_sound");
+            SoundEffectInstance defaultWalkingSoundInst = defaultWalkingSound.CreateInstance();
+            defaultWalkingSoundInst.IsLooped = true;
             _roomManager = new RoomManager(content, 
                                            _player, 
                                            _cursor, 
@@ -110,7 +113,9 @@ namespace conscious
                                            _audioManager,
                                            _socManager,
                                            _roomGraph,
-                                           _preferredBackBufferWidth, _preferredBackBufferHeight);
+                                           _preferredBackBufferWidth, _preferredBackBufferHeight,
+                                           defaultWalkingSoundInst
+                                           );
 
             _roomManager.TerminateGameEvent += SetTerminateGame;
 
@@ -262,9 +267,26 @@ namespace conscious
                 Sequence entrySequence = InstatiateSequence(dhSequence);
                 DataHolderThoughtNode dhThought =  dhRoom.Thought;
                 ThoughtNode thought = InstatiateThought(dhThought);
+
+                Song roomSong = null;
+                if(dhRoom.SoundFilePath != null && dhRoom.SoundFilePath != "")
+                    roomSong = _content.Load<Song>("Audio/" + dhRoom.SoundFilePath);
+                SoundEffectInstance roomAtmoSound = null;
+                if(dhRoom.AtmoSoundFilePath != null && dhRoom.AtmoSoundFilePath != "")
+                {
+                    roomAtmoSound = _content.Load<SoundEffect>("Audio/" + dhRoom.AtmoSoundFilePath).CreateInstance();
+                    roomAtmoSound.IsLooped = true;
+                }
+                SoundEffectInstance roomWalkingSound = null;
+                if(dhRoom.WalkingSoundFilePath != null && dhRoom.WalkingSoundFilePath != "")
+                {
+                    roomWalkingSound = _content.Load<SoundEffect>("Audio/" + dhRoom.WalkingSoundFilePath).CreateInstance();
+                    roomWalkingSound.IsLooped = true;
+                }
+
                 Room room = new Room(dhRoom.RoomWidth, _entityManager, entrySequence, 
-                                     _content.Load<Song>("Audio/" + dhRoom.SoundFilePath), 
                                      _content.Load<Texture2D>(dhRoom.LightMapPath), thought,
+                                     roomSong, roomAtmoSound, roomWalkingSound,
                                      dhRoom.xLimStart, dhRoom.xLimEnd,
                                      dhRoom.yLimStart, dhRoom.yLimEnd);
                 room.SetThings(things);
@@ -350,16 +372,26 @@ namespace conscious
                 DataHolderThing dhThing = (DataHolderThing)dh;
                 ThoughtNode thought = InstatiateThought(dhThing.Thought);
                 ThoughtNode eventThought = InstatiateThought(dhThing.EventThought);
+
+                Texture2D lightMask = null;
+                if(dhThing.LightMaskFilePath != null && dhThing.LightMaskFilePath != "")
+                    lightMask = _content.Load<Texture2D>("light/" + dhThing.LightMaskFilePath);
+
                 entity = new Thing(dhThing.Id, thought, _moodStateManager, dhThing.Name, 
                                    _content.Load<Texture2D>(dhThing.texturePath), 
                                    new Vector2(dhThing.PositionX, dhThing.PositionY), dhThing.DrawOrder, 
-                                   dhThing.Collidable, dhThing.CollisionBoxHeight, eventThought);
+                                   dhThing.Collidable, dhThing.CollisionBoxHeight, eventThought, lightMask);
             }
             else if(dh.GetType() == typeof(DataHolderItem))
             {
                 DataHolderItem dhItem = (DataHolderItem)dh;
                 ThoughtNode thought = InstatiateThought(dhItem.Thought);
                 ThoughtNode eventThought = InstatiateThought(dhItem.EventThought);
+
+                SoundEffectInstance useSound = null;
+                if(dhItem.UseSoundFilePath != null && dhItem.UseSoundFilePath != "")
+                    useSound = _content.Load<SoundEffect>(dhItem.UseSoundFilePath).CreateInstance();
+
                 entity = new Item(dhItem.Id, dhItem.Name, 
                                   dhItem.PickUpAble, dhItem.UseAble, 
                                   dhItem.CombineAble, dhItem.GiveAble, 
@@ -367,7 +399,7 @@ namespace conscious
                                   thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhItem.texturePath), 
                                   new Vector2(dhItem.PositionX, dhItem.PositionY), dhItem.DrawOrder,
-                                  dhItem.Collidable, dhItem.CollisionBoxHeight, eventThought);
+                                  dhItem.Collidable, dhItem.CollisionBoxHeight, eventThought, useSound);
             }
             else if(dh.GetType() == typeof(DataHolderMorphingItem))
             {
@@ -393,6 +425,14 @@ namespace conscious
                 DataHolderDoor dhDoor = (DataHolderDoor)dh;
                 ThoughtNode thought = InstatiateThought(dhDoor.Thought);
                 ThoughtNode eventThought = InstatiateThought(dhDoor.EventThought);
+
+                SoundEffectInstance useSound = null;
+                if(dhDoor.UseSoundFilePath != null && dhDoor.UseSoundFilePath != "")
+                    useSound = _content.Load<SoundEffect>(dhDoor.UseSoundFilePath).CreateInstance();
+                SoundEffectInstance closeSound = null;
+                if(dhDoor.CloseSoundFilePath != null && dhDoor.CloseSoundFilePath != "")
+                    closeSound = _content.Load<SoundEffect>(dhDoor.UseSoundFilePath).CreateInstance();
+
                 entity = new Door(dhDoor.Id, dhDoor.Name, 
                                   dhDoor.PickUpAble, dhDoor.UseAble, 
                                   dhDoor.CombineAble, dhDoor.GiveAble, 
@@ -404,7 +444,8 @@ namespace conscious
                                   dhDoor.IsUnlocked, thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY), dhDoor.DrawOrder,
-                                  dhDoor.Collidable, dhDoor.CollisionBoxHeight, eventThought);
+                                  closeSound,
+                                  dhDoor.Collidable, dhDoor.CollisionBoxHeight, eventThought, useSound);
             }
             else if(dh.GetType() == typeof(DataHolderKey))
             {

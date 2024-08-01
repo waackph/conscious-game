@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
@@ -22,11 +23,14 @@ namespace conscious
         public Sequence EntrySequence;
         public Texture2D LightMap;
         public Song SoundFile;
+        public SoundEffectInstance AtmoSound;
+        public SoundEffectInstance WalkingSound;
         public Dictionary<MoodState, Texture2D> MoodLightMaps;
         public Dictionary<MoodState, Song> MoodSoundFiles;
         public ThoughtNode Thought { get; protected set; }
 
-        public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Song soundFile, Texture2D lightMap, ThoughtNode thought, 
+        public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Texture2D lightMap, ThoughtNode thought, 
+                    Song soundFile = null, SoundEffectInstance atmoSound = null, SoundEffectInstance walkingSound = null,
                     int xLimStart = 0, int xLimEnd = 1920, int yLimStart = 0, int yLimEnd = 1080)
         {
             RoomWidth = roomWidth;
@@ -43,6 +47,9 @@ namespace conscious
             SoundFile = soundFile;
             MoodSoundFiles = new Dictionary<MoodState, Song>();
             MoodSoundFiles[MoodState.None] = SoundFile;
+
+            WalkingSound = walkingSound;
+            AtmoSound = atmoSound;
 
             Thought = thought;
         }
@@ -162,6 +169,8 @@ namespace conscious
             dataHolderRoom.EntrySequence = EntrySequence?.GetDataHolderSequence();
             dataHolderRoom.SoundFilePath = SoundFile?.Name;
             dataHolderRoom.LightMapPath = LightMap?.ToString();
+            dataHolderRoom.AtmoSoundFilePath = AtmoSound?.ToString();
+            dataHolderRoom.WalkingSoundFilePath = WalkingSound?.ToString();
             dataHolderRoom.Thought = Thought?.GetDataHolderThoughtNode();
             return dataHolderRoom;
         }

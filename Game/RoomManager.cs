@@ -34,6 +34,9 @@ namespace conscious
 
         public Room currentRoom;
         public int CurrentRoomIndex;
+        public SoundEffectInstance currentWalkingSound;
+        public SoundEffectInstance currentAtmoSound;
+        private SoundEffectInstance _defaultWalkingSound;
 
         public event EventHandler<bool> TerminateGameEvent;
 
@@ -49,7 +52,8 @@ namespace conscious
                            SoCManager socManager,
                            RoomGraph roomGraph,
                            int preferredBackBufferWidth, 
-                           int preferredBackBufferHeight)
+                           int preferredBackBufferHeight,
+                           SoundEffectInstance defaultWalkingSound)
         {
             _content = content;
 
@@ -79,6 +83,9 @@ namespace conscious
             _socManager = socManager;
             // _socManager.ActionEvent += executeThoughtInteraction;
             // _socManager.FinalEdgeSelected += doPlayerFinalThoughtActions;
+
+            _defaultWalkingSound = defaultWalkingSound;
+            _defaultWalkingSound.IsLooped = true;
 
             // LoadRooms();
         }
@@ -164,6 +171,15 @@ namespace conscious
             // _entityManager.LightMap = currentRoom.MoodLightMaps[_moodStateManager.moodState];
             updateSongOnMood(_moodStateManager.moodState, Direction.None);
             updateLightMapOnMood(_moodStateManager.moodState);
+
+            if(currentRoom.AtmoSound != null)
+                currentAtmoSound = currentRoom.AtmoSound;
+            else
+                currentAtmoSound = null;
+            if(currentRoom.WalkingSound != null)
+                currentWalkingSound = currentRoom.WalkingSound;
+            else
+                currentWalkingSound = _defaultWalkingSound;
 
             if(lastRoom != null)
             {
@@ -269,6 +285,11 @@ namespace conscious
                     break;
                 }
             }
+
+            if(_player.IsMoving && currentWalkingSound.State != SoundState.Playing)
+                currentWalkingSound.Play();
+            else if(!_player.IsMoving && currentWalkingSound.State == SoundState.Playing)
+                currentWalkingSound.Pause();
         }
 
         public void LimitRoom()
@@ -377,7 +398,7 @@ namespace conscious
             bg = _content.Load<Texture2D>("Backgrounds/480_270_Room_double_Concept_Draft");
             song = _content.Load<Song>("Audio/Red_Curtains");
             lightMap = _content.Load<Texture2D>("light/light_map_default");
-            room = new Room(bg.Width, _entityManager, null, song, lightMap, null);
+            room = new Room(bg.Width, _entityManager, null, lightMap, null, song);
             Thing background = new Thing(11, null, _moodStateManager, "Background", bg, new Vector2(bg.Width/2, bg.Height/2), 1);
             room.addThing(background);
 

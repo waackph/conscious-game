@@ -8,5 +8,6 @@ namespace conscious
         public bool GiveAble { get; set; }
         public bool UseWith { get; set; }
         public string ExamineText { get; set; }
+        public string UseSoundFilePath { get; set; }
     }
 }
