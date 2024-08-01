@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace conscious
@@ -18,6 +19,8 @@ namespace conscious
         public bool GiveAble { get; set; }
         public bool UseWith { get; set; }
 
+        public SoundEffectInstance UseSound;
+
         public Item(int id,
                     string name, 
                     bool pickUpAble, 
@@ -29,7 +32,7 @@ namespace conscious
                     ThoughtNode thought, 
                     MoodStateManager moodStateManager, 
                     Texture2D texture, Vector2 position, int drawOrder, bool collidable = true, int collBoxHeight = 20,
-                    ThoughtNode eventThought = null)
+                    ThoughtNode eventThought = null, SoundEffectInstance useSound = null)
                     : base(id, thought, moodStateManager, name, texture, position, drawOrder, collidable, collBoxHeight, eventThought)
         {
             PickUpAble = pickUpAble;
@@ -40,6 +43,8 @@ namespace conscious
             _examineText = examineText;
 
             DrawOrder = drawOrder;
+
+            UseSound = useSound;
         }
 
         public virtual string Examine(){
@@ -51,10 +56,14 @@ namespace conscious
         }
 
         public virtual bool Use(Room room, InventoryManager inventory, Player player){
+            if(UseSound != null)
+                UseSound.Play();
             return UseAble;
         }
 
         public virtual bool Use(Room room, InventoryManager inventory, Player player, Item item){
+            if(UseSound != null)
+                UseSound.Play();
             return UseAble;
         }
 
@@ -73,6 +82,7 @@ namespace conscious
             dataHolderEntity.CombineAble = CombineAble;
             dataHolderEntity.GiveAble = GiveAble;
             dataHolderEntity.ExamineText = _examineText;
+            dataHolderEntity.UseSoundFilePath = UseSound?.ToString();
             return dataHolderEntity;
         }
 
@@ -86,6 +96,7 @@ namespace conscious
             dataHolderEntity.CombineAble = CombineAble;
             dataHolderEntity.GiveAble = GiveAble;
             dataHolderEntity.ExamineText = _examineText;
+            dataHolderEntity.UseSoundFilePath = UseSound?.ToString();
             return dataHolderEntity;
         }    
     }

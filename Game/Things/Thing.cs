@@ -76,9 +76,10 @@ namespace conscious
             dataHolderEntity.Thought = Thought?.GetDataHolderThoughtNode();
             dataHolderEntity.EventThought = EventThought?.GetDataHolderThoughtNode();
             dataHolderEntity.IsInInventory = IsInInventory;
+            dataHolderEntity.LightMaskFilePath = LightMask?.ToString();
             return dataHolderEntity;
         }
-        
+
         public DataHolderEntity GetDataHolderEntity(DataHolderThing dataHolderEntity)
         {
             dataHolderEntity = (DataHolderThing)base.GetDataHolderEntity(dataHolderEntity);
@@ -86,6 +87,7 @@ namespace conscious
             dataHolderEntity.Thought = Thought?.GetDataHolderThoughtNode();
             dataHolderEntity.EventThought = EventThought?.GetDataHolderThoughtNode();
             dataHolderEntity.IsInInventory = IsInInventory;
+            dataHolderEntity.LightMaskFilePath = LightMask?.ToString();
             return dataHolderEntity;
         }
     }

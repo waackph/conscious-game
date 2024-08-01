@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace conscious
@@ -13,6 +14,8 @@ namespace conscious
         private bool _isUnlocked;
         private Texture2D _closeTexture;
         public bool IsClosed;
+
+        public SoundEffectInstance CloseSound;
 
         public bool currentlyUsed = false;
         public bool IsRoomChangeDoor;
@@ -36,9 +39,11 @@ namespace conscious
                     bool isUnlocked,
                     ThoughtNode thought,
                     MoodStateManager moodStateManager, 
-                    Texture2D texture, Vector2 position, int drawOrder, bool collidable = false, int collBoxHeight = 20,
-                    ThoughtNode eventThought = null)
-                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position, drawOrder, collidable, collBoxHeight, eventThought){
+                    Texture2D texture, Vector2 position, int drawOrder, 
+                    SoundEffectInstance closeSound = null,
+                    bool collidable = false, int collBoxHeight = 20,
+                    ThoughtNode eventThought = null, SoundEffectInstance useSound = null)
+                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position, drawOrder, collidable, collBoxHeight, eventThought, useSound){
             _itemDependency = itemDependency;
             RoomId = roomId;
             DoorId = doorId;
@@ -47,6 +52,7 @@ namespace conscious
             _closeTexture = closeTexture;
             IsRoomChangeDoor = isRoomChangeDoor;
             this.CloseDoor();
+            CloseSound = closeSound;
         }
 
         public override bool Use(Room room, InventoryManager inventory, Player player, Item item){
@@ -84,12 +90,16 @@ namespace conscious
         {
             _sprite.Texture = EntityTexture;
             IsClosed = false;
+            if(UseSound != null)
+                UseSound.Play();
         }
 
         public void CloseDoor()
         {
             _sprite.Texture = _closeTexture;
             IsClosed = true;
+            if(CloseSound != null)
+                CloseSound.Play();
         }
 
         private void UseDoor()
@@ -113,6 +123,7 @@ namespace conscious
             dataHolderEntity.InitPlayerPosY = InitPlayerPos.Y;
             dataHolderEntity.CloseTexturePath = _closeTexture.ToString();
             dataHolderEntity.IsRoomChangeDoor = IsRoomChangeDoor;
+            dataHolderEntity.CloseSoundFilePath = CloseSound?.ToString();
             return dataHolderEntity;
         }
 
@@ -128,6 +139,7 @@ namespace conscious
             dataHolderEntity.InitPlayerPosY = InitPlayerPos.Y;
             dataHolderEntity.CloseTexturePath = _closeTexture.ToString();
             dataHolderEntity.IsRoomChangeDoor = IsRoomChangeDoor;
+            dataHolderEntity.CloseSoundFilePath = CloseSound?.ToString();
             return dataHolderEntity;
         }
     }

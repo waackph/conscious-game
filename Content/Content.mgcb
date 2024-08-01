@@ -19,6 +19,12 @@
 /processorParam:Quality=Best
 /build:Audio/BackgroundNoise.mp3
 
+#begin Audio/default_walking_sound.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/default_walking_sound.mp3
+
 #begin Audio/ExitReached.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
