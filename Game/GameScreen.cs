@@ -62,13 +62,13 @@ namespace conscious
             _audioManager = audioManager;
 
             Vector2 playerPosition = new Vector2(1000, 150);  //Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
-            _player = new Player(content.Load<Texture2D>("Player/128_character_animation_walking_draft"),
-                                 content.Load<Texture2D>("Player/128_character_animation_sleeping_draft"),
+            _player = new Player(content.Load<Texture2D>("Player/walking_anim_atlas"),
+                                 content.Load<Texture2D>("Player/sleep_anim_616_outline"),
                                  50, 
                                  null,
                                  _moodStateManager,
                                  "Player",
-                                 content.Load<Texture2D>("Player/128_character_animation_idle_draft"),
+                                 content.Load<Texture2D>("Player/idle_anim_411_outline"),
                                  playerPosition, 10);
 
             _controlsManager = new ControlsManager(_player);

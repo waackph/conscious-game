@@ -35,12 +35,12 @@ namespace conscious
                       Vector2 position, int drawOrder) 
                       : base(id, thought, moodStateManager, name, texture, position, drawOrder)
         {  
-            IdleAnimation = new AnimatedSprite(texture, 1, 2, (Width/2), Height, 0f, 800);
-            MoveAnimation = new AnimatedSprite(moveTexture, 4, 2, (Width/2), Height, 0f, 100);
-            SleepAnimation = new AnimatedSprite(sleepTexture, 1, 2, (Width/2), Height, 0f, 800);
+            IdleAnimation = new AnimatedSprite(texture, 1, 1, (Width/2), Height, 0f, 5000);
+            MoveAnimation = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 100);
+            SleepAnimation = new AnimatedSprite(sleepTexture, 1, 1, (Width/2), Height, 0f, 5000);
 
             _flip = SpriteEffects.None;
-            _playerSpeed = 400f;
+            _playerSpeed = 300f;
             IsMoving = false;
             PlayerState = PlayerState.Idle; // PlayerState.Sleep;
             _lastIsMoving = IsMoving;
@@ -49,19 +49,19 @@ namespace conscious
 
             // Standard case for mood dependent animations
             _moodIdleAnimation = new Dictionary<MoodState, AnimatedSprite>();
-            _moodIdleAnimation[MoodState.Depressed] = new AnimatedSprite(texture, 1, 2, (Width/2), Height, 0f, 1000);
-            _moodIdleAnimation[MoodState.Regular] = new AnimatedSprite(texture, 1, 2, (Width/2), Height, 0f, 800);
-            _moodIdleAnimation[MoodState.Manic] = new AnimatedSprite(texture, 1, 2, (Width/2), Height, 0f, 600);
+            _moodIdleAnimation[MoodState.Depressed] = new AnimatedSprite(texture, 1, 1, (Width/2), Height, 0f, 5000);
+            _moodIdleAnimation[MoodState.Regular] = new AnimatedSprite(texture, 1, 1, (Width/2), Height, 0f, 5000);
+            _moodIdleAnimation[MoodState.Manic] = new AnimatedSprite(texture, 1, 1, (Width/2), Height, 0f, 5000);
 
             _moodMoveAnimation = new Dictionary<MoodState, AnimatedSprite>();
-            _moodMoveAnimation[MoodState.Depressed] = new AnimatedSprite(moveTexture, 4, 2, (Width/2), Height, 0f, 80);
-            _moodMoveAnimation[MoodState.Regular] = new AnimatedSprite(moveTexture, 4, 2, (Width/2), Height, 0f, 60);
-            _moodMoveAnimation[MoodState.Manic] = new AnimatedSprite(moveTexture, 4, 2, (Width/2), Height, 0f, 40);
+            _moodMoveAnimation[MoodState.Depressed] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 300);
+            _moodMoveAnimation[MoodState.Regular] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 200);
+            _moodMoveAnimation[MoodState.Manic] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 200);
 
             _moodSleepAnimation = new Dictionary<MoodState, AnimatedSprite>();
-            _moodSleepAnimation[MoodState.Depressed] = new AnimatedSprite(sleepTexture, 1, 2, (Width/2), Height, 0f, 1000);
-            _moodSleepAnimation[MoodState.Regular] = new AnimatedSprite(sleepTexture, 1, 2, (Width/2), Height, 0f, 800);
-            _moodSleepAnimation[MoodState.Manic] = new AnimatedSprite(sleepTexture, 1, 2, (Width/2), Height, 0f, 600);
+            _moodSleepAnimation[MoodState.Depressed] = new AnimatedSprite(sleepTexture, 1, 1, (Width/2), Height, 0f, 5000);
+            _moodSleepAnimation[MoodState.Regular] = new AnimatedSprite(sleepTexture, 1, 1, (Width/2), Height, 0f, 5000);
+            _moodSleepAnimation[MoodState.Manic] = new AnimatedSprite(sleepTexture, 1, 1, (Width/2), Height, 0f, 5000);
 
             _moodStateManager.MoodChangeEvent += changeAnimationOnMood;
             updateAnimationOnMood(_moodStateManager.moodState);
@@ -69,7 +69,14 @@ namespace conscious
 
         private void changeAnimationOnMood(object sender, MoodStateChangeEventArgs e)
         {
-            updateAnimationOnMood(e.CurrentMoodState);
+            MoodState state = e.CurrentMoodState;
+            updateAnimationOnMood(state);
+            if(state == MoodState.Depressed)
+                _playerSpeed = 150f;
+            else if(state == MoodState.Regular)
+                _playerSpeed = 350f;
+            else if(state == MoodState.Manic)
+                _playerSpeed = 400;
         }
 
         private void updateAnimationOnMood(MoodState moodState)
