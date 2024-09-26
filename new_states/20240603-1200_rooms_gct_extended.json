@@ -135,6 +135,8 @@
     "xLimStart": 142,
     "yLimEnd": 1080,
     "yLimStart": 710,
+    "AtmoSoundFilePath": "",
+    "WalkingSoundFilePath": "default_walking_sound",
     "Things": [
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -2715,7 +2717,8 @@
             }
           ],
           "SoundPath": "clear_out/rooms/living_room/sounds/ring",
-          "RepeatedSound": true
+          "RepeatedSound": true,
+          "ThoughtPortrait": "clear_out/thought_portraits/boss_portrait_cut"
         }
       }
     ]

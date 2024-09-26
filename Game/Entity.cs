@@ -69,7 +69,8 @@ namespace conscious
 
         public void UpdateTexture(Texture2D texture)
         {
-            _sprite.Texture = texture;
+            EntityTexture = texture;
+            _sprite = new Sprite(EntityTexture, Width, Height, Rotation);
         }
 
         public void UpdateDrawOrder(int order)

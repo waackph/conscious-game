@@ -89,8 +89,9 @@ namespace conscious
                                                          _cursor, _scrollAmount,
                                                          "Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition, 1);
 
+            int portraitOffset = 50;
             Vector2 portraitBgPosition = new Vector2(_bgX + _thoughtOffsetX - _consciousnessBackground.Width/2 - consciousnessPortraitImage.Width/2,
-                                                     _bgY + _consciousnessBackground.Height);
+                                                     _bgY + _consciousnessBackground.Height + portraitOffset);
             _consciousnessPortrait = new UIArea("Thought Portrait", consciousnessPortraitImage, portraitBgPosition, 1);
         }
 
@@ -248,10 +249,12 @@ namespace conscious
             calculateSubthoughtPositions();
             addSubthought();
 
+            Texture2D portrait = _socManager.CurrentThought.ThoughtPortrait;
+
             // add thought portrait
-            if(node.ThoughtPortrait != null)
+            if(portrait != null)
             {
-                _consciousnessPortrait.UpdateTexture(node.ThoughtPortrait);
+                _consciousnessPortrait.UpdateTexture(portrait);
                 _entityManager.AddEntity(_consciousnessPortrait);
             }
         }

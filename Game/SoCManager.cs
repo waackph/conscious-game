@@ -19,7 +19,7 @@ namespace conscious
         public int _maxThoughts;
         private List<ThoughtLink> _currentSubthoughtLinks;
         private List<ThoughtNode> _randomThoughts;
-        private ThoughtNode _currentThought;
+        public ThoughtNode CurrentThought;
         private FinalThoughtLink _finalOption;
         private List<int> _toUnlock = new List<int>();
         private List<int> _alreadyUnlocked = new List<int>();
@@ -143,7 +143,7 @@ namespace conscious
             {
                 if(node.IsRoot)
                 {
-                    _currentThought = node;
+                    CurrentThought = node;
                     node.Links.Sort((x, y) => x.Id.CompareTo(y.Id));
                     foreach(ThoughtLink link in node.Links)
                     {
@@ -200,7 +200,7 @@ namespace conscious
                         if(_finalOption.Verb != Verb.None && _finalOption.Verb != Verb.WakeUp)
                         {
                             VerbActionEventArgs data = new VerbActionEventArgs();
-                            data.ThingId = _currentThought.ThingId;
+                            data.ThingId = CurrentThought.ThingId;
                             data.verbAction = _finalOption.Verb;
                             OnActionEvent(data);
                         }
@@ -210,7 +210,7 @@ namespace conscious
                             if(_finalOption.IsSuccessEdge && !_finalOption.IsLocked)
                             {
                                 usedThought = true;
-                                _currentThought.IsUsed = true;
+                                CurrentThought.IsUsed = true;
                             }
                             else
                             {
@@ -245,14 +245,14 @@ namespace conscious
             if(!isCanceled)
             {
                 _finalOption.IsVisited = true;
-                _currentThought.IsUsed = true;
+                CurrentThought.IsUsed = true;
                 if(_finalOption.UnlockId != 0)
                     unlockThoughtLink(_finalOption.UnlockId);
                 if(_finalOption.MoodChange != MoodState.None)
                     _moodStateManager.StateChange = _finalOption.MoodChange;
             }
                 _finalOption = null;
-                _currentThought = null;
+                CurrentThought = null;
         }
 
         private void checkUnlockId(ThoughtNode node, int unlockId)
@@ -283,7 +283,7 @@ namespace conscious
                 // store id to unlock to be able to later unlock a link from a different tree
                 _toUnlock.Add(unlockId);
                 // first traverse own tree
-                checkUnlockId(_currentThought, unlockId);
+                checkUnlockId(CurrentThought, unlockId);
             }
         }
 

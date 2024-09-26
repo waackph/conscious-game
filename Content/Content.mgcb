@@ -589,6 +589,18 @@
 /processorParam:Quality=Best
 /build:clear_out/rooms/living_room/sounds/ring.mp3
 
+#begin clear_out/thought_portraits/boss_portrait_cut.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:clear_out/thought_portraits/boss_portrait_cut.png
+
 #begin clear_out/UI/UI_Thought_Canvas_scaled_500x250.png
 /importer:TextureImporter
 /processor:TextureProcessor
