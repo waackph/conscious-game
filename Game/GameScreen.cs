@@ -364,6 +364,14 @@ namespace conscious
             return cmd;
         }
 
+        public Texture2D GetTextureFromDataHolder(string filePath, string prefixPath = "")
+        {
+            Texture2D tex = null;
+            if(filePath != null && filePath != "")
+                tex = _content.Load<Texture2D>(prefixPath + filePath);
+            return tex;
+        }
+
         public Thing InstatiateEntity(DataHolderEntity dh)
         {
             Thing entity;
@@ -373,20 +381,25 @@ namespace conscious
                 ThoughtNode thought = InstatiateThought(dhThing.Thought);
                 ThoughtNode eventThought = InstatiateThought(dhThing.EventThought);
 
-                Texture2D lightMask = null;
-                if(dhThing.LightMaskFilePath != null && dhThing.LightMaskFilePath != "")
-                    lightMask = _content.Load<Texture2D>("light/" + dhThing.LightMaskFilePath);
+                Texture2D depressedTexture = GetTextureFromDataHolder(dhThing.DepressedTexture);
+                Texture2D manicTexture = GetTextureFromDataHolder(dhThing.ManicTexture);
+                Texture2D lightMask = GetTextureFromDataHolder(dhThing.LightMaskFilePath, "light/");
 
                 entity = new Thing(dhThing.Id, thought, _moodStateManager, dhThing.Name, 
                                    _content.Load<Texture2D>(dhThing.texturePath), 
                                    new Vector2(dhThing.PositionX, dhThing.PositionY), dhThing.DrawOrder, 
-                                   dhThing.Collidable, dhThing.CollisionBoxHeight, eventThought, lightMask);
+                                   dhThing.Collidable, dhThing.CollisionBoxHeight, eventThought, lightMask,
+                                   depressedTexture, manicTexture);
             }
             else if(dh.GetType() == typeof(DataHolderItem))
             {
                 DataHolderItem dhItem = (DataHolderItem)dh;
                 ThoughtNode thought = InstatiateThought(dhItem.Thought);
                 ThoughtNode eventThought = InstatiateThought(dhItem.EventThought);
+
+                Texture2D depressedTexture = GetTextureFromDataHolder(dhItem.DepressedTexture);
+                Texture2D manicTexture = GetTextureFromDataHolder(dhItem.ManicTexture);
+                Texture2D lightMask = GetTextureFromDataHolder(dhItem.LightMaskFilePath, "light/");
 
                 SoundEffectInstance useSound = null;
                 if(dhItem.UseSoundFilePath != null && dhItem.UseSoundFilePath != "")
@@ -399,7 +412,8 @@ namespace conscious
                                   thought, _moodStateManager, 
                                   _content.Load<Texture2D>(dhItem.texturePath), 
                                   new Vector2(dhItem.PositionX, dhItem.PositionY), dhItem.DrawOrder,
-                                  dhItem.Collidable, dhItem.CollisionBoxHeight, eventThought, useSound);
+                                  dhItem.Collidable, dhItem.CollisionBoxHeight, eventThought, 
+                                  useSound, lightMask, depressedTexture, manicTexture);
             }
             else if(dh.GetType() == typeof(DataHolderMorphingItem))
             {
@@ -426,6 +440,10 @@ namespace conscious
                 ThoughtNode thought = InstatiateThought(dhDoor.Thought);
                 ThoughtNode eventThought = InstatiateThought(dhDoor.EventThought);
 
+                Texture2D depressedTexture = GetTextureFromDataHolder(dhDoor.DepressedTexture);
+                Texture2D manicTexture = GetTextureFromDataHolder(dhDoor.ManicTexture);
+                Texture2D lightMask = GetTextureFromDataHolder(dhDoor.LightMaskFilePath, "light/");
+
                 SoundEffectInstance useSound = null;
                 if(dhDoor.UseSoundFilePath != null && dhDoor.UseSoundFilePath != "")
                     useSound = _content.Load<SoundEffect>(dhDoor.UseSoundFilePath).CreateInstance();
@@ -445,13 +463,19 @@ namespace conscious
                                   _content.Load<Texture2D>(dhDoor.texturePath), 
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY), dhDoor.DrawOrder,
                                   closeSound,
-                                  dhDoor.Collidable, dhDoor.CollisionBoxHeight, eventThought, useSound);
+                                  dhDoor.Collidable, dhDoor.CollisionBoxHeight, eventThought, useSound,
+                                  lightMask, depressedTexture, manicTexture);
             }
             else if(dh.GetType() == typeof(DataHolderKey))
             {
                 DataHolderKey dhKey = (DataHolderKey)dh;
                 ThoughtNode thought = InstatiateThought(dhKey.Thought);
                 ThoughtNode eventThought = InstatiateThought(dhKey.EventThought);
+
+                Texture2D depressedTexture = GetTextureFromDataHolder(dhKey.DepressedTexture);
+                Texture2D manicTexture = GetTextureFromDataHolder(dhKey.ManicTexture);
+                Texture2D lightMask = GetTextureFromDataHolder(dhKey.LightMaskFilePath, "light/");
+
                 entity = new Key(dhKey.Id, dhKey.Name, 
                                  dhKey.PickUpAble, dhKey.UseAble, 
                                  dhKey.CombineAble, dhKey.GiveAble, 
@@ -459,7 +483,8 @@ namespace conscious
                                  dhKey.ItemDependency, thought, _moodStateManager, 
                                  _content.Load<Texture2D>(dhKey.texturePath), 
                                  new Vector2(dhKey.PositionX, dhKey.PositionY), dhKey.DrawOrder,
-                                 dhKey.Collidable, dhKey.CollisionBoxHeight, eventThought);
+                                 dhKey.Collidable, dhKey.CollisionBoxHeight, eventThought,
+                                 null, lightMask, depressedTexture, manicTexture);
             }
             else if(dh.GetType() == typeof(DataHolderCombineItem))
             {
@@ -475,6 +500,11 @@ namespace conscious
                 }
                 ThoughtNode thought = InstatiateThought(dhCombinable.Thought);
                 ThoughtNode eventThought = InstatiateThought(dhCombinable.EventThought);
+
+                Texture2D depressedTexture = GetTextureFromDataHolder(dhCombinable.DepressedTexture);
+                Texture2D manicTexture = GetTextureFromDataHolder(dhCombinable.ManicTexture);
+                Texture2D lightMask = GetTextureFromDataHolder(dhCombinable.LightMaskFilePath, "light/");
+
                 entity = new CombineItem(dhCombinable.Id, dhCombinable.Name, 
                                          dhCombinable.PickUpAble, dhCombinable.UseAble, 
                                          dhCombinable.CombineAble, dhCombinable.GiveAble, 
@@ -482,7 +512,8 @@ namespace conscious
                                          combinedItem, dhCombinable.ItemDependency, thought, _moodStateManager, 
                                          _content.Load<Texture2D>(dhCombinable.texturePath), 
                                          new Vector2(dhCombinable.PositionX, dhCombinable.PositionY), dhCombinable.DrawOrder,
-                                         dhCombinable.Collidable, dhCombinable.CollisionBoxHeight, eventThought);
+                                         dhCombinable.Collidable, dhCombinable.CollisionBoxHeight, eventThought,
+                                         null, lightMask, depressedTexture, manicTexture);
             }
             else if(dh.GetType() == typeof(DataHolderCharacter))
             {

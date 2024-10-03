@@ -451,6 +451,18 @@
 /processorParam:TextureFormat=Color
 /build:clear_out/rooms/dining_room/objects/small_shelve_open_261x178_pos_566x126.png
 
+#begin clear_out/rooms/living_room/backgrounds/living_room_depressed_outline_1920x1080.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:clear_out/rooms/living_room/backgrounds/living_room_depressed_outline_1920x1080.png
+
 #begin clear_out/rooms/living_room/backgrounds/living_room_outline_1920x1080.png
 /importer:TextureImporter
 /processor:TextureProcessor

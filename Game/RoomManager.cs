@@ -171,6 +171,8 @@ namespace conscious
             // _entityManager.LightMap = currentRoom.MoodLightMaps[_moodStateManager.moodState];
             updateSongOnMood(_moodStateManager.moodState, Direction.None);
             updateLightMapOnMood(_moodStateManager.moodState);
+            if(currentWalkingSound != null)
+               currentWalkingSound.Pause();
 
             if(currentRoom.AtmoSound != null)
                 currentAtmoSound = currentRoom.AtmoSound;
