@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace conscious
@@ -23,8 +24,11 @@ namespace conscious
                   ThoughtNode thought,
                   MoodStateManager moodStateManager, 
                   Texture2D texture, Vector2 position, int drawOrder, bool collidable = true, int collBoxHeight = 20,
-                  ThoughtNode eventThought = null)
-                : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position, drawOrder, collidable, collBoxHeight, eventThought){
+                  ThoughtNode eventThought = null, SoundEffectInstance useSound = null, 
+                  Texture2D lightMask = null, Texture2D depressedTexture = null, Texture2D manicTexture = null)
+                : base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, 
+                       moodStateManager, texture, position, drawOrder, collidable, collBoxHeight, eventThought,
+                       useSound, lightMask, depressedTexture, manicTexture){
             _itemDependency = itemDependency;
         }
 

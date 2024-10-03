@@ -42,8 +42,11 @@ namespace conscious
                     Texture2D texture, Vector2 position, int drawOrder, 
                     SoundEffectInstance closeSound = null,
                     bool collidable = false, int collBoxHeight = 20,
-                    ThoughtNode eventThought = null, SoundEffectInstance useSound = null)
-                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, moodStateManager, texture, position, drawOrder, collidable, collBoxHeight, eventThought, useSound){
+                    ThoughtNode eventThought = null, SoundEffectInstance useSound = null,
+                    Texture2D lightMask = null, Texture2D depressedTexture = null, Texture2D manicTexture = null)
+                    :base(id, name, pickUpAble, useAble, combineAble, giveAble, useWith, examineText, thought, 
+                          moodStateManager, texture, position, drawOrder, collidable, collBoxHeight, 
+                          eventThought, useSound, lightMask, depressedTexture, manicTexture){
             _itemDependency = itemDependency;
             RoomId = roomId;
             DoorId = doorId;

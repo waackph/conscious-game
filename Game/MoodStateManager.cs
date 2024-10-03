@@ -26,7 +26,7 @@ namespace conscious
         public MoodStateManager(EntityManager entityManager, SpriteFont font, Texture2D transitionTexture, Texture2D pixel)
         {
             _direction = Direction.None;
-            moodState = MoodState.Depressed;
+            moodState = MoodState.Regular;
             _entityManager = entityManager;
             string text = generateMoodText();
             _moodText = new UIText(font, text, "moodText", pixel, new Vector2(20, 40), 1);

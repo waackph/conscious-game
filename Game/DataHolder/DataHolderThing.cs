@@ -1,5 +1,3 @@
-using System;
-
 namespace conscious
 {
     public class DataHolderThing : DataHolderEntity
@@ -9,5 +7,7 @@ namespace conscious
         public bool IsInInventory { get; set; }
         public DataHolderThoughtNode EventThought { get; set; }
         public string LightMaskFilePath { get; set; }
+        public string DepressedTexture { get; set; }
+        public string ManicTexture { get; set; }
     }
 }
