@@ -58,10 +58,6 @@ namespace conscious
                 _entityManager.newMood = moodState;
                 _entityManager.doTransition = true;
 
-                // TODO: Set up connection between entity manager and mood state manager
-                // to apply the shader correctly
-
-
                 // We dont use MorphingItem for now (maybe will not be necessary for game)
                 // foreach(MorphingItem item in _entityManager.GetEntitiesOfType<MorphingItem>())
                 // {

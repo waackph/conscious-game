@@ -38,7 +38,7 @@ namespace conscious
         float currentTime = 0f;
 
         public bool doTransition = false;
-        public MoodState newMood = MoodState.Regular;
+        public MoodState newMood = MoodState.None;
         bool isDepressed = false;
         bool isManic = false;
 
@@ -88,7 +88,8 @@ namespace conscious
 
         public void Update(GameTime gameTime){
             // set timer
-            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update()
+            if(doTransition)
+                currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update()
 
             foreach(Entity entity in _entities){
                 if(_entitiesToRemove.Contains(entity))
@@ -171,15 +172,17 @@ namespace conscious
         {
             List<Effect> effects = new List<Effect>();
 
-            if(isDepressed)
+            if(isDepressed && !doTransition)
             {
                 // _depressedEffect.Parameters["Brightness"].SetValue(1f);
                 // _depressedEffect.Parameters["AmbientColor"].SetValue(Color.White.ToVector4());
                 // _depressedEffect.Parameters["AmbientIntensity"].SetValue(0.5f);
+                _depressedEffect.Parameters["UniformSat"].SetValue(-0.5f);
+                _depressedEffect.Parameters["UniformVal"].SetValue(-0.0f);
                 effects.Add(_depressedEffect);
             }
 
-            if(isManic)
+            if(isManic && !doTransition)
             {
                 // _manicEffect.Parameters["BrightThreshold"].SetValue(1f);
                 _manicEffect.Parameters["BlurDistance"].SetValue(0.001f);
@@ -188,77 +191,11 @@ namespace conscious
 
             if(doTransition)
             {
-                float mapped_new = 0f;
-                if(!useTransition)
-                {
-                    // increase/decrease noise depending on time
-                    // TODO: Use time steps instead of contiuous (maybe effect looks nicer)
-                    float tMin = 0;
-                    float tMax = 3;
-                    float nMin = 0.001f;
-                    float nMax = 0.01f; //0.5f;
-                    float t = currentTime % tMax;
-                    float nRange = nMax - nMin;
-                    float tRange = tMax - tMin;
-                    float scaled = ( t - tMin) / tRange;
-                    float mapped = nMin + (scaled * nRange);
-                    mapped_new = float.Parse(mapped.ToString("0.000"));
-
-                    if(mapped < nLast)
-                        newRound = true;
-
-                    if(!transitionStarted)
-                    {
-                        transitionStarted = true;
-                    }
-                    // terminate transition
-                    else if(maxNoiseReached && newRound)
-                    {
-                        doTransition = false;
-                        maxNoiseReached = false;
-                        transitionStarted = false;
-                    }
-                    else if(transitionStarted && !maxNoiseReached && newRound)
-                    {
-                        maxNoiseReached = true;
-                        if(newMood == MoodState.Depressed)
-                        {
-                            isDepressed = true;
-                            isManic = false;
-                        }
-                        else if(newMood == MoodState.Manic)
-                        {
-                            isManic = true;
-                            isDepressed = false;
-                        }
-                        else if(newMood == MoodState.Regular)
-                        {
-                            isDepressed = false;
-                            isManic = false;
-                        }
-                    }
-                    else if(maxNoiseReached)
-                    {
-                        mapped_new = float.Parse((nMax - mapped).ToString("0.000"));
-                    }
-
-                    if(newRound)
-                        newRound = false;
-
-                    if(mapped_new == 0)
-                        mapped_new = nMin;
-
-                    nLast = mapped;
-                }
-                else
-                {
-                    mapped_new = 0.01f;
-                }
-
-                // value between 0.001 and 0.5
-                _moodTransitionEffect.Parameters["fNoiseAmount"].SetValue(mapped_new);
-                _moodTransitionEffect.Parameters["fTimer"].SetValue(currentTime);
-                _moodTransitionEffect.Parameters["iSeed"].SetValue(5);
+                // DistortionTransition();
+                if(isDepressed && newMood == MoodState.Regular)
+                    SaturationTransition(-0.5f, 0f, saturateDown: false);
+                else if(!isDepressed && !isManic && newMood == MoodState.Depressed)
+                    SaturationTransition(-0.5f, 0f, saturateDown: true);
 
                 // if transition still active
                 if(doTransition)
@@ -266,6 +203,121 @@ namespace conscious
             }
 
             return effects;
+        }
+
+        void SaturationTransition(float nMin, float nMax, float tMax = 5f, bool saturateDown = false)
+        {
+            float tMin = 0;
+            float t = currentTime % tMax;
+            float nRange = nMax - nMin;
+            float tRange = tMax - tMin;
+            float scaled = ( t - tMin) / tRange;
+            float mapped = nMin + (scaled * nRange);
+            float mapped_new;
+            if( saturateDown )
+                mapped_new = float.Parse((nMin - mapped).ToString("0.000"));
+            else
+                mapped_new = float.Parse((mapped).ToString("0.000"));
+
+            if(!transitionStarted)
+            {
+                transitionStarted = true;
+            }
+            // terminate transition
+            else if(maxNoiseReached)
+            {
+                doTransition = false;
+                maxNoiseReached = false;
+                transitionStarted = false;
+                currentTime = 0f;
+                setNewMood();
+            }
+            if(saturateDown && mapped_new < nMin+0.01 || !saturateDown && mapped_new > nMax-0.01)
+                maxNoiseReached = true;
+
+            _moodTransitionEffect.Parameters["UniformSat"].SetValue(mapped_new);
+            _moodTransitionEffect.Parameters["UniformVal"].SetValue(-0.0f);
+        }
+
+        void DistortionTransition()
+        {
+            float mapped_new = 0f;
+            if(useTransition)
+            {
+                // increase/decrease noise depending on time
+                // TODO: Use time steps instead of contiuous (maybe effect looks nicer)
+                float tMin = 0;
+                float tMax = 3;
+                float nMin = 0.001f;
+                float nMax = 0.01f; //0.5f;
+                float t = currentTime % tMax;
+                float nRange = nMax - nMin;
+                float tRange = tMax - tMin;
+                float scaled = ( t - tMin) / tRange;
+                float mapped = nMin + (scaled * nRange);
+                mapped_new = float.Parse(mapped.ToString("0.000"));
+
+                if(mapped < nLast)
+                    newRound = true;
+
+                if(!transitionStarted)
+                {
+                    transitionStarted = true;
+                }
+                // terminate transition
+                else if(maxNoiseReached && newRound)
+                {
+                    doTransition = false;
+                    maxNoiseReached = false;
+                    transitionStarted = false;
+                }
+                else if(transitionStarted && !maxNoiseReached && newRound)
+                {
+                    maxNoiseReached = true;
+                    setNewMood();
+                }
+                else if(maxNoiseReached)
+                {
+                    mapped_new = float.Parse((nMax - mapped).ToString("0.000"));
+                }
+
+                if(newRound)
+                    newRound = false;
+
+                if(mapped_new == 0)
+                    mapped_new = nMin;
+
+                nLast = mapped;
+            }
+            else
+            {
+                mapped_new = 0.01f;
+            }
+
+            // value between 0.001 and 0.5
+            _moodTransitionEffect.Parameters["fNoiseAmount"].SetValue(mapped_new);
+            _moodTransitionEffect.Parameters["fTimer"].SetValue(currentTime);
+            _moodTransitionEffect.Parameters["iSeed"].SetValue(5);
+        }
+
+        void setNewMood()
+        {
+            if(newMood == MoodState.Depressed)
+            {
+                isDepressed = true;
+                isManic = false;
+            }
+            else if(newMood == MoodState.Manic)
+            {
+                isManic = true;
+                isDepressed = false;
+            }
+            else if(newMood == MoodState.Regular)
+            {
+                isDepressed = false;
+                isManic = false;
+            }
+            newMood = MoodState.None;
         }
 
         void CombineWorldWithLight(RenderTarget2D worldTarget, RenderTarget2D lightTarget, RenderTarget2D renderTarget, SpriteBatch spriteBatch)

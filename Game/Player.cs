@@ -56,7 +56,7 @@ namespace conscious
             _moodMoveAnimation = new Dictionary<MoodState, AnimatedSprite>();
             _moodMoveAnimation[MoodState.Depressed] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 300);
             _moodMoveAnimation[MoodState.Regular] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 200);
-            _moodMoveAnimation[MoodState.Manic] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 200);
+            _moodMoveAnimation[MoodState.Manic] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 150);
 
             _moodSleepAnimation = new Dictionary<MoodState, AnimatedSprite>();
             _moodSleepAnimation[MoodState.Depressed] = new AnimatedSprite(sleepTexture, 1, 1, (Width/2), Height, 0f, 5000);
