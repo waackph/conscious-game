@@ -25,8 +25,10 @@ namespace conscious
         public AnimatedSprite MoveAnimation;
         public AnimatedSprite SleepAnimation;
 
-        public Player(Texture2D moveTexture, 
-                      Texture2D sleepTexture, 
+        public Player(Texture2D moveTexture,
+                      Texture2D sleepTexture,
+                      Texture2D idleDepressed,
+                      Texture2D moveDepressed,
                       int id,
                       ThoughtNode thought,
                       MoodStateManager moodStateManager, 
@@ -49,12 +51,12 @@ namespace conscious
 
             // Standard case for mood dependent animations
             _moodIdleAnimation = new Dictionary<MoodState, AnimatedSprite>();
-            _moodIdleAnimation[MoodState.Depressed] = new AnimatedSprite(texture, 1, 1, (Width/2), Height, 0f, 5000);
+            _moodIdleAnimation[MoodState.Depressed] = new AnimatedSprite(idleDepressed, 1, 1, (Width/2), Height, 0f, 5000);
             _moodIdleAnimation[MoodState.Regular] = new AnimatedSprite(texture, 1, 1, (Width/2), Height, 0f, 5000);
             _moodIdleAnimation[MoodState.Manic] = new AnimatedSprite(texture, 1, 1, (Width/2), Height, 0f, 5000);
 
             _moodMoveAnimation = new Dictionary<MoodState, AnimatedSprite>();
-            _moodMoveAnimation[MoodState.Depressed] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 300);
+            _moodMoveAnimation[MoodState.Depressed] = new AnimatedSprite(moveDepressed, 2, 2, (Width/2), Height, 0f, 300);
             _moodMoveAnimation[MoodState.Regular] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 200);
             _moodMoveAnimation[MoodState.Manic] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 150);
 
