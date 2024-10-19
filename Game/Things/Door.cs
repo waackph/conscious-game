@@ -56,6 +56,7 @@ namespace conscious
             IsRoomChangeDoor = isRoomChangeDoor;
             this.CloseDoor();
             CloseSound = closeSound;
+            moodStateManager.MoodChangeEvent += closeDoorOnMood;
         }
 
         public override bool Use(Room room, InventoryManager inventory, Player player, Item item){
@@ -87,6 +88,11 @@ namespace conscious
                 }
             }
             return false;
+        }
+
+        private void closeDoorOnMood(object sender, MoodStateChangeEventArgs e)
+        {
+            CloseDoor();
         }
 
         public void OpenDoor()
