@@ -230,7 +230,7 @@ namespace conscious
             string savePath;
             if(newGame)
             {
-                savePath = "new_states/20240603-1200";
+                savePath = "new_states/20250820-1200";
             }
             else
             {
