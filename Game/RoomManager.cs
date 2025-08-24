@@ -312,23 +312,16 @@ namespace conscious
 
         public void ScrollRoom()
         {
-            float horizontalMiddleBegin = (float)_preferredBackBufferWidth/2f;
+            float horizontalMiddleBegin = (float)_preferredBackBufferWidth / 2f;
             float horizontalMiddleEnd = (float)currentRoom.RoomWidth - horizontalMiddleBegin;
-            if(_player.Position.X > horizontalMiddleBegin && _player.Position.X < horizontalMiddleEnd)
-            {
-                float xPos = -_player.Position.X+horizontalMiddleBegin;
-                Matrix transform = Matrix.CreateTranslation(xPos, 0, 0);
-                _entityManager.ViewTransform = transform;
-                _cursor.InverseTransform = Matrix.Invert(transform);
-                // _player.XPosOffset = (int)xPos;
-                
-                // foreach(Thing thing in _entityManager.GetEntitiesOfType<Thing>())
-                // {
-                //     if(!thing.FixedDrawPosition)
-                //         thing.XPosOffset = (int)xPos;
-                // }
-            }
-        }
+            float xPos = _player.Position.X;
+            if (xPos < horizontalMiddleBegin) xPos = horizontalMiddleBegin;
+            if (xPos > horizontalMiddleEnd) xPos = horizontalMiddleEnd;
+            // The camera movement is inverted, so we need to use the negative xPos
+            Matrix transform = Matrix.CreateTranslation(-xPos + horizontalMiddleBegin, 0, 0);
+            _entityManager.ViewTransform = transform;
+            _cursor.InverseTransform = Matrix.Invert(transform);
+       }
 
         public void Draw(SpriteBatch spriteBatch){ }
 
