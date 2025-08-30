@@ -146,7 +146,11 @@ namespace conscious
             {
                 SleepAnimation.Update(gameTime);
             }
-            else if(PlayerState == PlayerState.None)
+            else if(PlayerState == PlayerState.Wait)
+            {
+                IdleAnimation.Update(gameTime);
+            }
+            else if (PlayerState == PlayerState.None)
             {
                 // make player vanish aka do nothing
             }
