@@ -18,7 +18,7 @@ namespace conscious
         public string Name { get; protected set; }
         public bool FixedDrawPosition { get; set; }
         public float Rotation { get; protected set; }
-        public float Scale { get; protected set; }
+        public float Scale { get; set; }
         public virtual int Width 
         {
             get { return EntityTexture.Width; }
