@@ -246,7 +246,7 @@ namespace conscious
             }
             if(e.EventThoughtId > 0)
             {
-                // TODO: add thingId to link properties to get connected thing
+                // add thingId to link properties to get connected thing
                 foreach(Thing tmp in _roomManager.currentRoom.GetThings())
                 {
                     if(tmp.EventThought != null && tmp.EventThought.Id == e.EventThoughtId)
@@ -432,11 +432,11 @@ namespace conscious
 
         private void doInteraction(Thing thing, Verb verb)
         {
-            if(IsSameOrSubclass(typeof(Item), thing.GetType()))
+            if(GlobalData.IsSameOrSubclass(typeof(Item), thing.GetType()))
             {
                 ExecuteInteraction((Item)thing, verb);
             }
-            else if(IsSameOrSubclass(typeof(Character), thing.GetType()))
+            else if(GlobalData.IsSameOrSubclass(typeof(Character), thing.GetType()))
             {
                 ExecuteInteraction((Character)thing, verb);
             }
@@ -448,11 +448,11 @@ namespace conscious
 
         private void doInteraction(Thing thing1, Thing thing2, Verb verb)
         {
-            if(IsSameOrSubclass(typeof(Character), thing1.GetType()))
+            if(GlobalData.IsSameOrSubclass(typeof(Character), thing1.GetType()))
             {
                 ExecuteInteraction((Character)thing1, (Item)thing2, verb);
             }
-            else if(IsSameOrSubclass(typeof(Character), thing2.GetType()))
+            else if(GlobalData.IsSameOrSubclass(typeof(Character), thing2.GetType()))
             {
                 ExecuteInteraction((Character)thing2, (Item)thing1, verb);
             }
@@ -472,11 +472,6 @@ namespace conscious
                 }
             }
             return null;
-        }
-
-        private bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
-        {
-            return potentialDescendant.IsSubclassOf(potentialBase) || potentialDescendant == potentialBase;
         }
         
         private void ExecuteInteraction(Item item, Verb verb)
