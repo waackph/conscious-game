@@ -350,17 +350,29 @@ namespace conscious
             }
             else if(dhCommand.GetType() == typeof(DataHolderAnimateCommand))
             {
-                cmd = new AnimateCommand();
+                DataHolderAnimateCommand dhAnim = (DataHolderAnimateCommand)dhCommand;
+                Vector2 startPos = new Vector2(dhAnim.StartPositionX, dhAnim.StartPositionY);
+                PlayerState animState = (PlayerState)Enum.Parse(typeof(PlayerState), dhAnim.AnimState);
+                float scaleSize = dhAnim.ScaleSize;
+                cmd = new AnimateCommand(startPos, animState, scaleSize);
             }
-            else if(dhCommand.GetType() == typeof(DataHolderSayCommand))
+            else if(dhCommand.GetType() == typeof(DataHolderChangeRoomCommand))
+            {
+                DataHolderChangeRoomCommand dhChangeRoom = (DataHolderChangeRoomCommand)dhCommand;
+                Vector2 startPos = new Vector2(dhChangeRoom.StartPositionX, dhChangeRoom.StartPositionY);
+                PlayerState animState = (PlayerState)Enum.Parse(typeof(PlayerState), dhChangeRoom.AnimState);
+                int nextRoomId = dhChangeRoom.NextRoomId;
+                cmd = new ChangeRoomCommand(startPos, animState, nextRoomId, _roomManager);
+            }
+            else if (dhCommand.GetType() == typeof(DataHolderSayCommand))
             {
                 cmd = new SayCommand();
             }
-            else if(dhCommand.GetType() == typeof(DataHolderVanishCommand))
+            else if (dhCommand.GetType() == typeof(DataHolderVanishCommand))
             {
                 cmd = new VanishCommand();
             }
-            else 
+            else
             {
                 cmd = null;
             }
