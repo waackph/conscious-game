@@ -271,6 +271,18 @@
 /processorParam:TextureFormat=Color
 /build:clear_out/rooms/bedroom/objects/door_front_opened_outlined.png
 
+#begin clear_out/rooms/bedroom/objects/flower_on_canvas.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:clear_out/rooms/bedroom/objects/flower_on_canvas.png
+
 #begin clear_out/rooms/childroom/backgrounds/childroom_1920_outlined.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -366,6 +378,54 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:clear_out/rooms/childroom/objects/door_front_opened_outlined.png
+
+#begin clear_out/rooms/childroom/objects/tumor1_outlined.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:clear_out/rooms/childroom/objects/tumor1_outlined.png
+
+#begin clear_out/rooms/childroom/objects/tumor2_outlined.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:clear_out/rooms/childroom/objects/tumor2_outlined.png
+
+#begin clear_out/rooms/childroom/objects/tumor3_outlined.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:clear_out/rooms/childroom/objects/tumor3_outlined.png
+
+#begin clear_out/rooms/childroom/objects/tumor4_outlined.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:clear_out/rooms/childroom/objects/tumor4_outlined.png
 
 #begin clear_out/rooms/corridor_og/backgrounds/corridor_og_outlined.png
 /importer:TextureImporter
@@ -787,6 +847,18 @@
 /processorParam:TextureFormat=Color
 /build:clear_out/rooms/dining_room/objects/room_kitchen_dining_smaller_tiles_1920x1080.png
 
+#begin clear_out/rooms/dining_room/objects/sheds_outlined.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:clear_out/rooms/dining_room/objects/sheds_outlined.png
+
 #begin clear_out/rooms/dining_room/objects/small_shelve_closed_261x178_pos_566x126.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -930,6 +1002,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:clear_out/rooms/living_room/objects/table_scaled_outline_409x402_pos_1165x804.png
+
+#begin clear_out/rooms/living_room/objects/telephone_outlined.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:clear_out/rooms/living_room/objects/telephone_outlined.png
 
 #begin clear_out/rooms/living_room/objects/telephone.png
 /importer:TextureImporter
@@ -1758,6 +1842,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Player/marla_regular_idle_outline.png
+
+#begin Player/marla_throwing_pot_outlined.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player/marla_throwing_pot_outlined.png
 
 #begin Player/Run.png
 /importer:TextureImporter
