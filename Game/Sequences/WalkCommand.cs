@@ -11,7 +11,7 @@ namespace conscious
         private float _destinationX;
         private float _destinationY;
 
-        public WalkCommand(float destinationX, float destinationY) : base()
+        public WalkCommand(float destinationX, float destinationY, int thingId = 0) : base(thingId)
         {
             _destinationX = destinationX;
             _destinationY = destinationY;

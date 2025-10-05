@@ -12,22 +12,30 @@ namespace conscious
     {
         private List<Command> _commands;
         private int _currentIndex;
+        private RoomManager _roomManager;
         public bool SequenceFinished;
 
-        public Sequence(List<Command> commands)
+        public Sequence(List<Command> commands, RoomManager roomManager = null)
         {
             _currentIndex = -1;
+            _roomManager = roomManager;
             _commands = commands;
             SequenceFinished = false;
         }
 
-        public void PlaySequence(GameTime gameTime, Thing thing)
+        public void PlaySequence(GameTime gameTime, Player player)
         {
             if(_currentIndex == -1 || _commands[_currentIndex].CommandFinished)
                 _currentIndex = _currentIndex + 1;
             if(_currentIndex < _commands.Count)
             {
-                _commands[_currentIndex].ExecuteCommand(gameTime, thing);
+                Command command = _commands[_currentIndex];
+                Thing thing = player;
+                if (command._thingId != 0)
+                {
+                    thing = _roomManager.currentRoom.GetThingInRoom(command._thingId);
+                }
+                command.ExecuteCommand(gameTime, thing);
             }
             else
             {

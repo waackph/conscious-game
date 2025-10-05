@@ -14,7 +14,7 @@ namespace conscious
         
         public SoundEffect Sound = null;
 
-        public WaitCommand(int millisecondsToWait) : base()
+        public WaitCommand(int millisecondsToWait, int thingId = 0) : base(thingId)
         {
             _timeSinceBeginning = 0;
             _millisecondsToWait = millisecondsToWait;

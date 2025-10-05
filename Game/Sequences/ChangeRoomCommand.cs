@@ -14,7 +14,9 @@ namespace conscious
         int _nextRoomId;
         RoomManager _roomManager;
 
-        public ChangeRoomCommand(Vector2 startPosition, PlayerState animState, int nextRoomId, RoomManager roomManager) : base()
+        public ChangeRoomCommand(Vector2 startPosition, PlayerState animState,
+                                 int nextRoomId, RoomManager roomManager,
+                                 int thingId = 0) : base(thingId)
         {
             _initPlayerPosition = startPosition;
             _initPlayerState = animState;

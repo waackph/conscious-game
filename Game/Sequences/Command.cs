@@ -9,9 +9,11 @@ namespace conscious
     public abstract class Command
     {
         public bool CommandFinished;
+        public int _thingId;
         
-        public Command()
+        public Command(int thingId = 0)
         {
+            _thingId = thingId;
             CommandFinished = false;
         }
 
@@ -20,11 +22,13 @@ namespace conscious
         public virtual DataHolderCommand GetDataHolderCommand()
         {
             DataHolderCommand dataHolderCommand = new DataHolderCommand();
+            dataHolderCommand.ThingId = _thingId;
             return dataHolderCommand;
         }
 
         public virtual DataHolderCommand GetDataHolderCommand(DataHolderCommand dataHolderCommand)
         {
+            dataHolderCommand.ThingId = _thingId;
             return dataHolderCommand;
         }
     }
