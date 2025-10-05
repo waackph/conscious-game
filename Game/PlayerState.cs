@@ -8,6 +8,7 @@ namespace conscious
         Idle,
         Walk,
         Sleep,
+        Throw,
         Wait,
         Scale,
         None

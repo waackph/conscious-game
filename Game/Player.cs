@@ -18,28 +18,32 @@ namespace conscious
         private Dictionary<MoodState, AnimatedSprite> _moodIdleAnimation;
         private Dictionary<MoodState, AnimatedSprite> _moodMoveAnimation;
         private Dictionary<MoodState, AnimatedSprite> _moodSleepAnimation;
+        private Dictionary<MoodState, AnimatedSprite> _moodThrowAnimation;
         
         public PlayerState PlayerState;
         public Vector2 LastPosition;
         public AnimatedSprite IdleAnimation;
         public AnimatedSprite MoveAnimation;
         public AnimatedSprite SleepAnimation;
+        public AnimatedSprite ThrowAnimation;
 
         public Player(Texture2D moveTexture,
                       Texture2D sleepTexture,
+                      Texture2D throwTexture,
                       Texture2D idleDepressed,
                       Texture2D moveDepressed,
                       int id,
                       ThoughtNode thought,
-                      MoodStateManager moodStateManager, 
-                      string name, 
+                      MoodStateManager moodStateManager,
+                      string name,
                       Texture2D texture,
-                      Vector2 position, int drawOrder) 
+                      Vector2 position, int drawOrder)
                       : base(id, thought, moodStateManager, name, texture, position, drawOrder)
-        {  
-            IdleAnimation = new AnimatedSprite(texture, 1, 1, (Width/2), Height, 0f, 5000);
-            MoveAnimation = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 100);
-            SleepAnimation = new AnimatedSprite(sleepTexture, 1, 1, (Width/2), Height, 0f, 5000);
+        {
+            IdleAnimation = new AnimatedSprite(texture, 1, 1, (Width / 2), Height, 0f, 5000);
+            MoveAnimation = new AnimatedSprite(moveTexture, 2, 2, (Width / 2), Height, 0f, 100);
+            SleepAnimation = new AnimatedSprite(sleepTexture, 1, 1, (Width / 2), Height, 0f, 5000);
+            ThrowAnimation = new AnimatedSprite(throwTexture, 1, 1, (Width / 2), Height, 0f, 5000);
 
             _flip = SpriteEffects.None;
             _playerSpeed = 300f;
@@ -51,19 +55,24 @@ namespace conscious
 
             // Standard case for mood dependent animations
             _moodIdleAnimation = new Dictionary<MoodState, AnimatedSprite>();
-            _moodIdleAnimation[MoodState.Depressed] = new AnimatedSprite(idleDepressed, 1, 1, (Width/2), Height, 0f, 5000);
-            _moodIdleAnimation[MoodState.Regular] = new AnimatedSprite(texture, 1, 1, (Width/2), Height, 0f, 5000);
-            _moodIdleAnimation[MoodState.Manic] = new AnimatedSprite(texture, 1, 1, (Width/2), Height, 0f, 5000);
+            _moodIdleAnimation[MoodState.Depressed] = new AnimatedSprite(idleDepressed, 1, 1, (Width / 2), Height, 0f, 5000);
+            _moodIdleAnimation[MoodState.Regular] = new AnimatedSprite(texture, 1, 1, (Width / 2), Height, 0f, 5000);
+            _moodIdleAnimation[MoodState.Manic] = new AnimatedSprite(texture, 1, 1, (Width / 2), Height, 0f, 5000);
 
             _moodMoveAnimation = new Dictionary<MoodState, AnimatedSprite>();
-            _moodMoveAnimation[MoodState.Depressed] = new AnimatedSprite(moveDepressed, 2, 2, (Width/2), Height, 0f, 300);
-            _moodMoveAnimation[MoodState.Regular] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 200);
-            _moodMoveAnimation[MoodState.Manic] = new AnimatedSprite(moveTexture, 2, 2, (Width/2), Height, 0f, 150);
+            _moodMoveAnimation[MoodState.Depressed] = new AnimatedSprite(moveDepressed, 2, 2, (Width / 2), Height, 0f, 300);
+            _moodMoveAnimation[MoodState.Regular] = new AnimatedSprite(moveTexture, 2, 2, (Width / 2), Height, 0f, 200);
+            _moodMoveAnimation[MoodState.Manic] = new AnimatedSprite(moveTexture, 2, 2, (Width / 2), Height, 0f, 150);
 
             _moodSleepAnimation = new Dictionary<MoodState, AnimatedSprite>();
-            _moodSleepAnimation[MoodState.Depressed] = new AnimatedSprite(sleepTexture, 1, 1, (Width/2), Height, 0f, 5000);
-            _moodSleepAnimation[MoodState.Regular] = new AnimatedSprite(sleepTexture, 1, 1, (Width/2), Height, 0f, 5000);
-            _moodSleepAnimation[MoodState.Manic] = new AnimatedSprite(sleepTexture, 1, 1, (Width/2), Height, 0f, 5000);
+            _moodSleepAnimation[MoodState.Depressed] = new AnimatedSprite(sleepTexture, 1, 1, (Width / 2), Height, 0f, 5000);
+            _moodSleepAnimation[MoodState.Regular] = new AnimatedSprite(sleepTexture, 1, 1, (Width / 2), Height, 0f, 5000);
+            _moodSleepAnimation[MoodState.Manic] = new AnimatedSprite(sleepTexture, 1, 1, (Width / 2), Height, 0f, 5000);
+
+            _moodThrowAnimation = new Dictionary<MoodState, AnimatedSprite>();
+            _moodThrowAnimation[MoodState.Depressed] = new AnimatedSprite(throwTexture, 1, 1, (Width / 2), Height, 0f, 5000);
+            _moodThrowAnimation[MoodState.Regular] = new AnimatedSprite(throwTexture, 1, 1, (Width / 2), Height, 0f, 5000);
+            _moodThrowAnimation[MoodState.Manic] = new AnimatedSprite(throwTexture, 1, 1, (Width / 2), Height, 0f, 5000);
 
             _moodStateManager.MoodChangeEvent += changeAnimationOnMood;
             updateAnimationOnMood(_moodStateManager.moodState);
@@ -86,6 +95,7 @@ namespace conscious
             IdleAnimation = _moodIdleAnimation[moodState];
             MoveAnimation = _moodMoveAnimation[moodState];
             SleepAnimation = _moodSleepAnimation[moodState];
+            ThrowAnimation = _moodThrowAnimation[moodState];
         }
 
         public override Rectangle BoundingBox
@@ -146,6 +156,10 @@ namespace conscious
             {
                 SleepAnimation.Update(gameTime);
             }
+            else if(PlayerState == PlayerState.Throw)
+            {
+                ThrowAnimation.Update(gameTime);
+            }
             else if(PlayerState == PlayerState.Wait)
             {
                 IdleAnimation.Update(gameTime);
@@ -165,10 +179,15 @@ namespace conscious
         {
             PlayerState = PlayerState.Idle;
         }
+        
+        public void Throw()
+        {
+            PlayerState = PlayerState.Throw;
+        }
 
         public void MoveUp(float totalSeconds)
         {
-            if(PlayerState == PlayerState.Idle || PlayerState == PlayerState.Walk)
+            if (PlayerState == PlayerState.Idle || PlayerState == PlayerState.Walk)
                 Position.Y -= _playerSpeed * totalSeconds;
         }
 
@@ -220,6 +239,10 @@ namespace conscious
             else if(PlayerState == PlayerState.Sleep)
             {
                 SleepAnimation.Draw(spriteBatch, Position, _flip);
+            }
+            else if(PlayerState == PlayerState.Throw)
+            {
+                ThrowAnimation.Draw(spriteBatch, Position, _flip);
             }
         }
     }

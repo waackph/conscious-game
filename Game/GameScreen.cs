@@ -65,6 +65,7 @@ namespace conscious
             
             _player = new Player(content.Load<Texture2D>("Player/walking_anim_regular"),
                                  content.Load<Texture2D>("Player/sleep_anim_616_outline"),
+                                 content.Load<Texture2D>("Player/marla_throwing_pot_outlined"),
                                  content.Load<Texture2D>("Player/idle_anim_411_outline"),
                                  content.Load<Texture2D>("Player/walking_anim_atlas"),
                                  50, 
@@ -332,7 +333,7 @@ namespace conscious
             {
                 // TODO: Sound File not accessible as command needs to be fixed
                 DataHolderWaitCommand dhWait = (DataHolderWaitCommand)dhCommand;
-                WaitCommand wCmd = new WaitCommand(dhWait.MillisecondsToWait);
+                WaitCommand wCmd = new WaitCommand(dhWait.MillisecondsToWait, dhWait.ThingId);
                 wCmd = new WaitCommand(dhWait.MillisecondsToWait);
                 wCmd.Sound = _content.Load<SoundEffect>("Audio/" + dhWait.CmdSoundFilePath);
                 cmd = wCmd;
@@ -340,13 +341,13 @@ namespace conscious
             else if(dhCommand.GetType() == typeof(DataHolderWalkCommand))
             {
                 DataHolderWalkCommand dhWalk = (DataHolderWalkCommand)dhCommand;
-                cmd = new WalkCommand(dhWalk.DestinationX, dhWalk.DestinationY);
+                cmd = new WalkCommand(dhWalk.DestinationX, dhWalk.DestinationY, dhWalk.ThingId);
             }
             else if(dhCommand.GetType() == typeof(DataHolderDoorActionCommand))
             {
                 DataHolderDoorActionCommand dhDoorAction = (DataHolderDoorActionCommand)dhCommand;
                 int doorId = dhDoorAction.DoorId;
-                cmd = new DoorActionCommand(_entityManager, doorId);
+                cmd = new DoorActionCommand(_entityManager, doorId, dhDoorAction.ThingId);
             }
             else if(dhCommand.GetType() == typeof(DataHolderAnimateCommand))
             {
@@ -354,7 +355,7 @@ namespace conscious
                 Vector2 startPos = new Vector2(dhAnim.StartPositionX, dhAnim.StartPositionY);
                 PlayerState animState = (PlayerState)Enum.Parse(typeof(PlayerState), dhAnim.AnimState);
                 float scaleSize = dhAnim.ScaleSize;
-                cmd = new AnimateCommand(startPos, animState, scaleSize);
+                cmd = new AnimateCommand(startPos, animState, scaleSize, dhAnim.ThingId);
             }
             else if(dhCommand.GetType() == typeof(DataHolderChangeRoomCommand))
             {
@@ -362,7 +363,7 @@ namespace conscious
                 Vector2 startPos = new Vector2(dhChangeRoom.StartPositionX, dhChangeRoom.StartPositionY);
                 PlayerState animState = (PlayerState)Enum.Parse(typeof(PlayerState), dhChangeRoom.AnimState);
                 int nextRoomId = dhChangeRoom.NextRoomId;
-                cmd = new ChangeRoomCommand(startPos, animState, nextRoomId, _roomManager);
+                cmd = new ChangeRoomCommand(startPos, animState, nextRoomId, _roomManager, dhChangeRoom.ThingId);
             }
             else if (dhCommand.GetType() == typeof(DataHolderSayCommand))
             {
@@ -370,7 +371,8 @@ namespace conscious
             }
             else if (dhCommand.GetType() == typeof(DataHolderVanishCommand))
             {
-                cmd = new VanishCommand();
+                DataHolderVanishCommand dhVanish = (DataHolderVanishCommand)dhCommand;
+                cmd = new VanishCommand(dhVanish.ThingId);
             }
             else
             {
@@ -404,7 +406,7 @@ namespace conscious
                                    _content.Load<Texture2D>(dhThing.texturePath), 
                                    new Vector2(dhThing.PositionX, dhThing.PositionY), dhThing.DrawOrder, 
                                    dhThing.Collidable, dhThing.CollisionBoxHeight, eventThought, lightMask,
-                                   depressedTexture, manicTexture);
+                                   depressedTexture, manicTexture, dhThing.IsActive);
             }
             else if(dh.GetType() == typeof(DataHolderItem))
             {
@@ -428,7 +430,7 @@ namespace conscious
                                   _content.Load<Texture2D>(dhItem.texturePath), 
                                   new Vector2(dhItem.PositionX, dhItem.PositionY), dhItem.DrawOrder,
                                   dhItem.Collidable, dhItem.CollisionBoxHeight, eventThought, 
-                                  useSound, lightMask, depressedTexture, manicTexture);
+                                  useSound, lightMask, depressedTexture, manicTexture, dhItem.IsActive);
             }
             else if(dh.GetType() == typeof(DataHolderMorphingItem))
             {
@@ -479,7 +481,7 @@ namespace conscious
                                   new Vector2(dhDoor.PositionX, dhDoor.PositionY), dhDoor.DrawOrder,
                                   closeSound,
                                   dhDoor.Collidable, dhDoor.CollisionBoxHeight, eventThought, useSound,
-                                  lightMask, depressedTexture, manicTexture);
+                                  lightMask, depressedTexture, manicTexture, dhDoor.IsActive);
             }
             else if(dh.GetType() == typeof(DataHolderKey))
             {
@@ -499,7 +501,7 @@ namespace conscious
                                  _content.Load<Texture2D>(dhKey.texturePath), 
                                  new Vector2(dhKey.PositionX, dhKey.PositionY), dhKey.DrawOrder,
                                  dhKey.Collidable, dhKey.CollisionBoxHeight, eventThought,
-                                 null, lightMask, depressedTexture, manicTexture);
+                                 null, lightMask, depressedTexture, manicTexture, dhKey.IsActive);
             }
             else if(dh.GetType() == typeof(DataHolderCombineItem))
             {
@@ -528,7 +530,7 @@ namespace conscious
                                          _content.Load<Texture2D>(dhCombinable.texturePath), 
                                          new Vector2(dhCombinable.PositionX, dhCombinable.PositionY), dhCombinable.DrawOrder,
                                          dhCombinable.Collidable, dhCombinable.CollisionBoxHeight, eventThought,
-                                         null, lightMask, depressedTexture, manicTexture);
+                                         null, lightMask, depressedTexture, manicTexture, dhCombinable.IsActive);
             }
             else if(dh.GetType() == typeof(DataHolderCharacter))
             {

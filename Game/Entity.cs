@@ -19,7 +19,8 @@ namespace conscious
         public bool FixedDrawPosition { get; set; }
         public float Rotation { get; protected set; }
         public float Scale { get; set; }
-        public virtual int Width 
+        public bool IsActive { get; set; }
+        public virtual int Width
         {
             get { return EntityTexture.Width; }
         }
@@ -27,7 +28,11 @@ namespace conscious
         {
             get { return EntityTexture.Height; }
         }
-        public bool Collidable { get; set; } 
+        public bool Collidable
+        {
+            get { return Collidable && IsActive; }
+            set { Collidable = value; }
+        } 
         public virtual Rectangle BoundingBox
         {
             get
@@ -47,7 +52,8 @@ namespace conscious
             }
         }
 
-        public Entity(string name, Texture2D texture, Vector2 position, int drawOrder, bool collidable = false, int collBoxHeight = 20)
+        public Entity(string name, Texture2D texture, Vector2 position, int drawOrder,
+                      bool collidable = false, int collBoxHeight = 20, bool isActive = true)
         {
             EntityTexture = texture;
             Rotation = 0f;
@@ -58,13 +64,15 @@ namespace conscious
             FixedDrawPosition = false;
             Collidable = collidable;
             DrawOrder = drawOrder;
+            IsActive = isActive;
         }
 
         public virtual void Update(GameTime gameTime){ }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            _sprite.Draw(spriteBatch, Position, SpriteEffects.None);
+            if(IsActive)
+                _sprite.Draw(spriteBatch, Position, SpriteEffects.None);
         }
 
         public void UpdateTexture(Texture2D texture)
@@ -88,6 +96,7 @@ namespace conscious
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             dataHolderEntity.DrawOrder = DrawOrder;
             dataHolderEntity.Collidable = Collidable;
+            dataHolderEntity.IsActive = IsActive;
             dataHolderEntity.CollisionBoxHeight = CollisionBoxHeight;
             return dataHolderEntity;
         }
@@ -101,6 +110,7 @@ namespace conscious
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             dataHolderEntity.DrawOrder = DrawOrder;
             dataHolderEntity.Collidable = Collidable;
+            dataHolderEntity.IsActive = IsActive;
             dataHolderEntity.CollisionBoxHeight = CollisionBoxHeight;
             return dataHolderEntity;
         }

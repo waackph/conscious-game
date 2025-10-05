@@ -23,8 +23,9 @@ namespace conscious
                      string name, Texture2D texture, Vector2 position, int drawOrder, 
                      bool collidable = false, int collBoxHeight = 20,
                      ThoughtNode eventThought = null, Texture2D lightMask = null,
-                     Texture2D depressedTexture = null, Texture2D manicTexture = null) 
-                     : base(name, texture, position, drawOrder, collidable, collBoxHeight)
+                     Texture2D depressedTexture = null, Texture2D manicTexture = null,
+                     bool isActive = true) 
+                     : base(name, texture, position, drawOrder, collidable, collBoxHeight, isActive)
         {
             _moodStateManager = moodStateManager;
             Thought = thought;
