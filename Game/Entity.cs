@@ -28,17 +28,20 @@ namespace conscious
         {
             get { return EntityTexture.Height; }
         }
+
+        private bool _collidable;
         public bool Collidable
         {
-            get { return Collidable && IsActive; }
-            set { Collidable = value; }
-        } 
+            get { return _collidable && IsActive; }
+            set { _collidable = value; }
+        }
+        
         public virtual Rectangle BoundingBox
         {
             get
             {
-                return new Rectangle((int)Position.X - Width/2, 
-                                     (int)Position.Y - Height/2,
+                return new Rectangle((int)Position.X - Width / 2,
+                                     (int)Position.Y - Height / 2,
                                      Width, Height);
             }
         }
@@ -67,7 +70,10 @@ namespace conscious
             IsActive = isActive;
         }
 
-        public virtual void Update(GameTime gameTime){ }
+        public virtual void Update(GameTime gameTime)
+        {
+            // Default: do nothing
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
