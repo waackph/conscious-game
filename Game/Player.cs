@@ -238,6 +238,7 @@ namespace conscious
             }
             else if(PlayerState == PlayerState.Sleep)
             {
+                _flip = SpriteEffects.None;
                 SleepAnimation.Draw(spriteBatch, Position, _flip);
             }
             else if(PlayerState == PlayerState.Throw)
