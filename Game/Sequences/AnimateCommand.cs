@@ -34,6 +34,8 @@ namespace conscious
                     player.GoToSleep();
                 else if (_animState == PlayerState.Sleep && player.PlayerState == PlayerState.Sleep)
                     player.WakeUp();
+                else
+                    player.PlayerState = _animState;
                 _isAnimationFinished = true;
             }
             else if (GlobalData.IsSameOrSubclass(typeof(Entity), thing.GetType()))
