@@ -14,7 +14,9 @@ namespace conscious
         int _nextRoomId;
         RoomManager _roomManager;
 
-        public ChangeRoomCommand(Vector2 startPosition, PlayerState animState, int nextRoomId, RoomManager roomManager) : base()
+        public ChangeRoomCommand(Vector2 startPosition, PlayerState animState,
+                                 int nextRoomId, RoomManager roomManager,
+                                 int thingId = 0) : base(thingId)
         {
             _initPlayerPosition = startPosition;
             _initPlayerState = animState;
@@ -33,7 +35,13 @@ namespace conscious
                 Player player = (Player)thing;
 
                 _roomManager.changeRoom(_nextRoomId, _initPlayerPosition);
-                player.PlayerState = _initPlayerState;
+                if (_initPlayerState == PlayerState.Sleep && player.PlayerState != PlayerState.Sleep)
+                    player.GoToSleep();
+                else if (_initPlayerState == PlayerState.Sleep && player.PlayerState == PlayerState.Sleep)
+                    player.WakeUp();
+                else
+                    player.PlayerState = _initPlayerState != PlayerState.None ? _initPlayerState : player.PlayerState;
+                player.Position = _initPlayerPosition;
                 CommandFinished = true;
             }
             else

@@ -205,7 +205,8 @@
             }
           ]
         },
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -288,7 +289,8 @@
             }
           ]
         },
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -358,7 +360,8 @@
             }
           ]
         },
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -441,7 +444,8 @@
             }
           ]
         },
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -539,7 +543,8 @@
             }
           ]
         },
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -564,7 +569,8 @@
         "InitPlayerPosX": -1,
         "InitPlayerPosY": -1,
         "CloseTexturePath": "",
-        "Thought": null
+        "Thought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -690,7 +696,8 @@
               }
             }
           ]
-        }
+        },
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -911,7 +918,8 @@
               }
             }
           ]
-        }
+        },
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -1109,7 +1117,8 @@
               }
             }
           ]
-        }
+        },
+        "IsActive": true
       }
     ]
   },
@@ -1259,7 +1268,8 @@
               }
             }
           ]
-        }
+        },
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -1286,7 +1296,8 @@
         "InitPlayerPosY": -1,
         "CloseTexturePath": "",
         "Thought": null,
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -1534,7 +1545,8 @@
             }
           ]
         },
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -1545,11 +1557,12 @@
         "PositionX": 1064,
         "PositionY": 466,
         "DrawOrder": 2,
+        "IsActive": true,
         "Collidable": true,
         "CollisionBoxHeight": 200,
         "ExamineText": "Ein gem\u00fctliches Sofa",
         "IsInInventory": false,
-        "UseAble": true,
+        "UseAble": false,
         "PickUpAble": false,
         "CombineAble": false,
         "GiveAble": false,
@@ -1627,6 +1640,7 @@
                       "LinkageId": 0,
                       "Id": 777,
                       "Thought": "Oft war ich auch hier, wenn ich mich einsam gef\u00fchlt habe. Wenn ich daran denke macht sich in mir direkt eine Traurigkeit breit.",
+                      "ThingId": 4492,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -1642,8 +1656,8 @@
                             "LinkageId": 0,
                             "Id": 1188,
                             "Thought": "lastnode",
-                            "Links": [],
-                            "ThingId": 4492
+                            "ThingId": 4492,
+                            "Links": []
                           }
                         },
                         {
@@ -1660,20 +1674,55 @@
                           "MoodChange": 0,
                           "NextNode": null
                         }
-                      ],
-                      "ThingId": 4492
+                      ]
                     }
                   },
                   {
                     "$type": "conscious.DataHolderFinalThoughtLink, conscious",
                     "IsLocked": false,
                     "ValidMoods": [
-                      1
+                      0
                     ],
                     "Id": 5166,
                     "Option": "Drauf fallen lassen, wie fr\u00fcher; Knie an die Brust, sich komprimieren, zum nichts werden. Einschlafen.",
                     "IsFinal": true,
-                    "sequence": null,
+                    "sequence": {
+                      "Commands": [
+                        {
+                          "$type": "conscious.DataHolderWalkCommand, conscious",
+                          "index": 0.4113522363590595,
+                          "DestinationX": "1064",
+                          "DestinationY": "466"
+                        },
+                        {
+                          "$type": "conscious.DataHolderAnimateCommand, conscious",
+                          "index": 0.7111885511720086,
+                          "DestinationX": 0,
+                          "DestinationY": 0,
+                          "ThingId": "0",
+                          "AnimState": "sleep",
+                          "StartPositionX": "770",
+                          "StartPositionY": "666"
+                        },
+                        {
+                          "$type": "conscious.DataHolderWaitCommand, conscious",
+                          "index": 0.9489940712997139,
+                          "DestinationX": 0,
+                          "DestinationY": 0,
+                          "MillisecondsToWait": "2000"
+                        },
+                        {
+                          "$type": "conscious.DataHolderChangeRoomCommand, conscious",
+                          "index": 0.8896230834595473,
+                          "DestinationX": 0,
+                          "DestinationY": 0,
+                          "AnimState": "none",
+                          "StartPositionX": "770",
+                          "StartPositionY": "666",
+                          "NextRoomId": "17"
+                        }
+                      ]
+                    },
                     "Verb": 4,
                     "MoodChange": 0,
                     "NextNode": null
@@ -1711,7 +1760,8 @@
         "InitPlayerPosY": -1,
         "CloseTexturePath": "",
         "Thought": null,
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -1908,7 +1958,8 @@
             }
           ]
         },
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -1936,7 +1987,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "clear_out/rooms/living_room/backgrounds/living_room_depressed_outline_1920x1080",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -2053,7 +2105,8 @@
             }
           ]
         },
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -2294,7 +2347,8 @@
               }
             }
           ]
-        }
+        },
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -2722,17 +2776,19 @@
           "SoundPath": "clear_out/rooms/living_room/sounds/ring",
           "RepeatedSound": true,
           "ThoughtPortrait": "clear_out/thought_portraits/boss_portrait_cut"
-        }
+        },
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
         "Id": 9392,
         "Name": "Telefon und Adressbuch",
-        "texturePath": "clear_out/rooms/living_room/objects/telephone",
+        "texturePath": "clear_out/rooms/living_room/objects/telephone_outlined",
         "Rotation": 0,
-        "PositionX": 388,
-        "PositionY": 135,
-        "DrawOrder": 2,
+        "PositionX": 940,
+        "PositionY": 715,
+        "DrawOrder": 7,
+        "IsActive": true,
         "Collidable": false,
         "CollisionBoxHeight": 20,
         "ExamineText": "Telefon und Adressbuch",
@@ -2790,6 +2846,7 @@
                       "LinkageId": 0,
                       "Id": 9869,
                       "Thought": "Hier stehen eine Menge Namen, zusammen mit Telefonnummern und Adressen.",
+                      "ThingId": 9392,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -2804,8 +2861,8 @@
                             "LinkageId": 0,
                             "Id": 569,
                             "Thought": "Keine Ahnung wer das ist.",
-                            "Links": [],
-                            "ThingId": 9392
+                            "ThingId": 9392,
+                            "Links": []
                           },
                           "Option": "Anne",
                           "IsFinal": true,
@@ -2826,6 +2883,7 @@
                             "LinkageId": 0,
                             "Id": 1822,
                             "Thought": "Ich erinnere mich! Karim war wohl meine erste gro\u00dfe Liebe.",
+                            "ThingId": 9392,
                             "Links": [
                               {
                                 "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -2840,6 +2898,7 @@
                                   "LinkageId": 0,
                                   "Id": 8929,
                                   "Thought": "Wir haben uns h\u00e4ufig nach der Schule getroffen. Und ein Mal war ich bei ihm.",
+                                  "ThingId": 9392,
                                   "Links": [
                                     {
                                       "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -2854,6 +2913,7 @@
                                         "LinkageId": 0,
                                         "Id": 165,
                                         "Thought": "Meine Mutter wollte nicht das ich dort hinfahre und bei ihm \u00fcbernachte. Bei einem Jungen \u00fcbernachten? Wer wei\u00df auf was f\u00fcr Ideen die kommen. Sowas war bestimmt die Bef\u00fcrchtung meiner Mutter. Ich bin dann trotzdem zu ihm und habe meiner Mutter gesagt, ich sei bei einer Freundin.",
+                                        "ThingId": 9392,
                                         "Links": [
                                           {
                                             "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -2868,6 +2928,7 @@
                                               "LinkageId": 0,
                                               "Id": 4260,
                                               "Thought": "Aber irgendwie muss sie es herausgefunden haben. Als ich zur\u00fcckkam hat sie mich einfach ignoriert. Kein Wort mit mir gesprochen. Als das den ganzen Tag so ging habe ich angefangen zu weinen, aber sie hat mich weiter ignoriert. Jeder Backpfeife f\u00fcr meine L\u00fcge w\u00e4re weniger schlimm gewesen.",
+                                              "ThingId": 9392,
                                               "Links": [
                                                 {
                                                   "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -2882,6 +2943,7 @@
                                                     "LinkageId": 0,
                                                     "Id": 9916,
                                                     "Thought": "Ich konnte es nur erahnen, dass meine L\u00fcge aufgeflogen war und sie sauer auf mich war. Ich lag das restliche Wochenende in meinem Zimmer und hab mir nur gew\u00fcnscht dass meine Mutter mich wieder wahrnimmt. Und irgendwann hatte ich die Angst Unsichtbar geworden zu sein.",
+                                                    "ThingId": 9392,
                                                     "Links": [
                                                       {
                                                         "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -2896,6 +2958,7 @@
                                                           "LinkageId": 0,
                                                           "Id": 280,
                                                           "Thought": "Am Montag Morgen als ich zur Schule musste, war pl\u00f6tzlich der Tisch gedeckt und es gab Fr\u00fchst\u00fcck. Meine Mutter fragte mich ganz routiniert, ob ich Orangensaft wolle. Ich war verwirrt aber zugleich so \u00fcbergl\u00fccklich, dass ich wieder f\u00fcr sie sichtbar war, dass ich es nicht weiter hinterfragt hatte.",
+                                                          "ThingId": 9392,
                                                           "Links": [
                                                             {
                                                               "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -2910,6 +2973,7 @@
                                                                 "LinkageId": 0,
                                                                 "Id": 6239,
                                                                 "Thought": "Aber damals war es meine gerechtfertigte Strafe, daf\u00fcr dass ich gemacht habe, was ich wollte. Ich hatte so viel Angst dass ich wieder unsichtbar werde, dass ich versucht habe, alle Bed\u00fcrfnisse meiner Mutter zu erf\u00fcllen und nichts mehr aus ihrer Sicht \"falsch\" zu machen.",
+                                                                "ThingId": 9392,
                                                                 "Links": [
                                                                   {
                                                                     "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -2924,8 +2988,8 @@
                                                                       "LinkageId": 0,
                                                                       "Id": 4115,
                                                                       "Thought": "Jetzt ist es zu sp\u00e4t. Sie wird mich f\u00fcr immer ignorieren.",
-                                                                      "Links": [],
-                                                                      "ThingId": 9392
+                                                                      "ThingId": 9392,
+                                                                      "Links": []
                                                                     },
                                                                     "Option": "Auch jetzt f\u00fchle ich vor allem Schuld. Ich bereue es dass ich Lydia nie mehr besucht habe.",
                                                                     "IsFinal": true,
@@ -2934,38 +2998,31 @@
                                                                     "MoodChange": 1,
                                                                     "IsSuccessEdge": true
                                                                   }
-                                                                ],
-                                                                "ThingId": 9392
+                                                                ]
                                                               },
                                                               "Option": "Ich war verliebt und wollte mit Karim zusammen sein. Das meine Mutter mich tagelang als Reaktion ignoriert kommt mir aus heutiger Sicht komplett \u00fcbertrieben vor."
                                                             }
-                                                          ],
-                                                          "ThingId": 9392
+                                                          ]
                                                         },
                                                         "Option": "Vielleicht konnte sie mich nicht mehr sehen."
                                                       }
-                                                    ],
-                                                    "ThingId": 9392
+                                                    ]
                                                   },
                                                   "Option": "Ich wusste nicht Mal wirklich warum sie mich ignorierte."
                                                 }
-                                              ],
-                                              "ThingId": 9392
+                                              ]
                                             },
                                             "Option": "Und wie ging es weiter?"
                                           }
-                                        ],
-                                        "ThingId": 9392
+                                        ]
                                       },
                                       "Option": "Jetzt erinnere ich mich."
                                     }
-                                  ],
-                                  "ThingId": 9392
+                                  ]
                                 },
                                 "Option": "Wie konnte ich ihn so vollst\u00e4ndig vergessen?"
                               }
-                            ],
-                            "ThingId": 9392
+                            ]
                           },
                           "Option": "Karim"
                         },
@@ -2997,8 +3054,7 @@
                           "MoodChange": 0,
                           "NextNode": null
                         }
-                      ],
-                      "ThingId": 9392
+                      ]
                     },
                     "Option": "Schauen wir mal in das Adressbuch neben dem Telefon."
                   }
@@ -3153,7 +3209,8 @@
         "InitPlayerPosY": -1,
         "CloseTexturePath": "",
         "Thought": null,
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -3180,7 +3237,8 @@
         "InitPlayerPosY": -1,
         "CloseTexturePath": "",
         "Thought": null,
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -3208,7 +3266,8 @@
         "InitPlayerPosY": -1,
         "CloseTexturePath": "",
         "Thought": null,
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -3292,7 +3351,8 @@
             }
           ]
         },
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -3375,7 +3435,8 @@
             }
           ]
         },
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -3563,7 +3624,8 @@
             }
           ]
         },
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -3590,7 +3652,8 @@
         "InitPlayerPosY": -1,
         "CloseTexturePath": "",
         "Thought": null,
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -3601,6 +3664,7 @@
         "PositionX": 1062,
         "PositionY": 91,
         "DrawOrder": 2,
+        "IsActive": true,
         "Collidable": false,
         "ExamineText": "Das ge\u00f6ffnete Regal mit sch\u00f6nem Keramikgeschirr",
         "IsInInventory": false,
@@ -3663,15 +3727,25 @@
                     "Id": 337,
                     "Option": "Hier k\u00f6nnen wir mit dem Ausr\u00e4umen beginnen. Lydia wird nichts mehr dagegen haben, wenn ich an den Schrank gehe.",
                     "IsFinal": true,
-                    "sequence": null,
-                    "Verb": 4,
+                    "sequence": {
+                      "Commands": [
+                        {
+                          "$type": "conscious.DataHolderDoorActionCommand, conscious",
+                          "index": 0.7475301480666234,
+                          "DestinationX": 0,
+                          "DestinationY": 0,
+                          "DoorId": "5798"
+                        }
+                      ]
+                    },
+                    "Verb": 1,
                     "MoodChange": 0,
                     "NextNode": null,
                     "UnlockId": "7722"
                   },
                   {
                     "$type": "conscious.DataHolderThoughtLink, conscious",
-                    "IsLocked": true,
+                    "IsLocked": false,
                     "ValidMoods": [
                       0
                     ],
@@ -3683,6 +3757,7 @@
                       "LinkageId": 0,
                       "Id": 2080,
                       "Thought": "Es ist sehr sch\u00f6nes Geschirr. Ich habe direkt Respekt davor und Angst etwas zu zerbrechen. Die Teller sind noch von meinen Gro\u00dfeltern und die Tassen hat meine Mutter gekauft.",
+                      "ThingId": 5798,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -3697,6 +3772,7 @@
                             "LinkageId": 0,
                             "Id": 2595,
                             "Thought": "Mal sehen. Ich ziehe es vorsichtig hervor. Es ist eine Kanne aus Ton. Sie kommt mir bekannt vor.",
+                            "ThingId": 5798,
                             "Links": [
                               {
                                 "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -3712,6 +3788,7 @@
                                   "LinkageId": 0,
                                   "Id": 1242,
                                   "Thought": "Sie war zersprungen. Ich erinnere mich. Ich habe sie aus Versehen zerst\u00f6rt als sie auf dem Esstisch stand und ich dagegen gesto\u00dfen war. Da war ich vielleicht 12 Jahre alt.",
+                                  "ThingId": 5798,
                                   "Links": [
                                     {
                                       "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -3726,6 +3803,7 @@
                                         "LinkageId": 0,
                                         "Id": 5693,
                                         "Thought": " Sie hat mich auf den Boden gedr\u00fcckt und geschrieen: R\u00e4um das auf!",
+                                        "ThingId": 5798,
                                         "Links": [
                                           {
                                             "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -3740,6 +3818,7 @@
                                               "LinkageId": 0,
                                               "Id": 5913,
                                               "Thought": "Kein Wunder das Papa abgehauen ist. H\u00e4tte ich das gewusst, h\u00e4tte ich es ihm gleichgetan. Das kann ich dir sagen. So hallen ihre Worte in mir wider.",
+                                              "ThingId": 5798,
                                               "Links": [
                                                 {
                                                   "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -3755,6 +3834,7 @@
                                                     "LinkageId": 0,
                                                     "Id": 8425,
                                                     "Thought": "Ich schrie. Nicht wegen des Schmerzes vom Schnitt. Es war ein Ruf nach Hilfe aber auch ein Ruf der Verzweiflung, verzweifelt davon ich zu sein, eine Last, nichts gutes in die Welt zu bringen, sondern nur Leid f\u00fcr meine Mutter. Die Verzweiflung existieren zu m\u00fcssen.",
+                                                    "ThingId": 5798,
                                                     "Links": [
                                                       {
                                                         "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -3770,6 +3850,7 @@
                                                           "LinkageId": 0,
                                                           "Id": 8928,
                                                           "Thought": "Aber mich hat sie schreiend zur\u00fcck gelassen. Mit Schuld, Scham und verzweifelter Angst vor der Ablehnung",
+                                                          "ThingId": 5798,
                                                           "Links": [
                                                             {
                                                               "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -3780,40 +3861,83 @@
                                                               "Id": 8967,
                                                               "Option": "Ich f\u00fchle mich wie ein Monster. Noch immer. Daran ist sie Schuld. ",
                                                               "IsFinal": true,
-                                                              "sequence": null,
-                                                              "Verb": 4,
+                                                              "sequence": {
+                                                                "Commands": [
+                                                                  {
+                                                                    "$type": "conscious.DataHolderWaitCommand, conscious",
+                                                                    "index": 0.5144102568996093,
+                                                                    "DestinationX": 0,
+                                                                    "DestinationY": 0,
+                                                                    "MillisecondsToWait": "2000"
+                                                                  },
+                                                                  {
+                                                                    "$type": "conscious.DataHolderDoorActionCommand, conscious",
+                                                                    "index": 0.6652662515396645,
+                                                                    "DestinationX": 0,
+                                                                    "DestinationY": 0,
+                                                                    "DoorId": "5798"
+                                                                  },
+                                                                  {
+                                                                    "$type": "conscious.DataHolderAnimateCommand, conscious",
+                                                                    "index": 0.3141480130790415,
+                                                                    "DestinationX": 0,
+                                                                    "DestinationY": 0,
+                                                                    "AnimState": "throw",
+                                                                    "ThingId": "0"
+                                                                  },
+                                                                  {
+                                                                    "$type": "conscious.DataHolderWaitCommand, conscious",
+                                                                    "index": 0.2939371038112756,
+                                                                    "DestinationX": 0,
+                                                                    "DestinationY": 0,
+                                                                    "MillisecondsToWait": "1000"
+                                                                  },
+                                                                  {
+                                                                    "$type": "conscious.DataHolderAnimateCommand, conscious",
+                                                                    "index": 0.8801986790451346,
+                                                                    "DestinationX": 0,
+                                                                    "DestinationY": 0,
+                                                                    "AnimState": "idle",
+                                                                    "ThingId": "0"
+                                                                  },
+                                                                  {
+                                                                    "$type": "conscious.DataHolderVanishCommand, conscious",
+                                                                    "index": 0.5834074745382027,
+                                                                    "DestinationX": 0,
+                                                                    "DestinationY": 0,
+                                                                    "ThingId": "6951"
+                                                                  }
+                                                                ]
+                                                              },
+                                                              "Verb": 0,
                                                               "MoodChange": 0,
-                                                              "NextNode": null
+                                                              "NextNode": null,
+                                                              "IsSuccessEdge": true,
+                                                              "ThingId": "6951",
+                                                              "AnimState": "idle"
                                                             }
-                                                          ],
-                                                          "ThingId": 5798
+                                                          ]
                                                         }
                                                       }
-                                                    ],
-                                                    "ThingId": 5798
+                                                    ]
                                                   }
                                                 }
-                                              ],
-                                              "ThingId": 5798
+                                              ]
                                             },
                                             "Option": "Ich will nicht weiter dar\u00fcber nachdenken."
                                           }
-                                        ],
-                                        "ThingId": 5798
+                                        ]
                                       },
                                       "Option": "Sie hat mich daf\u00fcr gehasst."
                                     }
-                                  ],
-                                  "ThingId": 5798
+                                  ]
                                 }
                               }
-                            ],
-                            "ThingId": 5798
+                            ]
                           },
                           "Option": "Was ist das Versteckte in der hinteren Ecke?"
                         }
-                      ],
-                      "ThingId": 5798
+                      ]
                     }
                   }
                 ]
@@ -3846,7 +3970,8 @@
         "InitPlayerPosX": -1,
         "InitPlayerPosY": -1,
         "CloseTexturePath": "",
-        "Thought": null
+        "Thought": null,
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -3875,14 +4000,50 @@
         "CloseTexturePath": "",
         "IsRoomChangeDoor": true,
         "Thought": null,
-        "EventThought": null
+        "EventThought": null,
+        "IsActive": true
+      },
+      {
+        "$type": "conscious.DataHolderItem, conscious",
+        "Id": 6951,
+        "Name": "Scherben",
+        "texturePath": "clear_out/rooms/dining_room/objects/sheds_outlined",
+        "Rotation": 0,
+        "PositionX": 1450,
+        "PositionY": 820,
+        "DrawOrder": 3,
+        "IsActive": false,
+        "Collidable": false,
+        "CollisionBoxHeight": 20,
+        "ExamineText": "Die Scherben der geliebten Teekanne meiner Mutter.",
+        "IsInInventory": false,
+        "UseAble": false,
+        "PickUpAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "UseSoundFilePath": "",
+        "LightMaskFilePath": "",
+        "RoomId": 0,
+        "DoorId": 0,
+        "IsUnlocked": false,
+        "InitPlayerPosX": -1,
+        "InitPlayerPosY": -1,
+        "CloseTexturePath": "",
+        "IsRoomChangeDoor": true,
+        "CloseSoundFilePath": "",
+        "Thought": null,
+        "EventThought": null,
+        "DepressedTexture": "",
+        "ManicTexture": ""
       }
     ]
   },
   "6": {
     "RoomWidth": 1920,
     "xLimStart": 560,
-    "xLimEnd": 1620,
+    "xLimEnd": 1670,
     "yLimStart": 770,
     "yLimEnd": 1080,
     "SoundFilePath": "Red_Curtains",
@@ -3910,7 +4071,7 @@
         "Name": "T\u00fcr zu Abstellraum",
         "texturePath": "clear_out/rooms/basement/objects/basement_door",
         "Rotation": 0,
-        "PositionX": 1785,
+        "PositionX": 1775,
         "PositionY": 414,
         "DrawOrder": 3,
         "Collidable": true,
@@ -3992,7 +4153,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -4026,7 +4188,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -4060,7 +4223,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -4094,7 +4258,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -4128,7 +4293,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -4162,7 +4328,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       }
     ]
   },
@@ -4321,7 +4488,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -4430,7 +4598,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -4574,7 +4743,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -4608,16 +4778,17 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
         "Id": 4830,
         "Name": "Bild einer Sonnenblume",
-        "texturePath": "clear_out/rooms/bedroom/objects/bedroom_picture",
+        "texturePath": "clear_out/rooms/bedroom/objects/flower_on_canvas",
         "Rotation": 0,
-        "PositionX": 1215,
-        "PositionY": 148,
+        "PositionX": 1344,
+        "PositionY": 157,
         "DrawOrder": 2,
         "Collidable": false,
         "CollisionBoxHeight": 20,
@@ -4768,7 +4939,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       }
     ]
   },
@@ -4920,7 +5092,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -5053,7 +5226,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -5087,7 +5261,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -5121,7 +5296,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -5155,7 +5331,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -5340,7 +5517,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -5374,7 +5552,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       }
     ]
   },
@@ -5491,7 +5670,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -5581,7 +5761,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -5671,7 +5852,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -5705,7 +5887,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -5739,7 +5922,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       }
     ]
   },
@@ -5856,7 +6040,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -5946,7 +6131,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -6036,7 +6222,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -6070,7 +6257,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       }
     ]
   },
@@ -6175,7 +6363,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -6217,7 +6406,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -6308,7 +6498,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -6342,7 +6533,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       }
     ]
   },
@@ -6553,7 +6745,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -6564,6 +6757,7 @@
         "PositionX": 783,
         "PositionY": 358,
         "DrawOrder": 3,
+        "IsActive": true,
         "Collidable": true,
         "CollisionBoxHeight": 20,
         "ExamineText": "Das sind eine Menge Kartons.",
@@ -6591,7 +6785,87 @@
           "IsRoot": true,
           "ThingId": 1617,
           "LinkageId": 0,
-          "Links": []
+          "Links": [
+            {
+              "$type": "conscious.DataHolderThoughtLink, conscious",
+              "Id": 5331,
+              "ValidMoods": [
+                0
+              ],
+              "Option": "First link",
+              "IsLocked": false,
+              "NextNode": {
+                "$type": "conscious.DataHolderThoughtNode, conscious",
+                "Id": 7741,
+                "Thought": "Ziemlich viel Krimskrams...",
+                "IsRoot": false,
+                "LinkageId": 0,
+                "ThingId": 1617,
+                "Links": [
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 832,
+                    "Option": "Das weg zu r\u00e4umen wird ein Spa\u00df. Das ist etwas f\u00fcr die Zukunft-Marla.",
+                    "IsFinal": true,
+                    "sequence": null,
+                    "Verb": 0,
+                    "MoodChange": 0,
+                    "NextNode": null
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 112,
+                    "NextNode": null,
+                    "Option": "Packen wir es endlich an!",
+                    "IsFinal": true,
+                    "sequence": {
+                      "Commands": [
+                        {
+                          "$type": "conscious.DataHolderWaitCommand, conscious",
+                          "index": 0.1724962916620979,
+                          "DestinationX": 0,
+                          "DestinationY": 0,
+                          "MillisecondsToWait": "2000"
+                        },
+                        {
+                          "$type": "conscious.DataHolderVanishCommand, conscious",
+                          "index": 0.2506026927402364,
+                          "DestinationX": 0,
+                          "DestinationY": 0,
+                          "ThingId": "1617"
+                        },
+                        {
+                          "$type": "conscious.DataHolderWaitCommand, conscious",
+                          "index": 0.10397400195938933,
+                          "DestinationX": 0,
+                          "DestinationY": 0,
+                          "MillisecondsToWait": "2000"
+                        },
+                        {
+                          "$type": "conscious.DataHolderVanishCommand, conscious",
+                          "index": 0.257791354695606,
+                          "DestinationX": 0,
+                          "DestinationY": 0,
+                          "ThingId": "4718"
+                        }
+                      ]
+                    },
+                    "Verb": 0,
+                    "MoodChange": 2,
+                    "IsSuccessEdge": true
+                  }
+                ]
+              }
+            }
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6637,7 +6911,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -6671,7 +6946,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -6705,7 +6981,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -6739,7 +7016,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -6773,7 +7051,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -6807,7 +7086,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -6857,7 +7137,7 @@
               "NextNode": {
                 "$type": "conscious.DataHolderThoughtNode, conscious",
                 "Id": 9777,
-                "Thought": "First node",
+                "Thought": "Brauche ich hier noch was?",
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 7398,
@@ -6869,7 +7149,7 @@
                       0
                     ],
                     "Id": 8198,
-                    "Option": "Weiter gehts.",
+                    "Option": "Nope. Weiter gehts.",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -6897,7 +7177,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -6931,7 +7212,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       }
     ]
   },
@@ -6980,7 +7262,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -7070,7 +7353,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -7104,7 +7388,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       }
     ]
   },
@@ -7209,7 +7494,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -7243,7 +7529,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       }
     ]
   },
@@ -7348,7 +7635,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -7382,7 +7670,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       }
     ]
   },
@@ -7396,7 +7685,94 @@
     "LightMapPath": "light/living_room_light_mask",
     "WalkingSoundFilePath": "",
     "AtmoSoundFilePath": "",
-    "EntrySequence": null,
+    "EntrySequence": {
+      "Commands": [
+        {
+          "$type": "conscious.DataHolderWaitCommand, conscious",
+          "DestinationX": 0,
+          "DestinationY": 0,
+          "MillisecondsToWait": 3000,
+          "index": 0.4795136507172487
+        },
+        {
+          "$type": "conscious.DataHolderVanishCommand, conscious",
+          "ThingId": 3924,
+          "DestinationX": 0,
+          "DestinationY": 0,
+          "index": 0.05286263596431273
+        },
+        {
+          "$type": "conscious.DataHolderWaitCommand, conscious",
+          "ThingId": 0,
+          "DestinationX": 0,
+          "DestinationY": 0,
+          "MillisecondsToWait": 2000,
+          "index": 0.3933045383344026
+        },
+        {
+          "$type": "conscious.DataHolderVanishCommand, conscious",
+          "ThingId": 8823,
+          "DestinationX": 0,
+          "DestinationY": 0,
+          "index": 0.39817566513707436
+        },
+        {
+          "$type": "conscious.DataHolderWaitCommand, conscious",
+          "DestinationX": 0,
+          "DestinationY": 0,
+          "MillisecondsToWait": 1000,
+          "index": 0.7205391977236015
+        },
+        {
+          "$type": "conscious.DataHolderVanishCommand, conscious",
+          "ThingId": 6658,
+          "DestinationX": 0,
+          "DestinationY": 0,
+          "index": 0.8798861635309153
+        },
+        {
+          "$type": "conscious.DataHolderWaitCommand, conscious",
+          "DestinationX": 0,
+          "DestinationY": 0,
+          "MillisecondsToWait": 1000,
+          "index": 0.025867795234487456
+        },
+        {
+          "$type": "conscious.DataHolderChangeRoomCommand, conscious",
+          "DestinationX": 0,
+          "DestinationY": 0,
+          "StartPositionX": 770,
+          "StartPositionY": 666,
+          "AnimState": "sleep",
+          "NextRoomId": 4,
+          "index": 0.22008932305547746
+        },
+        {
+          "$type": "conscious.DataHolderSayCommand, conscious",
+          "DestinationX": 0,
+          "DestinationY": 0,
+          "ThoughtText": "Das war ein wirklich merkw\u00fcrdiger Traum. Ich zittere noch immer. Aber ich muss jetzt aufstehen.",
+          "index": 0.37714378913118285
+        },
+        {
+          "$type": "conscious.DataHolderWaitCommand, conscious",
+          "DestinationX": 0,
+          "DestinationY": 0,
+          "MillisecondsToWait": 5000,
+          "index": 0.24962666323898763
+        },
+        {
+          "$type": "conscious.DataHolderAnimateCommand, conscious",
+          "ThingId": 0,
+          "DestinationX": 0,
+          "DestinationY": 0,
+          "StartPositionX": 1064,
+          "StartPositionY": 466,
+          "AnimState": "idle",
+          "index": 0.3247742042634818
+        }
+      ]
+    },
     "Thought": {
       "thoughtType": "conscious.DataHolderThoughtNode, conscious",
       "Id": 7388,
@@ -7443,7 +7819,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -7454,6 +7831,147 @@
         "PositionX": 960,
         "PositionY": 540,
         "DrawOrder": 0,
+        "Collidable": false,
+        "CollisionBoxHeight": 20,
+        "ExamineText": "",
+        "IsInInventory": false,
+        "UseAble": false,
+        "PickUpAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "UseSoundFilePath": "",
+        "LightMaskFilePath": "",
+        "RoomId": 0,
+        "DoorId": 0,
+        "IsUnlocked": false,
+        "InitPlayerPosX": -1,
+        "InitPlayerPosY": -1,
+        "CloseTexturePath": "",
+        "IsRoomChangeDoor": true,
+        "CloseSoundFilePath": "",
+        "Thought": null,
+        "EventThought": null,
+        "DepressedTexture": "",
+        "ManicTexture": "",
+        "IsActive": true
+      },
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "Id": 243,
+        "Name": "Tumor 1",
+        "texturePath": "clear_out/rooms/childroom/objects/tumor1_outlined",
+        "Rotation": 0,
+        "PositionX": 1876,
+        "PositionY": 712,
+        "DrawOrder": 3,
+        "Collidable": false,
+        "CollisionBoxHeight": 20,
+        "ExamineText": "",
+        "IsInInventory": false,
+        "UseAble": false,
+        "PickUpAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "UseSoundFilePath": "",
+        "LightMaskFilePath": "",
+        "RoomId": 0,
+        "DoorId": 0,
+        "IsUnlocked": false,
+        "InitPlayerPosX": -1,
+        "InitPlayerPosY": -1,
+        "CloseTexturePath": "",
+        "IsRoomChangeDoor": true,
+        "CloseSoundFilePath": "",
+        "Thought": null,
+        "EventThought": null,
+        "DepressedTexture": "",
+        "ManicTexture": "",
+        "IsActive": true
+      },
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "Id": 6658,
+        "Name": "Tumor 2",
+        "texturePath": "clear_out/rooms/childroom/objects/tumor2_outlined",
+        "Rotation": 0,
+        "PositionX": 1044,
+        "PositionY": 908,
+        "DrawOrder": 3,
+        "IsActive": false,
+        "Collidable": false,
+        "CollisionBoxHeight": 20,
+        "ExamineText": "",
+        "IsInInventory": false,
+        "UseAble": false,
+        "PickUpAble": false,
+        "CombineAble": false,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "UseSoundFilePath": "",
+        "LightMaskFilePath": "",
+        "RoomId": 0,
+        "DoorId": 0,
+        "IsUnlocked": false,
+        "InitPlayerPosX": -1,
+        "InitPlayerPosY": -1,
+        "CloseTexturePath": "",
+        "IsRoomChangeDoor": true,
+        "CloseSoundFilePath": "",
+        "Thought": null,
+        "EventThought": null,
+        "DepressedTexture": "",
+        "ManicTexture": ""
+      },
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "Id": 8823,
+        "Name": "Tumor 3",
+        "texturePath": "clear_out/rooms/childroom/objects/tumor3_outlined",
+        "Rotation": 0,
+        "PositionX": 1203,
+        "PositionY": 759,
+        "DrawOrder": 3,
+        "IsActive": false,
+        "Collidable": false,
+        "CollisionBoxHeight": 20,
+        "ExamineText": "",
+        "IsInInventory": false,
+        "UseAble": false,
+        "PickUpAble": false,
+        "CombineAble": true,
+        "GiveAble": false,
+        "UseWith": false,
+        "ItemDependency": "-1",
+        "UseSoundFilePath": "",
+        "LightMaskFilePath": "",
+        "RoomId": 0,
+        "DoorId": 0,
+        "IsUnlocked": false,
+        "InitPlayerPosX": -1,
+        "InitPlayerPosY": -1,
+        "CloseTexturePath": "",
+        "IsRoomChangeDoor": true,
+        "CloseSoundFilePath": "",
+        "Thought": null,
+        "EventThought": null,
+        "DepressedTexture": "",
+        "ManicTexture": ""
+      },
+      {
+        "$type": "conscious.DataHolderThing, conscious",
+        "Id": 3924,
+        "Name": "Tumor 4",
+        "texturePath": "clear_out/rooms/childroom/objects/tumor4_outlined",
+        "Rotation": 0,
+        "PositionX": 1565,
+        "PositionY": 768,
+        "DrawOrder": 3,
+        "IsActive": false,
         "Collidable": false,
         "CollisionBoxHeight": 20,
         "ExamineText": "",
@@ -7492,7 +8010,47 @@
     "WalkingSoundFilePath": "",
     "AtmoSoundFilePath": "",
     "EntrySequence": null,
-    "Thought": null,
+    "Thought": {
+      "$type": "conscious.DataHolderThoughtNode, conscious",
+      "Id": 3121,
+      "Thought": "Wo bin ich? Warum ist es so dunkel?",
+      "IsRoot": true,
+      "LinkageId": 0,
+      "Links": [
+        {
+          "$type": "conscious.DataHolderThoughtLink, conscious",
+          "Id": 4955,
+          "ValidMoods": [
+            0
+          ],
+          "Option": "First link",
+          "IsLocked": false,
+          "NextNode": {
+            "$type": "conscious.DataHolderThoughtNode, conscious",
+            "Id": 276,
+            "Thought": "Habe ich geschlafen? Ich kann mit L die Taschenlampe anmachen.",
+            "IsRoot": false,
+            "LinkageId": 0,
+            "Links": [
+              {
+                "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                "IsLocked": false,
+                "ValidMoods": [
+                  0
+                ],
+                "Id": 996,
+                "Option": "Schauen wir uns mal um.",
+                "IsFinal": true,
+                "sequence": null,
+                "Verb": 9,
+                "MoodChange": 0,
+                "NextNode": null
+              }
+            ]
+          }
+        }
+      ]
+    },
     "Things": [
       {
         "$type": "conscious.DataHolderDoor, conscious",
@@ -7582,7 +8140,8 @@
         },
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderItem, conscious",
@@ -7616,7 +8175,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       },
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -7650,7 +8210,8 @@
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
-        "ManicTexture": ""
+        "ManicTexture": "",
+        "IsActive": true
       }
     ]
   }

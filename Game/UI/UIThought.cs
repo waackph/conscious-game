@@ -7,7 +7,7 @@ namespace conscious
     public class UIThought : UIText
     {
         public bool IsClickable { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActiveThought { get; set; }
         public bool IsUsed { get; set; }
         public bool IsVisited { get; set; }
         public bool IsRootThought { get; set; }
@@ -24,7 +24,7 @@ namespace conscious
                          : base(font, text, name, texture, position, drawOrder)
         {
             Collidable = true;
-            IsActive = false;
+            IsActiveThought = false;
             IsClickable = isClickable;
             IsVisited = isVisited;
             IsRootThought = isRootThought;
@@ -34,7 +34,7 @@ namespace conscious
 
         public override void Update(GameTime gameTime)
         {
-            if(IsActive)
+            if(IsActiveThought)
             {
                 _color = Color.Beige;
             }

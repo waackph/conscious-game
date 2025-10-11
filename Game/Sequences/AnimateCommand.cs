@@ -14,7 +14,7 @@ namespace conscious
         float _scaleSize = 1f;
         bool _isAnimationFinished = false;
 
-        public AnimateCommand(Vector2 startPosition, PlayerState animState, float scaleSize) : base()
+        public AnimateCommand(Vector2 startPosition, PlayerState animState, float scaleSize, int thingId = 0) : base(thingId)
         {
             _startPosition = startPosition;
             _animState = animState;
@@ -34,6 +34,8 @@ namespace conscious
                     player.GoToSleep();
                 else if (_animState == PlayerState.Sleep && player.PlayerState == PlayerState.Sleep)
                     player.WakeUp();
+                else
+                    player.PlayerState = _animState;
                 _isAnimationFinished = true;
             }
             else if (GlobalData.IsSameOrSubclass(typeof(Entity), thing.GetType()))

@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using System;
 
 namespace conscious
 {
@@ -8,13 +9,28 @@ namespace conscious
     ///
     public class VanishCommand : Command
     {
+        public VanishCommand(int thingId = 0) : base(thingId)
+        {
+        }
+
         public override void ExecuteCommand(GameTime gameTime, Thing thing)
         {
-            Player player = (Player)thing;
-            if(player.PlayerState == PlayerState.None)
-                player.PlayerState = PlayerState.Idle;
+            if (GlobalData.IsSameOrSubclass(typeof(Player), thing.GetType()))
+            {
+                Player player = (Player)thing;
+                if (player.PlayerState == PlayerState.None)
+                    player.PlayerState = PlayerState.Idle;
+                else
+                    player.PlayerState = PlayerState.None;
+            }
+            else if (GlobalData.IsSameOrSubclass(typeof(Thing), thing.GetType()))
+            {
+                thing.IsActive = !thing.IsActive;
+            }
             else
-                player.PlayerState = PlayerState.None;
+            {
+                throw new ArgumentException("Thing is not a Player or Thing");
+            }
             CommandFinished = true;
         }
 

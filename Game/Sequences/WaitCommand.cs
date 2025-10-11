@@ -14,7 +14,7 @@ namespace conscious
         
         public SoundEffect Sound = null;
 
-        public WaitCommand(int millisecondsToWait) : base()
+        public WaitCommand(int millisecondsToWait, int thingId = 0) : base(thingId)
         {
             _timeSinceBeginning = 0;
             _millisecondsToWait = millisecondsToWait;
@@ -22,7 +22,7 @@ namespace conscious
 
         public override void ExecuteCommand(GameTime gameTime, Thing thing)
         {
-            if (_timeSinceBeginning == 0)
+            if (Sound != null && _timeSinceBeginning == 0)
             {
                 Sound.Play();
             }

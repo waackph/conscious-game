@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace conscious
 {
@@ -29,6 +30,13 @@ namespace conscious
         // as well as the Rooms dimensions.
         public void GenerateRoomGraph(List<Rectangle> boundingBoxes, float minX, float maxX, float minY, float maxY)
         {
+            bool bbIdentical = boundingBoxes.Count == _boundingBoxes.Count &&
+                                boundingBoxes.All(r1 => _boundingBoxes.Any(r2 =>
+                                    r1.X == r2.X && r1.Y == r2.Y &&
+                                    r1.Width == r2.Width && r1.Height == r2.Height));
+            if (bbIdentical)
+                return;
+
             _boundingBoxes = boundingBoxes;
             Graph.Clear();
             _minRoomLimitX = minX;

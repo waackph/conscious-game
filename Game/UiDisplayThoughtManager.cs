@@ -129,7 +129,7 @@ namespace conscious
                 {
                     _currentThought.IsUsed = true;
                 }
-                _currentThought.IsActive = false;
+                _currentThought.IsActiveThought = false;
                 _currentThought = null;
             }
         }
@@ -197,7 +197,7 @@ namespace conscious
             {
                 foreach(UIThought uiThought in _entityManager.GetEntitiesOfType<UIThought>())
                 {
-                    if(uiThought.BoundingBox.Contains(_cursor.Position) && !uiThought.IsUsed && !uiThought.IsActive)
+                    if(uiThought.BoundingBox.Contains(_cursor.Position) && !uiThought.IsUsed && !uiThought.IsActiveThought)
                     {
                         ThoughtNode node;
                         // Do logic stuff (run tree logic in SoCManager and maybe add a thought to UI or terminate thought)
@@ -212,9 +212,9 @@ namespace conscious
                                     EndThoughtMode();
                                 }
                                 if(_currentThought != null)
-                                    _currentThought.IsActive = false;
+                                    _currentThought.IsActiveThought = false;
                                 _currentThought = uiThought;
-                                _currentThought.IsActive = true;
+                                _currentThought.IsActiveThought = true;
                                 StartThoughtMode(node, node.Links);
                             }
                         }

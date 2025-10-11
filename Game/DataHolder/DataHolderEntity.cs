@@ -1,7 +1,7 @@
 namespace conscious
 {
     public class DataHolderEntity
-    {   
+    {
         // Entity
         public string texturePath { get; set; }
         public float Rotation { get; set; }
@@ -10,6 +10,7 @@ namespace conscious
         public string Name { get; set; }
         public int DrawOrder { get; set; }
         public bool Collidable { get; set; }
+        public bool IsActive { get; set; }
         public int CollisionBoxHeight { get; set;}
     }
 }

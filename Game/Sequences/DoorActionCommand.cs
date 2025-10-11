@@ -11,7 +11,7 @@ namespace conscious
         private int _doorId;
         private EntityManager _entityManager;
 
-        public DoorActionCommand(EntityManager entityManager, int doorId) : base()
+        public DoorActionCommand(EntityManager entityManager, int doorId, int thingId = 0) : base(thingId)
         {
             _entityManager = entityManager;
             _doorId = doorId;

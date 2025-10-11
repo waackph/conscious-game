@@ -19,7 +19,8 @@ namespace conscious
         public bool FixedDrawPosition { get; set; }
         public float Rotation { get; protected set; }
         public float Scale { get; set; }
-        public virtual int Width 
+        public bool IsActive { get; set; }
+        public virtual int Width
         {
             get { return EntityTexture.Width; }
         }
@@ -27,13 +28,20 @@ namespace conscious
         {
             get { return EntityTexture.Height; }
         }
-        public bool Collidable { get; set; } 
+
+        private bool _collidable;
+        public bool Collidable
+        {
+            get { return _collidable && IsActive; }
+            set { _collidable = value; }
+        }
+        
         public virtual Rectangle BoundingBox
         {
             get
             {
-                return new Rectangle((int)Position.X - Width/2, 
-                                     (int)Position.Y - Height/2,
+                return new Rectangle((int)Position.X - Width / 2,
+                                     (int)Position.Y - Height / 2,
                                      Width, Height);
             }
         }
@@ -47,7 +55,8 @@ namespace conscious
             }
         }
 
-        public Entity(string name, Texture2D texture, Vector2 position, int drawOrder, bool collidable = false, int collBoxHeight = 20)
+        public Entity(string name, Texture2D texture, Vector2 position, int drawOrder,
+                      bool collidable = false, int collBoxHeight = 20, bool isActive = true)
         {
             EntityTexture = texture;
             Rotation = 0f;
@@ -58,13 +67,18 @@ namespace conscious
             FixedDrawPosition = false;
             Collidable = collidable;
             DrawOrder = drawOrder;
+            IsActive = isActive;
         }
 
-        public virtual void Update(GameTime gameTime){ }
+        public virtual void Update(GameTime gameTime)
+        {
+            // Default: do nothing
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            _sprite.Draw(spriteBatch, Position, SpriteEffects.None);
+            if(IsActive)
+                _sprite.Draw(spriteBatch, Position, SpriteEffects.None);
         }
 
         public void UpdateTexture(Texture2D texture)
@@ -88,6 +102,7 @@ namespace conscious
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             dataHolderEntity.DrawOrder = DrawOrder;
             dataHolderEntity.Collidable = Collidable;
+            dataHolderEntity.IsActive = IsActive;
             dataHolderEntity.CollisionBoxHeight = CollisionBoxHeight;
             return dataHolderEntity;
         }
@@ -101,6 +116,7 @@ namespace conscious
             dataHolderEntity.texturePath = EntityTexture.ToString(); //EntityTexture.Name;
             dataHolderEntity.DrawOrder = DrawOrder;
             dataHolderEntity.Collidable = Collidable;
+            dataHolderEntity.IsActive = IsActive;
             dataHolderEntity.CollisionBoxHeight = CollisionBoxHeight;
             return dataHolderEntity;
         }
