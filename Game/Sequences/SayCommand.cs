@@ -11,7 +11,7 @@ namespace conscious
     {
         private SoCManager _socManager;
         private string _thoughtText;
-;
+
         public SayCommand(SoCManager socManager, string thoughtText, int thingId = 0) : base(thingId)
         {
             _socManager = socManager;

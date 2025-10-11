@@ -23,14 +23,15 @@ namespace conscious
             SequenceFinished = false;
         }
 
-        public void PlaySequence(GameTime gameTime, Player player)
+        public void PlaySequence(GameTime gameTime, Thing initThing)
         {
             if(_currentIndex == -1 || _commands[_currentIndex].CommandFinished)
                 _currentIndex = _currentIndex + 1;
             if(_currentIndex < _commands.Count)
             {
                 Command command = _commands[_currentIndex];
-                Thing thing = player;
+                // The initThing is currently the player at any instance this is called
+                Thing thing = initThing;
                 if (command._thingId != 0)
                 {
                     thing = _roomManager.currentRoom.GetThingInRoom(command._thingId);

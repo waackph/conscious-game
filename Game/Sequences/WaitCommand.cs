@@ -22,7 +22,7 @@ namespace conscious
 
         public override void ExecuteCommand(GameTime gameTime, Thing thing)
         {
-            if (_timeSinceBeginning == 0)
+            if (Sound != null && _timeSinceBeginning == 0)
             {
                 Sound.Play();
             }
