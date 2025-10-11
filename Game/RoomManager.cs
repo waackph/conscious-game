@@ -190,9 +190,7 @@ namespace conscious
             }
 
             // Create path graph of room here
-            _roomGraph.GenerateRoomGraph(currentRoom.GetBoundingBoxes(), 
-                                         0, currentRoom.RoomWidth, 
-                                         0, _preferredBackBufferHeight);
+            RecalculateRoomGraph();
 
             triggerThought(currentRoom);
 
@@ -219,19 +217,30 @@ namespace conscious
                     _player.Position.Y = _player.Position.Y-500f;
                 }
 
-                WalkCommand command = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
-                List<Command> coms = new List<Command>()
+                if (!_sequenceManager.SequenceActive)
                 {
-                    command
-                };
-                Sequence seq = new Sequence(coms);
-                _sequenceManager.StartSequence(seq, _player, MoodState.None);
+                    WalkCommand command = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
+                    List<Command> coms = new List<Command>()
+                    {
+                        command
+                    };
+                    Sequence seq = new Sequence(coms, this);
+                    _sequenceManager.StartSequence(seq, _player, MoodState.None);
+                }
             }
         }
 
-        public void Update(GameTime gameTime){
+        public void RecalculateRoomGraph()
+        {
+            _roomGraph.GenerateRoomGraph(currentRoom.GetBoundingBoxes(), 
+                                         0, currentRoom.RoomWidth, 
+                                         0, _preferredBackBufferHeight);
+        }
 
-            if(currentRoom == null)
+        public void Update(GameTime gameTime)
+        {
+
+            if (currentRoom == null)
             {
                 // Testing: Sequence
                 // if(_rooms[CurrentRoomIndex].EntrySequence == null && CurrentRoomIndex == 2)
@@ -251,35 +260,35 @@ namespace conscious
             }
 
             // Close the door when entered
-            if(_doorEntered != null && !_sequenceManager.SequenceActive)
+            if (_doorEntered != null && !_sequenceManager.SequenceActive)
             {
                 _doorEntered.CloseDoor();
                 _doorEntered = null;
             }
- 
+
             // Scroll room and thing positions
-            if(currentRoom.RoomWidth != _preferredBackBufferWidth)
+            if (currentRoom.RoomWidth != _preferredBackBufferWidth)
             {
                 ScrollRoom();
             }
-            
-            if(!_sequenceManager.SequenceActive)
+
+            if (!_sequenceManager.SequenceActive)
             {
                 LimitRoom();
             }
 
-            if(currentRoom.checkBoundingBoxes(_player.CollisionBox))
+            if (currentRoom.checkBoundingBoxes(_player.CollisionBox))
             {
                 _player.Position = _player.LastPosition;
             }
 
             // Decide player draw order
             _player.UpdateDrawOrder(currentRoom.getDrawOrderInRoom(_player.CollisionBox));
-            
+
             // TODO: move game terminated logic somewhere else (maybe a scripting api?)
-            foreach(Door door in _entityManager.GetEntitiesOfType<Door>())
+            foreach (Door door in _entityManager.GetEntitiesOfType<Door>())
             {
-                if(door.currentlyUsed && door.IsRoomChangeDoor)
+                if (door.currentlyUsed && door.IsRoomChangeDoor)
                 {
                     door.currentlyUsed = false;
                     changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
@@ -288,9 +297,9 @@ namespace conscious
                 }
             }
 
-            if(_player.IsMoving && currentWalkingSound.State != SoundState.Playing)
+            if (_player.IsMoving && currentWalkingSound.State != SoundState.Playing)
                 currentWalkingSound.Play();
-            else if(!_player.IsMoving && currentWalkingSound.State == SoundState.Playing)
+            else if (!_player.IsMoving && currentWalkingSound.State == SoundState.Playing)
                 currentWalkingSound.Pause();
         }
 
@@ -500,7 +509,7 @@ namespace conscious
                 playerAppearance,
                 walkToRoom
             };
-            Sequence seq = new Sequence(coms);
+            Sequence seq = new Sequence(coms, this);
 
             innerThought12.AddLink(new FinalThoughtLink(MoodState.Regular,
                                                         Verb.None,  // We use the sequence here, so no verb needed

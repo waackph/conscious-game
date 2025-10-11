@@ -294,7 +294,7 @@ namespace conscious
             List<Thing> things = new List<Thing>(_entityManager.GetEntitiesOfType<Thing>());
             foreach(Thing entity in things.OrderBy(e => -e.DrawOrder))
             {
-                if(entity.BoundingBox.Contains(_cursor.MouseCoordinates.X, _cursor.MouseCoordinates.Y) && GlobalData.IsNotBackgroundOrPlayer(entity))// && entity.Collidable)
+                if(entity.BoundingBox.Contains(_cursor.MouseCoordinates.X, _cursor.MouseCoordinates.Y) && GlobalData.IsNotBackgroundOrPlayer(entity) && entity.IsActive)
                 {
                     if(entity.Thought == null)
                         return null;
@@ -382,6 +382,8 @@ namespace conscious
 
             Vector2 playerPos = _player.CollisionBox.Center.ToVector2();
             Vector2 thingPos = getThingCenterTopBottomPos(_thingClickedInRoom, bottom: true); // _thingClickedInRoom.CollisionBox.Center.ToVector2();
+            // Check recalculate room graph if room changed
+            _roomManager.RecalculateRoomGraph();
             _path = _pathfinder.AStarSearch(playerPos, thingPos);
         }
 

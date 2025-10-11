@@ -118,7 +118,7 @@ namespace conscious
             List<Rectangle> bbs = new List<Rectangle>();
             foreach(Thing thing in _things)
             {
-                if(thing.Collidable)
+                if(thing.Collidable && thing.IsActive)
                     bbs.Add(thing.CollisionBox);
             }
             return bbs;
