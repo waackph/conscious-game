@@ -190,7 +190,7 @@ namespace conscious
             }
 
             // Create path graph of room here
-            RecalculateRoomGraph();
+            RecalculateRoomGraph(true);
 
             triggerThought(currentRoom);
 
@@ -230,9 +230,9 @@ namespace conscious
             }
         }
 
-        public void RecalculateRoomGraph()
+        public void RecalculateRoomGraph(bool isInit)
         {
-            _roomGraph.GenerateRoomGraph(currentRoom.GetBoundingBoxes(), 
+            _roomGraph.GenerateRoomGraph(isInit, currentRoom.GetBoundingBoxes(), 
                                          0, currentRoom.RoomWidth, 
                                          0, _preferredBackBufferHeight);
         }

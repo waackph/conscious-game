@@ -28,13 +28,13 @@ namespace conscious
 
         // Create the Graph of the room, taking into account all bounding boxes of Things in the Room
         // as well as the Rooms dimensions.
-        public void GenerateRoomGraph(List<Rectangle> boundingBoxes, float minX, float maxX, float minY, float maxY)
+        public void GenerateRoomGraph(bool isInitRoom, List<Rectangle> boundingBoxes, float minX, float maxX, float minY, float maxY)
         {
             bool bbIdentical = boundingBoxes.Count == _boundingBoxes.Count &&
                                 boundingBoxes.All(r1 => _boundingBoxes.Any(r2 =>
                                     r1.X == r2.X && r1.Y == r2.Y &&
                                     r1.Width == r2.Width && r1.Height == r2.Height));
-            if (bbIdentical)
+            if (bbIdentical && !isInitRoom)
                 return;
 
             _boundingBoxes = boundingBoxes;
