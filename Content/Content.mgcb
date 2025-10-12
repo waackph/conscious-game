@@ -1471,6 +1471,18 @@
 /processorParam:TextureFormat=Color
 /build:light/1920_1080_lightmap.png
 
+#begin light/light_cursor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:light/light_cursor.png
+
 #begin light/light_gimp_v2.png
 /importer:TextureImporter
 /processor:TextureProcessor

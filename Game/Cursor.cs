@@ -16,9 +16,11 @@ namespace conscious
         public string InteractionLabel { get; set; }
         public Vector2 MouseCoordinates { get; set; }
         public Matrix InverseTransform { get; set; }
+        public Texture2D LightMask { get; protected set; }
 
-        public Cursor(SpriteFont cursorFont, Matrix inverseTransform, string name, Texture2D texture, Vector2 position, int drawOrder) 
-        : base(name, texture, position, drawOrder)
+        public Cursor(SpriteFont cursorFont, Matrix inverseTransform, string name,
+                      Texture2D texture, Vector2 position, int drawOrder, Texture2D lightMask = null)
+                    : base(name, texture, position, drawOrder)
         {
             _cursorFont = cursorFont;
             InverseTransform = inverseTransform;
@@ -27,6 +29,7 @@ namespace conscious
             FixedDrawPosition = true;
             Rotation = 90f;
             _sprite = new Sprite(EntityTexture, Width, Height, Rotation);
+            LightMask = lightMask;
         }
 
         public override void Update(GameTime gameTime)
