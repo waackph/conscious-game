@@ -11,44 +11,58 @@ namespace conscious
     public class ControlsManager : IComponent
     {
         private Player _player;
+        private EntityManager _entityManager;
+        private KeyboardState _previousKeyState = Keyboard.GetState();
 
         public Vector2 Direction { get; set; }
 
         public Vector2 MousePosition { get; set; }
 
-        public ControlsManager(Player player)
+        public ControlsManager(Player player, EntityManager entityManager)
         {
             _player = player;
+            _entityManager = entityManager;
         }
 
-        public void Update(GameTime gameTime){
+        public void Update(GameTime gameTime)
+        {
             KeyboardState currentKeyboardState = Keyboard.GetState();
             MouseState currentMouseState = Mouse.GetState();
             float totalSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (currentKeyboardState.IsKeyDown(Keys.Up))
+            if (IsKeyPressed(Keys.Up, currentKeyboardState, _previousKeyState, false))
                 _player.MoveUp(totalSeconds);
 
-            if(currentKeyboardState.IsKeyDown(Keys.Down))
+            if (IsKeyPressed(Keys.Down, currentKeyboardState, _previousKeyState, false))
                 _player.MoveDown(totalSeconds);
 
-            if (currentKeyboardState.IsKeyDown(Keys.Left))
+            if (IsKeyPressed(Keys.Left, currentKeyboardState, _previousKeyState, false))
                 _player.MoveLeft(totalSeconds);
 
-            if(currentKeyboardState.IsKeyDown(Keys.Right))
+            if (IsKeyPressed(Keys.Right, currentKeyboardState, _previousKeyState, false))
                 _player.MoveRight(totalSeconds);
 
-            if(MousePosition != Vector2.Zero)
+            if (MousePosition != Vector2.Zero)
             {
                 _player.MoveToPoint(MousePosition, totalSeconds);
             }
-            else if(Direction != Vector2.Zero)
+            else if (Direction != Vector2.Zero)
             {
                 _player.MoveToDirection(Direction);
             }
-            
+
+            if (IsKeyPressed(Keys.F, currentKeyboardState, _previousKeyState, true))
+                _entityManager.ToggleFalshlight();
+
+            _previousKeyState = currentKeyboardState;
         }
 
-        public void Draw(SpriteBatch spriteBatch){ }
+        public void Draw(SpriteBatch spriteBatch) { }
+        
+        public static bool IsKeyPressed(Keys key, KeyboardState currentState, KeyboardState previouseState, bool oneShot)
+        {
+            if (!oneShot) return currentState.IsKeyDown(key);
+            return currentState.IsKeyDown(key) && !previouseState.IsKeyDown(key);
+        }
     }
 }

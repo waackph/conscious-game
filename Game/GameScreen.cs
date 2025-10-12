@@ -75,7 +75,7 @@ namespace conscious
                                  content.Load<Texture2D>("Player/marla_regular_idle_outline"),
                                  playerPosition, 10);
 
-            _controlsManager = new ControlsManager(_player);
+            _controlsManager = new ControlsManager(_player, _entityManager);
 
             // _verbManager = new VerbManager(_entityManager);
             // _verbManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"),

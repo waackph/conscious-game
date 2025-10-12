@@ -37,6 +37,7 @@ namespace conscious
         List<RenderTarget2D> _intermediateTargets;
         float currentTime = 0f;
 
+        public bool FlashlightOn { get; set; }
         public bool doTransition = false;
         public MoodState newMood = MoodState.None;
         bool isDepressed = false;
@@ -69,6 +70,7 @@ namespace conscious
                              Effect entityEffect,
                              Texture2D pixel)
         {
+            FlashlightOn = false;
             _debuggingMode = false;
             _pixel = pixel;
             ViewTransform = viewportTransformation;
@@ -351,10 +353,22 @@ namespace conscious
             //  Transform positions so correct lights are shown in viewport
             spriteBatch.Begin(blendState: BlendState.Additive, transformMatrix: ViewTransform);
 
-            // TODO: add logic to draw lights stored in entities and rooms
-            foreach(Thing thing in GetEntitiesOfType<Thing>())
+            if (FlashlightOn)
             {
-                if(thing.LightMask != null)
+                Cursor cursor = (Cursor)GetUIByName("Cursor");
+                if(cursor != null && cursor.LightMask != null)
+                {
+                    hasLights = true;
+                    Texture2D lightMask = cursor.LightMask;
+                    Vector2 texturePosition = new Vector2(cursor.MouseCoordinates.X - lightMask.Width/2, cursor.MouseCoordinates.Y - lightMask.Height/2);
+                    spriteBatch.Draw(cursor.LightMask, texturePosition, Color.White);
+                }
+            }
+
+            // TODO: add logic to draw lights stored in entities and rooms
+            foreach (Thing thing in GetEntitiesOfType<Thing>())
+            {
+                if (thing.LightMask != null)
                 {
                     hasLights = true;
                     spriteBatch.Draw(thing.LightMask, thing.Position, Color.White);
@@ -373,6 +387,11 @@ namespace conscious
             // Drop the render target
             _graphicsDevice.SetRenderTarget(null);
             return hasLights;
+        }
+
+        public void ToggleFalshlight()
+        {
+            FlashlightOn = !FlashlightOn;
         }
 
         void DrawGameWorldToTexture(RenderTarget2D renderTarget, SpriteBatch spriteBatch)
