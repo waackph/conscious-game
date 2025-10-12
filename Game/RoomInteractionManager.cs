@@ -383,7 +383,7 @@ namespace conscious
             Vector2 playerPos = _player.CollisionBox.Center.ToVector2();
             Vector2 thingPos = getThingCenterTopBottomPos(_thingClickedInRoom, bottom: true); // _thingClickedInRoom.CollisionBox.Center.ToVector2();
             // Check recalculate room graph if room changed
-            _roomManager.RecalculateRoomGraph();
+            _roomManager.RecalculateRoomGraph(false);
             _path = _pathfinder.AStarSearch(playerPos, thingPos);
         }
 
