@@ -31,6 +31,12 @@
 /processorParam:Quality=Best
 /build:Audio/ExitReached.wav
 
+#begin Audio/heartbeat_sound.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/heartbeat_sound.mp3
+
 #begin Audio/Lounge001.mp3
 /importer:Mp3Importer
 /processor:SongProcessor

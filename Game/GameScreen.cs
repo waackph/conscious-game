@@ -31,6 +31,7 @@ namespace conscious
         private RoomInteractionManager _roomInteractionManager;
         private SequenceManager _sequenceManager;
         private AudioManager _audioManager;
+        private ScriptingProgress _scriptingProgress;
         private RoomGraph _roomGraph;
         private AStarShortestPath _pathFinder;
         private Player _player;
@@ -133,6 +134,8 @@ namespace conscious
                                                                  _pathFinder,
                                                                  _cursor,
                                                                  _player);
+
+            _scriptingProgress = new ScriptingProgress(_entityManager, _audioManager, content);
         }
 
         public override void Update(GameTime gameTime)
@@ -162,6 +165,7 @@ namespace conscious
             _roomManager.Update(gameTime);
             _moodStateManager.Update(gameTime);
             _socManager.Update(gameTime);
+            _scriptingProgress.Update(gameTime);
             if (_sequenceManager.SequenceActive)
             {
                 _sequenceManager.Update(gameTime);
@@ -305,6 +309,9 @@ namespace conscious
             {
                 _player.Position = new Vector2(playerData.PlayerPositionX, playerData.PlayerPositionY);
                 _roomManager.ResetCurrentRoom();
+                EventBus.Publish(this, new StartGameEvent
+                {
+                });
             }
             else
                 _player.Position = new Vector2(playerData.PlayerPositionX, playerData.PlayerPositionY);

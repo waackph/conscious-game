@@ -27,10 +27,9 @@ namespace conscious
         {
             if(_currentIndex == -1 || _commands[_currentIndex].CommandFinished)
                 _currentIndex = _currentIndex + 1;
-            if(_currentIndex < _commands.Count)
+            if (_currentIndex < _commands.Count)
             {
                 Command command = _commands[_currentIndex];
-                // The initThing is currently the player at any instance this is called
                 Thing thing = initThing;
                 if (command._thingId != 0)
                 {
@@ -41,6 +40,12 @@ namespace conscious
             else
             {
                 SequenceFinished = true;
+                Command command = _commands[_currentIndex-1];
+                // Notify scripting API about sequence finished
+                EventBus.Publish(this, new SequenceFinishedEvent
+                {
+                    sequenceCommandThingId = command._thingId,
+                });
             }
         }
 
