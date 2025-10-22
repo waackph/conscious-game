@@ -134,7 +134,8 @@ namespace conscious
             // The stretchFactor seems to not work... (factor gets out of range of valid values)
             // Therefore we set it to default
             stretchFactor = 1d;
-            _audioManager.SwitchMusic(currentSong, stretchFactor);
+            // We do not want the song from the room but from the scripting class, so we just reset to current song
+            _audioManager.SwitchMusic(_audioManager.CurrentSong, stretchFactor);
         }
 
         private void updateLightMapOnMood(MoodState moodState)
@@ -150,8 +151,8 @@ namespace conscious
             }
             _entityManager.Lights = new List<Texture2D> { currentLightMap };
         }
-        
-        public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId=0)
+
+        public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId = 0)
         {
             Room lastRoom = currentRoom;
             currentRoom = _rooms[roomId];
@@ -169,21 +170,21 @@ namespace conscious
 
             // _audioManager.PlayMusic(currentRoom.MoodSoundFiles[_moodStateManager.moodState]);
             // _entityManager.LightMap = currentRoom.MoodLightMaps[_moodStateManager.moodState];
-            updateSongOnMood(_moodStateManager.moodState, Direction.None);
+            // updateSongOnMood(_moodStateManager.moodState, Direction.None);
             updateLightMapOnMood(_moodStateManager.moodState);
-            if(currentWalkingSound != null)
-               currentWalkingSound.Pause();
+            if (currentWalkingSound != null)
+                currentWalkingSound.Pause();
 
-            if(currentRoom.AtmoSound != null)
+            if (currentRoom.AtmoSound != null)
                 currentAtmoSound = currentRoom.AtmoSound;
             else
                 currentAtmoSound = null;
-            if(currentRoom.WalkingSound != null)
+            if (currentRoom.WalkingSound != null)
                 currentWalkingSound = currentRoom.WalkingSound;
             else
                 currentWalkingSound = _defaultWalkingSound;
 
-            if(lastRoom != null)
+            if (lastRoom != null)
             {
                 lastRoom.ClearRoomEntityManager();
                 currentRoom.FillEntityManager();
@@ -194,13 +195,13 @@ namespace conscious
 
             triggerThought(currentRoom);
 
-            if(currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
+            if (currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
             {
                 _sequenceManager.StartSequence(currentRoom.EntrySequence, _player, MoodState.None);
             }
-            else if(lastRoom != null && newPlayerPosition != Vector2.Zero)
+            else if (lastRoom != null && newPlayerPosition != Vector2.Zero)
             {
-                if(doorId != 0)
+                if (doorId != 0)
                 {
                     _doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
                     _doorEntered.OpenDoor();
@@ -214,7 +215,7 @@ namespace conscious
                     _player.Position = newPlayerPosition;
                     // TODO: Find a better way to determine the starting position
                     // in case a destination door is not defined
-                    _player.Position.Y = _player.Position.Y-500f;
+                    _player.Position.Y = _player.Position.Y - 500f;
                 }
 
                 if (!_sequenceManager.SequenceActive)
@@ -228,6 +229,12 @@ namespace conscious
                     _sequenceManager.StartSequence(seq, _player, MoodState.None);
                 }
             }
+
+            // Notify scripting API about room change
+            EventBus.Publish(this, new RoomChangeEvent
+            {
+                RoomId = roomId,
+            });
         }
 
         public void RecalculateRoomGraph(bool isInit)
