@@ -30,7 +30,9 @@ namespace conscious
         private Player _player;
         private Cursor _cursor;
         private Texture2D _pixel;
-        private Door _doorEntered;
+        private Door _usedDoor;
+
+        private bool doorSequenceActive = false;
 
         public Room currentRoom;
         public int CurrentRoomIndex;
@@ -78,7 +80,7 @@ namespace conscious
             _pixel = pixel;
 
             CurrentRoomIndex = 0;
-            _doorEntered = null;
+            _usedDoor = null;
 
             _socManager = socManager;
             // _socManager.ActionEvent += executeThoughtInteraction;
@@ -184,6 +186,7 @@ namespace conscious
             else
                 currentWalkingSound = _defaultWalkingSound;
 
+            // Change the room visually by changing the entity manager's things
             if (lastRoom != null)
             {
                 lastRoom.ClearRoomEntityManager();
@@ -195,39 +198,29 @@ namespace conscious
 
             triggerThought(currentRoom);
 
+            // Either start the entry sequence or in case of entering through a door 
+            // start a sequence to walk to the new position
             if (currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
             {
                 _sequenceManager.StartSequence(currentRoom.EntrySequence, _player, MoodState.None);
             }
-            else if (lastRoom != null && newPlayerPosition != Vector2.Zero)
+            else if (lastRoom != null && newPlayerPosition != Vector2.Zero
+                     && doorId != 0 && !_sequenceManager.SequenceActive)
             {
-                if (doorId != 0)
+                Door doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
+                doorEntered.OpenDoor();
+                _player.Position = doorEntered.Position;
+                WalkCommand walk = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
+                WaitCommand wait = new WaitCommand(200);
+                DoorActionCommand closeDoor = new DoorActionCommand(_entityManager, doorId);
+                List<Command> coms = new List<Command>()
                 {
-                    _doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
-                    _doorEntered.OpenDoor();
-                    // Set player to middle of door (for now quick fix)
-                    _player.Position = _doorEntered.Position;
-                }
-                else
-                {
-                    // set player to given destination position and substract an amount
-                    // to have a way to walk, if no entry-door is specified
-                    _player.Position = newPlayerPosition;
-                    // TODO: Find a better way to determine the starting position
-                    // in case a destination door is not defined
-                    _player.Position.Y = _player.Position.Y - 500f;
-                }
-
-                if (!_sequenceManager.SequenceActive)
-                {
-                    WalkCommand command = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
-                    List<Command> coms = new List<Command>()
-                    {
-                        command
-                    };
-                    Sequence seq = new Sequence(coms, this);
-                    _sequenceManager.StartSequence(seq, _player, MoodState.None);
-                }
+                    walk,
+                    wait,
+                    closeDoor,
+                };
+                Sequence seq = new Sequence(coms, this);
+                _sequenceManager.StartSequence(seq, _player, MoodState.None);
             }
 
             // Notify scripting API about room change
@@ -267,11 +260,11 @@ namespace conscious
             }
 
             // Close the door when entered
-            if (_doorEntered != null && !_sequenceManager.SequenceActive)
-            {
-                _doorEntered.CloseDoor();
-                _doorEntered = null;
-            }
+            // if (_usedDoor != null && !_sequenceManager.SequenceActive)
+            // {
+            //     _usedDoor.CloseDoor();
+            //     _usedDoor = null;
+            // }
 
             // Scroll room and thing positions
             if (currentRoom.RoomWidth != _preferredBackBufferWidth)
@@ -292,13 +285,20 @@ namespace conscious
             // Decide player draw order
             _player.UpdateDrawOrder(currentRoom.getDrawOrderInRoom(_player.CollisionBox));
 
+            if (doorSequenceActive && !_sequenceManager.SequenceActive && _usedDoor != null)
+            {
+                doorSequenceActive = false;
+                changeRoom(_usedDoor.RoomId, _usedDoor.InitPlayerPos, _usedDoor.DoorId);
+                _usedDoor = null;
+            }
+
             // TODO: move game terminated logic somewhere else (maybe a scripting api?)
             foreach (Door door in _entityManager.GetEntitiesOfType<Door>())
             {
                 if (door.currentlyUsed && door.IsRoomChangeDoor)
                 {
                     door.currentlyUsed = false;
-                    changeRoom(door.RoomId, door.InitPlayerPos, door.DoorId);
+                    startDoorSequence(door);
                     // OnTerminateGameEvent(true);
                     break;
                 }
@@ -310,20 +310,38 @@ namespace conscious
                 currentWalkingSound.Pause();
         }
 
+        private void startDoorSequence(Door door)
+        {
+            // DoorActionCommand useDoor = new DoorActionCommand(_entityManager, door.DoorId);
+            WaitCommand wait = new WaitCommand(200);
+            DoorActionCommand openDoor = new DoorActionCommand(_entityManager, door.Id);
+            WalkCommand walkThroughDoor = new WalkCommand(door.Position.X, door.Position.Y);
+            List<Command> coms = new List<Command>()
+            {
+                wait,
+                openDoor,
+                walkThroughDoor,
+            };
+            Sequence seq = new Sequence(coms, this);
+            _sequenceManager.StartSequence(seq, _player, MoodState.None);
+            doorSequenceActive = true;
+            _usedDoor = door;
+        }
+
         public void LimitRoom()
         {
             Vector2 xLimits = currentRoom.xLimits;
             Vector2 yLimits = currentRoom.yLimits;
             // xLimits = new Vector2(0, roomEnding);
             // yLimits = new Vector2(_preferredBackBufferHeight*.45f, _preferredBackBufferHeight);
-            if(_player.Position.X > xLimits.Y - (_player.Width/6) / 2)
-                _player.Position.X = xLimits.Y - (_player.Width/6) / 2;
-            else if(_player.Position.X < xLimits.X + (_player.Width/6) / 2)
-                _player.Position.X = xLimits.X + (_player.Width/6) / 2;
-            if(_player.Position.Y > yLimits.Y - (_player.Height/1.75f))
-                _player.Position.Y = yLimits.Y - (_player.Height/1.75f);
-            else if(_player.Position.Y < yLimits.X - (_player.Height/1.75f))
-                _player.Position.Y = yLimits.X - (_player.Height/1.75f);
+            if (_player.Position.X > xLimits.Y - (_player.Width / 6) / 2)
+                _player.Position.X = xLimits.Y - (_player.Width / 6) / 2;
+            else if (_player.Position.X < xLimits.X + (_player.Width / 6) / 2)
+                _player.Position.X = xLimits.X + (_player.Width / 6) / 2;
+            if (_player.Position.Y > yLimits.Y - (_player.Height / 1.75f))
+                _player.Position.Y = yLimits.Y - (_player.Height / 1.75f);
+            else if (_player.Position.Y < yLimits.X - (_player.Height / 1.75f))
+                _player.Position.Y = yLimits.X - (_player.Height / 1.75f);
         }
 
         public void ScrollRoom()
