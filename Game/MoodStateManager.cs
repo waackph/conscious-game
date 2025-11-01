@@ -167,7 +167,7 @@ namespace conscious
 
         public void FillEntityManager()
         {
-            _entityManager.AddEntity(_moodText);
+            // _entityManager.AddEntity(_moodText);
         }
     }
 }

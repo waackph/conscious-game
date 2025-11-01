@@ -33,7 +33,7 @@ namespace conscious
             : base(game, graphicsDevice, content, screenEvent)
         {
             // Initilize
-            _displayFont = content.Load<SpriteFont>("Font/Hud");
+            _displayFont = content.Load<SpriteFont>(GlobalData.MenuFontName);
 
             _entityManager = entityManager;
             _moodStateManager = moodStateManager;

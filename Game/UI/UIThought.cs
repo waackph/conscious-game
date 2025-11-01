@@ -36,15 +36,15 @@ namespace conscious
         {
             if(IsActiveThought)
             {
-                _color = Color.Beige;
+                _color = Color.Sienna;
             }
             else if(IsUsed)
             {
-                _color = Color.AliceBlue;
+                _color = Color.DarkGray;
             }
             else if(BoundingBox.Contains(Mouse.GetState().Position.ToVector2()) && IsClickable)
             {
-                _color = Color.Brown;
+                _color = Color.DarkSlateGray;
             }
             else if(IsVisited)
             {

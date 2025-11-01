@@ -12,6 +12,8 @@ namespace conscious
     public class Cursor : UIComponent
     {
         private SpriteFont _cursorFont;
+        private float scaleFactor = 0.05f;
+        private Texture2D _pixel;
         
         public string InteractionLabel { get; set; }
         public Vector2 MouseCoordinates { get; set; }
@@ -19,7 +21,7 @@ namespace conscious
         public Texture2D LightMask { get; protected set; }
 
         public Cursor(SpriteFont cursorFont, Matrix inverseTransform, string name,
-                      Texture2D texture, Vector2 position, int drawOrder, Texture2D lightMask = null)
+                      Texture2D texture, Vector2 position, int drawOrder, Texture2D lightMask = null, Texture2D pixel = null)
                     : base(name, texture, position, drawOrder)
         {
             _cursorFont = cursorFont;
@@ -30,6 +32,7 @@ namespace conscious
             Rotation = 90f;
             _sprite = new Sprite(EntityTexture, Width, Height, Rotation);
             LightMask = lightMask;
+            _pixel = pixel;
         }
 
         public override void Update(GameTime gameTime)
@@ -43,16 +46,20 @@ namespace conscious
             spriteBatch.Draw(EntityTexture, 
                              Position, 
                              null, 
-                             Color.White, 
-                             90f, 
-                             new Vector2(Width/1.8f, Height/1.2f), 
-                             Vector2.One, 
+                             Color.White,
+                             //  90f,
+                             0f,
+                             new Vector2(Width/2, Height/2), 
+                             new Vector2(scaleFactor, scaleFactor), 
                              SpriteEffects.None, 
                              0f);
             
             if (InteractionLabel != "")
             {
-                spriteBatch.DrawString(_cursorFont, InteractionLabel, new Vector2(Position.X, Position.Y+Height/2), Color.Tomato);
+                Vector2 textSize = _cursorFont.MeasureString(InteractionLabel);
+                Color textColor = Color.MintCream;
+                spriteBatch.Draw(_pixel, new Rectangle((int)Position.X, (int)(Position.Y + (Height/2)*scaleFactor), (int)textSize.X, (int)textSize.Y), new Color(0, 0, 0, 128)); // Semi-transparent black
+                spriteBatch.DrawString(_cursorFont, InteractionLabel, new Vector2(Position.X, Position.Y + (Height/2)*scaleFactor), textColor);
             }
         }
     }
