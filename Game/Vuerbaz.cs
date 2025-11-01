@@ -30,7 +30,8 @@ namespace conscious
         private EntityManager _entityManager;
         private MoodStateManager _moodStateManager;
         private AudioManager _audioManager;
-        private Texture2D _pixel;
+        private Texture2D _debugPixel;
+        private Texture2D _textBackgroundPixel;
         private Matrix _viewportTransformation;
         private Cursor _cursor;
 
@@ -60,10 +61,14 @@ namespace conscious
         {
 
             // debugging
-            _pixel = new Texture2D(GraphicsDevice,1,1);
+            _debugPixel = new Texture2D(GraphicsDevice,1,1);
             Color[] colourData = new Color[1];
             colourData[0] = Color.Wheat; //The Colour of the rectangle
-            _pixel.SetData<Color>(colourData);
+            _debugPixel.SetData<Color>(colourData);
+
+            _textBackgroundPixel = new Texture2D(GraphicsDevice,1,1);
+            colourData[0] = Color.Black; //The Colour of the rectangle
+            _textBackgroundPixel.SetData<Color>(colourData);
 
             _viewportTransformation = Matrix.CreateTranslation(0, 0, 0);
 
@@ -138,20 +143,21 @@ namespace conscious
                                                 Content.Load<Effect>("Effects/depressed-effect"),
                                                 Content.Load<Effect>("Effects/manic-effect"),
                                                 Content.Load<Effect>("Effects/entity-effect"),
-                                                _pixel);
+                                                _debugPixel);
 
             // TODO: Change Transition Texture to something meaningful (also not in moodstatemanager, see to do in that class)
             Texture2D transitionTexture = Content.Load<Texture2D>("light/light_gimp");
-            _moodStateManager = new MoodStateManager(_entityManager, Content.Load<SpriteFont>("Font/Hud"), transitionTexture, _pixel);
+            _moodStateManager = new MoodStateManager(_entityManager, Content.Load<SpriteFont>(GlobalData.HudFontName), transitionTexture, _debugPixel);
 
             _audioManager = new AudioManager();
 
-            _cursor= new Cursor(Content.Load<SpriteFont>("Font/Hud"),
+            _cursor= new Cursor(Content.Load<SpriteFont>(GlobalData.HudFontName),
                                 Matrix.Invert(_viewportTransformation),
                                 "Cursor",
-                                Content.Load<Texture2D>("Cursor/Gem"), 
+                                Content.Load<Texture2D>("Cursor/Dot"), 
                                 new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 1, 
-                                Content.Load<Texture2D>("light/light_cursor"));
+                                Content.Load<Texture2D>("light/light_cursor"),
+                                _textBackgroundPixel);
 
             base.Initialize();
         }
@@ -172,7 +178,7 @@ namespace conscious
 
             _gameScreen = new GameScreen(_graphics.PreferredBackBufferWidth, 
                                         _graphics.PreferredBackBufferHeight,
-                                        _pixel,
+                                        _debugPixel,
                                         _cursor,
                                         this,
                                         this.GraphicsDevice,
