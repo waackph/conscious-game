@@ -292,11 +292,16 @@ namespace conscious
                     roomWalkingSound.IsLooped = true;
                 }
 
+                if(dhRoom.PlayerScale == 0f)
+                {
+                    dhRoom.PlayerScale = 1f;
+                }
+
                 Room room = new Room(dhRoom.RoomWidth, _entityManager, entrySequence,
                                      _content.Load<Texture2D>(dhRoom.LightMapPath), thought,
                                      roomSong, roomAtmoSound, roomWalkingSound,
                                      dhRoom.xLimStart, dhRoom.xLimEnd,
-                                     dhRoom.yLimStart, dhRoom.yLimEnd);
+                                     dhRoom.yLimStart, dhRoom.yLimEnd, dhRoom.PlayerScale);
                 room.SetThings(things);
                 _roomManager.AddRoom(entry.Key, room);
             }

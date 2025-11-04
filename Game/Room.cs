@@ -28,10 +28,11 @@ namespace conscious
         public Dictionary<MoodState, Texture2D> MoodLightMaps;
         public Dictionary<MoodState, Song> MoodSoundFiles;
         public ThoughtNode Thought { get; protected set; }
+        public float PlayerScale;
 
-        public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Texture2D lightMap, ThoughtNode thought, 
+        public Room(int roomWidth, EntityManager entityManager, Sequence sequence, Texture2D lightMap, ThoughtNode thought,
                     Song soundFile = null, SoundEffectInstance atmoSound = null, SoundEffectInstance walkingSound = null,
-                    int xLimStart = 0, int xLimEnd = 1920, int yLimStart = 0, int yLimEnd = 1080)
+                    int xLimStart = 0, int xLimEnd = 1920, int yLimStart = 0, int yLimEnd = 1080, float playerScale = 1.0f)
         {
             RoomWidth = roomWidth;
             _entityManager = entityManager;
@@ -39,7 +40,7 @@ namespace conscious
 
             xLimits = new Vector2(xLimStart, xLimEnd);
             yLimits = new Vector2(yLimStart, yLimEnd);
-            
+
             LightMap = lightMap;
             MoodLightMaps = new Dictionary<MoodState, Texture2D>();
             MoodLightMaps[MoodState.None] = LightMap;
@@ -52,6 +53,8 @@ namespace conscious
             AtmoSound = atmoSound;
 
             Thought = thought;
+
+            PlayerScale = playerScale;
         }
 
         public IEnumerable<T> GetThingsOfType<T>() where T : Thing
@@ -172,6 +175,7 @@ namespace conscious
             dataHolderRoom.AtmoSoundFilePath = AtmoSound?.ToString();
             dataHolderRoom.WalkingSoundFilePath = WalkingSound?.ToString();
             dataHolderRoom.Thought = Thought?.GetDataHolderThoughtNode();
+            dataHolderRoom.PlayerScale = PlayerScale;
             return dataHolderRoom;
         }
     }

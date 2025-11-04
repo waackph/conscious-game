@@ -30,5 +30,15 @@ namespace conscious
                              Vector2.One,
                              flip, 0f);
         }
+        
+        public virtual void Draw(SpriteBatch spriteBatch, Vector2 location, SpriteEffects flip, float scaleFactor)
+        {
+
+            spriteBatch.Draw(Texture, location,
+                             null, Color.White, Rotation,
+                             new Vector2(Width / 2, Height / 2),
+                             new Vector2(scaleFactor, scaleFactor),
+                             flip, 0f);
+        }
     }
 }
