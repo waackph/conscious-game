@@ -193,6 +193,8 @@ namespace conscious
                 currentRoom.FillEntityManager();
             }
 
+            _player.Scale = currentRoom.PlayerScale;
+
             // Create path graph of room here
             RecalculateRoomGraph(true);
 

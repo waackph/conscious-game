@@ -41,14 +41,18 @@ namespace conscious
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 location, SpriteEffects flip){
+        public override void Draw(SpriteBatch spriteBatch, Vector2 location, SpriteEffects flip, float scaleFactor){
             int width = Texture.Width / _atlasCols;
             int height = Texture.Height / _atlasRows;
             int row = (int)((float)_currentFrame / (float)_atlasCols);
             int column = _currentFrame % _atlasCols;
 
+            // Scale the player
+            int playerWidth = (int)(width * scaleFactor);
+            int playerHeight = (int)(height * scaleFactor);
+
             Rectangle textureSpaceRectangle = new Rectangle(width*column, height*row, width, height);
-            Rectangle worldSpacesRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+            Rectangle worldSpacesRectangle = new Rectangle((int)location.X, (int)location.Y, playerWidth, playerHeight);
 
             spriteBatch.Draw(Texture, 
                              worldSpacesRectangle, 
@@ -56,7 +60,7 @@ namespace conscious
                              Color.White, 
                              0f,
                              new Vector2(Width/2, Height/2), 
-                             flip, 
+                             flip,
                              0f);
         }
 

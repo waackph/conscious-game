@@ -52,6 +52,7 @@ namespace conscious
             _lastIsMoving = IsMoving;
             LastPosition = position;
             DrawOrder = GlobalData.PlayerDrawOrder;
+            Scale = 1.0f;
 
             // Standard case for mood dependent animations
             _moodIdleAnimation = new Dictionary<MoodState, AnimatedSprite>();
@@ -228,22 +229,22 @@ namespace conscious
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if(PlayerState == PlayerState.Walk)
+            if (PlayerState == PlayerState.Walk)
             {
-                MoveAnimation.Draw(spriteBatch, Position, _flip);
+                MoveAnimation.Draw(spriteBatch, Position, _flip, Scale);
             }
-            else if(PlayerState == PlayerState.Idle)
+            else if (PlayerState == PlayerState.Idle)
             {
-                IdleAnimation.Draw(spriteBatch, Position, _flip);
+                IdleAnimation.Draw(spriteBatch, Position, _flip, Scale);
             }
-            else if(PlayerState == PlayerState.Sleep)
+            else if (PlayerState == PlayerState.Sleep)
             {
                 _flip = SpriteEffects.None;
-                SleepAnimation.Draw(spriteBatch, Position, _flip);
+                SleepAnimation.Draw(spriteBatch, Position, _flip, Scale);
             }
-            else if(PlayerState == PlayerState.Throw)
+            else if (PlayerState == PlayerState.Throw)
             {
-                ThrowAnimation.Draw(spriteBatch, Position, _flip);
+                ThrowAnimation.Draw(spriteBatch, Position, _flip, Scale);
             }
         }
     }

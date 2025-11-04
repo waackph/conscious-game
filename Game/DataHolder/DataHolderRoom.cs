@@ -16,5 +16,6 @@ namespace conscious
         public string AtmoSoundFilePath { get; set; }
         public string WalkingSoundFilePath { get; set; }
         public DataHolderThoughtNode Thought { get; set; }
+        public float PlayerScale { get; set; }
     }
 }
