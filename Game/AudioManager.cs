@@ -72,7 +72,7 @@ namespace conscious
         {
             foreach (Tuple<string, SoundEffectInstance> instance in soundEffects)
             {
-                if (instance.Item1 == sound.Name)
+                if (instance != null && sound != null && instance.Item1 == sound.Name)
                 {
                     instance.Item2.Stop();
                     instance.Item2.Dispose();

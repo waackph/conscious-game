@@ -135,7 +135,7 @@ namespace conscious
                                                                  _cursor,
                                                                  _player);
 
-            _scriptingProgress = new ScriptingProgress(_entityManager, _audioManager, content);
+            _scriptingProgress = new ScriptingProgress(_entityManager, _audioManager, _roomInteractionManager, _socManager, content);
         }
 
         public override void Update(GameTime gameTime)
