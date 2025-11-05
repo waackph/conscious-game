@@ -42,16 +42,18 @@ namespace conscious
 
         private double threshDiff = 200f;
 
-        public RoomInteractionManager(EntityManager entityManager, 
-                                      SoCManager socManager, 
-                                      InventoryManager inventoryManager, 
+        public bool isTriggerNewThoughtEnabled = true;
+
+        public RoomInteractionManager(EntityManager entityManager,
+                                      SoCManager socManager,
+                                      InventoryManager inventoryManager,
                                       ControlsManager controlsManager,
                                       RoomManager roomManager,
                                       UiDialogManager dialogManager,
                                       SequenceManager sequenceManager,
                                       AStarShortestPath pathfinder,
                                       Cursor cursor,
-                                      Player player) 
+                                      Player player)
         {
             _entityManager = entityManager;
             _socManager = socManager;
@@ -69,7 +71,7 @@ namespace conscious
             _player = player;
 
             _lastThingsClicked = new Queue<Thing>();
-            
+
             _lastButtonState = Mouse.GetState().LeftButton;
             _interactionActive = false;
             _isWalking = false;
@@ -244,17 +246,17 @@ namespace conscious
             {
                 _sequenceManager.StartSequence(e.seq, _player, e.EdgeMood);
             }
-            if(e.EventThoughtId > 0)
+            if (e.EventThoughtId > 0)
             {
                 // add thingId to link properties to get connected thing
-                foreach(Thing tmp in _roomManager.currentRoom.GetThings())
+                foreach (Thing tmp in _roomManager.currentRoom.GetThings())
                 {
-                    if(tmp.EventThought != null && tmp.EventThought.Id == e.EventThoughtId)
+                    if (tmp.EventThought != null && tmp.EventThought.Id == e.EventThoughtId)
                     {
                         _socManager.AddThought(tmp.EventThought);
                         break;
                     }
-                }                    
+                }
             }
         }
 
@@ -264,7 +266,7 @@ namespace conscious
 
         private void triggerThought(Thing thing)
         {
-            if(thing.Thought != null)
+            if(thing.Thought != null && isTriggerNewThoughtEnabled)
             {
                 _socManager.AddThought(thing.Thought);
                 addClickedThing(thing);
@@ -483,7 +485,7 @@ namespace conscious
                 case Verb.Examine:
                     string text = item.Examine();
                     addConcludingThought(text);
-                    if(item.Thought != null)
+                    if(item.Thought != null && isTriggerNewThoughtEnabled)
                     {
                         _socManager.AddThought(item.Thought);
                     }

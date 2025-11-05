@@ -97,21 +97,26 @@ namespace conscious
         {
             // check if there are links to unlock in the newly selected thought tree 
             checkUnlockIds(thought);
-            if(!containsThoughtNode(Thoughts, thought))
+            if (!containsThoughtNode(Thoughts, thought))
             {
-                if(_maxThoughts > 0 && Thoughts.Count + 1 > _maxThoughts)
+                if (_maxThoughts > 0 && Thoughts.Count + 1 > _maxThoughts)
                 {
                     Thoughts.Dequeue();
                 }
                 Thoughts.Enqueue(thought);
                 // If thought has sound, play it
-                if(thought.EventSound != null)
+                if (thought.EventSound != null)
                 {
                     _audioManager.PlaySoundEffect(thought.EventSound, true);
                 }
 
                 // Invoke event for UiDisplayThoughtManager to add the thought UI Element as well
                 OnAddThoughtEvent(thought);
+                // Notify scripting API about room change
+                EventBus.Publish(this, new ThoughtEventTriggered
+                {
+                    ThoughtEventId = thought.Id,
+                });
             }
             else
             {
@@ -188,7 +193,7 @@ namespace conscious
                         AddThought(node);
                     }
                     // If the link is a final option, execute possible operations
-                    if(typeof(FinalThoughtLink) == option.GetType())
+                    if (typeof(FinalThoughtLink) == option.GetType())
                     {
                         _finalOption = (FinalThoughtLink)option;
                         FinalEdgeEventArgs finalEdgeData = new FinalEdgeEventArgs();
@@ -197,7 +202,7 @@ namespace conscious
                         finalEdgeData.EdgeMood = _finalOption.MoodChange;
                         finalEdgeData.EventThoughtId = _finalOption.EventThoughtId;
                         OnFinalEdgeSelected(finalEdgeData);
-                        if(_finalOption.Verb != Verb.None && _finalOption.Verb != Verb.WakeUp)
+                        if (_finalOption.Verb != Verb.None && _finalOption.Verb != Verb.WakeUp)
                         {
                             VerbActionEventArgs data = new VerbActionEventArgs();
                             data.ThingId = CurrentThought.ThingId;
@@ -207,7 +212,7 @@ namespace conscious
                         else
                         {
                             bool usedThought;
-                            if(_finalOption.IsSuccessEdge && !_finalOption.IsLocked)
+                            if (_finalOption.IsSuccessEdge && !_finalOption.IsLocked)
                             {
                                 usedThought = true;
                                 CurrentThought.IsUsed = true;
@@ -216,13 +221,18 @@ namespace conscious
                             {
                                 usedThought = false;
                             }
-                            if(_finalOption.UnlockId != 0)
+                            if (_finalOption.UnlockId != 0)
                                 unlockThoughtLink(_finalOption.UnlockId);
                             OnFinishInteractionEvent(usedThought);
                             option.IsVisited = true;
-                            if(_finalOption.ThoughtSequence == null)
+                            if (_finalOption.ThoughtSequence == null)
                                 _moodStateManager.StateChange = _finalOption.MoodChange;
                         }
+                        // Notify scripting API about room change
+                        EventBus.Publish(this, new ThoughtEventFinished
+                        {
+                            ThoughtEventId = CurrentThought.Id,
+                        });
                     }
                     // _uiDisplayThought.EndThoughtMode();
                     return null;
@@ -242,13 +252,13 @@ namespace conscious
         {
             bool successEdge = (!isCanceled && _finalOption.IsSuccessEdge);
             OnFinishInteractionEvent(successEdge);
-            if(!isCanceled)
+            if (!isCanceled)
             {
                 _finalOption.IsVisited = true;
                 CurrentThought.IsUsed = true;
-                if(_finalOption.UnlockId != 0)
+                if (_finalOption.UnlockId != 0)
                     unlockThoughtLink(_finalOption.UnlockId);
-                if(_finalOption.MoodChange != MoodState.None)
+                if (_finalOption.MoodChange != MoodState.None)
                     _moodStateManager.StateChange = _finalOption.MoodChange;
             }
                 _finalOption = null;

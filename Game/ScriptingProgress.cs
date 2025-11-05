@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
@@ -10,6 +11,8 @@ namespace conscious
     {
         private AudioManager _audioManager;
         private EntityManager _entityManager;
+        private RoomInteractionManager _roomInteractionManager;
+        private SoCManager _socManager;
 
         private bool _isHeartThrobDream = false;
         private bool _HeartThrobDreamHappend = false;
@@ -42,13 +45,17 @@ namespace conscious
         { 6, 1.6f }, // basement
         };
 
-        public ScriptingProgress(EntityManager entityManager, AudioManager audioManager, ContentManager content)
+        public ScriptingProgress(EntityManager entityManager, AudioManager audioManager, RoomInteractionManager roomInteractionManager, SoCManager socManager, ContentManager content)
         {
             _audioManager = audioManager;
             _entityManager = entityManager;
+            _roomInteractionManager = roomInteractionManager;
+            _socManager = socManager;
             EventBus.Subscribe<RoomChangeEvent>(OnRoomChange);
             EventBus.Subscribe<SequenceFinishedEvent>(OnEventHappened);
             EventBus.Subscribe<StartGameEvent>(OnStartGame);
+            EventBus.Subscribe<ThoughtEventTriggered>(OnThoughtEventTriggered);
+            EventBus.Subscribe<ThoughtEventFinished>(OnThoughtEventFinished);
 
             _standardSong = content.Load<Song>("Audio/Red_Curtains");
             _throbHeartSong = content.Load<Song>("Audio/heartbeat_sound");
@@ -63,6 +70,29 @@ namespace conscious
         {
             _audioManager.PlayMusic(_standardSong);
             _audioManager.SetSoundVolume(1f);
+        }
+
+        private void OnThoughtEventTriggered(object sender, ThoughtEventTriggered e)
+        {
+            // Phone ringing thought event
+            if (e.ThoughtEventId == 4836)
+            {
+                _roomInteractionManager.isTriggerNewThoughtEnabled = false;
+            }
+            // Tell player to go to phone if they try to do something else while it's ringing
+            // else if (!_roomInteractionManager.isTriggerNewThoughtEnabled)
+            // {
+            //     _socManager.AddThought(new ThoughtNode(1420, "Ich muss zuerst ans Handy gehen...", 0, true, 0));
+            // }
+        }
+
+        private void OnThoughtEventFinished(object sender, ThoughtEventFinished e)
+        {
+            // Phone ringing thought event finished
+            if (e.ThoughtEventId == 4836)
+            {
+                _roomInteractionManager.isTriggerNewThoughtEnabled = true;
+            }
         }
 
         private void OnRoomChange(object sender, RoomChangeEvent e)
