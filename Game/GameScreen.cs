@@ -40,6 +40,7 @@ namespace conscious
         private int _preferredBackBufferHeight;
         private Texture2D _pixel;
 
+        private bool _gameLoaded = false;
         public bool gameFinished = false;
         private EventHandler _gameEndingScreenEvent;
 
@@ -151,7 +152,6 @@ namespace conscious
 
             if (gameFinished)
             {
-                // TODO: Add logic to reinitilize game (if continue is clicked afterwards)
                 _gameEndingScreenEvent.Invoke(this, new EventArgs());
             }
 
@@ -179,11 +179,19 @@ namespace conscious
             {
                 EnteredScreen = false;
                 InitilizeEntityManager();
+                if (_gameLoaded)
+                {
+                    EventBus.Publish(this, new ContinueGameEvent { });
+                }
             }
 
             _entityManager.Update(gameTime);
 
             _lastKeyboardState = Keyboard.GetState();
+
+            // After first update, mark game as loaded
+            if (!_gameLoaded)
+                _gameLoaded = true;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -291,7 +299,7 @@ namespace conscious
                     roomWalkingSound.IsLooped = true;
                 }
 
-                if(dhRoom.PlayerScale == 0f)
+                if (dhRoom.PlayerScale == 0f)
                 {
                     dhRoom.PlayerScale = 1f;
                 }

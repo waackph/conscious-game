@@ -56,6 +56,7 @@ namespace conscious
             EventBus.Subscribe<RoomChangeEvent>(OnRoomChange);
             EventBus.Subscribe<SequenceFinishedEvent>(OnEventHappened);
             EventBus.Subscribe<StartGameEvent>(OnStartGame);
+            EventBus.Subscribe<ContinueGameEvent>(OnContinueGame);
             EventBus.Subscribe<ThoughtEventTriggered>(OnThoughtEventTriggered);
             EventBus.Subscribe<ThoughtEventFinished>(OnThoughtEventFinished);
 
@@ -69,6 +70,12 @@ namespace conscious
         }
 
         private void OnStartGame(object sender, StartGameEvent e)
+        {
+            _audioManager.PlayMusic(_standardSong);
+            _audioManager.SetSoundVolume(1f);
+        }
+
+        private void OnContinueGame(object sender, ContinueGameEvent e)
         {
             _audioManager.PlayMusic(_standardSong);
             _audioManager.SetSoundVolume(1f);

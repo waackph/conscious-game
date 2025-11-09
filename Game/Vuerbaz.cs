@@ -239,6 +239,8 @@ namespace conscious
             _currentScreen = _endingScreen;
             _currentScreen.EnteredScreen = true;
             _entityManager.IsGameScreen = false;
+            // Show only new button again to enforce new game start
+            _titleScreen.GameLoaded = false;
         }
 
         public void TitleContinueEvent(object obj, EventArgs e)

@@ -60,25 +60,25 @@ namespace conscious
                                                    _content.Load<Texture2D>("UI/debug_sprites/ui_button"),
                                                    new Vector2(350, 250), 1);
 
-            UIButton saveButton = new UIButton(new EventHandler(SaveButton_Click),
-                                                   _displayFont,
-                                                   "Save",
-                                                   "Save",
-                                                   _content.Load<Texture2D>("UI/debug_sprites/ui_button"),
-                                                   new Vector2(350, 300), 1);
+            // UIButton saveButton = new UIButton(new EventHandler(SaveButton_Click),
+            //                                        _displayFont,
+            //                                        "Save",
+            //                                        "Save",
+            //                                        _content.Load<Texture2D>("UI/debug_sprites/ui_button"),
+            //                                        new Vector2(350, 300), 1);
 
             UIButton quitButton = new UIButton(new EventHandler(QuitButton_Click),
                                                _displayFont,
                                                "Quit",
                                                "Quit",
                                                _content.Load<Texture2D>("UI/debug_sprites/ui_button"),
-                                               new Vector2(350, 350), 1);
+                                               new Vector2(350, 300), 1);
 
             _uiComponents = new List<UIComponent>()
             {
                 continueButton,
                 newButton,
-                saveButton,
+                // saveButton,
                 quitButton
             };
         }
@@ -125,6 +125,11 @@ namespace conscious
         public override void InitilizeEntityManager(){
             foreach(UIComponent uiComponent in _uiComponents)
             {
+                // Show continue button only if game has already started
+                if (uiComponent.Name == "Continue" && !GameLoaded)
+                {
+                    continue;
+                }
                 _entityManager.AddEntity(uiComponent);
             }
 
