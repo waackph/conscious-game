@@ -40,8 +40,6 @@ namespace conscious
         public SoundEffectInstance currentAtmoSound;
         private SoundEffectInstance _defaultWalkingSound;
 
-        public event EventHandler<bool> TerminateGameEvent;
-
         public RoomManager(ContentManager content, 
                            Player player,
                            Cursor cursor,
@@ -90,11 +88,6 @@ namespace conscious
             _defaultWalkingSound.IsLooped = true;
 
             // LoadRooms();
-        }
-
-        protected virtual void OnTerminateGameEvent(bool e)
-        {
-            TerminateGameEvent?.Invoke(this, e);
         }
 
         private void changeRoomOnMood(object sender, MoodStateChangeEventArgs e)
@@ -294,14 +287,12 @@ namespace conscious
                 _usedDoor = null;
             }
 
-            // TODO: move game terminated logic somewhere else (maybe a scripting api?)
             foreach (Door door in _entityManager.GetEntitiesOfType<Door>())
             {
                 if (door.currentlyUsed && door.IsRoomChangeDoor)
                 {
                     door.currentlyUsed = false;
                     startDoorSequence(door);
-                    // OnTerminateGameEvent(true);
                     break;
                 }
             }
