@@ -22,12 +22,16 @@ namespace conscious
             }
         }
 
-        public UIText(SpriteFont font, string text, string name, Texture2D texture, Vector2 position, int drawOrder) 
+        public UIText(SpriteFont font, string text, string name,
+                      Texture2D texture, Vector2 position, int drawOrder, Color? color = null)
         : base(name, texture, position, drawOrder)
         {
             _font = font;
             _text = Regex.Replace(text, "(.{" + 45 + "})", "$1" + Environment.NewLine);
-            _color = Color.Black;
+            if(color == null)
+                _color = Color.Black;
+            else
+                _color = (Color)color;
 
             DrawOrder = 7;
         }

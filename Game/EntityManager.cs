@@ -43,6 +43,8 @@ namespace conscious
         bool isDepressed = false;
         bool isManic = false;
 
+        public bool IsGameScreen = false;
+
         bool useTransition = true;
         bool maxNoiseReached = false;
         bool transitionStarted = false;
@@ -402,7 +404,7 @@ namespace conscious
             _graphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
         
             // Draw the scene
-            _graphicsDevice.Clear(Color.CornflowerBlue);
+            _graphicsDevice.Clear(Color.Black);
             DrawGameWorld(spriteBatch);
         
             // Drop the render target
@@ -412,7 +414,9 @@ namespace conscious
         public void DrawGameWorld(SpriteBatch spriteBatch){
 
             // The view transformation matrix
-            Matrix view = ViewTransform;  // Matrix.Identity;
+            Matrix view = Matrix.Identity;
+            if (IsGameScreen)
+                view = ViewTransform;
 
             // The projection transformation matrix
             Matrix projection = Matrix.CreateOrthographicOffCenter(0, GlobalData.ScreenWidth, GlobalData.ScreenHeight, 0, 0, 1);

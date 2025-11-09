@@ -41,10 +41,14 @@ namespace conscious
         private Texture2D _pixel;
 
         public bool gameFinished = false;
+        private EventHandler _gameEndingScreenEvent;
 
         private static JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
 
-        public GameScreen(int preferredBackBufferWidth, int preferredBackBufferHeight, Texture2D pixel, Cursor cursor, Vuerbaz game, GraphicsDevice graphicsDevice, ContentManager content, EventHandler screenEvent, EntityManager entityManager, MoodStateManager moodStateManager, AudioManager audioManager)
+        public GameScreen(int preferredBackBufferWidth, int preferredBackBufferHeight, Texture2D pixel,
+                          Cursor cursor, Vuerbaz game, GraphicsDevice graphicsDevice,
+                          ContentManager content, EventHandler screenEvent, EventHandler gameEndingScreenEvent,
+                          EntityManager entityManager, MoodStateManager moodStateManager, AudioManager audioManager)
             : base(game, graphicsDevice, content, screenEvent)
         {
             // Initilize
@@ -61,6 +65,8 @@ namespace conscious
 
             _moodStateManager = moodStateManager;
             _audioManager = audioManager;
+
+            _gameEndingScreenEvent = gameEndingScreenEvent;
 
             Vector2 playerPosition = new Vector2(1000, 150);  //Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
 
@@ -122,8 +128,6 @@ namespace conscious
                                            defaultWalkingSoundInst
                                            );
 
-            _roomManager.TerminateGameEvent += SetTerminateGame;
-
             _roomInteractionManager = new RoomInteractionManager(_entityManager,
                                                                  _socManager,
                                                                  _inventoryManager,
@@ -135,7 +139,7 @@ namespace conscious
                                                                  _cursor,
                                                                  _player);
 
-            _scriptingProgress = new ScriptingProgress(_entityManager, _audioManager, _roomInteractionManager, _socManager, content);
+            _scriptingProgress = new ScriptingProgress(this, _entityManager, _audioManager, _roomInteractionManager, _socManager, content);
         }
 
         public override void Update(GameTime gameTime)
@@ -148,7 +152,7 @@ namespace conscious
             if (gameFinished)
             {
                 // TODO: Add logic to reinitilize game (if continue is clicked afterwards)
-                _screenEvent.Invoke(this, new EventArgs());
+                _gameEndingScreenEvent.Invoke(this, new EventArgs());
             }
 
             if (!_dialogManager.DialogActive && !_sequenceManager.SequenceActive)
@@ -185,11 +189,6 @@ namespace conscious
         public override void Draw(SpriteBatch spriteBatch)
         {
             _entityManager.Draw(spriteBatch);
-        }
-
-        public void SetTerminateGame(object sender, bool e)
-        {
-            gameFinished = true;
         }
 
         public override void InitilizeEntityManager()

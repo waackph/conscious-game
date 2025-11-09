@@ -26,6 +26,7 @@ namespace conscious
         private SpriteBatch _spriteBatch;
         private TitleScreen _titleScreen;
         private GameScreen _gameScreen;
+        private EndingScreen _endingScreen;
         private Screen _currentScreen;
         private EntityManager _entityManager;
         private MoodStateManager _moodStateManager;
@@ -170,7 +171,6 @@ namespace conscious
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
             _titleScreen = new TitleScreen(new EventHandler(TitleNewEvent), new EventHandler(TitleSaveEvent), 
                                            this, this.GraphicsDevice, this.Content, 
                                            new EventHandler(TitleContinueEvent), 
@@ -184,10 +184,15 @@ namespace conscious
                                         this.GraphicsDevice,
                                         this.Content, 
                                         new EventHandler(GameMenuEvent), 
+                                        new EventHandler(GameEndingEvent),
                                         _entityManager, _moodStateManager, _audioManager);
+                                        
+            _endingScreen = new EndingScreen(_entityManager, _audioManager, _moodStateManager,
+                                             this, this.GraphicsDevice, this.Content,
+                                             new EventHandler(GameMenuEvent));
 
             // _moodTransitionEffect = Content.Load<Effect>("Effects/mood-transition-effect");
-            
+
             _currentScreen = _titleScreen;
             _currentScreen.EnteredScreen = true;
         }
@@ -201,7 +206,6 @@ namespace conscious
         {
             _currentScreen.Update(gameTime);
 
-            // TODO: Add your update logic here
             base.Update(gameTime);
         }
 
@@ -212,29 +216,41 @@ namespace conscious
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            // TODO: Add your drawing code here
             _currentScreen.Draw(_spriteBatch);
 
             base.Draw(gameTime);
         }
 
-        public void GameMenuEvent(object obj, EventArgs e){
+        public void GameMenuEvent(object obj, EventArgs e)
+        {
             _entityManager.Clear();
             IsMouseVisible = true;
             _currentScreen = _titleScreen;
             _currentScreen.EnteredScreen = true;
+            _entityManager.IsGameScreen = false;
         }
 
-        public void TitleContinueEvent(object obj, EventArgs e){
+        public void GameEndingEvent(object obj, EventArgs e)
+        {
+            _entityManager.Clear();
+            IsMouseVisible = true;
+            _currentScreen = _endingScreen;
+            _currentScreen.EnteredScreen = true;
+            _entityManager.IsGameScreen = false;
+        }
+
+        public void TitleContinueEvent(object obj, EventArgs e)
+        {
             _entityManager.Clear();
             IsMouseVisible = false;
             _currentScreen = _gameScreen;
             _currentScreen.EnteredScreen = true;
-            if(!_titleScreen.GameLoaded)
+            _entityManager.IsGameScreen = true;
+            if (!_titleScreen.GameLoaded)
             {
-                _gameScreen.LoadGame(newGame:false);
+                _gameScreen.LoadGame(newGame: false);
                 _titleScreen.GameLoaded = true;
             }
         }
@@ -245,6 +261,7 @@ namespace conscious
             IsMouseVisible = false;
             _currentScreen = _gameScreen;
             _currentScreen.EnteredScreen = true;
+            _entityManager.IsGameScreen = true;
             _gameScreen.LoadGame(newGame:true);
             _titleScreen.GameLoaded = true;
         }

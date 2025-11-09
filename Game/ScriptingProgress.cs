@@ -13,6 +13,7 @@ namespace conscious
         private EntityManager _entityManager;
         private RoomInteractionManager _roomInteractionManager;
         private SoCManager _socManager;
+        private GameScreen _gameScreen;
 
         private bool _isHeartThrobDream = false;
         private bool _HeartThrobDreamHappend = false;
@@ -45,8 +46,9 @@ namespace conscious
         { 6, 1.6f }, // basement
         };
 
-        public ScriptingProgress(EntityManager entityManager, AudioManager audioManager, RoomInteractionManager roomInteractionManager, SoCManager socManager, ContentManager content)
+        public ScriptingProgress(GameScreen gameScreen, EntityManager entityManager, AudioManager audioManager, RoomInteractionManager roomInteractionManager, SoCManager socManager, ContentManager content)
         {
+            _gameScreen = gameScreen;
             _audioManager = audioManager;
             _entityManager = entityManager;
             _roomInteractionManager = roomInteractionManager;
@@ -92,6 +94,11 @@ namespace conscious
             if (e.ThoughtEventId == 4836)
             {
                 _roomInteractionManager.isTriggerNewThoughtEnabled = true;
+            }
+            else if (e.ThoughtEventId == 12345678) // Placeholder for other thought events
+            {
+                // finalize game
+                _gameScreen.gameFinished = true;
             }
         }
 
