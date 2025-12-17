@@ -22,6 +22,7 @@ namespace conscious
 
         // properties
         private SpriteFont _displayFont;
+        private SpriteFont _titleFont;
 
         private Song _titleSong;
 
@@ -34,6 +35,7 @@ namespace conscious
         {
             // Initilize
             _displayFont = content.Load<SpriteFont>(GlobalData.MenuFontName);
+            _titleFont = content.Load<SpriteFont>(GlobalData.HeadlineFontName);
 
             _entityManager = entityManager;
             _moodStateManager = moodStateManager;
@@ -51,14 +53,14 @@ namespace conscious
                                                    "Continue",
                                                    "Continue",
                                                    _content.Load<Texture2D>("clear_out/UI/button_background"),
-                                                   new Vector2(350, 200), 1);
+                                                   new Vector2(350, 250), 1);
 
             UIButton newButton = new UIButton(new EventHandler(NewButton_Click),
                                                    _displayFont,
                                                    "New",
                                                    "New",
                                                    _content.Load<Texture2D>("clear_out/UI/button_background"),
-                                                   new Vector2(350, 250), 1);
+                                                   new Vector2(350, 300), 1);
 
             // UIButton saveButton = new UIButton(new EventHandler(SaveButton_Click),
             //                                        _displayFont,
@@ -72,14 +74,20 @@ namespace conscious
                                                "Quit",
                                                "Quit",
                                                _content.Load<Texture2D>("clear_out/UI/button_background"),
-                                               new Vector2(350, 300), 1);
+                                               new Vector2(350, 350), 1);
+
+            UIText titleText = new UIText(_titleFont,
+                                          "Die Entrümpelung", "gameTitleText",
+                                          new Texture2D(graphicsDevice, 1, 1),
+                                          new Vector2(350, 200), 5, Color.Black);
 
             _uiComponents = new List<UIComponent>()
             {
                 continueButton,
                 newButton,
                 // saveButton,
-                quitButton
+                quitButton,
+                titleText
             };
         }
 

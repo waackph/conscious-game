@@ -1613,6 +1613,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/File.spritefont;Font/verb_pickup.spritefont
 
+#begin Font/Headline.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/Headline.spritefont
+
 #begin Font/Hud.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

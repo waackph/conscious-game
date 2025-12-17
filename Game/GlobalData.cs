@@ -11,6 +11,7 @@ namespace conscious
         public static string ThoughtFontName = "Font/Thought_UI";
         public static string HudFontName = "Font/UI_Font";
         public static string MenuFontName = "Font/Menu_Font";
+        public static string HeadlineFontName = "Font/Headline";
 
         public static bool IsNotBackgroundOrPlayer(Entity entity)
         {
