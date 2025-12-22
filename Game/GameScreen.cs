@@ -441,7 +441,7 @@ namespace conscious
 
                 SoundEffectInstance useSound = null;
                 if (dhItem.UseSoundFilePath != null && dhItem.UseSoundFilePath != "")
-                    useSound = _content.Load<SoundEffect>(dhItem.UseSoundFilePath).CreateInstance();
+                    useSound = _content.Load<SoundEffect>("Audio/" + dhItem.UseSoundFilePath).CreateInstance();
 
                 entity = new Item(dhItem.Id, dhItem.Name,
                                   dhItem.PickUpAble, dhItem.UseAble,
@@ -484,10 +484,10 @@ namespace conscious
 
                 SoundEffectInstance useSound = null;
                 if (dhDoor.UseSoundFilePath != null && dhDoor.UseSoundFilePath != "")
-                    useSound = _content.Load<SoundEffect>(dhDoor.UseSoundFilePath).CreateInstance();
+                    useSound = _content.Load<SoundEffect>("Audio/" + dhDoor.UseSoundFilePath).CreateInstance();
                 SoundEffectInstance closeSound = null;
                 if (dhDoor.CloseSoundFilePath != null && dhDoor.CloseSoundFilePath != "")
-                    closeSound = _content.Load<SoundEffect>(dhDoor.UseSoundFilePath).CreateInstance();
+                    closeSound = _content.Load<SoundEffect>("Audio/" + dhDoor.CloseSoundFilePath).CreateInstance();
 
                 entity = new Door(dhDoor.Id, dhDoor.Name,
                                   dhDoor.PickUpAble, dhDoor.UseAble,
@@ -596,7 +596,7 @@ namespace conscious
                 eventSound = _content.Load<SoundEffect>(dhThought.SoundPath);
 
             Texture2D thoughtPortrait = null;
-            if (dhThought.ThoughtPortrait != null)
+            if (dhThought.ThoughtPortrait != null && dhThought.ThoughtPortrait != "")
                 thoughtPortrait = _content.Load<Texture2D>(dhThought.ThoughtPortrait);
 
             ThoughtNode thought = new ThoughtNode(dhThought.Id,
@@ -657,7 +657,7 @@ namespace conscious
                                             dhFinalLink.IsLocked,
                                             dhFinalLink.ValidMoods,
                                             dhFinalLink.IsSuccessEdge,
-                                            dhFinalLink.EventThought);
+                                            dhFinalLink.EventThoughtId);
             }
             else
             {

@@ -249,14 +249,7 @@ namespace conscious
             calculateSubthoughtPositions();
             addSubthought();
 
-            Texture2D portrait = _socManager.CurrentThought.ThoughtPortrait;
-
-            // add thought portrait
-            if(portrait != null)
-            {
-                _consciousnessPortrait.UpdateTexture(portrait);
-                _entityManager.AddEntity(_consciousnessPortrait);
-            }
+            AddPortraitToThoughtMode(node.ThoughtPortrait);
         }
 
         public void EndThoughtMode()
@@ -275,22 +268,33 @@ namespace conscious
             _currentSubthoughtLinks = convertLinksToUi(links);
             calculateSubthoughtPositions();
             addSubthought();
+            AddPortraitToThoughtMode(node.ThoughtPortrait);
+        }
+        
+        private void AddPortraitToThoughtMode(Texture2D portrait)
+        {
+            if(portrait != null)
+            {
+                _entityManager.RemoveEntity(_consciousnessPortrait);
+                _consciousnessPortrait.UpdateTexture(portrait);
+                _entityManager.AddEntity(_consciousnessPortrait);
+            }
         }
 
         private void calculateSubthoughtPositions()
         {
             float uiXPos = _bgX + _thoughtOffsetX - _offsetX;
-            float uiYPos = _bgY + _consciousnessBackground.Height/2 + _thoughtOffsetY/2;
+            float uiYPos = _bgY + _consciousnessBackground.Height / 2 + _thoughtOffsetY / 2;
             int thoughtNumber = 0;
             float heightOffset = 0f;
-            if(_currentSubthought != null && _currentSubthought.DoDisplay)
+            if (_currentSubthought != null && _currentSubthought.DoDisplay)
             {
                 _currentSubthought.SetPosition(uiXPos,
                                                uiYPos + thoughtNumber * _offsetY + heightOffset);
                 thoughtNumber++;
                 heightOffset += _currentSubthought.BoundingBox.Height;
             }
-            foreach(UIThought option in _currentSubthoughtLinks)
+            foreach (UIThought option in _currentSubthoughtLinks)
             {
                 // add the offset to better differentiate the characters response from the options
                 int optionOffset = 10;

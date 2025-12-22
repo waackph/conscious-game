@@ -228,11 +228,14 @@ namespace conscious
                             if (_finalOption.ThoughtSequence == null)
                                 _moodStateManager.StateChange = _finalOption.MoodChange;
                         }
-                        // Notify scripting API about room change
-                        EventBus.Publish(this, new ThoughtEventFinished
+                        if (CurrentThought != null)
                         {
-                            ThoughtEventId = CurrentThought.Id,
-                        });
+                            // Notify scripting API about room change
+                            EventBus.Publish(this, new ThoughtEventFinished
+                            {
+                                ThoughtEventId = CurrentThought.Id,
+                            });
+                        }
                     }
                     // _uiDisplayThought.EndThoughtMode();
                     return null;
@@ -255,7 +258,8 @@ namespace conscious
             if (!isCanceled)
             {
                 _finalOption.IsVisited = true;
-                CurrentThought.IsUsed = true;
+                if(successEdge)
+                    CurrentThought.IsUsed = true;
                 if (_finalOption.UnlockId != 0)
                     unlockThoughtLink(_finalOption.UnlockId);
                 if (_finalOption.MoodChange != MoodState.None)
