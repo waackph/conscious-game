@@ -364,7 +364,7 @@ namespace conscious
         {
             if(canceled)
             {
-                addConcludingThought("What was I thinking?!");
+                addConcludingThought("Was habe ich mir dabei gedacht?!");
             }
             _socManager.InteractionIsSuccessfull(canceled);
             _lastVerbChosen = Verb.None;
@@ -599,8 +599,8 @@ namespace conscious
 
         public void handleUse(Room room, Player player, Item item1, Item item2)
         {
-            bool doRemove = false;
-            if(item2 != null)
+            bool doRemove;
+            if (item2 != null)
             {
                 doRemove = item1.Use(room, _inventoryManager, player, item2);
             }
@@ -608,7 +608,32 @@ namespace conscious
             {
                 doRemove = item1.Use(room, _inventoryManager, player);
             }
-            if(doRemove == true)
+
+            // Play appropriate sound effect
+            if (item1.UseSound != null)
+            {
+                if (GlobalData.IsSameOrSubclass(typeof(Door), item1.GetType()))
+                {
+                    Door door = (Door)item1;
+                    if (door.IsClosed)
+                    {
+                        door.UseSound?.Play();
+                        // _audioManager.PlaySoundEffect(door.UseSound, false);
+                    }
+                    else
+                    {
+                        door.CloseSound?.Play();
+                        // _audioManager.PlaySoundEffect(door.CloseSound, false);
+                    }
+                }
+                else
+                {
+                    item1.UseSound?.Play();
+                    // _audioManager.PlaySoundEffect(item1.UseSound, false);
+                }
+            }
+
+            if (doRemove == true)
             {
                 RemoveItemFromWorld(room, item1);
             }
