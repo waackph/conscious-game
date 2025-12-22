@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
@@ -72,19 +70,19 @@ namespace conscious
         private void OnStartGame(object sender, StartGameEvent e)
         {
             _audioManager.PlayMusic(_standardSong);
-            _audioManager.SetSoundVolume(1f);
+            _audioManager.SetSoundVolume(.1f);
         }
 
         private void OnContinueGame(object sender, ContinueGameEvent e)
         {
             _audioManager.PlayMusic(_standardSong);
-            _audioManager.SetSoundVolume(1f);
+            _audioManager.SetSoundVolume(.1f);
         }
 
         private void OnThoughtEventTriggered(object sender, ThoughtEventTriggered e)
         {
             // Phone ringing thought event
-            if (e.ThoughtEventId == 4836)
+            if (e.ThoughtEventId == 1750)
             {
                 _roomInteractionManager.isTriggerNewThoughtEnabled = false;
             }
@@ -98,11 +96,12 @@ namespace conscious
         private void OnThoughtEventFinished(object sender, ThoughtEventFinished e)
         {
             // Phone ringing thought event finished
-            if (e.ThoughtEventId == 4836)
+            if (e.ThoughtEventId == 1750)
             {
                 _roomInteractionManager.isTriggerNewThoughtEnabled = true;
             }
-            else if (e.ThoughtEventId == 12345678) // Placeholder for other thought events
+            // Final thought event to end the game
+            else if (e.ThoughtEventId == 5862)
             {
                 // finalize game
                 _gameScreen.gameFinished = true;
@@ -145,7 +144,7 @@ namespace conscious
             {
                 _isHeartThrobDream = false;
                 _audioManager.PlayMusic(_standardSong);
-                _audioManager.SetSoundVolume(1f);
+                _audioManager.SetSoundVolume(.1f);
             }
         }
 
@@ -153,6 +152,7 @@ namespace conscious
         {
             // Check for Heart Throb Dream sequence trigger
             if (sequenceCommandThingId == 6951 && !_isHeartThrobBasement && !_HeartThrobBasementHappend) // sequenceCommandThingId 6951 is shards of pot
+            // (or we use the shards final thought id 5268)
             {
                 _isHeartThrobBasement = true;
                 _HeartThrobBasementHappend = true;
@@ -166,7 +166,7 @@ namespace conscious
             {
                 _isHeartThrobBasement = false;
                 _audioManager.PlayMusic(_standardSong);
-                _audioManager.SetSoundVolume(1f);
+                _audioManager.SetSoundVolume(.1f);
             }
         }
 
