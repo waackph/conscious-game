@@ -64,6 +64,11 @@ namespace conscious
         public void Update(GameTime gameTime)
         {
             _timeSinceLastRandomThought += gameTime.ElapsedGameTime.Milliseconds;
+            // checkDrawRandomThought();
+        }
+
+        private void checkDrawRandomThought()
+        {
             // logic to add thoughts randomly some times
             if(_isStart)
             {

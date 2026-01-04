@@ -209,7 +209,7 @@ namespace conscious
                 _inventoryManager.FillEntityManager();
             }
             _dialogManager.FillEntityManager();
-            _uiDisplayThoughtManager.FillEntityManager();
+            _uiDisplayThoughtManager.FillEntityManager(_gameLoaded);
             _moodStateManager.FillEntityManager();
         }
 

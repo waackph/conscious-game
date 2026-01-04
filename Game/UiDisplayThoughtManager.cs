@@ -423,21 +423,24 @@ namespace conscious
             return uiOptions;
         }
 
-        public void FillEntityManager()
+        public void FillEntityManager(bool isGameLoaded)
         {
             _entityManager.AddEntity(_consciousnessBackground);
-            if(_thoughts.Count > 0)
+            // If the game is not loaded, the first thought is already triggered by the RoomManager
+            // Therefore we only load the thought and possible subthoughts when the game is loaded 
+            // (aka coming from pause menu)
+            if (_thoughts.Count > 0 && isGameLoaded)
             {
-                foreach(UIThought thought in _thoughts)
+                foreach (UIThought thought in _thoughts)
                 {
                     _entityManager.AddEntity(thought);
                 }
                 // if there is a subthought currently selected, render it
-                if(_currentSubthought != null && _currentSubthoughtLinks != null)
+                if (_currentSubthought != null && _currentSubthoughtLinks != null)
                 {
                     _entityManager.AddEntity(_subthoughtBackground);
                     _entityManager.AddEntity(_currentSubthought);
-                    foreach(UIThought thought in _currentSubthoughtLinks)
+                    foreach (UIThought thought in _currentSubthoughtLinks)
                     {
                         _entityManager.AddEntity(thought);
                     }
