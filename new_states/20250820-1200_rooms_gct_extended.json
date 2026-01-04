@@ -268,6 +268,13 @@
                           "index": 0.21068733118567107,
                           "DestinationX": "5074",
                           "DestinationY": "500"
+                        },
+                        {
+                          "$type": "conscious.DataHolderSayCommand, conscious",
+                          "index": 0.2945354483590361,
+                          "DestinationX": 0,
+                          "DestinationY": 0,
+                          "ThoughtText": "Ich f\u00fchle mich schon besser. Im Traum war ich in meinem Kinderzimmer. Vielleicht war das ein Zeichen und ich finde dort etwas, das meinen Erinnerungen auf die Spr\u00fcnge hilft."
                         }
                       ]
                     },
@@ -306,7 +313,7 @@
         "RoomId": 5,
         "DoorId": 9055,
         "IsUnlocked": true,
-        "InitPlayerPosX": 1788,
+        "InitPlayerPosX": 1550,
         "InitPlayerPosY": 475,
         "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Dining_Room_closed_306x511_pos_2843x288",
         "IsRoomChangeDoor": true,
@@ -465,7 +472,7 @@
         "RoomId": 4,
         "DoorId": 1584,
         "IsUnlocked": true,
-        "InitPlayerPosX": 86,
+        "InitPlayerPosX": 200,
         "InitPlayerPosY": 501,
         "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Living_Room_closed_306x511_pos_1606x287",
         "IsRoomChangeDoor": true,
@@ -1312,7 +1319,7 @@
         "DoorId": 2203,
         "IsUnlocked": true,
         "InitPlayerPosX": 1606,
-        "InitPlayerPosY": 287,
+        "InitPlayerPosY": 400,
         "CloseTexturePath": "clear_out/rooms/living_room/objects/living_room_door_closed_scaled_outline_150x795_pos_85x504",
         "IsRoomChangeDoor": true,
         "CloseSoundFilePath": "close-door",
@@ -2827,6 +2834,20 @@
                       ]
                     },
                     "Option": "Schauen wir mal in das Adressbuch neben dem Telefon."
+                  },
+                  {
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                    "IsLocked": false,
+                    "ValidMoods": [
+                      0
+                    ],
+                    "Id": 7141,
+                    "NextNode": null,
+                    "IsFinal": true,
+                    "sequence": null,
+                    "Option": "Ich muss gerade niemanden anrufen.",
+                    "Verb": 0,
+                    "MoodChange": 0
                   }
                 ]
               }
@@ -2994,9 +3015,9 @@
                                                   "IsFinal": true,
                                                   "sequence": null,
                                                   "Verb": 0,
-                                                  "MoodChange": 1,
+                                                  "MoodChange": 0,
                                                   "IsSuccessEdge": true,
-                                                  "EventThoughtId": "1750"
+                                                  "EventThoughtId": 1750
                                                 }
                                               ]
                                             },
@@ -3132,7 +3153,17 @@
                                                   "NextNode": null,
                                                   "Option": "Ja, bis dann.",
                                                   "IsFinal": true,
-                                                  "sequence": null,
+                                                  "sequence": {
+                                                    "Commands": [
+                                                      {
+                                                        "$type": "conscious.DataHolderSayCommand, conscious",
+                                                        "index": 0.9479813400531538,
+                                                        "DestinationX": 0,
+                                                        "DestinationY": 0,
+                                                        "ThoughtText": "Ich mache einfach nichts richtig. Warum bin ich so? Ich will mich nur hinlegen und schlafen."
+                                                      }
+                                                    ]
+                                                  },
                                                   "IsSuccessEdge": true,
                                                   "MoodChange": 1,
                                                   "Verb": 0,
@@ -3395,7 +3426,7 @@
         "DoorId": 4142,
         "IsUnlocked": true,
         "InitPlayerPosX": 2843,
-        "InitPlayerPosY": 288,
+        "InitPlayerPosY": 400,
         "CloseTexturePath": "clear_out/rooms/dining_room/objects/dining_room_door_closed_scaled_outline_170x742_pos_1755x482",
         "IsRoomChangeDoor": true,
         "CloseSoundFilePath": "close-door",
@@ -4541,7 +4572,7 @@
                                                   "MoodChange": 0,
                                                   "Option": "Sie hatte Angst vor diesem Raum. Oder davor auch so zu werden wie ihre Mutter und mich einzusperren.",
                                                   "IsSuccessEdge": true,
-                                                  "EventThoughtId": "5862"
+                                                  "EventThoughtId": 5862
                                                 }
                                               ]
                                             },
@@ -8534,7 +8565,7 @@
           "$type": "conscious.DataHolderSayCommand, conscious",
           "DestinationX": 0,
           "DestinationY": 0,
-          "ThoughtText": "Das war ein wirklich merkw\u00fcrdiger Traum. Ich zittere noch immer. Aber ich muss jetzt aufstehen.",
+          "ThoughtText": "Das war ein wirklich merkw\u00fcrdiger Traum. Ich zittere noch immer. Ich will einfach weiter schlafen. Aber ich muss jetzt aufstehen. Vielleicht hilft mir eine Dusche oder sowas.",
           "index": 0.37714378913118285
         },
         {
@@ -8811,7 +8842,7 @@
           "NextNode": {
             "$type": "conscious.DataHolderThoughtNode, conscious",
             "Id": 276,
-            "Thought": "Habe ich geschlafen? Ich kann mit L die Taschenlampe anmachen.",
+            "Thought": "Habe ich geschlafen? Ich kann mit der f-Taste die Taschenlampe anmachen.",
             "IsRoot": false,
             "LinkageId": 0,
             "Links": [
@@ -8827,7 +8858,8 @@
                 "sequence": null,
                 "Verb": 9,
                 "MoodChange": 0,
-                "NextNode": null
+                "NextNode": null,
+                "IsSuccessEdge": true
               }
             ]
           }
