@@ -217,7 +217,7 @@ namespace conscious
                      && doorId != 0 && !_sequenceManager.SequenceActive)
             {
                 Door doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
-                doorEntered.OpenDoor();
+                doorEntered.OpenDoor(playSound: false);
                 _player.Position = doorEntered.Position;
                 WalkCommand walk = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
                 WaitCommand wait = new WaitCommand(200);

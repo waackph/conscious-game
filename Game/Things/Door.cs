@@ -96,19 +96,19 @@ namespace conscious
             CloseDoor();
         }
 
-        public void OpenDoor()
+        public void OpenDoor(bool playSound = true)
         {
             _sprite.Texture = EntityTexture;
             IsClosed = false;
-            if(UseSound != null)
+            if(UseSound != null && playSound)
                 UseSound.Play();
         }
 
-        public void CloseDoor()
+        public void CloseDoor(bool playSound = true)
         {
             _sprite.Texture = _closeTexture;
             IsClosed = true;
-            if(CloseSound != null)
+            if(CloseSound != null && playSound)
                 CloseSound.Play();
         }
 
