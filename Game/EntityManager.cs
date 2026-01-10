@@ -227,8 +227,10 @@ namespace conscious
             {
                 transitionStarted = true;
             }
-            // terminate transition
-            else if(maxNoiseReached)
+
+            // either terminate transition
+            // or continue transition
+            if (maxNoiseReached)
             {
                 doTransition = false;
                 maxNoiseReached = false;
@@ -240,8 +242,10 @@ namespace conscious
                 {
                 });
             }
-            if(saturateDown && mapped_new < nMin+0.01 || !saturateDown && mapped_new > nMax-0.01)
+            else if (saturateDown && mapped_new < nMin + 0.01 || !saturateDown && mapped_new > nMax - 0.01)
+            {
                 maxNoiseReached = true;
+            }
 
             _moodTransitionEffect.Parameters["UniformSat"].SetValue(mapped_new);
             _moodTransitionEffect.Parameters["UniformVal"].SetValue(-0.0f);
