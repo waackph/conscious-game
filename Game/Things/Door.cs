@@ -93,7 +93,7 @@ namespace conscious
 
         private void closeDoorOnMood(object sender, MoodStateChangeEventArgs e)
         {
-            CloseDoor();
+            CloseDoor(playSound: false);
         }
 
         public void OpenDoor(bool playSound = true)

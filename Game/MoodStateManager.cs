@@ -35,62 +35,51 @@ namespace conscious
             _transitionActive = false;
             _timeSinceBeginning = 0;
             _millisecondsToWait = 2000;
+            EventBus.Subscribe<MoodTransitionFinishedEvent>(OnTransitionFinished);
         }
 
         public virtual void Update(GameTime gameTime)
         {
-            if(StateChange != MoodState.None && StateChange != moodState)
+            if (StateChange != MoodState.None && StateChange != moodState)
             {
-                // _transitionActive = true;
                 _direction = setChangeDirection(moodState, StateChange);
                 moodState = StateChange;
 
-                MoodStateChangeEventArgs moodChangeEventArgs = new MoodStateChangeEventArgs();
-                moodChangeEventArgs.ChangeDirection = _direction;
-                moodChangeEventArgs.CurrentMoodState = moodState;
-
-                OnMoodChangeEvent(moodChangeEventArgs);
-
-                _entityManager.RemoveEntity(_moodText);
-                _moodText.UpdateText(generateMoodText());
-                FillEntityManager();
-
                 _entityManager.newMood = moodState;
                 _entityManager.doTransition = true;
-
-                // We dont use MorphingItem for now (maybe will not be necessary for game)
-                // foreach(MorphingItem item in _entityManager.GetEntitiesOfType<MorphingItem>())
-                // {
-                //     item.setCurrentItem();
-                // }
-                // foreach(UIInventoryPlace place in _entityManager.GetEntitiesOfType<UIInventoryPlace>())
-                // {
-                //     if(place.InventoryItem != null)
-                //     {
-                //         if(IsSameOrSubclass(typeof(MorphingItem), place.InventoryItem.GetType()))
-                //         {
-                //             MorphingItem morph = (MorphingItem)place.InventoryItem;
-                //             morph.setCurrentItem();
-                //         }
-                //     }
-                // }
+                // Notify MoodChangeManager about finished transition
+                EventBus.Publish(this, new MoodTransitionStartedEvent()
+                {
+                    CurrentMoodState = moodState
+                });
             }
-            // TODO: Change transition to Command that is simply executed and draws a black screen for 2 seconds
-            // That way all interaction waits
-            if(_transitionActive)
+            if (_transitionActive)
             {
-                if(_timeSinceBeginning > _millisecondsToWait)
+                if (_timeSinceBeginning > _millisecondsToWait)
                 {
                     _transitionActive = false;
                     _entityManager.RemoveEntity(_transitionSprite);
                     _timeSinceBeginning = 0;
                 }
-                else if(_timeSinceBeginning == 0)
+                else if (_timeSinceBeginning == 0)
                 {
                     _entityManager.AddEntity(_transitionSprite);
                 }
                 _timeSinceBeginning += gameTime.ElapsedGameTime.Milliseconds;
             }
+        }
+
+        private void OnTransitionFinished(object sender, MoodTransitionFinishedEvent e)
+        {
+            MoodStateChangeEventArgs moodChangeEventArgs = new MoodStateChangeEventArgs();
+            moodChangeEventArgs.ChangeDirection = _direction;
+            moodChangeEventArgs.CurrentMoodState = moodState;
+
+            OnMoodChangeEvent(moodChangeEventArgs);
+
+            _entityManager.RemoveEntity(_moodText);
+            _moodText.UpdateText(generateMoodText());
+            FillEntityManager();
         }
 
         protected virtual void OnMoodChangeEvent(MoodStateChangeEventArgs e)

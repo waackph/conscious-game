@@ -92,59 +92,7 @@ namespace conscious
 
         private void changeRoomOnMood(object sender, MoodStateChangeEventArgs e)
         {
-            updateSongOnMood(e.CurrentMoodState, e.ChangeDirection);
             updateLightMapOnMood(e.CurrentMoodState);
-        }
-
-        private void updateSongOnMood(MoodState moodState, Direction direction)
-        {
-            if ((_audioManager.CurrentSong.Name == GlobalData.StandardSong
-                 || _audioManager.CurrentSong.Name == GlobalData.StandardSongTransition)
-                && moodState == MoodState.Depressed)
-            {
-                _audioManager.PlayMusic(_content.Load<Song>(GlobalData.StandardSongSlowTransition), false);
-                MediaPlayer.Volume = 0.1f;
-            }
-            else if ((_audioManager.CurrentSong.Name == GlobalData.StandardSongSlow
-                     || _audioManager.CurrentSong.Name == GlobalData.StandardSongSlowTransition)
-                    && moodState == MoodState.Regular)
-            {
-                _audioManager.PlayMusic(_content.Load<Song>(GlobalData.StandardSongTransition), false);
-                MediaPlayer.Volume = 0.1f;
-            }
-            // Song currentSong;
-            // double stretchFactor;
-            // if (currentRoom.MoodSoundFiles.ContainsKey(moodState))
-            // {
-            //     currentSong = currentRoom.MoodSoundFiles[moodState];
-            // }
-            // else
-            // {
-            //     currentSong = currentRoom.MoodSoundFiles[MoodState.None];
-            // }
-            // switch (direction)
-            // {
-            //     case Direction.DoubleDown:
-            //         stretchFactor = 1d / 4;
-            //         break;
-            //     case Direction.Down:
-            //         stretchFactor = 1d / 2;
-            //         break;
-            //     case Direction.Up:
-            //         stretchFactor = 2d;
-            //         break;
-            //     case Direction.DoubleUp:
-            //         stretchFactor = 4d;
-            //         break;
-            //     default:
-            //         stretchFactor = 1d;
-            //         break;
-            // }
-            // The stretchFactor seems to not work... (factor gets out of range of valid values)
-            // Therefore we set it to default
-            // stretchFactor = 1d;
-            // We do not want the song from the room but from the scripting class, so we just reset to current song
-            // _audioManager.SwitchMusic(_audioManager.CurrentSong, stretchFactor);
         }
 
         private void updateLightMapOnMood(MoodState moodState)

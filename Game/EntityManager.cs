@@ -235,6 +235,10 @@ namespace conscious
                 transitionStarted = false;
                 currentTime = 0f;
                 setNewMood();
+                // Notify MoodChangeManager about finished transition
+                EventBus.Publish(this, new MoodTransitionFinishedEvent()
+                {
+                });
             }
             if(saturateDown && mapped_new < nMin+0.01 || !saturateDown && mapped_new > nMax-0.01)
                 maxNoiseReached = true;
@@ -264,23 +268,23 @@ namespace conscious
                 if(mapped < nLast)
                     newRound = true;
 
-                if(!transitionStarted)
+                if (!transitionStarted)
                 {
                     transitionStarted = true;
                 }
                 // terminate transition
-                else if(maxNoiseReached && newRound)
+                else if (maxNoiseReached && newRound)
                 {
                     doTransition = false;
                     maxNoiseReached = false;
                     transitionStarted = false;
                 }
-                else if(transitionStarted && !maxNoiseReached && newRound)
+                else if (transitionStarted && !maxNoiseReached && newRound)
                 {
                     maxNoiseReached = true;
                     setNewMood();
                 }
-                else if(maxNoiseReached)
+                else if (maxNoiseReached)
                 {
                     mapped_new = float.Parse((nMax - mapped).ToString("0.000"));
                 }

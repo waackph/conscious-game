@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace conscious
 {
@@ -27,21 +28,21 @@ namespace conscious
             _content = content;
             MediaPlayer.Volume = 0.1f;
             MediaPlayer.ActiveSongChanged += OnActiveSongChanged;
+            EventBus.Subscribe<MoodTransitionStartedEvent>(onMoodTransitionStarted);
         }
 
         private void OnActiveSongChanged(object sender, EventArgs e)
         {
-            if (CurrentSong.Name == GlobalData.StandardSongSlowTransition)
+            if (CurrentSong.Name == GlobalData.StandardSongSlowTransition.Split("/").Last())
             {
                 PlayMusic(_content.Load<Song>(GlobalData.StandardSongSlow), true);
                 MediaPlayer.Volume = 0.1f;
             }
-            else if (CurrentSong.Name == GlobalData.StandardSongTransition)
+            else if (CurrentSong.Name == GlobalData.StandardSongTransition.Split("/").Last())
             {
                 PlayMusic(_content.Load<Song>(GlobalData.StandardSong), true);
                 MediaPlayer.Volume = 0.1f;
             }
-            // You can add code here to handle when the active song changes, if needed.
         }
 
         public virtual void Update(GameTime gameTime) { }
@@ -103,10 +104,29 @@ namespace conscious
                 }
             }
         }
-        
+
         public void SetSoundVolume(float volume)
         {
             MediaPlayer.Volume = volume;
+        }
+
+        private void onMoodTransitionStarted(object sender, MoodTransitionStartedEvent e)
+        {
+            MoodState moodState = e.CurrentMoodState;
+            if ((CurrentSong.Name == GlobalData.StandardSong.Split("/").Last()
+                 || CurrentSong.Name == GlobalData.StandardSongTransition.Split("/").Last())
+                && moodState == MoodState.Depressed)
+            {
+                PlayMusic(_content.Load<Song>(GlobalData.StandardSongSlowTransition), false);
+                MediaPlayer.Volume = 0.1f;
+            }
+            else if ((CurrentSong.Name == GlobalData.StandardSongSlow.Split("/").Last()
+                     || CurrentSong.Name == GlobalData.StandardSongSlowTransition.Split("/").Last())
+                    && moodState == MoodState.Regular)
+            {
+                PlayMusic(_content.Load<Song>(GlobalData.StandardSongTransition), false);
+                MediaPlayer.Volume = 0.1f;
+            }
         }
     }
 }
