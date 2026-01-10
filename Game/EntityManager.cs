@@ -374,10 +374,13 @@ namespace conscious
             // TODO: add logic to draw lights stored in entities and rooms
             foreach (Thing thing in GetEntitiesOfType<Thing>())
             {
-                if (thing.LightMask != null)
+                if (thing.LightMask != null && thing.IsActive)
                 {
                     hasLights = true;
-                    spriteBatch.Draw(thing.LightMask, thing.Position, Color.White);
+                    spriteBatch.Draw(thing.LightMask,
+                                     new Vector2(thing.Position.X - thing.LightMask.Width/2,
+                                                 thing.Position.Y - thing.LightMask.Height/2),
+                                     Color.White);
                 }
             }
 

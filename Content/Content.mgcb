@@ -127,6 +127,12 @@
 /processorParam:Quality=Best
 /build:Audio/ShowerSound.wav
 
+#begin Audio/tumor_scene_effect.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/tumor_scene_effect.mp3
+
 #begin Audio/walking-parquet.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -1792,6 +1798,18 @@
 /processorParam:TextureFormat=Color
 /build:light/dream_room_small_light_mask.png
 
+#begin light/dream_room_small_tumor_sequence_light_mask.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:light/dream_room_small_tumor_sequence_light_mask.png
+
 #begin light/light_cursor.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1851,6 +1869,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:light/light_mask_corridor.png
+
+#begin light/light_tumor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:light/light_tumor.png
 
 #begin light/living_room_light_mask.png
 /importer:TextureImporter
