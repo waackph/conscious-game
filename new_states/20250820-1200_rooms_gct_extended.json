@@ -5622,22 +5622,18 @@
                 "ThingId": 4830,
                 "Links": [
                   {
-                    "$type": "conscious.DataHolderThoughtLink, conscious",
+                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
                     "IsLocked": false,
                     "ValidMoods": [
                       0
                     ],
                     "Id": 6729,
                     "Option": "Sieht ganz nett aus.",
-                    "NextNode": {
-                      "$type": "conscious.DataHolderThoughtNode, conscious",
-                      "IsRoot": false,
-                      "LinkageId": 0,
-                      "Id": 7842,
-                      "Thought": "lastnode",
-                      "ThingId": 4830,
-                      "Links": []
-                    }
+                    "NextNode": null,
+                    "IsFinal": true,
+                    "sequence": null,
+                    "Verb": 0,
+                    "MoodChange": 0
                   },
                   {
                     "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -6371,7 +6367,7 @@
     "RoomWidth": 3840,
     "xLimStart": 316,
     "xLimEnd": 3500,
-    "yLimStart": 758,
+    "yLimStart": 700,
     "yLimEnd": 1080,
     "SoundFilePath": "Red_Curtains",
     "LightMapPath": "light/light_mask_corridor",
@@ -8040,7 +8036,54 @@
     "WalkingSoundFilePath": "default_walking_sound",
     "AtmoSoundFilePath": "",
     "EntrySequence": null,
-    "Thought": null,
+    "Thought": {
+      "$type": "conscious.DataHolderThoughtNode, conscious",
+      "Id": 4817,
+      "Thought": "Was ist das f\u00fcr ein komisches Pochen? Es ist lauter geworden.",
+      "IsRoot": true,
+      "LinkageId": 0,
+      "Links": [
+        {
+          "$type": "conscious.DataHolderThoughtLink, conscious",
+          "Id": 8131,
+          "ValidMoods": [
+            0
+          ],
+          "Option": "First link",
+          "IsLocked": false,
+          "NextNode": {
+            "$type": "conscious.DataHolderThoughtNode, conscious",
+            "Id": 6952,
+            "Thought": "First node",
+            "IsRoot": false,
+            "LinkageId": 0,
+            "Links": [
+              {
+                "$type": "conscious.DataHolderFinalThoughtLink, conscious",
+                "IsLocked": false,
+                "ValidMoods": [
+                  0
+                ],
+                "Id": 141,
+                "NextNode": {
+                  "$type": "conscious.DataHolderThoughtNode, conscious",
+                  "IsRoot": false,
+                  "LinkageId": 0,
+                  "Id": 6168,
+                  "Links": []
+                },
+                "Option": "Vielleicht finden wir den Ursprung des Pochens.",
+                "IsFinal": true,
+                "sequence": null,
+                "IsSuccessEdge": true,
+                "Verb": 0,
+                "MoodChange": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
     "Things": [
       {
         "$type": "conscious.DataHolderThing, conscious",
@@ -8101,8 +8144,8 @@
         "RoomId": 14,
         "DoorId": 2121,
         "IsUnlocked": true,
-        "InitPlayerPosX": 5250,
-        "InitPlayerPosY": 755,
+        "InitPlayerPosX": 460,
+        "InitPlayerPosY": 750,
         "CloseTexturePath": "clear_out/rooms/corridor/objects/Door_Stairs_closed_158x835_pos_5576x413",
         "IsRoomChangeDoor": true,
         "CloseSoundFilePath": "close-door",
@@ -8432,7 +8475,7 @@
       {
         "$type": "conscious.DataHolderDoor, conscious",
         "Id": 2646,
-        "Name": "Traum-T\u00fcr zum Kinderzimmer",
+        "Name": "T\u00fcr zum Flur?",
         "texturePath": "clear_out/rooms/stairs_og/objects/door_front_opened_outlined_2",
         "Rotation": 0,
         "PositionX": 1622,
@@ -8586,7 +8629,7 @@
         "InitPlayerPosY": 765,
         "CloseTexturePath": "clear_out/rooms/stairs_og/objects/stairs_og_door",
         "IsRoomChangeDoor": false,
-        "CloseSoundFilePath": "close-door",
+        "CloseSoundFilePath": "",
         "Thought": null,
         "EventThought": null,
         "DepressedTexture": "",
@@ -8727,11 +8770,11 @@
         "ItemDependency": "-1",
         "UseSoundFilePath": "opening-door",
         "LightMaskFilePath": "",
-        "RoomId": 4,
+        "RoomId": 15,
         "DoorId": 0,
         "IsUnlocked": false,
-        "InitPlayerPosX": -1,
-        "InitPlayerPosY": -1,
+        "InitPlayerPosX": 1308,
+        "InitPlayerPosY": 558,
         "CloseTexturePath": "clear_out/rooms/childroom/objects/door_front_closed_outlined",
         "IsRoomChangeDoor": true,
         "CloseSoundFilePath": "close-door",
