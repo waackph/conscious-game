@@ -12,11 +12,6 @@ namespace conscious
     public class MoodStateManager : IComponent
     {
         private UIText _moodText;
-        private Thing _transitionSprite;
-        private bool _transitionActive;
-        private int _timeSinceBeginning;
-        private int _millisecondsToWait;
-
         private EntityManager _entityManager;
         private Direction _direction;
         public MoodState moodState { get; private set; }
@@ -30,11 +25,6 @@ namespace conscious
             _entityManager = entityManager;
             string text = generateMoodText();
             _moodText = new UIText(font, text, "moodText", pixel, new Vector2(20, 40), 1);
-            _transitionSprite = new Thing(200, null, this, "MoodTransition", transitionTexture, 
-                                          new Vector2(transitionTexture.Width/2, transitionTexture.Height/2), 1);
-            _transitionActive = false;
-            _timeSinceBeginning = 0;
-            _millisecondsToWait = 2000;
             EventBus.Subscribe<MoodTransitionFinishedEvent>(OnTransitionFinished);
         }
 
@@ -52,20 +42,6 @@ namespace conscious
                 {
                     CurrentMoodState = moodState
                 });
-            }
-            if (_transitionActive)
-            {
-                if (_timeSinceBeginning > _millisecondsToWait)
-                {
-                    _transitionActive = false;
-                    _entityManager.RemoveEntity(_transitionSprite);
-                    _timeSinceBeginning = 0;
-                }
-                else if (_timeSinceBeginning == 0)
-                {
-                    _entityManager.AddEntity(_transitionSprite);
-                }
-                _timeSinceBeginning += gameTime.ElapsedGameTime.Milliseconds;
             }
         }
 
@@ -145,8 +121,6 @@ namespace conscious
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if(_transitionActive)
-                _transitionSprite.Draw(spriteBatch);
         }
 
         public bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
