@@ -398,7 +398,7 @@ namespace conscious
             return hasLights;
         }
 
-        public void ToggleFalshlight()
+        public void ToggleFlashlight()
         {
             FlashlightOn = !FlashlightOn;
         }

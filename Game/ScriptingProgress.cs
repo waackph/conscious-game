@@ -145,6 +145,8 @@ namespace conscious
                 _isHeartThrobDream = false;
                 _audioManager.PlayMusic(_standardSong);
                 _audioManager.SetSoundVolume(.1f);
+                if (_entityManager.FlashlightOn)
+                    _entityManager.ToggleFlashlight(); // turn off flashlight when waking up
             }
         }
 

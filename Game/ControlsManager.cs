@@ -52,7 +52,7 @@ namespace conscious
             }
 
             if (IsKeyPressed(Keys.F, currentKeyboardState, _previousKeyState, true))
-                _entityManager.ToggleFalshlight();
+                _entityManager.ToggleFlashlight();
 
             _previousKeyState = currentKeyboardState;
         }
