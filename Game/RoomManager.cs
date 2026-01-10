@@ -131,11 +131,19 @@ namespace conscious
             updateLightMapOnMood(_moodStateManager.moodState);
             if (currentWalkingSound != null)
                 currentWalkingSound.Pause();
+            if (currentAtmoSound != null)
+                currentAtmoSound.Pause();
 
             if (currentRoom.AtmoSound != null)
+            {
                 currentAtmoSound = currentRoom.AtmoSound;
+                currentAtmoSound.IsLooped = true;
+                currentAtmoSound.Play();
+            }
             else
+            {
                 currentAtmoSound = null;
+            }
             if (currentRoom.WalkingSound != null)
                 currentWalkingSound = currentRoom.WalkingSound;
             else
