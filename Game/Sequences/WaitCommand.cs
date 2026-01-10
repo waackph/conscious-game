@@ -18,6 +18,7 @@ namespace conscious
         {
             _timeSinceBeginning = 0;
             _millisecondsToWait = millisecondsToWait;
+            _thingId = thingId;
         }
 
         public override void ExecuteCommand(GameTime gameTime, Thing thing)

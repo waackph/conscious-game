@@ -3879,12 +3879,12 @@
                           "index": 0.654871332422231,
                           "DestinationX": 0,
                           "DestinationY": 0,
-                          "MillisecondsToWait": "2000",
+                          "MillisecondsToWait": "1000",
                           "CmdSoundFilePath": "door-creaking"
                         }
                       ]
                     },
-                    "Verb": 1,
+                    "Verb": 0,
                     "MoodChange": 0,
                     "NextNode": null,
                     "UnlockId": "7722"
@@ -4060,7 +4060,8 @@
                                                                     "DestinationX": 0,
                                                                     "DestinationY": 0,
                                                                     "CmdSoundFilePath": "crash_porcelain",
-                                                                    "MillisecondsToWait": "1900"
+                                                                    "MillisecondsToWait": "1900",
+                                                                    "ThingId": "5798"
                                                                   }
                                                                 ]
                                                               },

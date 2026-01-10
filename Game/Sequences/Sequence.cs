@@ -44,7 +44,7 @@ namespace conscious
                 // Notify scripting API about sequence finished
                 EventBus.Publish(this, new SequenceFinishedEvent
                 {
-                    sequenceCommandThingId = command._thingId,
+                    sequenceCommand = command
                 });
             }
         }

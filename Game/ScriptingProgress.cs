@@ -22,26 +22,26 @@ namespace conscious
         private Song _standardSong;
 
         private Dictionary<int, float> throbSoundVolumeDream = new Dictionary<int, float>{
-        { 17, 0.6f }, // living room
-        { 13, 0.8f }, // corridor eg
-        { 14, 1.0f }, // stairs eg
-        { 15, 1.2f }, // stairs og
-        { 16, 1.4f }, // childroom
+        { 17, 0.8f }, // living room
+        { 13, 1.0f }, // corridor eg
+        { 14, 1.2f }, // stairs eg
+        { 15, 1.4f }, // stairs og
+        { 16, 1.6f }, // childroom
         };
         private Dictionary<int, float> throbSoundVolumeBasement = new Dictionary<int, float>{
-        { 8, 0.6f}, // childroom
-        { 7, 0.6f }, // bedroom
+        { 8, 0.8f}, // childroom
+        { 7, 0.8f }, // bedroom
 
-        { 9, 0.8f }, // corridor og
-        { 5, 0.8f }, // dining room
-        { 4, 0.8f }, // living room
+        { 9, 1.0f }, // corridor og
+        { 5, 1.0f }, // dining room
+        { 4, 1.0f }, // living room
 
-        { 3, 1.0f }, // corridor eg
-        { 11, 1.0f }, // stairs og
+        { 3, 1.2f }, // corridor eg
+        { 11, 1.2f }, // stairs og
 
-        { 10, 1.2f }, // stairs eg
-        { 12, 1.4f }, // storage room
-        { 6, 1.6f }, // basement
+        { 10, 1.4f }, // stairs eg
+        { 12, 1.6f }, // storage room
+        { 6, 1.8f }, // basement
         };
 
         public ScriptingProgress(GameScreen gameScreen, EntityManager entityManager, AudioManager audioManager, RoomInteractionManager roomInteractionManager, SoCManager socManager, ContentManager content)
@@ -127,7 +127,7 @@ namespace conscious
 
         private void OnEventHappened(object sender, SequenceFinishedEvent e)
         {
-            checkHeartThrobBasementStart(e.sequenceCommandThingId);
+            checkHeartThrobBasementStart(e.sequenceCommand);
         }
 
         private void checkHeartThrobDreamState(int roomId)
@@ -150,15 +150,17 @@ namespace conscious
             }
         }
 
-        private void checkHeartThrobBasementStart(int sequenceCommandThingId)
+        private void checkHeartThrobBasementStart(Command cmd)
         {
             // Check for Heart Throb Dream sequence trigger
-            if (sequenceCommandThingId == 6951 && !_isHeartThrobBasement && !_HeartThrobBasementHappend) // sequenceCommandThingId 6951 is shards of pot
-            // (or we use the shards final thought id 5268)
-            {
-                _isHeartThrobBasement = true;
-                _HeartThrobBasementHappend = true;
-                _audioManager.PlayMusic(_throbHeartSong);
+            if (GlobalData.IsSameOrSubclass(typeof(WaitCommand), cmd.GetType())) {
+                WaitCommand waitCmd = (WaitCommand)cmd;
+                if (waitCmd.Sound.Name == "Audio/crash_porcelain" && !_isHeartThrobBasement && !_HeartThrobBasementHappend) // sequenceCommandThingId 6951 is shards of pot
+                {
+                    _isHeartThrobBasement = true;
+                    _HeartThrobBasementHappend = true;
+                    _audioManager.PlayMusic(_throbHeartSong);
+                }
             }
         }
 
