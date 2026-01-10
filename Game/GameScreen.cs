@@ -150,6 +150,15 @@ namespace conscious
                 _screenEvent.Invoke(this, new EventArgs());
             }
 
+            // Toggle Mood State with Space Key for testing purposes
+            // if (Keyboard.GetState().IsKeyUp(Keys.Space) && _lastKeyboardState.IsKeyDown(Keys.Space))
+            // {
+            //     if (_moodStateManager.moodState == MoodState.Depressed)
+            //         _moodStateManager.StateChange = MoodState.Regular;
+            //     else if (_moodStateManager.moodState == MoodState.Regular || _moodStateManager.moodState == MoodState.None)
+            //         _moodStateManager.StateChange = MoodState.Depressed;
+            // }
+
             if (gameFinished)
             {
                 _gameEndingScreenEvent.Invoke(this, new EventArgs());
