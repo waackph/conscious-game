@@ -1,7 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Text.RegularExpressions;
 
 namespace conscious
 {
@@ -16,8 +14,8 @@ namespace conscious
             get
             {
                 return new Rectangle((int)Position.X,
-                                     (int)Position.Y, 
-                                     (int)GetStringWidth(), 
+                                     (int)Position.Y,
+                                     (int)GetStringWidth(),
                                      (int)GetStringHeight());
             }
         }
@@ -27,8 +25,10 @@ namespace conscious
         : base(name, texture, position, drawOrder)
         {
             _font = font;
-            _text = Regex.Replace(text, "(.{" + 45 + "})", "$1" + Environment.NewLine);
-            if(color == null)
+            // Inserts a newline every 45 characters
+            // _text = Regex.Replace(text, "(.{" + 45 + "})", "$1" + Environment.NewLine);
+            _text = text;
+            if (color == null)
                 _color = Color.Black;
             else
                 _color = (Color)color;
@@ -40,13 +40,13 @@ namespace conscious
         {
             bool isInvalid = IsStringInvalid(_text);
 
-            if(!string.IsNullOrEmpty(_text))  // && !_text.Contains('\r') && !_text.Contains('\n') && !isInvalid)
+            if (!string.IsNullOrEmpty(_text))  // && !_text.Contains('\r') && !_text.Contains('\n') && !isInvalid)
             {
                 // base.Draw(spriteBatch);
                 spriteBatch.DrawString(_font, _text, Position, _color);
             }
         }
-        
+
         public float GetStringWidth()
         {
             bool isInvalid = IsStringInvalid(_text);
@@ -74,9 +74,9 @@ namespace conscious
         private bool IsStringInvalid(string text)
         {
             bool isInvalid = false;
-            foreach(char ch in text)
+            foreach (char ch in text)
             {
-                if(_font.Characters.Contains(ch))
+                if (_font.Characters.Contains(ch))
                 {
                     isInvalid = true;
                     break;

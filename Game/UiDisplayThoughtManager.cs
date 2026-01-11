@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace conscious
 {
@@ -386,16 +387,19 @@ namespace conscious
                 if(node.IsRoot)
                     isRootThought = true;
 
+                string thoughtText = node.Thought;
                 if (isClickable && !node.Thought.StartsWith("[") && isRootThought)
                 {
-                    node.Thought = "[...] " + node.Thought;
+                    thoughtText = "[...] " + thoughtText;
                 }
+                if(thoughtText.Length >= 45)
+                    thoughtText = WrapWords(thoughtText);
 
                 UIThought uiThought = new UIThought(isClickable,
                                                     false,
                                                     doDisplay,
                                                     _font, 
-                                                    node.Thought, node.Thought, 
+                                                    thoughtText, node.Thought, 
                                                     _pixel, 
                                                     Vector2.One, 1,
                                                     isRootThought);
@@ -412,29 +416,50 @@ namespace conscious
         private List<UIThought> convertLinksToUi(List<ThoughtLink> links)
         {
             List<UIThought> uiOptions = new List<UIThought>();
-            foreach(ThoughtLink link in links)
+            foreach (ThoughtLink link in links)
             {
-                if(!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
+                if (!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
                 {
                     string text = " >" + link.Option;
+                    if(text.Length >= 45)
+                        text = WrapWords(text);
+
                     // TODO?: add a disabled style, if current moodState is not valid for this option
-                    UIThought uiThought = new UIThought(isClickable:true,
-                                                        isVisited:link.IsVisited,
-                                                        doDisplay:true,
-                                                        _font, 
-                                                        text, link.Option, 
-                                                        _pixel, 
+                    UIThought uiThought = new UIThought(isClickable: true,
+                                                        isVisited: link.IsVisited,
+                                                        doDisplay: true,
+                                                        _font,
+                                                        text, link.Option,
+                                                        _pixel,
                                                         Vector2.One, 1);
-                    if(typeof(FinalThoughtLink) == link.GetType() && link.IsVisited)
+                    if (typeof(FinalThoughtLink) == link.GetType() && link.IsVisited)
                     {
                         FinalThoughtLink finalLink = (FinalThoughtLink)link;
-                        if(finalLink.IsSuccessEdge)
+                        if (finalLink.IsSuccessEdge)
                             uiThought.IsUsed = true;
                     }
                     uiOptions.Add(uiThought);
                 }
             }
             return uiOptions;
+        }
+
+        /// <summary>
+        /// Wraps the supplied text so that each line is at most maxWidth characters
+        /// and line breaks are inserted only between words.
+        /// </summary>
+        private static string WrapWords(string text, int maxWidth = 45)
+        {
+            // Pattern explanation (written inline for readability):
+            //   (?<=\S)               – ensures we are not starting inside a whitespace run
+            //   (.{1,maxWidth})       – capture up to maxWidth characters (greedy)
+            //   (?:\s+|$)             – followed by one or more whitespace characters OR end‑of‑string
+            //   (?=\S|$)              – look ahead to make sure we don’t consume the next word’s first char
+            //
+            // The replacement writes back the captured text ($1) and then inserts a newline.
+            string pattern = $@"(?<=\S)(.{{1,{maxWidth}}})(?:\s+|$)";
+            string tmp = Regex.Replace(text, pattern, m => m.Groups[1].Value + Environment.NewLine);
+            return tmp.TrimEnd(); // Remove any trailing newline
         }
 
         public void FillEntityManager(bool isGameLoaded)
