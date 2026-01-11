@@ -77,12 +77,18 @@ namespace conscious
 
             _moodStateManager.MoodChangeEvent += changeAnimationOnMood;
             updateAnimationOnMood(_moodStateManager.moodState);
+            updateSpeedOnMood(_moodStateManager.moodState);
         }
 
         private void changeAnimationOnMood(object sender, MoodStateChangeEventArgs e)
         {
             MoodState state = e.CurrentMoodState;
             updateAnimationOnMood(state);
+            updateSpeedOnMood(state);
+        }
+
+        private void updateSpeedOnMood(MoodState state)
+        {
             if(state == MoodState.Depressed)
                 _playerSpeed = 150f;
             else if(state == MoodState.Regular)
@@ -221,10 +227,10 @@ namespace conscious
             }
         }
 
-        public void MoveToDirection(Vector2 direction)
+        public void MoveToDirection(Vector2 direction, float totalSeconds)
         {
             if(PlayerState == PlayerState.Idle || PlayerState == PlayerState.Walk)
-                Position = Position + direction*5;
+                Position = Position + direction*_playerSpeed * totalSeconds;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
