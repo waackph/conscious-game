@@ -218,7 +218,8 @@ namespace conscious
             }
 
             // Set controls manager variables to move in direction when clicked
-            _controlsManager.MousePosition = mousePosition;
+            // (we deactivate moving player by mouse click)
+            // _controlsManager.MousePosition = mousePosition;
             _controlsManager.Direction = direction;
 
             // Set values for next iteration
