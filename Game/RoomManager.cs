@@ -167,23 +167,18 @@ namespace conscious
             // start a sequence to walk to the new position
             if (currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
             {
-                _sequenceManager.StartSequence(currentRoom.EntrySequence, _player, MoodState.None);
+                Sequence entrySequence = currentRoom.EntrySequence;
+                if (doorId != 0)
+                {
+                    List<Command> coms = CreateDoorEntrySequence(doorId, newPlayerPosition);
+                    entrySequence.prependCommands(coms);
+                }
+                _sequenceManager.StartSequence(entrySequence, _player, MoodState.None);
             }
             else if (lastRoom != null && newPlayerPosition != Vector2.Zero
                      && doorId != 0 && !_sequenceManager.SequenceActive)
             {
-                Door doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
-                doorEntered.OpenDoor(playSound: false);
-                _player.Position = doorEntered.Position;
-                WalkCommand walk = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
-                WaitCommand wait = new WaitCommand(200);
-                DoorActionCommand closeDoor = new DoorActionCommand(_entityManager, doorId);
-                List<Command> coms = new List<Command>()
-                {
-                    walk,
-                    wait,
-                    closeDoor,
-                };
+                List<Command> coms = CreateDoorEntrySequence(doorId, newPlayerPosition);
                 Sequence seq = new Sequence(coms, this);
                 _sequenceManager.StartSequence(seq, _player, MoodState.None);
             }
@@ -194,11 +189,28 @@ namespace conscious
                 RoomId = roomId,
             });
         }
+        
+        private List<Command> CreateDoorEntrySequence(int doorId, Vector2 newPlayerPosition)
+        {
+            Door doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
+            doorEntered.OpenDoor(playSound: false);
+            _player.Position = doorEntered.Position;
+            WalkCommand walk = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
+            WaitCommand wait = new WaitCommand(200);
+            DoorActionCommand closeDoor = new DoorActionCommand(_entityManager, doorId);
+            List<Command> coms = new List<Command>()
+            {
+                walk,
+                wait,
+                closeDoor,
+            };
+            return coms;
+        }
 
         public void RecalculateRoomGraph(bool isInit)
         {
-            _roomGraph.GenerateRoomGraph(isInit, currentRoom.GetBoundingBoxes(), 
-                                         0, currentRoom.RoomWidth, 
+            _roomGraph.GenerateRoomGraph(isInit, currentRoom.GetBoundingBoxes(),
+                                         0, currentRoom.RoomWidth,
                                          0, _preferredBackBufferHeight);
         }
 

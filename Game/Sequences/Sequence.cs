@@ -48,12 +48,20 @@ namespace conscious
                 });
             }
         }
+        
+        public void prependCommands(List<Command> commands)
+        {
+            List<Command> newCommands = new List<Command>();
+            newCommands.AddRange(commands);
+            newCommands.AddRange(_commands);
+            _commands = newCommands;
+        }
 
         public DataHolderSequence GetDataHolderSequence()
         {
             DataHolderSequence dataHolderSequence = new DataHolderSequence();
             List<DataHolderCommand> dhCommands = new List<DataHolderCommand>();
-            foreach(Command command in _commands)
+            foreach (Command command in _commands)
             {
                 dhCommands.Add(command.GetDataHolderCommand());
             }
