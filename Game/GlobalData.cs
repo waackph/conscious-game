@@ -18,6 +18,7 @@ namespace conscious
         public static string StandardSongTransition = "Audio/Red_Curtains_speeding_up";
         public static string StandardSongSlowTransition = "Audio/Red_Curtains_slowing_down";
         public static string ThrobHeartSong = "Audio/heartbeat_sound";
+        public static string ThoughtEmergedSoundEffect = "Audio/thought_emerged";
 
         public static bool IsNotBackgroundOrPlayer(Entity entity)
         {

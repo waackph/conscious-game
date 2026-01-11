@@ -101,7 +101,8 @@ namespace conscious
             _roomGraph = new RoomGraph();
             _pathFinder = new AStarShortestPath(_roomGraph);
 
-            _socManager = new SoCManager(_moodStateManager, audioManager);
+            SoundEffect thoughtEmergedSound = content.Load<SoundEffect>(GlobalData.ThoughtEmergedSoundEffect);
+            _socManager = new SoCManager(_moodStateManager, audioManager, thoughtEmergedSound);
             _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _moodStateManager, _socManager, _cursor, content.Load<SpriteFont>(GlobalData.ThoughtFontName), _pixel);
             _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("clear_out/UI/UI_Thought_Canvas_scaled_500x250"),
                                                  content.Load<Texture2D>("UI/debug_sprites/soc_background_sub_beige"),
