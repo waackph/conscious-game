@@ -101,13 +101,15 @@ namespace conscious
                 entity.Update(gameTime);
             }
 
-            foreach(Entity entity in _entitiesToAdd){
-                _entities.Add(entity);
-            }
-
             foreach(Entity entity in _entitiesToRemove){
                 _entities.Remove(entity);
             }
+
+            foreach (Entity entity in _entitiesToAdd)
+            {
+                _entities.Add(entity);
+            }
+
 
             _entitiesToAdd.Clear();
             _entitiesToRemove.Clear();
