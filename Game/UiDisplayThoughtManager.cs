@@ -9,6 +9,13 @@ namespace conscious
 {
     /// <summary>Class <c>UiDisplayThoughtManager</c> implements a thought UI system.
     /// It manages the visibility of thought options and thoughts of the protagonist.
+    /// Colors used in the UIThoughts:
+    /// - default: Black
+    /// - onHover: DarkSlateGray
+    /// - clicked: Gray
+    /// - deactivated (one-time event thoughts): DarkGray
+    /// - isActive: Sienna
+    /// - Cursor Text color: MintCream
     /// </summary>
     ///
     public class UiDisplayThoughtManager : IComponent
@@ -378,6 +385,12 @@ namespace conscious
                 }
                 if(node.IsRoot)
                     isRootThought = true;
+
+                if (isClickable && !node.Thought.StartsWith("[") && isRootThought)
+                {
+                    node.Thought = "[...] " + node.Thought;
+                }
+
                 UIThought uiThought = new UIThought(isClickable,
                                                     false,
                                                     doDisplay,
@@ -403,12 +416,13 @@ namespace conscious
             {
                 if(!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
                 {
-                    // TODO: add a disabled style, if current moodState is not valid for this option
+                    string text = " >" + link.Option;
+                    // TODO?: add a disabled style, if current moodState is not valid for this option
                     UIThought uiThought = new UIThought(isClickable:true,
                                                         isVisited:link.IsVisited,
                                                         doDisplay:true,
                                                         _font, 
-                                                        link.Option, link.Option, 
+                                                        text, link.Option, 
                                                         _pixel, 
                                                         Vector2.One, 1);
                     if(typeof(FinalThoughtLink) == link.GetType() && link.IsVisited)

@@ -29,7 +29,7 @@ namespace conscious
         {
             _moodStateManager = moodStateManager;
             Thought = thought;
-            if(Thought != null && name != "")
+            if(Thought != null && name != "" && Thought.HasLinks() && Thought.IsRoot && !Thought.Thought.StartsWith("["))
             {
                 Thought.Thought = "[" + name + "] " + Thought.Thought;
             }
