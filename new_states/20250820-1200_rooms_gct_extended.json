@@ -129,7 +129,8 @@
             ]
           }
         }
-      ]
+      ],
+      "IsInnerDialog": true
     },
     "xLimEnd": 5526,
     "xLimStart": 142,
@@ -287,7 +288,8 @@
               }
             }
           ],
-          "ThoughtPortrait": ""
+          "ThoughtPortrait": "",
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -373,7 +375,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -446,7 +449,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -532,7 +536,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -647,7 +652,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -704,7 +710,7 @@
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
           "Id": 1142,
-          "Thought": "[Welke Pflanzen] Die Pflanzen sind schon eingegangen.",
+          "Thought": "Die Pflanzen sind schon eingegangen.",
           "IsRoot": true,
           "ThingId": 3650,
           "LinkageId": 0,
@@ -738,6 +744,7 @@
                       "LinkageId": 0,
                       "Id": 8561,
                       "Thought": "Es ist unheimlich. Als w\u00e4ren die Pflanzen mit ihr gestorben.",
+                      "ThingId": 3650,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -753,8 +760,7 @@
                           "Verb": 0,
                           "MoodChange": 0
                         }
-                      ],
-                      "ThingId": 3650
+                      ]
                     },
                     "Option": "Es war eben schon lange niemand hier."
                   },
@@ -772,6 +778,7 @@
                       "LinkageId": 0,
                       "Id": 9191,
                       "Thought": "Ich will gar nicht wissen wie erst der Garten aussieht.",
+                      "ThingId": 3650,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -790,19 +797,20 @@
                             "IsRoot": false,
                             "LinkageId": 0,
                             "Id": 4404,
-                            "Links": [],
-                            "ThingId": 3650
+                            "ThingId": 3650,
+                            "Links": []
                           }
                         }
-                      ],
-                      "ThingId": 3650
+                      ]
                     }
                   }
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
+        "EventThought": null,
         "IsActive": true
       },
       {
@@ -1023,7 +1031,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "IsActive": true
       },
@@ -1223,7 +1232,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -1288,7 +1298,8 @@
             ]
           }
         }
-      ]
+      ],
+      "IsInnerDialog": true
     },
     "xLimEnd": 1920,
     "xLimStart": 125,
@@ -1378,7 +1389,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -1655,7 +1667,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -1839,7 +1852,8 @@
               }
             }
           ],
-          "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut"
+          "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut",
+          "IsInnerDialog": true
         },
         "EventThought": null
       },
@@ -2065,7 +2079,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -2212,7 +2227,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -2549,7 +2565,8 @@
               }
             }
           ],
-          "ThoughtPortrait": ""
+          "ThoughtPortrait": "",
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -2769,7 +2786,17 @@
                                                                     },
                                                                     "Option": "Auch jetzt f\u00fchle ich vor allem Schuld. Ich bereue es dass ich Lydia nie mehr besucht habe.",
                                                                     "IsFinal": true,
-                                                                    "sequence": null,
+                                                                    "sequence": {
+                                                                      "Commands": [
+                                                                        {
+                                                                          "$type": "conscious.DataHolderSayCommand, conscious",
+                                                                          "index": 0.27181353562061383,
+                                                                          "DestinationX": 0,
+                                                                          "DestinationY": 0,
+                                                                          "ThoughtText": "Ich w\u00fcnschte ich k\u00f6nnte mit meiner Mutter wieder im Garten arbeiten. Dann w\u00fcrde ich mich besser f\u00fchlen."
+                                                                        }
+                                                                      ]
+                                                                    },
                                                                     "Verb": 0,
                                                                     "MoodChange": 1,
                                                                     "IsSuccessEdge": true,
@@ -2853,7 +2880,8 @@
               }
             }
           ],
-          "ThoughtPortrait": ""
+          "ThoughtPortrait": "",
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -2894,6 +2922,7 @@
           "Id": 4919,
           "Thought": "Ein gro\u00dfer Fleck ist auf dem Teppich.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 1291,
           "LinkageId": 0,
           "Links": [
@@ -3048,6 +3077,7 @@
           "Id": 1750,
           "Thought": "Mein Handy klingelt. Auch das noch...",
           "IsRoot": true,
+          "IsInnerDialog": false,
           "ThingId": 1291,
           "LinkageId": 0,
           "Links": [
@@ -3309,7 +3339,8 @@
             ]
           }
         }
-      ]
+      ],
+      "IsInnerDialog": true
     },
     "xLimEnd": 1708,
     "xLimStart": 0,
@@ -3319,7 +3350,7 @@
     "WalkingSoundFilePath": "walking-parquet",
     "Things": [
       {
-        "$type": "conscious.DataHolderThing, conscious",
+        "$type": "conscious.DataHolderItem, conscious",
         "Id": 3668,
         "Name": "Geschirrschrank",
         "texturePath": "clear_out/rooms/dining_room/objects/cupboard_435x385_pos_556x502",
@@ -3342,7 +3373,16 @@
         "InitPlayerPosX": -1,
         "InitPlayerPosY": -1,
         "CloseTexturePath": "",
-        "Thought": null,
+        "Thought": {
+          "$type": "conscious.DataHolderThoughtNode, conscious",
+          "Id": 3149,
+          "Thought": "Das ist ein wirklich alter Geschirrschrank! Muss von meinen Gro\u00dfeltern stammen.",
+          "IsRoot": true,
+          "ThingId": 3668,
+          "LinkageId": 0,
+          "Links": [],
+          "IsInnerDialog": true
+        },
         "EventThought": null,
         "IsActive": true
       },
@@ -3485,7 +3525,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -3569,7 +3610,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -3758,7 +3800,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "IsActive": true
@@ -4101,7 +4144,8 @@
               }
             }
           ],
-          "ThoughtPortrait": ""
+          "ThoughtPortrait": "",
+          "IsInnerDialog": true
         },
         "EventThought": null
       },
@@ -4272,7 +4316,8 @@
               }
             }
           ],
-          "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut"
+          "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut",
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -4389,7 +4434,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -4599,7 +4645,8 @@
               }
             }
           ],
-          "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut"
+          "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut",
+          "IsInnerDialog": true
         },
         "EventThought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
@@ -5000,7 +5047,8 @@
           ],
           "SoundPath": "Audio/heartbeat_sound_effect",
           "RepeatedSound": true,
-          "ThoughtPortrait": "clear_out/thought_portraits/lydia_portrait_cut"
+          "ThoughtPortrait": "clear_out/thought_portraits/lydia_portrait_cut",
+          "IsInnerDialog": true
         },
         "DepressedTexture": "",
         "ManicTexture": "",
@@ -5077,7 +5125,8 @@
           "IsRoot": true,
           "ThingId": 2965,
           "LinkageId": 0,
-          "Links": []
+          "Links": [],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -5185,7 +5234,8 @@
             ]
           }
         }
-      ]
+      ],
+      "IsInnerDialog": true
     },
     "Things": [
       {
@@ -5272,7 +5322,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -5382,7 +5433,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -5527,7 +5579,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -5722,7 +5775,8 @@
               }
             }
           ],
-          "ThoughtPortrait": ""
+          "ThoughtPortrait": "",
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -5788,7 +5842,8 @@
             ]
           }
         }
-      ]
+      ],
+      "IsInnerDialog": true
     },
     "Things": [
       {
@@ -5875,7 +5930,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6026,7 +6082,8 @@
               }
             }
           ],
-          "ThoughtPortrait": ""
+          "ThoughtPortrait": "",
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6320,7 +6377,8 @@
               }
             }
           ],
-          "ThoughtPortrait": ""
+          "ThoughtPortrait": "",
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6473,7 +6531,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6564,7 +6623,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6655,7 +6715,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6843,7 +6904,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6934,7 +6996,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7025,7 +7088,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7166,7 +7230,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7209,7 +7274,8 @@
           "IsRoot": true,
           "ThingId": 3343,
           "LinkageId": 0,
-          "Links": []
+          "Links": [],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7301,7 +7367,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7395,7 +7462,8 @@
             ]
           }
         }
-      ]
+      ],
+      "IsInnerDialog": true
     },
     "Things": [
       {
@@ -7548,7 +7616,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7674,7 +7743,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7716,7 +7786,8 @@
           "IsRoot": true,
           "ThingId": 4718,
           "LinkageId": 0,
-          "Links": []
+          "Links": [],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7982,7 +8053,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -8042,6 +8114,7 @@
       "Id": 4817,
       "Thought": "Was ist das f\u00fcr ein komisches Pochen? Es ist lauter geworden.",
       "IsRoot": true,
+      "IsInnerDialog": true,
       "LinkageId": 0,
       "Links": [
         {
@@ -8066,13 +8139,7 @@
                   0
                 ],
                 "Id": 141,
-                "NextNode": {
-                  "$type": "conscious.DataHolderThoughtNode, conscious",
-                  "IsRoot": false,
-                  "LinkageId": 0,
-                  "Id": 6168,
-                  "Links": []
-                },
+                "NextNode": null,
                 "Option": "Vielleicht finden wir den Ursprung des Pochens.",
                 "IsFinal": true,
                 "sequence": null,
@@ -8205,7 +8272,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -8381,7 +8449,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -8559,7 +8628,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -9083,7 +9153,8 @@
             ]
           }
         }
-      ]
+      ],
+      "IsInnerDialog": true
     },
     "Things": [
       {
@@ -9170,7 +9241,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "IsInnerDialog": true
         },
         "EventThought": null,
         "DepressedTexture": "",

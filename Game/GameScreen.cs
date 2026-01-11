@@ -103,7 +103,7 @@ namespace conscious
 
             SoundEffect thoughtEmergedSound = content.Load<SoundEffect>(GlobalData.ThoughtEmergedSoundEffect);
             _socManager = new SoCManager(_moodStateManager, audioManager, thoughtEmergedSound);
-            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _moodStateManager, _socManager, _cursor, content.Load<SpriteFont>(GlobalData.ThoughtFontName), _pixel);
+            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _moodStateManager, _socManager, _cursor, content.Load<SpriteFont>(GlobalData.ThoughtFontName), content.Load<SpriteFont>(GlobalData.DialogFontName), _pixel);
             _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("clear_out/UI/UI_Thought_Canvas_scaled_500x250"),
                                                  content.Load<Texture2D>("UI/debug_sprites/soc_background_sub_beige"),
                                                  content.Load<Texture2D>("UI/debug_sprites/inventory_place_background_v2"));
@@ -616,7 +616,7 @@ namespace conscious
                                                     dhThought.ThingId,
                                                     eventSound,
                                                     dhThought.RepeatedSound,
-                                                    thoughtPortrait);
+                                                    thoughtPortrait, dhThought.IsInnerDialog);
             foreach (DataHolderThoughtLink dhThoughtLink in dhThought.Links)
             {
                 ThoughtLink link = InstatiateThoughtLink(dhThoughtLink);

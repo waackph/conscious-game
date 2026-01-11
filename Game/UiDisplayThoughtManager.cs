@@ -27,6 +27,7 @@ namespace conscious
         private Cursor _cursor;
         private List<UIThought> _thoughts;
         private SpriteFont _font;
+        private SpriteFont _dialogFont;
         private Texture2D _pixel;
         private float _bgX;
         private float _bgY;
@@ -46,7 +47,7 @@ namespace conscious
         private MouseState _lastMouseState;
         public bool IsInThoughtMode { get; protected set; }
 
-        public UiDisplayThoughtManager(EntityManager entityManager, MoodStateManager moodStateManager, SoCManager socManager, Cursor cursor, SpriteFont font, Texture2D pixel)
+        public UiDisplayThoughtManager(EntityManager entityManager, MoodStateManager moodStateManager, SoCManager socManager, Cursor cursor, SpriteFont font, SpriteFont dialogFont, Texture2D pixel)
         {
             _entityManager = entityManager;
             _moodStateManager = moodStateManager;
@@ -73,10 +74,11 @@ namespace conscious
             _scrollAmount = 5;
 
             _topPadding = 50;
-            
+
             _font = font;
+            _dialogFont = dialogFont;
             _pixel = pixel;
-           
+
             _lastMouseState = Mouse.GetState();
             _currentSubthought = null;
             _currentSubthoughtLinks = null;
@@ -395,14 +397,19 @@ namespace conscious
                 if(thoughtText.Length >= 45)
                     thoughtText = WrapWords(thoughtText);
 
+                SpriteFont useFont = _font;
+                if(_currentThought != null && !_currentThought.IsInnerDialog && !node.IsRoot)
+                    useFont = _dialogFont;
+
                 UIThought uiThought = new UIThought(isClickable,
                                                     false,
                                                     doDisplay,
-                                                    _font, 
+                                                    useFont,
                                                     thoughtText, node.Thought, 
                                                     _pixel, 
                                                     Vector2.One, 1,
-                                                    isRootThought);
+                                                    isRootThought,
+                                                    node.IsInnerDialog);
                 if(node.IsRoot)
                     uiThought.IsUsed = node.IsUsed;
                 return uiThought;
@@ -424,11 +431,15 @@ namespace conscious
                     if(text.Length >= 45)
                         text = WrapWords(text);
 
+                    SpriteFont useFont = _font;
+                    if(_currentThought != null && !_currentThought.IsInnerDialog)
+                        useFont = _dialogFont;
+
                     // TODO?: add a disabled style, if current moodState is not valid for this option
                     UIThought uiThought = new UIThought(isClickable: true,
                                                         isVisited: link.IsVisited,
                                                         doDisplay: true,
-                                                        _font,
+                                                        useFont,
                                                         text, link.Option,
                                                         _pixel,
                                                         Vector2.One, 1);

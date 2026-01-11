@@ -21,15 +21,16 @@ namespace conscious
 
         public string Thought { get; set; }
         public bool IsRoot { get; }
-        public bool IsUsed { get; set; }
         public bool IsInnerDialog { get; set; }
+        public bool IsUsed { get; set; }
         public int ThingId { get; }
         public SoundEffect EventSound { get; }
         public bool RepeatedSound { get; }
         public Texture2D ThoughtPortrait { get; }
 
-        public ThoughtNode(int id, string thought, int linkageId, bool isRoot, int thingId, 
-                           SoundEffect eventSound = null, bool repeatedSound = false, Texture2D thoughtPortrait = null)
+        public ThoughtNode(int id, string thought, int linkageId, bool isRoot, int thingId,
+                           SoundEffect eventSound = null, bool repeatedSound = false,
+                           Texture2D thoughtPortrait = null, bool isInnerDialog = true)
         {
             Id = id;
             Thought = thought;
@@ -42,8 +43,8 @@ namespace conscious
             Links = new List<ThoughtLink>();
             IsRoot = isRoot;
             IsUsed = false;
-            IsInnerDialog = false;
             ThingId = thingId;
+            IsInnerDialog = isInnerDialog;
         }
 
         public void AddLink(ThoughtLink link)
@@ -80,6 +81,7 @@ namespace conscious
             dataHolderThoughtNode.Thought = Thought;
             dataHolderThoughtNode.LinkageId = _linkageId;
             dataHolderThoughtNode.IsRoot = IsRoot;
+            dataHolderThoughtNode.IsInnerDialog = IsInnerDialog;
             dataHolderThoughtNode.ThingId = ThingId;
             dataHolderThoughtNode.Links = dhLinks;
             dataHolderThoughtNode.SoundPath = EventSound?.Name;
@@ -101,6 +103,7 @@ namespace conscious
             dataHolderThoughtNode.Thought = Thought;
             dataHolderThoughtNode.LinkageId = _linkageId;
             dataHolderThoughtNode.IsRoot = IsRoot;
+            dataHolderThoughtNode.IsInnerDialog = IsInnerDialog;
             dataHolderThoughtNode.ThingId = ThingId;
             dataHolderThoughtNode.Links = dhLinks;
             dataHolderThoughtNode.SoundPath = EventSound?.Name;
