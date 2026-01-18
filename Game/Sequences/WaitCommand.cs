@@ -10,7 +10,7 @@ namespace conscious
     public class WaitCommand : Command
     {
         private int _timeSinceBeginning;
-        private int _millisecondsToWait;
+        public int _millisecondsToWait;
         
         public SoundEffect Sound = null;
 

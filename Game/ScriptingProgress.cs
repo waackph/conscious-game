@@ -148,11 +148,11 @@ namespace conscious
                 _roomInteractionManager.isTriggerNewThoughtEnabled = true;
             }
             // Final thought event to end the game
-            else if (e.ThoughtEventId == 5862)
-            {
-                // finalize game
-                _gameScreen.gameFinished = true;
-            }
+            // else if (e.ThoughtEventId == 5862)
+            // {
+            //     // finalize game
+            //     _gameScreen.gameFinished = true;
+            // }
         }
 
         private void OnRoomChange(object sender, RoomChangeEvent e)
@@ -190,6 +190,19 @@ namespace conscious
             if (GlobalData.IsSameOrSubclass(typeof(WaitCommand), e.sequenceCommand.GetType()))
             {
                 checkHeartThrobBasementStart(e.sequenceCommand);
+            }
+
+            if (GlobalData.IsSameOrSubclass(typeof(WaitCommand), e.sequenceCommand.GetType()))
+            {
+                WaitCommand waitCmd = (WaitCommand)e.sequenceCommand;
+                if (waitCmd != null && waitCmd.Sound != null && waitCmd.Sound.Name == "Audio/walking-stairs" && _roomManager.CurrentRoomIndex == 6)
+                {
+                    _gameScreen.gameFinished = true;
+                }
+                if (waitCmd != null && waitCmd._millisecondsToWait == 3210 && _roomManager.CurrentRoomIndex == 6)
+                {
+                    _gameScreen.gameFinished = true;
+                }
             }
         }
 

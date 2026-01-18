@@ -9,6 +9,7 @@
       "Id": 6686,
       "Thought": "Dieses Quietschen ist unertr\u00e4glich laut.",
       "IsRoot": true,
+      "IsInnerDialog": true,
       "LinkageId": 0,
       "Links": [
         {
@@ -25,6 +26,7 @@
             "Thought": "Das sind die Bodendielen. Es ist ein altes Haus.",
             "IsRoot": false,
             "LinkageId": 0,
+            "ThoughtPortrait": "",
             "Links": [
               {
                 "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -44,6 +46,7 @@
                   "LinkageId": 0,
                   "Id": 3778,
                   "Thought": "Als ich noch zu Hause gelebt habe quietschten die Dielen auch. Aber in den allt\u00e4glichen Ger\u00e4uschen ging das schnell unter. Meine Mutter h\u00e4tte mir wahrscheinlich aus dem Wohnzimmer mahnend zugerufen, dass ich die Stra\u00dfenschuhe ausziehen solle. Jetzt herrscht hier Totenstille. Im wahrsten Sinne des Wortes.",
+                  "ThoughtPortrait": "",
                   "Links": [
                     {
                       "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -76,6 +79,7 @@
                   "LinkageId": 0,
                   "Id": 4777,
                   "Thought": "Ich sch\u00e4tze niemand war in den letzten Wochen mehr hier, seid Lydia gestorben ist. Sie wurde im Esszimmer Tod aufgefunden.",
+                  "ThoughtPortrait": "",
                   "Links": [
                     {
                       "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -130,7 +134,7 @@
           }
         }
       ],
-      "IsInnerDialog": true
+      "ThoughtPortrait": ""
     },
     "xLimEnd": 5526,
     "xLimStart": 142,
@@ -4451,7 +4455,7 @@
         "PositionX": 273,
         "PositionY": 783,
         "DrawOrder": 3,
-        "Collidable": true,
+        "Collidable": false,
         "CollisionBoxHeight": 20,
         "ExamineText": "Eine Matratze",
         "IsInInventory": false,
@@ -4511,6 +4515,7 @@
           "Id": 8491,
           "Thought": "Ein Hohlraum in der Wand.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 5504,
           "LinkageId": 0,
           "Links": [
@@ -4645,14 +4650,14 @@
               }
             }
           ],
-          "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut",
-          "IsInnerDialog": true
+          "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut"
         },
         "EventThought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
           "Id": 5862,
           "Thought": "Warum hast du mir nie etwas davon erz\u00e4hlt?",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 5504,
           "LinkageId": 0,
           "Links": [
@@ -4770,7 +4775,7 @@
                                                       {
                                                         "$type": "conscious.DataHolderWalkCommand, conscious",
                                                         "index": 0.8690902966995512,
-                                                        "DestinationX": "1775",
+                                                        "DestinationX": "1700",
                                                         "DestinationY": "414"
                                                       },
                                                       {
@@ -4830,24 +4835,37 @@
                                             "sequence": {
                                               "Commands": [
                                                 {
+                                                  "$type": "conscious.DataHolderWalkCommand, conscious",
+                                                  "index": 0.05337142358563052,
+                                                  "DestinationX": "273",
+                                                  "DestinationY": "900"
+                                                },
+                                                {
                                                   "$type": "conscious.DataHolderAnimateCommand, conscious",
-                                                  "index": 0.5296516762177816,
+                                                  "index": 0.9675221492107887,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0,
                                                   "AnimState": "sleep"
                                                 },
                                                 {
                                                   "$type": "conscious.DataHolderWaitCommand, conscious",
-                                                  "index": 0.5651609797034725,
+                                                  "index": 0.400446977169707,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0,
                                                   "MillisecondsToWait": "5000"
                                                 },
                                                 {
                                                   "$type": "conscious.DataHolderVanishCommand, conscious",
-                                                  "index": 0.8710678539344288,
+                                                  "index": 0.8305392628390332,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0
+                                                },
+                                                {
+                                                  "$type": "conscious.DataHolderWaitCommand, conscious",
+                                                  "index": 0.7790970044365676,
+                                                  "DestinationX": 0,
+                                                  "DestinationY": 0,
+                                                  "MillisecondsToWait": "3210"
                                                 }
                                               ]
                                             },
@@ -4887,24 +4905,37 @@
                                             "sequence": {
                                               "Commands": [
                                                 {
+                                                  "$type": "conscious.DataHolderWalkCommand, conscious",
+                                                  "index": 0.5304423087050153,
+                                                  "DestinationX": "270",
+                                                  "DestinationY": "900"
+                                                },
+                                                {
                                                   "$type": "conscious.DataHolderAnimateCommand, conscious",
-                                                  "index": 0.4972075909785362,
+                                                  "index": 0.8421415049289943,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0,
                                                   "AnimState": "sleep"
                                                 },
                                                 {
                                                   "$type": "conscious.DataHolderWaitCommand, conscious",
-                                                  "index": 0.1497825028458366,
+                                                  "index": 0.2679455510847727,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0,
                                                   "MillisecondsToWait": "5000"
                                                 },
                                                 {
                                                   "$type": "conscious.DataHolderVanishCommand, conscious",
-                                                  "index": 0.8010981827013196,
+                                                  "index": 0.15097235308863122,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0
+                                                },
+                                                {
+                                                  "$type": "conscious.DataHolderWaitCommand, conscious",
+                                                  "index": 0.9826156242926406,
+                                                  "DestinationX": 0,
+                                                  "DestinationY": 0,
+                                                  "MillisecondsToWait": "3210"
                                                 }
                                               ]
                                             },
@@ -4944,24 +4975,37 @@
                                             "sequence": {
                                               "Commands": [
                                                 {
+                                                  "$type": "conscious.DataHolderWalkCommand, conscious",
+                                                  "index": 0.2198148390875012,
+                                                  "DestinationX": "270",
+                                                  "DestinationY": "900"
+                                                },
+                                                {
                                                   "$type": "conscious.DataHolderAnimateCommand, conscious",
-                                                  "index": 0.5861639991931136,
+                                                  "index": 0.8396083420626864,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0,
                                                   "AnimState": "sleep"
                                                 },
                                                 {
                                                   "$type": "conscious.DataHolderWaitCommand, conscious",
-                                                  "index": 0.6194836876668874,
+                                                  "index": 0.6143040889474412,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0,
                                                   "MillisecondsToWait": "5000"
                                                 },
                                                 {
                                                   "$type": "conscious.DataHolderVanishCommand, conscious",
-                                                  "index": 0.7115370530744247,
+                                                  "index": 0.06542872242419062,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0
+                                                },
+                                                {
+                                                  "$type": "conscious.DataHolderWaitCommand, conscious",
+                                                  "index": 0.5771779398943723,
+                                                  "DestinationX": 0,
+                                                  "DestinationY": 0,
+                                                  "MillisecondsToWait": "3210"
                                                 }
                                               ]
                                             },
@@ -5002,24 +5046,37 @@
                                             "sequence": {
                                               "Commands": [
                                                 {
+                                                  "$type": "conscious.DataHolderWalkCommand, conscious",
+                                                  "index": 0.6064755752610329,
+                                                  "DestinationX": "273",
+                                                  "DestinationY": "783"
+                                                },
+                                                {
                                                   "$type": "conscious.DataHolderAnimateCommand, conscious",
-                                                  "index": 0.2633164252287965,
+                                                  "index": 0.9548505512785067,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0,
                                                   "AnimState": "sleep"
                                                 },
                                                 {
                                                   "$type": "conscious.DataHolderWaitCommand, conscious",
-                                                  "index": 0.5922760299325254,
+                                                  "index": 0.2600088738794408,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0,
                                                   "MillisecondsToWait": "5000"
                                                 },
                                                 {
                                                   "$type": "conscious.DataHolderVanishCommand, conscious",
-                                                  "index": 0.19557430932339415,
+                                                  "index": 0.3900979919595545,
                                                   "DestinationX": 0,
                                                   "DestinationY": 0
+                                                },
+                                                {
+                                                  "$type": "conscious.DataHolderWaitCommand, conscious",
+                                                  "index": 0.9823174756255378,
+                                                  "DestinationX": 0,
+                                                  "DestinationY": 0,
+                                                  "MillisecondsToWait": "3210"
                                                 }
                                               ]
                                             },
@@ -5047,8 +5104,7 @@
           ],
           "SoundPath": "Audio/heartbeat_sound_effect",
           "RepeatedSound": true,
-          "ThoughtPortrait": "clear_out/thought_portraits/lydia_portrait_cut",
-          "IsInnerDialog": true
+          "ThoughtPortrait": "clear_out/thought_portraits/lydia_portrait_cut"
         },
         "DepressedTexture": "",
         "ManicTexture": "",
