@@ -39,8 +39,11 @@ namespace conscious
         public SoundEffectInstance currentWalkingSound;
         public SoundEffectInstance currentAtmoSound;
         private SoundEffectInstance _defaultWalkingSound;
+        
+        GameScreen _gameScreen;
 
-        public RoomManager(ContentManager content, 
+        public RoomManager(GameScreen gameScreen,
+                           ContentManager content,
                            Player player,
                            Cursor cursor,
                            Texture2D pixel,
@@ -51,18 +54,19 @@ namespace conscious
                            AudioManager audioManager,
                            SoCManager socManager,
                            RoomGraph roomGraph,
-                           int preferredBackBufferWidth, 
+                           int preferredBackBufferWidth,
                            int preferredBackBufferHeight,
                            SoundEffectInstance defaultWalkingSound)
         {
             _content = content;
+            _gameScreen = gameScreen;
 
             _preferredBackBufferHeight = preferredBackBufferHeight;
             _preferredBackBufferWidth = preferredBackBufferWidth;
 
             _centerPosition = new Vector2(_preferredBackBufferWidth / 2,
                                          _preferredBackBufferHeight / 2);
-            
+
             _entityManager = entityManager;
             _dialogManager = dialogManager;
             _sequenceManager = sequenceManager;
@@ -109,7 +113,7 @@ namespace conscious
             _entityManager.Lights = new List<Texture2D> { currentLightMap };
         }
 
-        public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId = 0)
+        public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId = 0, bool doTriggerThought = true)
         {
             Room lastRoom = currentRoom;
             currentRoom = _rooms[roomId];
@@ -161,7 +165,8 @@ namespace conscious
             // Create path graph of room here
             RecalculateRoomGraph(true);
 
-            triggerThought(currentRoom);
+            if(doTriggerThought)
+                triggerThought();
 
             // Either start the entry sequence or in case of entering through a door 
             // start a sequence to walk to the new position
@@ -217,7 +222,7 @@ namespace conscious
         public void Update(GameTime gameTime)
         {
 
-            if (currentRoom == null)
+            if (currentRoom == null && !_gameScreen.isTutorialActive)
             {
                 // Testing: Sequence
                 // if(_rooms[CurrentRoomIndex].EntrySequence == null && CurrentRoomIndex == 2)
@@ -364,15 +369,15 @@ namespace conscious
             // _rooms[CurrentRoomIndex].EntrySequence = seq;
 
             // currentRoom = _rooms[CurrentRoomIndex];
-            changeRoom(CurrentRoomIndex, Vector2.Zero);
+            changeRoom(CurrentRoomIndex, Vector2.Zero, 0, false);
 
         }
 
-        private void triggerThought(Room room)
+        public void triggerThought()
         {
-            if(room.Thought != null)
+            if(currentRoom.Thought != null)
             {
-                _socManager.AddThought(room.Thought);
+                _socManager.AddThought(currentRoom.Thought);
             }
         }
 

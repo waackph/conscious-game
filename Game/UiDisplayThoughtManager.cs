@@ -91,18 +91,18 @@ namespace conscious
             Vector2 bgPosition = new Vector2(_bgX, _bgY);
             _consciousnessBackground = new UIAreaScrollable(_thoughts, _topPadding, _offsetY,
                                                             _cursor, _scrollAmount,
-                                                            "SoC Background", consciousnessBackground, bgPosition, 1);
+                                                            "SoC Background", consciousnessBackground, bgPosition, 2);
 
             Vector2 thoughtBgPosition = new Vector2(_bgX + _thoughtOffsetX, 
                                                     _bgY + _consciousnessBackground.Height + _consciousnessBackground.Height/2 + _thoughtOffsetY);
             _subthoughtBackground = new UIAreaScrollable(_currentSubthoughtLinks, _topPadding, _offsetY,
                                                          _cursor, _scrollAmount,
-                                                         "Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition, 1);
+                                                         "Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition, 2);
 
             int portraitOffset = 50;
             Vector2 portraitBgPosition = new Vector2(_bgX + _thoughtOffsetX - _consciousnessBackground.Width/2 - consciousnessPortraitImage.Width/2,
                                                      _bgY + _consciousnessBackground.Height + portraitOffset);
-            _consciousnessPortrait = new UIArea("Thought Portrait", consciousnessPortraitImage, portraitBgPosition, 1);
+            _consciousnessPortrait = new UIArea("Thought Portrait", consciousnessPortraitImage, portraitBgPosition, 2);
         }
 
         public void Update(GameTime gameTime)

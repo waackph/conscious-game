@@ -42,6 +42,7 @@ namespace conscious
 
         private bool _gameLoaded = false;
         public bool gameFinished = false;
+        public bool isTutorialActive = false;
         private EventHandler _gameEndingScreenEvent;
 
         private static JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
@@ -69,7 +70,7 @@ namespace conscious
 
             _gameEndingScreenEvent = gameEndingScreenEvent;
 
-            Vector2 playerPosition = new Vector2(1000, 150);  //Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
+            Vector2 playerPosition = new Vector2(500, 150);  //Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
 
             _player = new Player(content.Load<Texture2D>("Player/walking_anim_regular"),
                                  content.Load<Texture2D>("Player/sleep_anim_616_outline"),
@@ -115,7 +116,7 @@ namespace conscious
             SoundEffect defaultWalkingSound = content.Load<SoundEffect>("Audio/default_walking_sound");
             SoundEffectInstance defaultWalkingSoundInst = defaultWalkingSound.CreateInstance();
             defaultWalkingSoundInst.IsLooped = true;
-            _roomManager = new RoomManager(content,
+            _roomManager = new RoomManager(this, content,
                                            _player,
                                            _cursor,
                                            _pixel,
@@ -141,7 +142,7 @@ namespace conscious
                                                                  _cursor,
                                                                  _player);
 
-            _scriptingProgress = new ScriptingProgress(this, _entityManager, _audioManager, _roomInteractionManager, _socManager, content);
+            _scriptingProgress = new ScriptingProgress(this, _entityManager, _audioManager, _roomInteractionManager, _socManager, _sequenceManager, _moodStateManager, _roomManager, content, _player);
         }
 
         public override void Update(GameTime gameTime)
@@ -167,13 +168,19 @@ namespace conscious
 
             if (!_dialogManager.DialogActive && !_sequenceManager.SequenceActive)
             {
-                _inventoryManager.Update(gameTime);
-                _roomInteractionManager.Update(gameTime);
                 if (!_inventoryManager.InventoryActive)
                 {
-                    _controlsManager.Update(gameTime);
                     _uiDisplayThoughtManager.Update(gameTime);
                 }
+                if (!isTutorialActive)
+                    {
+                        _inventoryManager.Update(gameTime);
+                        _roomInteractionManager.Update(gameTime);
+                        if (!_inventoryManager.InventoryActive)
+                        {
+                            _controlsManager.Update(gameTime);
+                        }
+                    }
             }
             _dialogManager.Update(gameTime);
             _roomManager.Update(gameTime);
@@ -253,6 +260,7 @@ namespace conscious
             if (newGame)
             {
                 savePath = "new_states/20250820-1200";
+                isTutorialActive = true;
             }
             else
             {

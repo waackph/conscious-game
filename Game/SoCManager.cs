@@ -240,10 +240,9 @@ namespace conscious
                         }
                         if (CurrentThought != null)
                         {
-                            // Notify scripting API about room change
-                            EventBus.Publish(this, new ThoughtEventFinished
+                            EventBus.Publish(this, new ThoughtFinishedEvent
                             {
-                                ThoughtEventId = CurrentThought.Id,
+                                RootThoughtId = CurrentThought.Id,
                             });
                         }
                     }

@@ -14,12 +14,14 @@ namespace conscious
         private int _currentIndex;
         private RoomManager _roomManager;
         public bool SequenceFinished;
+        private string _sequenceName;
 
-        public Sequence(List<Command> commands, RoomManager roomManager = null)
+        public Sequence(List<Command> commands, RoomManager roomManager = null, string sequenceName = "")
         {
             _currentIndex = -1;
             _roomManager = roomManager;
             _commands = commands;
+            _sequenceName = sequenceName;
             SequenceFinished = false;
         }
 
@@ -44,6 +46,7 @@ namespace conscious
                 // Notify scripting API about sequence finished
                 EventBus.Publish(this, new SequenceFinishedEvent
                 {
+                    sequenceName = _sequenceName,
                     sequenceCommand = command
                 });
             }

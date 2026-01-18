@@ -8,6 +8,7 @@ namespace conscious
     ///
     public class SequenceFinishedEvent : EventArgs
     {
+        public string sequenceName { get; set; }
         public Command sequenceCommand { get; set; }
     }
 }
