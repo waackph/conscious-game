@@ -175,6 +175,7 @@
           "Id": 3820,
           "Thought": "Das Badezimmer.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 3087,
           "LinkageId": 0,
           "Links": [
@@ -292,8 +293,7 @@
               }
             }
           ],
-          "ThoughtPortrait": "",
-          "IsInnerDialog": true
+          "ThoughtPortrait": ""
         },
         "EventThought": null,
         "IsActive": true
@@ -845,6 +845,7 @@
           "Id": 3871,
           "Thought": "Das sind Schuhe und Jacken von Lydia.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 2888,
           "LinkageId": 0,
           "Links": [
@@ -878,6 +879,7 @@
                       "LinkageId": 0,
                       "Id": 1325,
                       "Thought": "Die hatte Lydia auch fr\u00fcher schon f\u00fcr ihre Gartenarbeit benutzt. Fr\u00fcher hatte ich auch eine kleine Gartensch\u00fcrze bekommen. Im Garten hab ich mich meiner Mutter immer besonders nahe gef\u00fchlt. Wir haben zusammen Unkraut gej\u00e4tet oder Pflanzen beschnitten.",
+                      "ThingId": 2888,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -893,8 +895,7 @@
                           "Verb": 0,
                           "MoodChange": 0
                         }
-                      ],
-                      "ThingId": 2888
+                      ]
                     }
                   },
                   {
@@ -911,6 +912,7 @@
                       "LinkageId": 0,
                       "Id": 10003,
                       "Thought": "Gegen den kalten nordischen Wind und h\u00e4ufigen Regen. In Norddeutschland darf geh\u00f6rt das zur Standardausstattung.",
+                      "ThingId": 2888,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -925,8 +927,8 @@
                             "LinkageId": 0,
                             "Id": 437,
                             "Thought": "lastnode",
-                            "Links": [],
-                            "ThingId": 2888
+                            "ThingId": 2888,
+                            "Links": []
                           },
                           "Option": "Praktisch. Vielleicht behalte ich den."
                         },
@@ -944,12 +946,11 @@
                             "LinkageId": 0,
                             "Id": 4411,
                             "Thought": "lastnode",
-                            "Links": [],
-                            "ThingId": 2888
+                            "ThingId": 2888,
+                            "Links": []
                           }
                         }
-                      ],
-                      "ThingId": 2888
+                      ]
                     }
                   },
                   {
@@ -966,6 +967,8 @@
                       "LinkageId": 0,
                       "Id": 203,
                       "Thought": "Wenn meine Mutter fr\u00fcher vom Einkaufen nach Hause kam, bin ich h\u00e4ufig schnell in die erstbesten Schuhe geschl\u00fcpft. Lydias Sneaker waren mir viel zu gro\u00df und ich hab st\u00e4ndig einen der Schuhe verloren beim Eink\u00e4ufe reintragen.",
+                      "ThingId": 2888,
+                      "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut",
                       "Links": [
                         {
                           "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -980,6 +983,7 @@
                             "LinkageId": 0,
                             "Id": 4591,
                             "Thought": "Wei\u00df ich nicht mehr. Vielleicht war ich neugierig auf die Eink\u00e4ufe?",
+                            "ThingId": 2888,
                             "Links": [
                               {
                                 "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -1009,8 +1013,7 @@
                                 "MoodChange": 0,
                                 "NextNode": null
                               }
-                            ],
-                            "ThingId": 2888
+                            ]
                           },
                           "Option": "Warum war ich so hastig?"
                         },
@@ -1028,16 +1031,15 @@
                           "MoodChange": 0,
                           "NextNode": null
                         }
-                      ],
-                      "ThingId": 2888
+                      ]
                     }
                   }
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
+        "EventThought": null,
         "IsActive": true
       },
       {
@@ -1069,6 +1071,7 @@
           "Id": 1436,
           "Thought": "Die Umzugskartons f\u00fcr Lydias Sachen.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 2981,
           "LinkageId": 0,
           "Links": [
@@ -1101,6 +1104,8 @@
                       "LinkageId": 0,
                       "Id": 7723,
                       "Thought": "Das f\u00fchlt sich falsch an. Ich hatte doch schon so lange keinen Kontakt mehr zu meiner Mutter.",
+                      "ThingId": 2981,
+                      "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut",
                       "Links": [
                         {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -1130,8 +1135,7 @@
                           "MoodChange": 0,
                           "NextNode": null
                         }
-                      ],
-                      "ThingId": 2981
+                      ]
                     },
                     "Option": "Die ganzen Sachen geh\u00f6ren jetzt mir."
                   },
@@ -1148,6 +1152,7 @@
                       "LinkageId": 0,
                       "Id": 1684,
                       "Thought": "Ich wei\u00df auch nicht genau. Es kostet Geld.",
+                      "ThingId": 2981,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -1162,6 +1167,8 @@
                             "LinkageId": 0,
                             "Id": 8613,
                             "Thought": "Ich habe das Gef\u00fchl, dass ich noch irgendwas in diesem Haus zu kl\u00e4ren habe. Es ist als w\u00fcrde ich hier nach etwas suchen. Ich wei\u00df aber auch nicht wonach.",
+                            "ThingId": 2981,
+                            "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut",
                             "Links": [
                               {
                                 "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -1191,8 +1198,7 @@
                                 "MoodChange": 0,
                                 "NextNode": null
                               }
-                            ],
-                            "ThingId": 2981
+                            ]
                           },
                           "Option": "Ist das wirklich der Grund?"
                         },
@@ -1210,12 +1216,11 @@
                             "LinkageId": 0,
                             "Id": 9711,
                             "Thought": "lastnode",
-                            "Links": [],
-                            "ThingId": 2981
+                            "ThingId": 2981,
+                            "Links": []
                           }
                         }
-                      ],
-                      "ThingId": 2981
+                      ]
                     },
                     "Option": "Och n\u00f6... Warum habe ich nicht einfach eine Entr\u00fcmplungsfirma engagiert?"
                   },
@@ -1236,8 +1241,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "IsActive": true
@@ -1343,6 +1347,7 @@
           "Id": 3125,
           "Thought": "Der Weg zum Flur",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 1584,
           "LinkageId": 0,
           "Links": [
@@ -1393,8 +1398,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "IsActive": true
@@ -1708,6 +1712,7 @@
           "Id": 4711,
           "Thought": "Ein gem\u00fctlich aussehendes Sofa aus Samtstoff. Das Sofa sieht deutlich weniger abgenutzt aus als der Sessel daneben.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 4492,
           "LinkageId": 0,
           "Links": [
@@ -1726,6 +1731,7 @@
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 4492,
+                "ThoughtPortrait": "clear_out/thought_portraits/marla_invisible_portrait_cut",
                 "Links": [
                   {
                     "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -1856,8 +1862,7 @@
               }
             }
           ],
-          "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut",
-          "IsInnerDialog": true
+          "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut"
         },
         "EventThought": null
       },
@@ -1920,6 +1925,7 @@
           "Id": 9102,
           "Thought": "Ein alter Fernseher. Warscheinlich aus den Achtzigern. Der steht hier seid ich denken kann.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 3759,
           "LinkageId": 0,
           "Links": [
@@ -1938,6 +1944,7 @@
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 3759,
+                "ThoughtPortrait": "clear_out/thought_portraits/marla_invisible_portrait_cut",
                 "Links": [
                   {
                     "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -1953,6 +1960,8 @@
                       "LinkageId": 0,
                       "Id": 68,
                       "Thought": "Als Kind habe ich gerne mit ihr fern gesehen. Ich habe Hausaufgaben gemacht und immer wieder auf den Fernseher geschielt. Es war eine M\u00f6glichkeit mit ihr Zeit zu verbringen. Als Jugendliche hat es mich eher genervt.",
+                      "ThingId": 3759,
+                      "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut",
                       "Links": [
                         {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -1982,8 +1991,7 @@
                           "MoodChange": 0,
                           "NextNode": null
                         }
-                      ],
-                      "ThingId": 3759
+                      ]
                     }
                   },
                   {
@@ -1999,6 +2007,7 @@
                       "LinkageId": 0,
                       "Id": 2487,
                       "Thought": "Vielleicht wurden es auch ein paar Gl\u00e4ser an manchen Abenden. Ich habe nicht mitgez\u00e4hlt.",
+                      "ThingId": 3759,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -2028,8 +2037,7 @@
                           "Verb": 0,
                           "MoodChange": 0
                         }
-                      ],
-                      "ThingId": 3759
+                      ]
                     },
                     "Option": "Ein Glas Wein?"
                   },
@@ -2046,6 +2054,7 @@
                       "LinkageId": 0,
                       "Id": 5888,
                       "Thought": "Das verbinde ich eben am meisten mit ihr: Arbeit im Supermarkt, dann kommt sie nach Hause und schaut fern. Nur der Garten f\u00e4llt mir noch ein. Der war ihr vielleicht sogar wichtiger als der Fernseher.",
+                      "ThingId": 3759,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -2075,16 +2084,14 @@
                           "MoodChange": 0,
                           "NextNode": null
                         }
-                      ],
-                      "ThingId": 3759
+                      ]
                     },
                     "Option": "Mit Abstand betrachtet klingt das nach einem sehr einsamen Alltag."
                   }
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "IsActive": true
@@ -2265,6 +2272,7 @@
           "Id": 3247,
           "Thought": "Der Garten bl\u00fcht sehr sch\u00f6n zu dieser Jahreszeit. Ich habe den sch\u00f6nen, gro\u00dfen Baum ganz vergessen.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 5637,
           "LinkageId": 0,
           "Links": [
@@ -2283,6 +2291,7 @@
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 5637,
+                "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut",
                 "Links": [
                   {
                     "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -2569,8 +2578,7 @@
               }
             }
           ],
-          "ThoughtPortrait": "",
-          "IsInnerDialog": true
+          "ThoughtPortrait": ""
         },
         "EventThought": null,
         "IsActive": true
@@ -2610,6 +2618,7 @@
           "Id": 869,
           "Thought": "Lyida hatte tats\u00e4chlich noch ein Festnetztelefon.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 9392,
           "LinkageId": 0,
           "Links": [
@@ -2628,6 +2637,7 @@
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 9392,
+                "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut",
                 "Links": [
                   {
                     "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -2884,8 +2894,7 @@
               }
             }
           ],
-          "ThoughtPortrait": "",
-          "IsInnerDialog": true
+          "ThoughtPortrait": ""
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -2945,6 +2954,7 @@
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 1291,
+                "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut",
                 "Links": [
                   {
                     "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -3479,6 +3489,7 @@
           "Id": 4404,
           "Thought": "Die T\u00fcr zum Flur",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 9055,
           "LinkageId": 0,
           "Links": [
@@ -3529,8 +3540,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "IsActive": true
@@ -3649,6 +3659,7 @@
           "Id": 9457,
           "Thought": "Den K\u00fchlschrank kenne ich noch aus meiner Jugend.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 9434,
           "LinkageId": 0,
           "Links": [
@@ -3681,6 +3692,7 @@
                       "LinkageId": 0,
                       "Id": 2432,
                       "Thought": "Wer wei\u00df wie es darin aussieht.",
+                      "ThingId": 9434,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -3711,8 +3723,7 @@
                           "Verb": 0,
                           "MoodChange": 0
                         }
-                      ],
-                      "ThingId": 9434
+                      ]
                     },
                     "Option": "Der h\u00e4lt auch schon seit Jahrzenten durch."
                   },
@@ -3729,6 +3740,7 @@
                       "LinkageId": 0,
                       "Id": 8531,
                       "Thought": "Wie zu erwarten: K\u00e4se, Wurst. Alles von Schimmel \u00fcberdeckt.",
+                      "ThingId": 9434,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -3743,6 +3755,8 @@
                             "LinkageId": 0,
                             "Id": 6362,
                             "Thought": "Gefrorenes Gem\u00fcse. Keine wirkliche Malzeit. Aber warte. Das kenne ich noch: Nudeln mit Gorgonzola-Sahne-Sauce! Das war mein Lieblingsgericht. Das hat mir meine Mutter bestimmt zwei oder drei Mal die Woche zubereitet. Sie mochte es eigentlich nie.",
+                            "ThingId": 9434,
+                            "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut",
                             "Links": [
                               {
                                 "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -3758,6 +3772,7 @@
                                   "LinkageId": 0,
                                   "Id": 6804,
                                   "Thought": "Es ist als h\u00e4tte Lydia darauf gewartet, dass ich wieder komme, um es mir zuzubereiten.",
+                                  "ThingId": 9434,
                                   "Links": [
                                     {
                                       "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -3773,12 +3788,10 @@
                                       "MoodChange": 0,
                                       "NextNode": null
                                     }
-                                  ],
-                                  "ThingId": 9434
+                                  ]
                                 }
                               }
-                            ],
-                            "ThingId": 9434
+                            ]
                           },
                           "Option": "Vielleicht ist etwas im Gefrierfach."
                         },
@@ -3796,16 +3809,14 @@
                           "Verb": 0,
                           "MoodChange": 0
                         }
-                      ],
-                      "ThingId": 9434
+                      ]
                     },
                     "Option": "Was haben wir denn hier leckeres?"
                   }
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "IsActive": true
@@ -3870,6 +3881,7 @@
           "Id": 1685,
           "Thought": "Ein kleiner, alter K\u00fcchenschrank.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 5798,
           "LinkageId": 0,
           "Links": [
@@ -3888,6 +3900,7 @@
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 5798,
+                "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut",
                 "Links": [
                   {
                     "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -4148,8 +4161,7 @@
               }
             }
           ],
-          "ThoughtPortrait": "",
-          "IsInnerDialog": true
+          "ThoughtPortrait": ""
         },
         "EventThought": null
       },
@@ -4244,6 +4256,7 @@
           "Id": 5941,
           "Thought": "Das, was von der Kanne \u00fcbrig geblieben ist.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 6951,
           "LinkageId": 0,
           "Links": [
@@ -4262,6 +4275,7 @@
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 6951,
+                "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut",
                 "Links": [
                   {
                     "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -4320,8 +4334,7 @@
               }
             }
           ],
-          "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut",
-          "IsInnerDialog": true
+          "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut"
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -4388,6 +4401,7 @@
           "Id": 2429,
           "Thought": "Die Treppe zur Abstellkammer",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 2321,
           "LinkageId": 0,
           "Links": [
@@ -4438,8 +4452,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -4534,6 +4547,7 @@
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 5504,
+                "ThoughtPortrait": "clear_out/thought_portraits/marla_monster_portrait_cut",
                 "Links": [
                   {
                     "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -4676,6 +4690,7 @@
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 5504,
+                "ThoughtPortrait": "clear_out/thought_portraits/lydia_portrait_cut",
                 "Links": [
                   {
                     "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -5328,6 +5343,7 @@
           "Id": 9235,
           "Thought": "Die T\u00fcr zum Flur.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 4792,
           "LinkageId": 0,
           "Links": [
@@ -5378,8 +5394,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -5531,6 +5546,7 @@
           "Id": 4491,
           "Thought": "Als kleines Kind bin ich bei Gewitter h\u00e4ufig zu Lydia ins Bett geh\u00fcpft.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 5964,
           "LinkageId": 0,
           "Links": [
@@ -5549,6 +5565,7 @@
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 5964,
+                "ThoughtPortrait": "clear_out/thought_portraits/marla_scarred_portrait_cut",
                 "Links": [
                   {
                     "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -5592,6 +5609,7 @@
                       "Id": 9625,
                       "Thought": "Jedes Mal wenn ich reinkam hatte ich Angst sie w\u00fcrde sich nicht mehr bewegen und w\u00e4re einfach tot. Ich legte mich zu ihr ins Bett und horchte ihren Herzschlag um mich zu vergewissern, dass sie noch lebte.",
                       "ThingId": 5964,
+                      "ThoughtPortrait": "clear_out/thought_portraits/marla_scarred_portrait_cut",
                       "Links": [
                         {
                           "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -5635,8 +5653,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -5936,6 +5953,7 @@
           "Id": 8620,
           "Thought": "Die T\u00fcr zum Flur.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 3318,
           "LinkageId": 0,
           "Links": [
@@ -5986,8 +6004,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6028,6 +6045,7 @@
           "Id": 6957,
           "Thought": "Das ist mein altes Bett.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 1018,
           "LinkageId": 0,
           "Links": [
@@ -6138,8 +6156,7 @@
               }
             }
           ],
-          "ThoughtPortrait": "",
-          "IsInnerDialog": true
+          "ThoughtPortrait": ""
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6537,6 +6554,7 @@
           "Id": 9444,
           "Thought": "Die T\u00fcr zur Treppe.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 8625,
           "LinkageId": 0,
           "Links": [
@@ -6587,8 +6605,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6629,6 +6646,7 @@
           "Id": 7090,
           "Thought": "Hier m\u00fcsste Lydias Schlafzimmer sein.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 5672,
           "LinkageId": 0,
           "Links": [
@@ -6679,8 +6697,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6721,6 +6738,7 @@
           "Id": 4162,
           "Thought": "Mein altes Kinderzimmer.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 2348,
           "LinkageId": 0,
           "Links": [
@@ -6771,8 +6789,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6910,6 +6927,7 @@
           "Id": 843,
           "Thought": "Hier geht es zum Abstellraum.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 5183,
           "LinkageId": 0,
           "Links": [
@@ -6960,8 +6978,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7002,6 +7019,7 @@
           "Id": 5752,
           "Thought": "Die T\u00fcr zum Flur.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 4156,
           "LinkageId": 0,
           "Links": [
@@ -7052,8 +7070,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7094,6 +7111,7 @@
           "Id": 9624,
           "Thought": "Die Wendeltreppe zum ersten Stockwerk.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 2189,
           "LinkageId": 0,
           "Links": [
@@ -7144,8 +7162,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7236,6 +7253,7 @@
           "Id": 4008,
           "Thought": "Hier geht es wieder herunter zum Erdgeschoss",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 5739,
           "LinkageId": 0,
           "Links": [
@@ -7286,8 +7304,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7372,6 +7389,7 @@
           "Id": 4350,
           "Thought": "Die T\u00fcr zum Flur.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 3508,
           "LinkageId": 0,
           "Links": [
@@ -7423,8 +7441,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7715,6 +7732,7 @@
           "Id": 2563,
           "Thought": "Hier ist viel Deko drinnen. Weihnachtsdeko, Osterdeko, Deko. Der Karton ist aber schon ziemlich zugestaubt. Festlich war es bei meiner Mutter wohl schon lange nicht mehr gewesen.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 1617,
           "LinkageId": 0,
           "Links": [
@@ -7799,8 +7817,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -8059,6 +8076,7 @@
           "Id": 898,
           "Thought": "Die T\u00fcr zum Treppenhaus.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 7398,
           "LinkageId": 0,
           "Links": [
@@ -8109,8 +8127,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -8455,6 +8472,7 @@
           "Id": 8731,
           "Thought": "Die Wendeltreppe zum ersten Stockwerk.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 5323,
           "LinkageId": 0,
           "Links": [
@@ -8505,8 +8523,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -8632,6 +8649,7 @@
           "Id": 9579,
           "Thought": "Das m\u00fcsste die T\u00fcr zum Flur sein.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 2646,
           "LinkageId": 0,
           "Links": [
@@ -8684,8 +8702,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -9247,6 +9264,7 @@
           "Id": 3121,
           "Thought": "Der Weg zum Flur",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 9489,
           "LinkageId": 0,
           "Links": [
@@ -9297,8 +9315,7 @@
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
