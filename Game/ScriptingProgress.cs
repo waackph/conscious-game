@@ -240,7 +240,7 @@ namespace conscious
         private void addTutorialThought()
         {
             ThoughtNode innerThought2 = new ThoughtNode(49,
-                "Hier denke ich über Dinge nach, reflektiere und treffe Entscheidungen über mein Handeln. Durch einen Klick auf Objekte lenke ich meine Aufmerksamkeit auf das Objekt. Ich bin hier um das Haus meiner verstorbenen Mutter zu entrümpeln.",
+                "Hier denke ich über Dinge nach, reflektiere und treffe Entscheidungen über mein Handeln. Durch einen Klick auf Objekte lenke ich meine Aufmerksamkeit auf das Objekt. Ich bin hier um das Haus meiner verstorbenen Mutter zu entrümpeln. Das wird emotional nicht leicht. Wenn sich meine Stimmung verändert, ändert sich auch meine Sicht auf meine Umgebung und ich habe andere Gedanken.",
                 0, false, 0);
             innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
                 Verb.None,
