@@ -146,7 +146,7 @@ namespace conscious
             {
                 checkHeartThrobBasementExit(e.RoomId);
             }
-            else if (_isHeartThrobDream)
+            if (_isHeartThrobDream)
             {
                 updateHeartThrobSoundVolume(e.RoomId, throbSoundVolumeDream);
             }
@@ -283,6 +283,7 @@ namespace conscious
                 _isHeartThrobDream = true;
                 _HeartThrobDreamHappend = true;
                 _audioManager.PlayMusic(_throbHeartSong);
+                updateHeartThrobSoundVolume(roomId, throbSoundVolumeDream);
             }
             // Check for exiting Heart Throb Dream
             else if (_isHeartThrobDream && roomId == 4)
@@ -303,6 +304,18 @@ namespace conscious
                 _isHeartThrobBasement = true;
                 _HeartThrobBasementHappend = true;
                 _audioManager.PlayMusic(_throbHeartSong);
+                updateHeartThrobSoundVolume(_roomManager.CurrentRoomIndex, throbSoundVolumeBasement);
+                // Add thought that says that there is the heartbeat sound again
+                WaitCommand wait = new WaitCommand(2000);
+                SayCommand sayHeartbeat = new SayCommand(_socManager, "Schon wieder dieses Pochen. Woher kommt es nur?");
+                List<Command> coms = new List<Command>()
+                {
+                    wait,
+                    sayHeartbeat,
+                };
+                Sequence seq = new Sequence(coms, sequenceName: "sayHeartbeatInBasement");
+                _sequenceManager.StartSequence(seq, _player, MoodState.None);
+
             }
         }
 
