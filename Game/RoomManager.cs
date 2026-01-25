@@ -165,7 +165,7 @@ namespace conscious
             // Create path graph of room here
             RecalculateRoomGraph(true);
 
-            if(doTriggerThought)
+            if (doTriggerThought)
                 triggerThought();
 
             // Either start the entry sequence or in case of entering through a door 
@@ -193,6 +193,8 @@ namespace conscious
             {
                 RoomId = roomId,
             });
+
+            CurrentRoomIndex = roomId;
         }
         
         private List<Command> CreateDoorEntrySequence(int doorId, Vector2 newPlayerPosition)

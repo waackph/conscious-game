@@ -73,7 +73,6 @@ namespace conscious
             EventBus.Subscribe<SequenceFinishedEvent>(OnSequenceFinished);
             EventBus.Subscribe<ContinueGameEvent>(OnContinueGame);
             EventBus.Subscribe<ThoughtEventTriggered>(OnThoughtEventTriggered);
-            EventBus.Subscribe<ThoughtEventFinished>(OnThoughtEventFinished);
             EventBus.Subscribe<ThoughtFinishedEvent>(OnThoughtFinishedEvent);
 
             _standardSong = content.Load<Song>("Audio/Red_Curtains");
@@ -140,21 +139,6 @@ namespace conscious
             // }
         }
 
-        private void OnThoughtEventFinished(object sender, ThoughtEventFinished e)
-        {
-            // Phone ringing thought event finished
-            if (e.ThoughtEventId == 1750)
-            {
-                _roomInteractionManager.isTriggerNewThoughtEnabled = true;
-            }
-            // Final thought event to end the game
-            // else if (e.ThoughtEventId == 5862)
-            // {
-            //     // finalize game
-            //     _gameScreen.gameFinished = true;
-            // }
-        }
-
         private void OnRoomChange(object sender, RoomChangeEvent e)
         {
             checkHeartThrobDreamState(e.RoomId);
@@ -211,6 +195,11 @@ namespace conscious
             if (e.RootThoughtId == 46) // final edge of tutorial thought
             {
                 initLastTutorialSequence();
+            }
+            // Phone ringing thought event finished
+            else if (e.RootThoughtId == 1750)
+            {
+                _roomInteractionManager.isTriggerNewThoughtEnabled = true;
             }
         }
 

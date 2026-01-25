@@ -3110,6 +3110,7 @@
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 1291,
+                "ThoughtPortrait": "clear_out/thought_portraits/boss_portrait_cut",
                 "Links": [
                   {
                     "$type": "conscious.DataHolderThoughtLink, conscious",
@@ -3852,7 +3853,7 @@
       {
         "$type": "conscious.DataHolderDoor, conscious",
         "Id": 5798,
-        "Name": "Regal ge\u00f6ffnet",
+        "Name": "Regal",
         "texturePath": "clear_out/rooms/dining_room/objects/small_shelve_open_261x178_pos_566x126",
         "Rotation": 0,
         "PositionX": 1062,
@@ -3923,7 +3924,7 @@
                       0
                     ],
                     "Id": 337,
-                    "Option": "Vielleicht ist hier eine Gie\u00dfkanne oder etwas in der Art drinnen.",
+                    "Option": "Vielleicht ist hier eine Gie\u00dfkanne oder etwas in der Art drinnen. [\u00d6ffnen]",
                     "IsFinal": true,
                     "sequence": {
                       "Commands": [
@@ -3944,7 +3945,7 @@
                         }
                       ]
                     },
-                    "Verb": 0,
+                    "Verb": 1,
                     "MoodChange": 0,
                     "NextNode": null,
                     "UnlockId": "7722"
@@ -4416,25 +4417,11 @@
               "NextNode": {
                 "$type": "conscious.DataHolderThoughtNode, conscious",
                 "Id": 8709,
-                "Thought": "First node",
+                "Thought": "Wie konnte ich von diesem Keller nichts wissen?",
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 2321,
                 "Links": [
-                  {
-                    "$type": "conscious.DataHolderFinalThoughtLink, conscious",
-                    "IsLocked": false,
-                    "ValidMoods": [
-                      0
-                    ],
-                    "Id": 67,
-                    "NextNode": null,
-                    "Option": "Nichts wie raus hier.",
-                    "IsFinal": true,
-                    "sequence": null,
-                    "Verb": 4,
-                    "MoodChange": 0
-                  },
                   {
                     "$type": "conscious.DataHolderFinalThoughtLink, conscious",
                     "IsLocked": false,
