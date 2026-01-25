@@ -250,6 +250,7 @@ namespace conscious
             }
             else if (PlayerState == PlayerState.Throw)
             {
+                _flip = SpriteEffects.None;
                 ThrowAnimation.Draw(spriteBatch, Position, _flip, Scale);
             }
         }
