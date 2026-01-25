@@ -156,13 +156,21 @@ namespace conscious
             // If thought is an Selectable Thought: choose link from root
             if(node.HasLinks())
             {
-                if(node.IsRoot)
+                if (node.IsRoot)
                 {
+                    if (node.ThingId != 0)
+                    {
+                        // Notify about Root Thought Selected
+                            EventBus.Publish(this, new RootThoughtSelectedEvent
+                        {
+                            ThingId = node.ThingId,
+                        });                        
+                    }
                     CurrentThought = node;
                     node.Links.Sort((x, y) => x.Id.CompareTo(y.Id));
-                    foreach(ThoughtLink link in node.Links)
+                    foreach (ThoughtLink link in node.Links)
                     {
-                        if(!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
+                        if (!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
                         {
                             ThoughtNode displayNode = link.NextNode;
                             _currentSubthoughtLinks = displayNode.Links;

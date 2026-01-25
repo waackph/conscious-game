@@ -26,6 +26,7 @@ namespace conscious
 
         private Cursor _cursor;
         private Player _player;
+        private float _timer = 0f;
 
         private GameTime _gameTime;
 
@@ -35,10 +36,13 @@ namespace conscious
         private Verb _lastVerbChosen;
         private int _maxThingsClicked;
         private Queue<Thing> _lastThingsClicked;
+        private Thing _walkToThing;
         private bool _isWalking;
         private bool _interactionActive;
         private List<Vector2> _path;
         private int _currentPathPoint;
+
+        private Vector2 _playerPositionSecondAgo;
 
         private double threshDiff = 200f;
 
@@ -77,6 +81,11 @@ namespace conscious
             _isWalking = false;
             _maxThingsClicked = 3;
             _lastVerbChosen = Verb.None;
+
+            _walkToThing = null;
+            _playerPositionSecondAgo = Vector2.Zero;
+            
+            EventBus.Subscribe<RootThoughtSelectedEvent>(OnRootThoughtSelected);
         }
 
         #region GAMELOOP
@@ -166,7 +175,7 @@ namespace conscious
                             }
                         }
                     }
-                    else if(_interactionActive && _isWalking && _thingClickedInRoom != thingClicked)
+                    else if (_interactionActive && _isWalking && _thingClickedInRoom != thingClicked)
                     {
                         finishInteraction();
                         triggerThought(thingClicked);
@@ -217,6 +226,40 @@ namespace conscious
                 }
             }
 
+            // Walk to thing where thought tree activated - walktothing is set
+            if (_walkToThing != null)
+            {
+                // if near the thing, stop walking to it
+                // else set direction towards thing (direction set leads to movement in that direction)
+                if (IsEntityNearPlayer(_walkToThing))
+                {
+                    _walkToThing = null;
+                }
+                else
+                {
+                    Vector2 diff = getThingCenterTopBottomPos(_walkToThing, bottom: true) - _player.CollisionBox.Center.ToVector2();
+                    direction = Vector2.Normalize(diff);
+                }
+                // if the player walk converged (stuck = position equals positon 500ms ago), stop walking to thing
+                // this is a safety to avoid infinite walking
+                if (_timer < 500)
+                {
+                    _timer += gameTime.ElapsedGameTime.Milliseconds;
+                }
+                else
+                {
+                    _timer = 0;
+                    if (IsPlayerWalkConverged())
+                    {
+                        _walkToThing = null;
+                    }
+                    else
+                    {
+                        _playerPositionSecondAgo = _player.Position;
+                    }
+                }
+            }
+
             // Set controls manager variables to move in direction when clicked
             // (we deactivate moving player by mouse click)
             // _controlsManager.MousePosition = mousePosition;
@@ -226,24 +269,24 @@ namespace conscious
             _lastButtonState = Mouse.GetState().LeftButton;
         }
 
-        private Vector2 getThingCenterTopBottomPos(Entity entity, bool bottom=true)
+        private Vector2 getThingCenterTopBottomPos(Entity entity, bool bottom = true)
         {
-            if(bottom)
-                return entity.CollisionBox.Center.ToVector2() + new Vector2(0, entity.CollisionBox.Height/2);
+            if (bottom)
+                return entity.CollisionBox.Center.ToVector2() + new Vector2(0, entity.CollisionBox.Height / 2);
             else
-                return entity.CollisionBox.Center.ToVector2() - new Vector2(0, entity.CollisionBox.Height/2);
+                return entity.CollisionBox.Center.ToVector2() - new Vector2(0, entity.CollisionBox.Height / 2);
         }
 
         public void Draw(SpriteBatch spriteBatch) {}
 
         private void doPlayerFinalThoughtActions(object sender, FinalEdgeEventArgs e)
         {
-            if(e.verbAction == Verb.WakeUp)
+            if (e.verbAction == Verb.WakeUp)
             {
                 _player.WakeUp();
             }
-            
-            if(e.seq != null)
+
+            if (e.seq != null)
             {
                 _sequenceManager.StartSequence(e.seq, _player, e.EdgeMood);
             }
@@ -259,6 +302,8 @@ namespace conscious
                     }
                 }
             }
+            // if a thought has been concluded, stop walking to thing (if still walking)
+            _walkToThing = null;
         }
 
         #endregion
@@ -331,6 +376,11 @@ namespace conscious
                                        getThingCenterTopBottomPos(entity, bottom: false));
         }
 
+        private bool IsPlayerWalkConverged()
+        {
+            return _walkToThing != null && _player.Position == _playerPositionSecondAgo;
+        }
+
         private bool CheckCheckpointNear(Player player, Vector2 checkPos)
         {
             return CheckPositionsNear(player.CollisionBox.Center.ToVector2(), checkPos);
@@ -375,19 +425,35 @@ namespace conscious
             _isWalking = false;
         }
 
-        private void startWalking(Thing thing, Verb verb)
+        private void startWalking(Thing thing, Verb verb, bool isInteraction = true)
         {
-            _interactionActive = true;
+            _interactionActive = isInteraction;
             _isWalking = true;
             _thingClickedInRoom = thing;
             _lastVerbChosen = verb;
             _currentPathPoint = 0;
 
+            calculatePathToThing(thing);
+        }
+        
+        private void calculatePathToThing(Thing thing)
+        {
             Vector2 playerPos = _player.CollisionBox.Center.ToVector2();
-            Vector2 thingPos = getThingCenterTopBottomPos(_thingClickedInRoom, bottom: true); // _thingClickedInRoom.CollisionBox.Center.ToVector2();
+            Vector2 thingPos = getThingCenterTopBottomPos(thing, bottom: true); // thing.CollisionBox.Center.ToVector2();
             // Check recalculate room graph if room changed
             _roomManager.RecalculateRoomGraph(false);
             _path = _pathfinder.AStarSearch(playerPos, thingPos);
+        }
+
+        private void OnRootThoughtSelected(object sender, RootThoughtSelectedEvent e)
+        {
+            Thing thing = _roomManager.currentRoom.GetThingInRoom(e.ThingId);
+
+            if (thing != null)
+            {
+                _walkToThing = thing;
+                calculatePathToThing(thing);
+            }
         }
 
         #endregion
@@ -399,17 +465,17 @@ namespace conscious
             Verb verb = e.verbAction;
             int thingId = e.ThingId;
             Thing thing = GetThingFromQueue(thingId);
-            if(thing != null)
+            if (thing != null)
             {
-                if(_interactionActive)
+                if (_interactionActive)
                 {
                     finishInteraction();
                 }
-                if(isTwoPartInteraction(verb))
+                if (isTwoPartInteraction(verb))
                 {
                     _interactionActive = true;
                     _lastVerbChosen = verb;
-                    if(thing.IsInInventory)
+                    if (thing.IsInInventory)
                     {
                         _thingClickedInInventory = thing;
                     }
@@ -419,11 +485,11 @@ namespace conscious
                         _inventoryManager.ShowInventory();
                     }
                 }
-                else if(isOnePartInteraction(verb))
+                else if (isOnePartInteraction(verb))
                 {
                     bool isNear = IsEntityNearPlayer(thing);
-                    
-                    if(isNear || thing.IsInInventory)
+
+                    if (isNear || thing.IsInInventory)
                     {
                         doInteraction(thing, verb);
                     }

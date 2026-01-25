@@ -394,7 +394,7 @@ namespace conscious
                 {
                     thoughtText = "[...] " + thoughtText;
                 }
-                if(thoughtText.Length >= 45)
+                if(thoughtText != null && thoughtText.Length >= 45)
                     thoughtText = WrapWords(thoughtText);
 
                 SpriteFont useFont = _font;

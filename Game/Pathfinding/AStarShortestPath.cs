@@ -72,7 +72,15 @@ namespace conscious
             while(!currentV.Equals(_graph.Start))
             {
                 path.Add(currentV.RoomPosition);
-                currentV = cameFrom[currentV];
+                // check if vertex exists in cameFrom to avoid KeyNotFoundException
+                if (cameFrom.ContainsKey(currentV))
+                {
+                    currentV = cameFrom[currentV];
+                }
+                else
+                {
+                    break;
+                }
             }
             // I think we do not need the start in the path
             // path.Add(cameFrom[_graph.Start].RoomPosition);

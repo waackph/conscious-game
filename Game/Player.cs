@@ -137,9 +137,9 @@ namespace conscious
             }
 
             // Update animations
-            if(PlayerState == PlayerState.Idle || PlayerState == PlayerState.Walk)
+            if (PlayerState == PlayerState.Idle || PlayerState == PlayerState.Walk)
             {
-                if(Position == LastPosition)
+                if (Position == LastPosition)
                 {
                     IdleAnimation.Update(gameTime);
                     IsMoving = false;
@@ -151,7 +151,8 @@ namespace conscious
                     IsMoving = true;
                     PlayerState = PlayerState.Walk;
                 }
-                if(_lastIsMoving != IsMoving){
+                if (_lastIsMoving != IsMoving)
+                {
                     IdleAnimation.resetAnimation();
                     MoveAnimation.resetAnimation();
                 }
@@ -159,15 +160,15 @@ namespace conscious
                 LastPosition = Position;
                 _lastIsMoving = IsMoving;
             }
-            else if(PlayerState == PlayerState.Sleep) 
+            else if (PlayerState == PlayerState.Sleep)
             {
                 SleepAnimation.Update(gameTime);
             }
-            else if(PlayerState == PlayerState.Throw)
+            else if (PlayerState == PlayerState.Throw)
             {
                 ThrowAnimation.Update(gameTime);
             }
-            else if(PlayerState == PlayerState.Wait)
+            else if (PlayerState == PlayerState.Wait)
             {
                 IdleAnimation.Update(gameTime);
             }
