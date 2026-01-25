@@ -481,7 +481,10 @@ namespace conscious
                 // Draw UI Thoughts (clipped, therefore set clipping rect options)
                 Rectangle initRect = spriteBatch.GraphicsDevice.ScissorRectangle;
                 RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
-                spriteBatch.GraphicsDevice.ScissorRectangle = socBackground.BoundingBox;
+                Rectangle clipRect = socBackground.BoundingBox;
+                clipRect.Y = clipRect.Y + 35;
+                clipRect.Height = clipRect.Height - 40;
+                spriteBatch.GraphicsDevice.ScissorRectangle = clipRect;
 
                 spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, rasterizerState: _rasterizerState, null, transformMatrix: _mainThoughtUITranslation);
                 foreach(UIThought thought in GetEntitiesOfType<UIThought>())
