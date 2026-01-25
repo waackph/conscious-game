@@ -1840,7 +1840,7 @@
                           "index": 0.9489940712997139,
                           "DestinationX": 0,
                           "DestinationY": 0,
-                          "MillisecondsToWait": "2000"
+                          "MillisecondsToWait": "5000"
                         },
                         {
                           "$type": "conscious.DataHolderChangeRoomCommand, conscious",
@@ -2297,7 +2297,7 @@
                     "$type": "conscious.DataHolderThoughtLink, conscious",
                     "IsLocked": false,
                     "ValidMoods": [
-                      0
+                      2
                     ],
                     "Id": 9096,
                     "NextNode": {
@@ -2391,7 +2391,7 @@
                     "$type": "conscious.DataHolderThoughtLink, conscious",
                     "IsLocked": false,
                     "ValidMoods": [
-                      0
+                      2
                     ],
                     "Id": 8496,
                     "NextNode": {
@@ -2438,7 +2438,7 @@
                     "$type": "conscious.DataHolderThoughtLink, conscious",
                     "IsLocked": false,
                     "ValidMoods": [
-                      0
+                      1
                     ],
                     "Id": 444,
                     "NextNode": {
@@ -2485,7 +2485,7 @@
                     "$type": "conscious.DataHolderThoughtLink, conscious",
                     "IsLocked": true,
                     "ValidMoods": [
-                      0
+                      1
                     ],
                     "Id": 5246,
                     "Option": "Sie hat mich immer in den Garten mitgenommen, wenn es mir schlecht ging.",
@@ -2556,7 +2556,7 @@
                                             "IsFinal": true,
                                             "sequence": null,
                                             "Verb": 0,
-                                            "MoodChange": 0,
+                                            "MoodChange": 2,
                                             "UnlockId": "2975",
                                             "NextNode": null,
                                             "IsSuccessEdge": true
@@ -3945,7 +3945,7 @@
                         }
                       ]
                     },
-                    "Verb": 1,
+                    "Verb": 0,
                     "MoodChange": 0,
                     "NextNode": null,
                     "UnlockId": "7722"
@@ -5716,6 +5716,7 @@
           "Id": 10035,
           "Thought": "Das ist ein Bild von einer Sonnenblume.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 4830,
           "LinkageId": 0,
           "Links": [
@@ -5835,8 +5836,7 @@
               }
             }
           ],
-          "ThoughtPortrait": "",
-          "IsInnerDialog": true
+          "ThoughtPortrait": ""
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -8378,7 +8378,7 @@
       {
         "$type": "conscious.DataHolderDoor, conscious",
         "Id": 8115,
-        "Name": "Traum: T\u00fcr zum Wohnzimmer",
+        "Name": "T\u00fcr zum Wohnzimmer",
         "texturePath": "clear_out/rooms/corridor/objects/Door_Living_Room_open_316x510_pos_1606x287",
         "Rotation": 0,
         "PositionX": 1607,
@@ -8428,7 +8428,7 @@
       {
         "$type": "conscious.DataHolderDoor, conscious",
         "Id": 5323,
-        "Name": "Traum: Treppen zum Obergeschoss",
+        "Name": "Treppen zum Obergeschoss",
         "texturePath": "clear_out/rooms/stairs_eg/objects/stairs_door",
         "Rotation": 0,
         "PositionX": 930,
@@ -8734,7 +8734,7 @@
       {
         "$type": "conscious.DataHolderDoor, conscious",
         "Id": 8414,
-        "Name": "Traum: Treppen zum Erdgeschoss",
+        "Name": "Treppen zum Erdgeschoss",
         "texturePath": "clear_out/rooms/stairs_og/objects/stairs_og_door",
         "Rotation": 0,
         "PositionX": 358,
