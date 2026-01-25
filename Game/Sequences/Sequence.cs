@@ -14,12 +14,14 @@ namespace conscious
         private int _currentIndex;
         private RoomManager _roomManager;
         public bool SequenceFinished;
+        private string _sequenceName;
 
-        public Sequence(List<Command> commands, RoomManager roomManager = null)
+        public Sequence(List<Command> commands, RoomManager roomManager = null, string sequenceName = "")
         {
             _currentIndex = -1;
             _roomManager = roomManager;
             _commands = commands;
+            _sequenceName = sequenceName;
             SequenceFinished = false;
         }
 
@@ -44,16 +46,25 @@ namespace conscious
                 // Notify scripting API about sequence finished
                 EventBus.Publish(this, new SequenceFinishedEvent
                 {
-                    sequenceCommandThingId = command._thingId,
+                    sequenceName = _sequenceName,
+                    sequenceCommand = command
                 });
             }
+        }
+        
+        public void prependCommands(List<Command> commands)
+        {
+            List<Command> newCommands = new List<Command>();
+            newCommands.AddRange(commands);
+            newCommands.AddRange(_commands);
+            _commands = newCommands;
         }
 
         public DataHolderSequence GetDataHolderSequence()
         {
             DataHolderSequence dataHolderSequence = new DataHolderSequence();
             List<DataHolderCommand> dhCommands = new List<DataHolderCommand>();
-            foreach(Command command in _commands)
+            foreach (Command command in _commands)
             {
                 dhCommands.Add(command.GetDataHolderCommand());
             }

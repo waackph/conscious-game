@@ -26,10 +26,19 @@ namespace conscious
             // is not yet initilized and filled with all the Entities.
             // TODO: Maybe we need another way of initilizing everything...
             Door door = (Door)_entityManager.GetThingById(_doorId);
-            if(door.IsClosed)
+            // Play sound effect when door is opened/closed
+            if (door.IsClosed)
+            {
+                door.UseSound?.Play();
+                // _audioManager.PlaySoundEffect(door.UseSound, false);
                 door.OpenDoor();
+            }
             else
+            {
+                door.CloseSound?.Play();
+                // _audioManager.PlaySoundEffect(door.CloseSound, false);
                 door.CloseDoor();
+            }
             CommandFinished = true;
         }
 

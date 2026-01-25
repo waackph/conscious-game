@@ -19,17 +19,47 @@
 /processorParam:Quality=Best
 /build:Audio/BackgroundNoise.mp3
 
+#begin Audio/close-door.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/close-door.mp3
+
+#begin Audio/crash_porcelain.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/crash_porcelain.mp3
+
 #begin Audio/default_walking_sound.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/default_walking_sound.mp3
 
+#begin Audio/door-creaking.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/door-creaking.mp3
+
 #begin Audio/ExitReached.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/ExitReached.wav
+
+#begin Audio/flashlight-clicking.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/flashlight-clicking.mp3
+
+#begin Audio/heartbeat_sound_effect.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/heartbeat_sound_effect.mp3
 
 #begin Audio/heartbeat_sound.mp3
 /importer:Mp3Importer
@@ -43,11 +73,47 @@
 /processorParam:Quality=Best
 /build:Audio/Lounge001.mp3
 
+#begin Audio/moving_boxes_floor.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/moving_boxes_floor.mp3
+
 #begin Audio/Music.wma
 /importer:WmaImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Audio/Music.wma
+
+#begin Audio/open-and-close-door.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/open-and-close-door.mp3
+
+#begin Audio/opening-door.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/opening-door.mp3
+
+#begin Audio/Red_Curtains_slow.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Red_Curtains_slow.mp3
+
+#begin Audio/Red_Curtains_slowing_down.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Red_Curtains_slowing_down.mp3
+
+#begin Audio/Red_Curtains_speeding_up.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Red_Curtains_speeding_up.mp3
 
 #begin Audio/Red_Curtains.mp3
 /importer:Mp3Importer
@@ -60,6 +126,36 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/ShowerSound.wav
+
+#begin Audio/switch-on-light.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/switch-on-light.mp3
+
+#begin Audio/thought_emerged.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/thought_emerged.mp3
+
+#begin Audio/tumor_scene_effect.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/tumor_scene_effect.mp3
+
+#begin Audio/walking-parquet.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/walking-parquet.mp3
+
+#begin Audio/walking-stairs.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/walking-stairs.mp3
 
 #begin Audio/wind-and-seaguls.mp3
 /importer:Mp3Importer
@@ -1714,6 +1810,18 @@
 /processorParam:TextureFormat=Color
 /build:light/dream_room_small_light_mask.png
 
+#begin light/dream_room_small_tumor_sequence_light_mask.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:light/dream_room_small_tumor_sequence_light_mask.png
+
 #begin light/light_cursor.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1773,6 +1881,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:light/light_mask_corridor.png
+
+#begin light/light_tumor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:light/light_tumor.png
 
 #begin light/living_room_light_mask.png
 /importer:TextureImporter

@@ -150,7 +150,7 @@ namespace conscious
             Texture2D transitionTexture = Content.Load<Texture2D>("light/light_gimp");
             _moodStateManager = new MoodStateManager(_entityManager, Content.Load<SpriteFont>(GlobalData.HudFontName), transitionTexture, _debugPixel);
 
-            _audioManager = new AudioManager();
+            _audioManager = new AudioManager(Content);
 
             _cursor= new Cursor(Content.Load<SpriteFont>(GlobalData.HudFontName),
                                 Matrix.Invert(_viewportTransformation),

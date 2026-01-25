@@ -10,7 +10,7 @@ namespace conscious
     public class WaitCommand : Command
     {
         private int _timeSinceBeginning;
-        private int _millisecondsToWait;
+        public int _millisecondsToWait;
         
         public SoundEffect Sound = null;
 
@@ -18,6 +18,7 @@ namespace conscious
         {
             _timeSinceBeginning = 0;
             _millisecondsToWait = millisecondsToWait;
+            _thingId = thingId;
         }
 
         public override void ExecuteCommand(GameTime gameTime, Thing thing)

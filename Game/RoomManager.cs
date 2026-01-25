@@ -39,8 +39,11 @@ namespace conscious
         public SoundEffectInstance currentWalkingSound;
         public SoundEffectInstance currentAtmoSound;
         private SoundEffectInstance _defaultWalkingSound;
+        
+        GameScreen _gameScreen;
 
-        public RoomManager(ContentManager content, 
+        public RoomManager(GameScreen gameScreen,
+                           ContentManager content,
                            Player player,
                            Cursor cursor,
                            Texture2D pixel,
@@ -51,18 +54,19 @@ namespace conscious
                            AudioManager audioManager,
                            SoCManager socManager,
                            RoomGraph roomGraph,
-                           int preferredBackBufferWidth, 
+                           int preferredBackBufferWidth,
                            int preferredBackBufferHeight,
                            SoundEffectInstance defaultWalkingSound)
         {
             _content = content;
+            _gameScreen = gameScreen;
 
             _preferredBackBufferHeight = preferredBackBufferHeight;
             _preferredBackBufferWidth = preferredBackBufferWidth;
 
             _centerPosition = new Vector2(_preferredBackBufferWidth / 2,
                                          _preferredBackBufferHeight / 2);
-            
+
             _entityManager = entityManager;
             _dialogManager = dialogManager;
             _sequenceManager = sequenceManager;
@@ -92,45 +96,7 @@ namespace conscious
 
         private void changeRoomOnMood(object sender, MoodStateChangeEventArgs e)
         {
-            updateSongOnMood(e.CurrentMoodState, e.ChangeDirection);
             updateLightMapOnMood(e.CurrentMoodState);
-        }
-
-        private void updateSongOnMood(MoodState moodState, Direction direction)
-        {
-            Song currentSong;
-            double stretchFactor;
-            if(currentRoom.MoodSoundFiles.ContainsKey(moodState))
-            {
-                currentSong = currentRoom.MoodSoundFiles[moodState];
-            }
-            else
-            {
-                currentSong = currentRoom.MoodSoundFiles[MoodState.None];
-            }
-            switch(direction)
-            {
-                case Direction.DoubleDown:
-                    stretchFactor = 1d/4;
-                    break;
-                case Direction.Down:
-                    stretchFactor = 1d/2;
-                    break;
-                case Direction.Up:
-                    stretchFactor = 2d;
-                    break;
-                case Direction.DoubleUp:
-                    stretchFactor = 4d;
-                    break;
-                default:
-                    stretchFactor = 1d;
-                    break;
-            }
-            // The stretchFactor seems to not work... (factor gets out of range of valid values)
-            // Therefore we set it to default
-            stretchFactor = 1d;
-            // We do not want the song from the room but from the scripting class, so we just reset to current song
-            _audioManager.SwitchMusic(_audioManager.CurrentSong, stretchFactor);
         }
 
         private void updateLightMapOnMood(MoodState moodState)
@@ -147,7 +113,7 @@ namespace conscious
             _entityManager.Lights = new List<Texture2D> { currentLightMap };
         }
 
-        public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId = 0)
+        public void changeRoom(int roomId, Vector2 newPlayerPosition, int doorId = 0, bool doTriggerThought = true)
         {
             Room lastRoom = currentRoom;
             currentRoom = _rooms[roomId];
@@ -169,11 +135,19 @@ namespace conscious
             updateLightMapOnMood(_moodStateManager.moodState);
             if (currentWalkingSound != null)
                 currentWalkingSound.Pause();
+            if (currentAtmoSound != null)
+                currentAtmoSound.Pause();
 
             if (currentRoom.AtmoSound != null)
+            {
                 currentAtmoSound = currentRoom.AtmoSound;
+                currentAtmoSound.IsLooped = true;
+                currentAtmoSound.Play();
+            }
             else
+            {
                 currentAtmoSound = null;
+            }
             if (currentRoom.WalkingSound != null)
                 currentWalkingSound = currentRoom.WalkingSound;
             else
@@ -191,29 +165,25 @@ namespace conscious
             // Create path graph of room here
             RecalculateRoomGraph(true);
 
-            triggerThought(currentRoom);
+            if (doTriggerThought)
+                triggerThought();
 
             // Either start the entry sequence or in case of entering through a door 
             // start a sequence to walk to the new position
             if (currentRoom.EntrySequence != null && !currentRoom.EntrySequence.SequenceFinished)
             {
-                _sequenceManager.StartSequence(currentRoom.EntrySequence, _player, MoodState.None);
+                Sequence entrySequence = currentRoom.EntrySequence;
+                if (doorId != 0)
+                {
+                    List<Command> coms = CreateDoorEntrySequence(doorId, newPlayerPosition);
+                    entrySequence.prependCommands(coms);
+                }
+                _sequenceManager.StartSequence(entrySequence, _player, MoodState.None);
             }
             else if (lastRoom != null && newPlayerPosition != Vector2.Zero
                      && doorId != 0 && !_sequenceManager.SequenceActive)
             {
-                Door doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
-                doorEntered.OpenDoor();
-                _player.Position = doorEntered.Position;
-                WalkCommand walk = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
-                WaitCommand wait = new WaitCommand(200);
-                DoorActionCommand closeDoor = new DoorActionCommand(_entityManager, doorId);
-                List<Command> coms = new List<Command>()
-                {
-                    walk,
-                    wait,
-                    closeDoor,
-                };
+                List<Command> coms = CreateDoorEntrySequence(doorId, newPlayerPosition);
                 Sequence seq = new Sequence(coms, this);
                 _sequenceManager.StartSequence(seq, _player, MoodState.None);
             }
@@ -223,19 +193,38 @@ namespace conscious
             {
                 RoomId = roomId,
             });
+
+            CurrentRoomIndex = roomId;
+        }
+        
+        private List<Command> CreateDoorEntrySequence(int doorId, Vector2 newPlayerPosition)
+        {
+            Door doorEntered = (Door)currentRoom.GetThingInRoom(doorId);
+            doorEntered.OpenDoor(playSound: false);
+            _player.Position = doorEntered.Position;
+            WalkCommand walk = new WalkCommand(newPlayerPosition.X, newPlayerPosition.Y);
+            WaitCommand wait = new WaitCommand(200);
+            DoorActionCommand closeDoor = new DoorActionCommand(_entityManager, doorId);
+            List<Command> coms = new List<Command>()
+            {
+                walk,
+                wait,
+                closeDoor,
+            };
+            return coms;
         }
 
         public void RecalculateRoomGraph(bool isInit)
         {
-            _roomGraph.GenerateRoomGraph(isInit, currentRoom.GetBoundingBoxes(), 
-                                         0, currentRoom.RoomWidth, 
+            _roomGraph.GenerateRoomGraph(isInit, currentRoom.GetBoundingBoxes(),
+                                         0, currentRoom.RoomWidth,
                                          0, _preferredBackBufferHeight);
         }
 
         public void Update(GameTime gameTime)
         {
 
-            if (currentRoom == null)
+            if (currentRoom == null && !_gameScreen.isTutorialActive)
             {
                 // Testing: Sequence
                 // if(_rooms[CurrentRoomIndex].EntrySequence == null && CurrentRoomIndex == 2)
@@ -382,15 +371,15 @@ namespace conscious
             // _rooms[CurrentRoomIndex].EntrySequence = seq;
 
             // currentRoom = _rooms[CurrentRoomIndex];
-            changeRoom(CurrentRoomIndex, Vector2.Zero);
+            changeRoom(CurrentRoomIndex, Vector2.Zero, 0, false);
 
         }
 
-        private void triggerThought(Room room)
+        public void triggerThought()
         {
-            if(room.Thought != null)
+            if(currentRoom.Thought != null)
             {
-                _socManager.AddThought(room.Thought);
+                _socManager.AddThought(currentRoom.Thought);
             }
         }
 

@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 using System;
 
@@ -27,6 +28,7 @@ namespace conscious
         private int _timeSinceLastRandomThought;
         private int _timeToWait;
         private int _maxMinutesToWait;
+        private SoundEffect _thoughtEmergedSound = null;
         
         public bool IsInThoughtMode;
         public event EventHandler<VerbActionEventArgs> ActionEvent;
@@ -37,13 +39,14 @@ namespace conscious
         public event EventHandler RemoveThoughtsEvent;
         public Verb VerbResult { get; private set; }
 
-        public SoCManager(MoodStateManager moodStateManager, AudioManager audioManager)
+        public SoCManager(MoodStateManager moodStateManager, AudioManager audioManager, SoundEffect thoughtEmergedSound)
         {
             _moodStateManager = moodStateManager;
             _audioManager = audioManager;
             Thoughts = new Queue<ThoughtNode>();
             _maxThoughts = -1;
             VerbResult = Verb.None;
+            _thoughtEmergedSound = thoughtEmergedSound;
 
             _randomThoughts = new List<ThoughtNode>();
             _randomThoughts.Add(new ThoughtNode(1000, "War? What is it good for?", 0, true, 0));
@@ -64,6 +67,11 @@ namespace conscious
         public void Update(GameTime gameTime)
         {
             _timeSinceLastRandomThought += gameTime.ElapsedGameTime.Milliseconds;
+            // checkDrawRandomThought();
+        }
+
+        private void checkDrawRandomThought()
+        {
             // logic to add thoughts randomly some times
             if(_isStart)
             {
@@ -112,7 +120,9 @@ namespace conscious
 
                 // Invoke event for UiDisplayThoughtManager to add the thought UI Element as well
                 OnAddThoughtEvent(thought);
-                // Notify scripting API about room change
+
+                _audioManager.PlaySoundEffect(_thoughtEmergedSound, false);
+                // Notify scripting API about a new thought being added
                 EventBus.Publish(this, new ThoughtEventTriggered
                 {
                     ThoughtEventId = thought.Id,
@@ -228,11 +238,13 @@ namespace conscious
                             if (_finalOption.ThoughtSequence == null)
                                 _moodStateManager.StateChange = _finalOption.MoodChange;
                         }
-                        // Notify scripting API about room change
-                        EventBus.Publish(this, new ThoughtEventFinished
+                        if (CurrentThought != null)
                         {
-                            ThoughtEventId = CurrentThought.Id,
-                        });
+                            EventBus.Publish(this, new ThoughtFinishedEvent
+                            {
+                                RootThoughtId = CurrentThought.Id,
+                            });
+                        }
                     }
                     // _uiDisplayThought.EndThoughtMode();
                     return null;
@@ -255,7 +267,8 @@ namespace conscious
             if (!isCanceled)
             {
                 _finalOption.IsVisited = true;
-                CurrentThought.IsUsed = true;
+                if(successEdge)
+                    CurrentThought.IsUsed = true;
                 if (_finalOption.UnlockId != 0)
                     unlockThoughtLink(_finalOption.UnlockId);
                 if (_finalOption.MoodChange != MoodState.None)

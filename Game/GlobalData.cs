@@ -10,8 +10,16 @@ namespace conscious
         public static int PlayerDrawOrder = 10;
         public static string ThoughtFontName = "Font/Thought_UI";
         public static string HudFontName = "Font/UI_Font";
+        public static string DialogFontName = "Font/UI_Font";
         public static string MenuFontName = "Font/Menu_Font";
         public static string HeadlineFontName = "Font/Headline";
+
+        public static string StandardSong = "Audio/Red_Curtains";
+        public static string StandardSongSlow = "Audio/Red_Curtains_slow";
+        public static string StandardSongTransition = "Audio/Red_Curtains_speeding_up";
+        public static string StandardSongSlowTransition = "Audio/Red_Curtains_slowing_down";
+        public static string ThrobHeartSong = "Audio/heartbeat_sound";
+        public static string ThoughtEmergedSoundEffect = "Audio/thought_emerged";
 
         public static bool IsNotBackgroundOrPlayer(Entity entity)
         {

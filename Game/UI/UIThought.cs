@@ -11,6 +11,7 @@ namespace conscious
         public bool IsUsed { get; set; }
         public bool IsVisited { get; set; }
         public bool IsRootThought { get; set; }
+        public bool IsInnerDialog { get; set; }
         public bool DoDisplay;
         public UIThought(bool isClickable,
                          bool isVisited,
@@ -20,7 +21,8 @@ namespace conscious
                          string name, 
                          Texture2D texture, 
                          Vector2 position, int drawOrder,
-                         bool isRootThought = false) 
+                         bool isRootThought = false,
+                         bool isInnerDialog = true) 
                          : base(font, text, name, texture, position, drawOrder)
         {
             Collidable = true;
@@ -28,6 +30,7 @@ namespace conscious
             IsClickable = isClickable;
             IsVisited = isVisited;
             IsRootThought = isRootThought;
+            IsInnerDialog = isInnerDialog;
 
             DoDisplay = doDisplay;
         }

@@ -36,17 +36,18 @@ namespace conscious
             UIText endingText = new UIText(_displayFont, "Thank you for playing!", "endingtext", new Texture2D(graphicsDevice, 1, 1), new Vector2(1000, 500), 1, Color.Wheat);
             endingText.Position = new Vector2(endingText.Position.X - endingText.GetStringWidth()/2, endingText.Position.Y - endingText.GetStringHeight()/2);
 
-            UIButton continueButton = new UIButton(new EventHandler(ContinueButton_Click),
-                                                   _buttonFont,
-                                                   "Continue",
-                                                   "Continue",
-                                                   _content.Load<Texture2D>("UI/debug_sprites/ui_button"),
-                                                   new Vector2(1000, 800), 1);
-            continueButton.Position = new Vector2(continueButton.Position.X - continueButton.BoundingBox.Width/2, continueButton.Position.Y - continueButton.BoundingBox.Height/2);
+
+            UIButton quitButton = new UIButton(new EventHandler(QuitButton_Click),
+                                               _displayFont,
+                                               "Quit",
+                                               "Quit",
+                                               _content.Load<Texture2D>("clear_out/UI/button_background"),
+                                               new Vector2(1000, 800), 1);
+            quitButton.Position = new Vector2(quitButton.Position.X - quitButton.BoundingBox.Width/2, quitButton.Position.Y - quitButton.BoundingBox.Height/2);
 
             _uiComponents = new List<UIComponent>()
             {
-                continueButton,
+                quitButton,
                 endingText,
             };
         }
@@ -71,9 +72,9 @@ namespace conscious
             _entityManager.Draw(spriteBatch);
         }
 
-        private void ContinueButton_Click(object sender, System.EventArgs e)
+        private void QuitButton_Click(object sender, System.EventArgs e)
         {
-            _screenEvent?.Invoke(this, new EventArgs());
+            _game.Exit();
         }
 
         public override void InitilizeEntityManager(){

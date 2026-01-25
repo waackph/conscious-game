@@ -48,11 +48,11 @@ namespace conscious
             }
             else if (Direction != Vector2.Zero)
             {
-                _player.MoveToDirection(Direction);
+                _player.MoveToDirection(Direction, totalSeconds);
             }
 
             if (IsKeyPressed(Keys.F, currentKeyboardState, _previousKeyState, true))
-                _entityManager.ToggleFalshlight();
+                _entityManager.ToggleFlashlight();
 
             _previousKeyState = currentKeyboardState;
         }

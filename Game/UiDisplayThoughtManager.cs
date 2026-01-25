@@ -4,11 +4,19 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace conscious
 {
     /// <summary>Class <c>UiDisplayThoughtManager</c> implements a thought UI system.
     /// It manages the visibility of thought options and thoughts of the protagonist.
+    /// Colors used in the UIThoughts:
+    /// - default: Black
+    /// - onHover: DarkSlateGray
+    /// - clicked: Gray
+    /// - deactivated (one-time event thoughts): DarkGray
+    /// - isActive: Sienna
+    /// - Cursor Text color: MintCream
     /// </summary>
     ///
     public class UiDisplayThoughtManager : IComponent
@@ -19,6 +27,7 @@ namespace conscious
         private Cursor _cursor;
         private List<UIThought> _thoughts;
         private SpriteFont _font;
+        private SpriteFont _dialogFont;
         private Texture2D _pixel;
         private float _bgX;
         private float _bgY;
@@ -38,7 +47,7 @@ namespace conscious
         private MouseState _lastMouseState;
         public bool IsInThoughtMode { get; protected set; }
 
-        public UiDisplayThoughtManager(EntityManager entityManager, MoodStateManager moodStateManager, SoCManager socManager, Cursor cursor, SpriteFont font, Texture2D pixel)
+        public UiDisplayThoughtManager(EntityManager entityManager, MoodStateManager moodStateManager, SoCManager socManager, Cursor cursor, SpriteFont font, SpriteFont dialogFont, Texture2D pixel)
         {
             _entityManager = entityManager;
             _moodStateManager = moodStateManager;
@@ -65,10 +74,11 @@ namespace conscious
             _scrollAmount = 5;
 
             _topPadding = 50;
-            
+
             _font = font;
+            _dialogFont = dialogFont;
             _pixel = pixel;
-           
+
             _lastMouseState = Mouse.GetState();
             _currentSubthought = null;
             _currentSubthoughtLinks = null;
@@ -81,18 +91,18 @@ namespace conscious
             Vector2 bgPosition = new Vector2(_bgX, _bgY);
             _consciousnessBackground = new UIAreaScrollable(_thoughts, _topPadding, _offsetY,
                                                             _cursor, _scrollAmount,
-                                                            "SoC Background", consciousnessBackground, bgPosition, 1);
+                                                            "SoC Background", consciousnessBackground, bgPosition, 2);
 
             Vector2 thoughtBgPosition = new Vector2(_bgX + _thoughtOffsetX, 
                                                     _bgY + _consciousnessBackground.Height + _consciousnessBackground.Height/2 + _thoughtOffsetY);
             _subthoughtBackground = new UIAreaScrollable(_currentSubthoughtLinks, _topPadding, _offsetY,
                                                          _cursor, _scrollAmount,
-                                                         "Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition, 1);
+                                                         "Thought Background", consciousnessBackgroundSubthought, thoughtBgPosition, 2);
 
             int portraitOffset = 50;
             Vector2 portraitBgPosition = new Vector2(_bgX + _thoughtOffsetX - _consciousnessBackground.Width/2 - consciousnessPortraitImage.Width/2,
                                                      _bgY + _consciousnessBackground.Height + portraitOffset);
-            _consciousnessPortrait = new UIArea("Thought Portrait", consciousnessPortraitImage, portraitBgPosition, 1);
+            _consciousnessPortrait = new UIArea("Thought Portrait", consciousnessPortraitImage, portraitBgPosition, 2);
         }
 
         public void Update(GameTime gameTime)
@@ -249,14 +259,7 @@ namespace conscious
             calculateSubthoughtPositions();
             addSubthought();
 
-            Texture2D portrait = _socManager.CurrentThought.ThoughtPortrait;
-
-            // add thought portrait
-            if(portrait != null)
-            {
-                _consciousnessPortrait.UpdateTexture(portrait);
-                _entityManager.AddEntity(_consciousnessPortrait);
-            }
+            AddPortraitToThoughtMode(node.ThoughtPortrait);
         }
 
         public void EndThoughtMode()
@@ -275,22 +278,33 @@ namespace conscious
             _currentSubthoughtLinks = convertLinksToUi(links);
             calculateSubthoughtPositions();
             addSubthought();
+            AddPortraitToThoughtMode(node.ThoughtPortrait);
+        }
+        
+        private void AddPortraitToThoughtMode(Texture2D portrait)
+        {
+            if(portrait != null)
+            {
+                _entityManager.RemoveEntity(_consciousnessPortrait);
+                _consciousnessPortrait.UpdateTexture(portrait);
+                _entityManager.AddEntity(_consciousnessPortrait);
+            }
         }
 
         private void calculateSubthoughtPositions()
         {
             float uiXPos = _bgX + _thoughtOffsetX - _offsetX;
-            float uiYPos = _bgY + _consciousnessBackground.Height/2 + _thoughtOffsetY/2;
+            float uiYPos = _bgY + _consciousnessBackground.Height / 2 + _thoughtOffsetY / 2;
             int thoughtNumber = 0;
             float heightOffset = 0f;
-            if(_currentSubthought != null && _currentSubthought.DoDisplay)
+            if (_currentSubthought != null && _currentSubthought.DoDisplay)
             {
                 _currentSubthought.SetPosition(uiXPos,
                                                uiYPos + thoughtNumber * _offsetY + heightOffset);
                 thoughtNumber++;
                 heightOffset += _currentSubthought.BoundingBox.Height;
             }
-            foreach(UIThought option in _currentSubthoughtLinks)
+            foreach (UIThought option in _currentSubthoughtLinks)
             {
                 // add the offset to better differentiate the characters response from the options
                 int optionOffset = 10;
@@ -374,14 +388,28 @@ namespace conscious
                 }
                 if(node.IsRoot)
                     isRootThought = true;
+
+                string thoughtText = node.Thought;
+                if (isClickable && !node.Thought.StartsWith("[") && isRootThought)
+                {
+                    thoughtText = "[...] " + thoughtText;
+                }
+                if(thoughtText.Length >= 45)
+                    thoughtText = WrapWords(thoughtText);
+
+                SpriteFont useFont = _font;
+                if(_currentThought != null && !_currentThought.IsInnerDialog && !node.IsRoot)
+                    useFont = _dialogFont;
+
                 UIThought uiThought = new UIThought(isClickable,
                                                     false,
                                                     doDisplay,
-                                                    _font, 
-                                                    node.Thought, node.Thought, 
+                                                    useFont,
+                                                    thoughtText, node.Thought, 
                                                     _pixel, 
                                                     Vector2.One, 1,
-                                                    isRootThought);
+                                                    isRootThought,
+                                                    node.IsInnerDialog);
                 if(node.IsRoot)
                     uiThought.IsUsed = node.IsUsed;
                 return uiThought;
@@ -395,22 +423,30 @@ namespace conscious
         private List<UIThought> convertLinksToUi(List<ThoughtLink> links)
         {
             List<UIThought> uiOptions = new List<UIThought>();
-            foreach(ThoughtLink link in links)
+            foreach (ThoughtLink link in links)
             {
-                if(!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
+                if (!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
                 {
-                    // TODO: add a disabled style, if current moodState is not valid for this option
-                    UIThought uiThought = new UIThought(isClickable:true,
-                                                        isVisited:link.IsVisited,
-                                                        doDisplay:true,
-                                                        _font, 
-                                                        link.Option, link.Option, 
-                                                        _pixel, 
+                    string text = " >" + link.Option;
+                    if(text.Length >= 45)
+                        text = WrapWords(text);
+
+                    SpriteFont useFont = _font;
+                    if(_currentThought != null && !_currentThought.IsInnerDialog)
+                        useFont = _dialogFont;
+
+                    // TODO?: add a disabled style, if current moodState is not valid for this option
+                    UIThought uiThought = new UIThought(isClickable: true,
+                                                        isVisited: link.IsVisited,
+                                                        doDisplay: true,
+                                                        useFont,
+                                                        text, link.Option,
+                                                        _pixel,
                                                         Vector2.One, 1);
-                    if(typeof(FinalThoughtLink) == link.GetType() && link.IsVisited)
+                    if (typeof(FinalThoughtLink) == link.GetType() && link.IsVisited)
                     {
                         FinalThoughtLink finalLink = (FinalThoughtLink)link;
-                        if(finalLink.IsSuccessEdge)
+                        if (finalLink.IsSuccessEdge)
                             uiThought.IsUsed = true;
                     }
                     uiOptions.Add(uiThought);
@@ -419,21 +455,42 @@ namespace conscious
             return uiOptions;
         }
 
-        public void FillEntityManager()
+        /// <summary>
+        /// Wraps the supplied text so that each line is at most maxWidth characters
+        /// and line breaks are inserted only between words.
+        /// </summary>
+        private static string WrapWords(string text, int maxWidth = 45)
+        {
+            // Pattern explanation (written inline for readability):
+            //   (?<=\S)               – ensures we are not starting inside a whitespace run
+            //   (.{1,maxWidth})       – capture up to maxWidth characters (greedy)
+            //   (?:\s+|$)             – followed by one or more whitespace characters OR end‑of‑string
+            //   (?=\S|$)              – look ahead to make sure we don’t consume the next word’s first char
+            //
+            // The replacement writes back the captured text ($1) and then inserts a newline.
+            string pattern = $@"(?<=\S)(.{{1,{maxWidth}}})(?:\s+|$)";
+            string tmp = Regex.Replace(text, pattern, m => m.Groups[1].Value + Environment.NewLine);
+            return tmp.TrimEnd(); // Remove any trailing newline
+        }
+
+        public void FillEntityManager(bool isGameLoaded)
         {
             _entityManager.AddEntity(_consciousnessBackground);
-            if(_thoughts.Count > 0)
+            // If the game is not loaded, the first thought is already triggered by the RoomManager
+            // Therefore we only load the thought and possible subthoughts when the game is loaded 
+            // (aka coming from pause menu)
+            if (_thoughts.Count > 0 && isGameLoaded)
             {
-                foreach(UIThought thought in _thoughts)
+                foreach (UIThought thought in _thoughts)
                 {
                     _entityManager.AddEntity(thought);
                 }
                 // if there is a subthought currently selected, render it
-                if(_currentSubthought != null && _currentSubthoughtLinks != null)
+                if (_currentSubthought != null && _currentSubthoughtLinks != null)
                 {
                     _entityManager.AddEntity(_subthoughtBackground);
                     _entityManager.AddEntity(_currentSubthought);
-                    foreach(UIThought thought in _currentSubthoughtLinks)
+                    foreach (UIThought thought in _currentSubthoughtLinks)
                     {
                         _entityManager.AddEntity(thought);
                     }

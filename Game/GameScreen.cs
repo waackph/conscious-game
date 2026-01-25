@@ -42,6 +42,7 @@ namespace conscious
 
         private bool _gameLoaded = false;
         public bool gameFinished = false;
+        public bool isTutorialActive = false;
         private EventHandler _gameEndingScreenEvent;
 
         private static JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
@@ -69,7 +70,7 @@ namespace conscious
 
             _gameEndingScreenEvent = gameEndingScreenEvent;
 
-            Vector2 playerPosition = new Vector2(1000, 150);  //Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
+            Vector2 playerPosition = new Vector2(500, 150);  //Vector2.Zero;  // new Vector2(_preferredBackBufferWidth / 2, _preferredBackBufferHeight / 2 + _preferredBackBufferHeight*.35f);
 
             _player = new Player(content.Load<Texture2D>("Player/walking_anim_regular"),
                                  content.Load<Texture2D>("Player/sleep_anim_616_outline"),
@@ -101,8 +102,9 @@ namespace conscious
             _roomGraph = new RoomGraph();
             _pathFinder = new AStarShortestPath(_roomGraph);
 
-            _socManager = new SoCManager(_moodStateManager, audioManager);
-            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _moodStateManager, _socManager, _cursor, content.Load<SpriteFont>(GlobalData.ThoughtFontName), _pixel);
+            SoundEffect thoughtEmergedSound = content.Load<SoundEffect>(GlobalData.ThoughtEmergedSoundEffect);
+            _socManager = new SoCManager(_moodStateManager, audioManager, thoughtEmergedSound);
+            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _moodStateManager, _socManager, _cursor, content.Load<SpriteFont>(GlobalData.ThoughtFontName), content.Load<SpriteFont>(GlobalData.DialogFontName), _pixel);
             _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("clear_out/UI/UI_Thought_Canvas_scaled_500x250"),
                                                  content.Load<Texture2D>("UI/debug_sprites/soc_background_sub_beige"),
                                                  content.Load<Texture2D>("UI/debug_sprites/inventory_place_background_v2"));
@@ -114,7 +116,7 @@ namespace conscious
             SoundEffect defaultWalkingSound = content.Load<SoundEffect>("Audio/default_walking_sound");
             SoundEffectInstance defaultWalkingSoundInst = defaultWalkingSound.CreateInstance();
             defaultWalkingSoundInst.IsLooped = true;
-            _roomManager = new RoomManager(content,
+            _roomManager = new RoomManager(this, content,
                                            _player,
                                            _cursor,
                                            _pixel,
@@ -140,7 +142,7 @@ namespace conscious
                                                                  _cursor,
                                                                  _player);
 
-            _scriptingProgress = new ScriptingProgress(this, _entityManager, _audioManager, _roomInteractionManager, _socManager, content);
+            _scriptingProgress = new ScriptingProgress(this, _entityManager, _audioManager, _roomInteractionManager, _socManager, _sequenceManager, _moodStateManager, _roomManager, content, _player);
         }
 
         public override void Update(GameTime gameTime)
@@ -150,6 +152,15 @@ namespace conscious
                 _screenEvent.Invoke(this, new EventArgs());
             }
 
+            // Toggle Mood State with Space Key for testing purposes
+            // if (Keyboard.GetState().IsKeyUp(Keys.Space) && _lastKeyboardState.IsKeyDown(Keys.Space))
+            // {
+            //     if (_moodStateManager.moodState == MoodState.Depressed)
+            //         _moodStateManager.StateChange = MoodState.Regular;
+            //     else if (_moodStateManager.moodState == MoodState.Regular || _moodStateManager.moodState == MoodState.None)
+            //         _moodStateManager.StateChange = MoodState.Depressed;
+            // }
+
             if (gameFinished)
             {
                 _gameEndingScreenEvent.Invoke(this, new EventArgs());
@@ -157,13 +168,19 @@ namespace conscious
 
             if (!_dialogManager.DialogActive && !_sequenceManager.SequenceActive)
             {
-                _inventoryManager.Update(gameTime);
-                _roomInteractionManager.Update(gameTime);
                 if (!_inventoryManager.InventoryActive)
                 {
-                    _controlsManager.Update(gameTime);
                     _uiDisplayThoughtManager.Update(gameTime);
                 }
+                if (!isTutorialActive)
+                    {
+                        _inventoryManager.Update(gameTime);
+                        _roomInteractionManager.Update(gameTime);
+                        if (!_inventoryManager.InventoryActive)
+                        {
+                            _controlsManager.Update(gameTime);
+                        }
+                    }
             }
             _dialogManager.Update(gameTime);
             _roomManager.Update(gameTime);
@@ -209,7 +226,7 @@ namespace conscious
                 _inventoryManager.FillEntityManager();
             }
             _dialogManager.FillEntityManager();
-            _uiDisplayThoughtManager.FillEntityManager();
+            _uiDisplayThoughtManager.FillEntityManager(_gameLoaded);
             _moodStateManager.FillEntityManager();
         }
 
@@ -243,6 +260,7 @@ namespace conscious
             if (newGame)
             {
                 savePath = "new_states/20250820-1200";
+                isTutorialActive = true;
             }
             else
             {
@@ -441,7 +459,7 @@ namespace conscious
 
                 SoundEffectInstance useSound = null;
                 if (dhItem.UseSoundFilePath != null && dhItem.UseSoundFilePath != "")
-                    useSound = _content.Load<SoundEffect>(dhItem.UseSoundFilePath).CreateInstance();
+                    useSound = _content.Load<SoundEffect>("Audio/" + dhItem.UseSoundFilePath).CreateInstance();
 
                 entity = new Item(dhItem.Id, dhItem.Name,
                                   dhItem.PickUpAble, dhItem.UseAble,
@@ -484,10 +502,10 @@ namespace conscious
 
                 SoundEffectInstance useSound = null;
                 if (dhDoor.UseSoundFilePath != null && dhDoor.UseSoundFilePath != "")
-                    useSound = _content.Load<SoundEffect>(dhDoor.UseSoundFilePath).CreateInstance();
+                    useSound = _content.Load<SoundEffect>("Audio/" + dhDoor.UseSoundFilePath).CreateInstance();
                 SoundEffectInstance closeSound = null;
                 if (dhDoor.CloseSoundFilePath != null && dhDoor.CloseSoundFilePath != "")
-                    closeSound = _content.Load<SoundEffect>(dhDoor.UseSoundFilePath).CreateInstance();
+                    closeSound = _content.Load<SoundEffect>("Audio/" + dhDoor.CloseSoundFilePath).CreateInstance();
 
                 entity = new Door(dhDoor.Id, dhDoor.Name,
                                   dhDoor.PickUpAble, dhDoor.UseAble,
@@ -596,7 +614,7 @@ namespace conscious
                 eventSound = _content.Load<SoundEffect>(dhThought.SoundPath);
 
             Texture2D thoughtPortrait = null;
-            if (dhThought.ThoughtPortrait != null)
+            if (dhThought.ThoughtPortrait != null && dhThought.ThoughtPortrait != "")
                 thoughtPortrait = _content.Load<Texture2D>(dhThought.ThoughtPortrait);
 
             ThoughtNode thought = new ThoughtNode(dhThought.Id,
@@ -606,7 +624,7 @@ namespace conscious
                                                     dhThought.ThingId,
                                                     eventSound,
                                                     dhThought.RepeatedSound,
-                                                    thoughtPortrait);
+                                                    thoughtPortrait, dhThought.IsInnerDialog);
             foreach (DataHolderThoughtLink dhThoughtLink in dhThought.Links)
             {
                 ThoughtLink link = InstatiateThoughtLink(dhThoughtLink);
@@ -657,7 +675,7 @@ namespace conscious
                                             dhFinalLink.IsLocked,
                                             dhFinalLink.ValidMoods,
                                             dhFinalLink.IsSuccessEdge,
-                                            dhFinalLink.EventThought);
+                                            dhFinalLink.EventThoughtId);
             }
             else
             {

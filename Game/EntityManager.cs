@@ -101,13 +101,15 @@ namespace conscious
                 entity.Update(gameTime);
             }
 
-            foreach(Entity entity in _entitiesToAdd){
-                _entities.Add(entity);
-            }
-
             foreach(Entity entity in _entitiesToRemove){
                 _entities.Remove(entity);
             }
+
+            foreach (Entity entity in _entitiesToAdd)
+            {
+                _entities.Add(entity);
+            }
+
 
             _entitiesToAdd.Clear();
             _entitiesToRemove.Clear();
@@ -227,17 +229,25 @@ namespace conscious
             {
                 transitionStarted = true;
             }
-            // terminate transition
-            else if(maxNoiseReached)
+
+            // either terminate transition
+            // or continue transition
+            if (maxNoiseReached)
             {
                 doTransition = false;
                 maxNoiseReached = false;
                 transitionStarted = false;
                 currentTime = 0f;
                 setNewMood();
+                // Notify MoodChangeManager about finished transition
+                EventBus.Publish(this, new MoodTransitionFinishedEvent()
+                {
+                });
             }
-            if(saturateDown && mapped_new < nMin+0.01 || !saturateDown && mapped_new > nMax-0.01)
+            else if (saturateDown && mapped_new < nMin + 0.01 || !saturateDown && mapped_new > nMax - 0.01)
+            {
                 maxNoiseReached = true;
+            }
 
             _moodTransitionEffect.Parameters["UniformSat"].SetValue(mapped_new);
             _moodTransitionEffect.Parameters["UniformVal"].SetValue(-0.0f);
@@ -264,23 +274,23 @@ namespace conscious
                 if(mapped < nLast)
                     newRound = true;
 
-                if(!transitionStarted)
+                if (!transitionStarted)
                 {
                     transitionStarted = true;
                 }
                 // terminate transition
-                else if(maxNoiseReached && newRound)
+                else if (maxNoiseReached && newRound)
                 {
                     doTransition = false;
                     maxNoiseReached = false;
                     transitionStarted = false;
                 }
-                else if(transitionStarted && !maxNoiseReached && newRound)
+                else if (transitionStarted && !maxNoiseReached && newRound)
                 {
                     maxNoiseReached = true;
                     setNewMood();
                 }
-                else if(maxNoiseReached)
+                else if (maxNoiseReached)
                 {
                     mapped_new = float.Parse((nMax - mapped).ToString("0.000"));
                 }
@@ -370,10 +380,13 @@ namespace conscious
             // TODO: add logic to draw lights stored in entities and rooms
             foreach (Thing thing in GetEntitiesOfType<Thing>())
             {
-                if (thing.LightMask != null)
+                if (thing.LightMask != null && thing.IsActive)
                 {
                     hasLights = true;
-                    spriteBatch.Draw(thing.LightMask, thing.Position, Color.White);
+                    spriteBatch.Draw(thing.LightMask,
+                                     new Vector2(thing.Position.X - thing.LightMask.Width/2,
+                                                 thing.Position.Y - thing.LightMask.Height/2),
+                                     Color.White);
                 }
             }
 
@@ -391,7 +404,7 @@ namespace conscious
             return hasLights;
         }
 
-        public void ToggleFalshlight()
+        public void ToggleFlashlight()
         {
             FlashlightOn = !FlashlightOn;
         }
@@ -468,7 +481,10 @@ namespace conscious
                 // Draw UI Thoughts (clipped, therefore set clipping rect options)
                 Rectangle initRect = spriteBatch.GraphicsDevice.ScissorRectangle;
                 RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
-                spriteBatch.GraphicsDevice.ScissorRectangle = socBackground.BoundingBox;
+                Rectangle clipRect = socBackground.BoundingBox;
+                clipRect.Y = clipRect.Y + 35;
+                clipRect.Height = clipRect.Height - 40;
+                spriteBatch.GraphicsDevice.ScissorRectangle = clipRect;
 
                 spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, rasterizerState: _rasterizerState, null, transformMatrix: _mainThoughtUITranslation);
                 foreach(UIThought thought in GetEntitiesOfType<UIThought>())
