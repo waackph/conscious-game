@@ -5338,7 +5338,7 @@
               "NextNode": {
                 "$type": "conscious.DataHolderThoughtNode, conscious",
                 "Id": 776,
-                "Thought": "First node",
+                "Thought": "Gibt es hier noch etwas f\u00fcr mich?",
                 "IsRoot": false,
                 "LinkageId": 0,
                 "ThingId": 4792,
@@ -8181,7 +8181,7 @@
           "NextNode": {
             "$type": "conscious.DataHolderThoughtNode, conscious",
             "Id": 6952,
-            "Thought": "First node",
+            "Thought": "Klingt merkw\u00fcrdig.",
             "IsRoot": false,
             "LinkageId": 0,
             "Links": [
