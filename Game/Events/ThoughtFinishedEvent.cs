@@ -9,5 +9,6 @@ namespace conscious
     public class ThoughtFinishedEvent : EventArgs
     {
         public int RootThoughtId { get; set; }
+        public int FinalOptionId { get; set; }
     }
 }
