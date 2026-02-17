@@ -84,7 +84,7 @@ namespace conscious
                                  content.Load<Texture2D>("Player/marla_regular_idle_outline"),
                                  playerPosition, 10);
 
-            _controlsManager = new ControlsManager(_player, _entityManager);
+            _controlsManager = new ControlsManager(_player, _entityManager, content.Load<SoundEffect>("Audio/flashlight-clicking"));
 
             // _verbManager = new VerbManager(_entityManager);
             // _verbManager.LoadContent(content.Load<Texture2D>("Verbs/debug/verb_background"),
@@ -104,7 +104,7 @@ namespace conscious
 
             SoundEffect thoughtEmergedSound = content.Load<SoundEffect>(GlobalData.ThoughtEmergedSoundEffect);
             _socManager = new SoCManager(_moodStateManager, audioManager, thoughtEmergedSound);
-            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _moodStateManager, _socManager, _cursor, content.Load<SpriteFont>(GlobalData.ThoughtFontName), content.Load<SpriteFont>(GlobalData.DialogFontName), _pixel);
+            _uiDisplayThoughtManager = new UiDisplayThoughtManager(_entityManager, _moodStateManager, _socManager, _cursor, content.Load<SpriteFont>(GlobalData.ThoughtFontName), content.Load<SpriteFont>(GlobalData.DialogFontName), _pixel, content.Load<Texture2D>("clear_out/thought_portraits/marla_adult_portrait_cut"));
             _uiDisplayThoughtManager.LoadContent(content.Load<Texture2D>("clear_out/UI/UI_Thought_Canvas_scaled_500x250"),
                                                  content.Load<Texture2D>("UI/debug_sprites/soc_background_sub_beige"),
                                                  content.Load<Texture2D>("UI/debug_sprites/inventory_place_background_v2"));
@@ -142,7 +142,7 @@ namespace conscious
                                                                  _cursor,
                                                                  _player);
 
-            _scriptingProgress = new ScriptingProgress(this, _entityManager, _audioManager, _roomInteractionManager, _socManager, _sequenceManager, _moodStateManager, _roomManager, content, _player);
+            _scriptingProgress = new ScriptingProgress(this, _entityManager, _audioManager, _roomInteractionManager, _socManager, _sequenceManager, _moodStateManager, _roomManager, content, _player, _pixel);
         }
 
         public override void Update(GameTime gameTime)
@@ -228,6 +228,7 @@ namespace conscious
             _dialogManager.FillEntityManager();
             _uiDisplayThoughtManager.FillEntityManager(_gameLoaded);
             _moodStateManager.FillEntityManager();
+            _scriptingProgress.FillEntityManager();
         }
 
         public DataHolderPlayer GetDataHolderPlayer()
