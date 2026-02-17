@@ -1702,6 +1702,12 @@
 #begin Font/Besom-Handwritten-Brush-Font.ttf
 /copy:Font/Besom-Handwritten-Brush-Font.ttf
 
+#begin Font/DeltaLake-8OORM.ttf
+/copy:Font/DeltaLake-8OORM.ttf
+
+#begin Font/Doughtybrush-yYYaZ.ttf
+/copy:Font/Doughtybrush-yYYaZ.ttf
+
 #begin Font/File.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -1722,6 +1728,9 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Font/Hud.spritefont
+
+#begin Font/IndieFlower-Regular.ttf
+/copy:Font/IndieFlower-Regular.ttf
 
 #begin Font/LucidaHandwritingStdRg.TTF
 /copy:Font/LucidaHandwritingStdRg.TTF
