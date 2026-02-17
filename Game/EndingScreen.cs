@@ -33,13 +33,13 @@ namespace conscious
 
             _endingSong = _content.Load<Song>("Audio/Lounge001");
 
-            UIText endingText = new UIText(_displayFont, "Thank you for playing!", "endingtext", new Texture2D(graphicsDevice, 1, 1), new Vector2(1000, 500), 1, Color.Wheat);
+            UIText endingText = new UIText(_displayFont, "Danke, dass du das Spiel durchgespielt hast!", "endingtext", new Texture2D(graphicsDevice, 1, 1), new Vector2(1000, 500), 1, Color.Wheat);
             endingText.Position = new Vector2(endingText.Position.X - endingText.GetStringWidth()/2, endingText.Position.Y - endingText.GetStringHeight()/2);
 
 
             UIButton quitButton = new UIButton(new EventHandler(QuitButton_Click),
                                                _displayFont,
-                                               "Quit",
+                                               "Beenden",
                                                "Quit",
                                                _content.Load<Texture2D>("clear_out/UI/button_background"),
                                                new Vector2(1000, 800), 1);

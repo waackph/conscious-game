@@ -50,14 +50,14 @@ namespace conscious
 
             UIButton continueButton = new UIButton(new EventHandler(ContinueButton_Click),
                                                    _displayFont,
-                                                   "Continue",
+                                                   "Fortsetzen",
                                                    "Continue",
                                                    _content.Load<Texture2D>("clear_out/UI/button_background"),
                                                    new Vector2(350, 250), 1);
 
             UIButton newButton = new UIButton(new EventHandler(NewButton_Click),
                                                    _displayFont,
-                                                   "New",
+                                                   "Beginnen",
                                                    "New",
                                                    _content.Load<Texture2D>("clear_out/UI/button_background"),
                                                    new Vector2(350, 300), 1);
@@ -71,7 +71,7 @@ namespace conscious
 
             UIButton quitButton = new UIButton(new EventHandler(QuitButton_Click),
                                                _displayFont,
-                                               "Quit",
+                                               "Beenden",
                                                "Quit",
                                                _content.Load<Texture2D>("clear_out/UI/button_background"),
                                                new Vector2(350, 350), 1);
@@ -136,6 +136,10 @@ namespace conscious
             {
                 // Show continue button only if game has already started
                 if (uiComponent.Name == "Continue" && !GameLoaded)
+                {
+                    continue;
+                }
+                else if (uiComponent.Name == "New" && GameLoaded)
                 {
                     continue;
                 }
