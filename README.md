@@ -6,12 +6,21 @@ To see the game engine in action with a very rudimentary prototype named "Gettin
 ## Idea/Vision of this game engine prototype
 In the future, this game enigne might be used to create different games with the implemented game mechanics, most prominently, the thought-driven interaction system and the emotional state system which changes the world around the protagonist. From this mechanics, different story approaches can be taken that frame the mechanics, and the player using them, in different ways.
 
+## Credits
+
+- Music taken from allesgemafrei.de: "Red Curtains" and "Lounge 001".
+- Sound effects taken from Pixabay.
+- Fonts
+    - [Indie Flower](https://fonts.google.com/specimen/Indie+Flower)
+    - Andika
+
 ## Technical background
 The game engine is implemented via the Monogame C# framework. To create own games with it, Monogame needs to be installed and the content defined for the game must be also imported via the monogame content pipeline tool MGCB editor. To create content a [content tool](https://github.com/waackph/Game-Content-Tool) was implemented, accompaning the game engine. There, all objects (rooms, items, characters) to interact with, can be created and exported. The exported data structure needs to be placed in the `new_states` folder. The game engine will then create the game from the JSON data structure.
 The content tool is a react web application and can be found in this github project.
 
 ## Build games from the engine
-Linux: `dotnet publish -r linux-x64 -c Release --self-contained --output artifacts/linux`
+Linux: `dotnet publish -r linux-x64 -c Release --self-contained --output artifacts/linux`<br>
+OR: `dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained conscious.csproj`
 <br>
 Start game in unzipped folder with: ./conscious
 
