@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -12,16 +13,18 @@ namespace conscious
     {
         private Player _player;
         private EntityManager _entityManager;
+        private SoundEffect _flashlightSound;
         private KeyboardState _previousKeyState = Keyboard.GetState();
 
         public Vector2 Direction { get; set; }
 
         public Vector2 MousePosition { get; set; }
 
-        public ControlsManager(Player player, EntityManager entityManager)
+        public ControlsManager(Player player, EntityManager entityManager, SoundEffect flashlightSound)
         {
             _player = player;
             _entityManager = entityManager;
+            _flashlightSound = flashlightSound;
         }
 
         public void Update(GameTime gameTime)
@@ -52,7 +55,10 @@ namespace conscious
             }
 
             if (IsKeyPressed(Keys.F, currentKeyboardState, _previousKeyState, true))
+            {
                 _entityManager.ToggleFlashlight();
+                _flashlightSound.Play();
+            }
 
             _previousKeyState = currentKeyboardState;
         }
