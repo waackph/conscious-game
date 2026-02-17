@@ -36,6 +36,7 @@ namespace conscious
         private float _thoughtOffsetY;
         private float _thoughtOffsetX;
         private float _topPadding;
+        private float _inlinePadding;
         private float _scrollAmount;
         private int _maxThoughts;
         private UIAreaScrollable _consciousnessBackground;
@@ -46,8 +47,12 @@ namespace conscious
         private UIThought _currentThought;
         private MouseState _lastMouseState;
         public bool IsInThoughtMode { get; protected set; }
+        private bool _hadThoughtPortrait = false;
+        private Texture2D _defaultPortrait;
 
-        public UiDisplayThoughtManager(EntityManager entityManager, MoodStateManager moodStateManager, SoCManager socManager, Cursor cursor, SpriteFont font, SpriteFont dialogFont, Texture2D pixel)
+        private int _uiTextLengthLimit = 49;
+
+        public UiDisplayThoughtManager(EntityManager entityManager, MoodStateManager moodStateManager, SoCManager socManager, Cursor cursor, SpriteFont font, SpriteFont dialogFont, Texture2D pixel, Texture2D defaultPortrait)
         {
             _entityManager = entityManager;
             _moodStateManager = moodStateManager;
@@ -74,6 +79,7 @@ namespace conscious
             _scrollAmount = 5;
 
             _topPadding = 50;
+            _inlinePadding = 10;
 
             _font = font;
             _dialogFont = dialogFont;
@@ -84,6 +90,7 @@ namespace conscious
             _currentSubthoughtLinks = null;
             _currentThought = null;
             IsInThoughtMode = false;
+            _defaultPortrait = defaultPortrait;
         }
 
         public void LoadContent(Texture2D consciousnessBackground, Texture2D consciousnessBackgroundSubthought, Texture2D consciousnessPortraitImage)
@@ -171,7 +178,7 @@ namespace conscious
 
         private UIThought CalculateThoughtPositions(UIThought thought)
         {
-            float uiXPos = _bgX - _offsetX;
+            float uiXPos = _bgX - _offsetX + _inlinePadding;
             float uiYPos = _bgY - _consciousnessBackground.Height/2;
             int thoughtNumber = 0;
             float heightOffset = 0f;
@@ -266,6 +273,7 @@ namespace conscious
         {
             IsInThoughtMode = false;
             _socManager.IsInThoughtMode = false;
+            _hadThoughtPortrait = false;
             removeSubthought();
             _entityManager.RemoveEntity(_subthoughtBackground);
             _entityManager.RemoveEntity(_consciousnessPortrait);
@@ -280,20 +288,25 @@ namespace conscious
             addSubthought();
             AddPortraitToThoughtMode(node.ThoughtPortrait);
         }
-        
+
         private void AddPortraitToThoughtMode(Texture2D portrait)
         {
-            if(portrait != null)
+            _entityManager.RemoveEntity(_consciousnessPortrait);
+            if (portrait != null)
             {
-                _entityManager.RemoveEntity(_consciousnessPortrait);
                 _consciousnessPortrait.UpdateTexture(portrait);
-                _entityManager.AddEntity(_consciousnessPortrait);
+                _hadThoughtPortrait = true;
             }
+            else if (!_hadThoughtPortrait)
+            {
+                _consciousnessPortrait.UpdateTexture(_defaultPortrait);
+            }
+            _entityManager.AddEntity(_consciousnessPortrait);
         }
 
         private void calculateSubthoughtPositions()
         {
-            float uiXPos = _bgX + _thoughtOffsetX - _offsetX;
+            float uiXPos = _bgX + _thoughtOffsetX - _offsetX + _inlinePadding;
             float uiYPos = _bgY + _consciousnessBackground.Height / 2 + _thoughtOffsetY / 2;
             int thoughtNumber = 0;
             float heightOffset = 0f;
@@ -390,12 +403,16 @@ namespace conscious
                     isRootThought = true;
 
                 string thoughtText = node.Thought;
-                if (isClickable && !node.Thought.StartsWith("[") && isRootThought)
+                // if (isClickable && !node.Thought.StartsWith("[") && isRootThought)
+                // {
+                //     thoughtText = "[...] " + thoughtText;
+                // }
+                if (isClickable && isRootThought)
                 {
-                    thoughtText = "[...] " + thoughtText;
+                    thoughtText = ">> " + thoughtText;
                 }
-                if(thoughtText != null && thoughtText.Length >= 45)
-                    thoughtText = WrapWords(thoughtText);
+                if (thoughtText != null && thoughtText.Length >= _uiTextLengthLimit)
+                        thoughtText = WrapWords(thoughtText, _uiTextLengthLimit);
 
                 SpriteFont useFont = _font;
                 if(_currentThought != null && !_currentThought.IsInnerDialog && !node.IsRoot)
@@ -428,8 +445,8 @@ namespace conscious
                 if (!link.IsLocked && link.MoodValid(_moodStateManager.moodState))
                 {
                     string text = " >" + link.Option;
-                    if(text.Length >= 45)
-                        text = WrapWords(text);
+                    if(text.Length >= _uiTextLengthLimit)
+                        text = WrapWords(text, _uiTextLengthLimit);
 
                     SpriteFont useFont = _font;
                     if(_currentThought != null && !_currentThought.IsInnerDialog)
@@ -459,7 +476,7 @@ namespace conscious
         /// Wraps the supplied text so that each line is at most maxWidth characters
         /// and line breaks are inserted only between words.
         /// </summary>
-        private static string WrapWords(string text, int maxWidth = 45)
+        private static string WrapWords(string text, int maxWidth = 50)
         {
             // Pattern explanation (written inline for readability):
             //   (?<=\S)               – ensures we are not starting inside a whitespace run

@@ -251,6 +251,7 @@ namespace conscious
                             EventBus.Publish(this, new ThoughtFinishedEvent
                             {
                                 RootThoughtId = CurrentThought.Id,
+                                FinalOptionId = (option != null) ? option.Id : -1
                             });
                         }
                     }

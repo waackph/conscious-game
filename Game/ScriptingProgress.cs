@@ -23,6 +23,7 @@ namespace conscious
         private bool _HeartThrobDreamHappend = false;
         private bool _isHeartThrobBasement = false;
         private bool _HeartThrobBasementHappend = false;
+        private bool _isStartSequence = false;
 
         private Song _throbHeartSong;
         private Song _standardSong;
@@ -33,30 +34,32 @@ namespace conscious
 
         private Thing _blackOverlay;
 
+        private UIText _currentTask;
+
         private Dictionary<int, float> throbSoundVolumeDream = new Dictionary<int, float>{
         { 17, 0.8f }, // living room
-        { 13, 1.0f }, // corridor eg
-        { 14, 1.2f }, // stairs eg
-        { 15, 1.4f }, // stairs og
-        { 16, 1.6f }, // childroom
+        { 13, 1.3f }, // corridor eg
+        { 14, 1.8f }, // stairs eg
+        { 15, 2.3f }, // stairs og
+        { 16, 2.8f }, // childroom
         };
         private Dictionary<int, float> throbSoundVolumeBasement = new Dictionary<int, float>{
         { 8, 0.8f}, // childroom
         { 7, 0.8f }, // bedroom
 
-        { 9, 1.0f }, // corridor og
-        { 5, 1.0f }, // dining room
-        { 4, 1.0f }, // living room
+        { 9, 1.3f }, // corridor og
+        { 5, 1.3f }, // dining room
+        { 4, 1.3f }, // living room
 
-        { 3, 1.2f }, // corridor eg
-        { 11, 1.2f }, // stairs og
+        { 3, 1.8f }, // corridor eg
+        { 11, 1.8f }, // stairs og
 
-        { 10, 1.4f }, // stairs eg
-        { 12, 1.6f }, // storage room
-        { 6, 1.8f }, // basement
+        { 10, 2.3f }, // stairs eg
+        { 12, 2.8f }, // storage room
+        { 6, 3.0f }, // basement
         };
 
-        public ScriptingProgress(GameScreen gameScreen, EntityManager entityManager, AudioManager audioManager, RoomInteractionManager roomInteractionManager, SoCManager socManager, SequenceManager sequenceManager, MoodStateManager moodStateManager, RoomManager roomManager, ContentManager content, Player player)
+        public ScriptingProgress(GameScreen gameScreen, EntityManager entityManager, AudioManager audioManager, RoomInteractionManager roomInteractionManager, SoCManager socManager, SequenceManager sequenceManager, MoodStateManager moodStateManager, RoomManager roomManager, ContentManager content, Player player, Texture2D pixel)
         {
             _gameScreen = gameScreen;
             _audioManager = audioManager;
@@ -84,7 +87,9 @@ namespace conscious
             _turnOnLightSound = content.Load<SoundEffect>("Audio/switch-on-light");
 
             Texture2D _blackOverlayTexture = content.Load<Texture2D>("light/dream_room_small_light_mask");
-            _blackOverlay = new Thing(11, null, _moodStateManager, "Background", _blackOverlayTexture, new Vector2(_blackOverlayTexture.Width/2, _blackOverlayTexture.Height/2), 5);
+            _blackOverlay = new Thing(11, null, _moodStateManager, "Background", _blackOverlayTexture, new Vector2(_blackOverlayTexture.Width / 2, _blackOverlayTexture.Height / 2), 5);
+
+            _currentTask = new UIText(content.Load<SpriteFont>(GlobalData.HudFontName), "", "currentTask", pixel, new Vector2(20, 40), 1);
         }
 
         public void Update(GameTime gameTime)
@@ -94,6 +99,7 @@ namespace conscious
 
         private void OnStartGame(object sender, StartGameEvent e)
         {
+            _isStartSequence = true;
             // add black overlay screen for tutorial
             _entityManager.AddEntity(_blackOverlay);
             // play atmo sound (muted sound of the start screen)
@@ -188,6 +194,16 @@ namespace conscious
                     _gameScreen.gameFinished = true;
                 }
             }
+
+            if (GlobalData.IsSameOrSubclass(typeof(SayCommand), e.sequenceCommand.GetType()))
+            {
+                SayCommand sayCmd = (SayCommand)e.sequenceCommand;
+                if (sayCmd != null && sayCmd._thoughtText.StartsWith("Ich fühle mich schon besser. Im Traum war ich in meinem Kinderzimmer.")
+                    && _roomManager.CurrentRoomIndex == 3)
+                {
+                    UpdateCurrentTask("Vielleicht finde ich im Kinderzimmer etwas.");
+                }
+            }
         }
 
         private void OnThoughtFinishedEvent(object sender, ThoughtFinishedEvent e)
@@ -200,6 +216,32 @@ namespace conscious
             else if (e.RootThoughtId == 1750)
             {
                 _roomInteractionManager.isTriggerNewThoughtEnabled = true;
+            }
+
+            // check for updating current task
+            if (e.FinalOptionId == 211) // after phone call with boss
+            {
+                UpdateCurrentTask("Ich will nur schlafen.");
+            }
+            else if (e.FinalOptionId == 3761) // after checking behind bed
+            {
+                UpdateCurrentTask("Ein Adressbuch finden (Kontakt mit Initial K).");
+            }
+            else if (e.FinalOptionId == 369) // after checking address book
+            {
+                UpdateCurrentTask("Vielleicht kann mich der Garten aufheitern.");
+            }
+            else if (e.FinalOptionId == 844) // after looking at the garden
+            {
+                UpdateCurrentTask("Etwas über Lydia in ihrem Zimmer herausfinden.");
+            }
+            else if (e.FinalOptionId == 4575) // after remembering drawings for Lydias
+            {
+                UpdateCurrentTask("Gießkanne finden.");
+            }
+            else if (e.RootThoughtId == 5862) // finishing final thought
+            {
+                UpdateCurrentTask("");
             }
         }
 
@@ -217,7 +259,7 @@ namespace conscious
             Sequence seq = new Sequence(coms, sequenceName: "FinishTutorialSequence");
             _sequenceManager.StartSequence(seq, _player, MoodState.None);
         }
-        
+
         private void endTutorial()
         {
             // remove black screen overlay
@@ -235,12 +277,23 @@ namespace conscious
             // disable tutorial flag
             _gameScreen.isTutorialActive = false;
             _roomManager.triggerThought();
+            UpdateCurrentTask("Im Haus umschauen.");
+            _isStartSequence = false;
         }
 
         private void addTutorialThought()
         {
             ThoughtNode innerThought2 = new ThoughtNode(49,
-                "Hier denke ich über Dinge nach, reflektiere und treffe Entscheidungen über mein Handeln. Durch einen Klick auf Objekte lenke ich meine Aufmerksamkeit auf das Objekt. Ich bin hier um das Haus meiner verstorbenen Mutter zu entrümpeln. Das wird emotional nicht leicht. Wenn sich meine Stimmung verändert, ändert sich auch meine Sicht auf meine Umgebung und ich habe andere Gedanken.",
+                "Hier denke ich über Dinge nach, reflektiere und treffe " +
+                "Entscheidungen über mein Handeln. Durch einen Klick auf Objekte " +
+                "lenke ich meine Aufmerksamkeit auf das Objekt. Ich bin hier um das " +
+                "Haus meiner verstorbenen Mutter zu entrümpeln. Das wird emotional " +
+                "nicht leicht. Wenn sich meine Stimmung verändert, ändert sich auch " +
+                "meine Sicht auf meine Umgebung und ich habe andere Gedanken." +
+                "Das Porträt links zeigt Personen mit denen ich spreche " +
+                "oder einen inneren Anteil von mir der mein Grundgefühl repräsentiert." +
+                "In einem inneren Dialog kann ich verschiedene Gedanken haben." +
+                "Gedanken mit einem [Aktion] am Ende zeigen mir Handlungsmöglichkeiten auf.",
                 0, false, 0);
             innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
                 Verb.None,
@@ -249,7 +302,7 @@ namespace conscious
                 0,
                 55,
                 null,
-                "Dann mal los.",
+                "Dann mal los. [Haustür öffnen]",
                 false,
                 new MoodState[] { MoodState.None },
                 true));
@@ -260,12 +313,14 @@ namespace conscious
                 0,
                 55,
                 null,
-                "Gar kein Bock drauf.",
+                "Gar kein Bock drauf. [Trotzdem Haustür öffnen]",
                 false,
                 new MoodState[] { MoodState.None },
                 false));
             ThoughtNode innerThought = new ThoughtNode(46,
-                "[...] Das hier ist mein Gedankenprotokoll. Gedanken mit einem [...] am Anfang kennzeichnen einen inneren Dialog, der durch anklicken ausgelöst werden kann.",
+                "Das hier ist mein Gedankenprotokoll. Gedanken mit einem \">>\" " +
+                "am Anfang kennzeichnen einen inneren Dialog, der durch anklicken " +
+                "ausgelöst werden kann.",
                 0, true, 30);
             innerThought.AddLink(new ThoughtLink(45,
                 innerThought2,
@@ -284,6 +339,7 @@ namespace conscious
                 _HeartThrobDreamHappend = true;
                 _audioManager.PlayMusic(_throbHeartSong);
                 updateHeartThrobSoundVolume(roomId, throbSoundVolumeDream);
+                UpdateCurrentTask("Herausfinden woher dieses Pochen kommt.");
             }
             // Check for exiting Heart Throb Dream
             else if (_isHeartThrobDream && roomId == 4)
@@ -293,6 +349,7 @@ namespace conscious
                 _audioManager.SetSoundVolume(.1f);
                 if (_entityManager.FlashlightOn)
                     _entityManager.ToggleFlashlight(); // turn off flashlight when waking up
+                UpdateCurrentTask("Ich brauche eine Dusche oder sowas.");
             }
         }
 
@@ -315,7 +372,7 @@ namespace conscious
                 };
                 Sequence seq = new Sequence(coms, sequenceName: "sayHeartbeatInBasement");
                 _sequenceManager.StartSequence(seq, _player, MoodState.None);
-
+                UpdateCurrentTask("Herausfinden woher dieses Pochen kommt.");
             }
         }
 
@@ -326,6 +383,7 @@ namespace conscious
                 _isHeartThrobBasement = false;
                 _audioManager.PlayMusic(_standardSong);
                 _audioManager.SetSoundVolume(.1f);
+                UpdateCurrentTask("Im Keller umschauen.");
             }
         }
 
@@ -341,6 +399,22 @@ namespace conscious
                 // throw new Exception("Room ID not found in volume dictionary");
                 _audioManager.SetSoundVolume(0.1f); // default low volume
             }
+        }
+
+        private void UpdateCurrentTask(string task)
+        {
+            _currentTask.UpdateText("Aufgabe: " + task);
+
+            _entityManager.AddEntity(_currentTask);
+        }
+
+        public void FillEntityManager()
+        {
+            if (_isStartSequence)
+            {
+                _entityManager.AddEntity(_blackOverlay);
+            }
+            _entityManager.AddEntity(_currentTask);
         }
     }
 }
