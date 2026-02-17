@@ -43,12 +43,6 @@
 /processorParam:Quality=Best
 /build:Audio/door-creaking.mp3
 
-#begin Audio/ExitReached.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/ExitReached.wav
-
 #begin Audio/flashlight-clicking.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -78,12 +72,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/moving_boxes_floor.mp3
-
-#begin Audio/Music.wma
-/importer:WmaImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Audio/Music.wma
 
 #begin Audio/open-and-close-door.mp3
 /importer:Mp3Importer
@@ -174,66 +162,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Backgrounds/480_270_Room_double_Concept_Draft.png
-
-#begin Backgrounds/debug/background_double.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Backgrounds/debug/background_double.png
-
-#begin Backgrounds/debug/background.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Backgrounds/debug/background.png
-
-#begin Backgrounds/Haus_Flur.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Backgrounds/Haus_Flur.png
-
-#begin Backgrounds/Layer0_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Backgrounds/Layer0_0.png
-
-#begin Backgrounds/Layer1_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Backgrounds/Layer1_0.png
 
 #begin clear_out/menu/bird_animation_atlas.png
 /importer:TextureImporter
@@ -1657,18 +1585,6 @@
 /processorParam:TextureFormat=Color
 /build:Cursor/Dot.png
 
-#begin Cursor/Gem.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Cursor/Gem.png
-
 #begin Effects/depressed-effect.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -1699,15 +1615,6 @@
 /processorParam:DebugMode=Auto
 /build:Effects/mood-transition-effect.fx
 
-#begin Font/Besom-Handwritten-Brush-Font.ttf
-/copy:Font/Besom-Handwritten-Brush-Font.ttf
-
-#begin Font/DeltaLake-8OORM.ttf
-/copy:Font/DeltaLake-8OORM.ttf
-
-#begin Font/Doughtybrush-yYYaZ.ttf
-/copy:Font/Doughtybrush-yYYaZ.ttf
-
 #begin Font/File.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -1732,18 +1639,12 @@
 #begin Font/IndieFlower-Regular.ttf
 /copy:Font/IndieFlower-Regular.ttf
 
-#begin Font/LucidaHandwritingStdRg.TTF
-/copy:Font/LucidaHandwritingStdRg.TTF
-
 #begin Font/Menu_Font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Font/Menu_Font.spritefont
-
-#begin Font/SourceSerif4-Regular.ttf
-/copy:Font/SourceSerif4-Regular.ttf
 
 #begin Font/Thought_UI.spritefont
 /importer:FontDescriptionImporter
@@ -1782,18 +1683,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Inventory/item_place.png
-
-#begin light/1920_1080_lightmap.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:light/1920_1080_lightmap.png
 
 #begin light/dream_room_big_light_mask.png
 /importer:TextureImporter
@@ -1842,30 +1731,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:light/light_cursor.png
-
-#begin light/light_gimp_v2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:light/light_gimp_v2.png
-
-#begin light/light_gimp.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:light/light_gimp.png
 
 #begin light/light_map_default.png
 /importer:TextureImporter
@@ -2119,30 +1984,6 @@
 /processorParam:TextureFormat=Color
 /build:Objects/front_door.png
 
-#begin Objects/living_room_door_closed.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Objects/living_room_door_closed.png
-
-#begin Objects/living_room_door_opened.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Objects/living_room_door_opened.png
-
 #begin Player/128_character_animation_idle_draft.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -2203,18 +2044,6 @@
 /processorParam:TextureFormat=Color
 /build:Player/idle_anim_411_outline.png
 
-#begin Player/Idle.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Player/Idle.png
-
 #begin Player/marla_regular_idle_outline.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -2238,18 +2067,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Player/marla_throwing_pot_outlined.png
-
-#begin Player/Run.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Player/Run.png
 
 #begin Player/sleep_anim_616_outline.png
 /importer:TextureImporter
