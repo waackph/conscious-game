@@ -217,7 +217,7 @@
                     ],
                     "Id": 905,
                     "NextNode": null,
-                    "Option": "Das ist jetzt genau das Richtige. Vielleicht geht es mir dann besser.",
+                    "Option": "Das ist jetzt genau das Richtige. Vielleicht geht es mir dann besser. [Duschen]",
                     "IsFinal": true,
                     "sequence": {
                       "Commands": [
@@ -1367,7 +1367,7 @@
                       0
                     ],
                     "Id": 1283,
-                    "Option": "Auf geht's.",
+                    "Option": "Auf geht's. [\u00d6ffnen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -1808,7 +1808,7 @@
                       0
                     ],
                     "Id": 5166,
-                    "Option": "Drauf fallen lassen, wie fr\u00fcher; Knie an die Brust, sich komprimieren, zum nichts werden. Einschlafen.",
+                    "Option": "Drauf fallen lassen, wie fr\u00fcher; Knie an die Brust, sich komprimieren, zum nichts werden. Einschlafen. [Hinlegen]",
                     "IsFinal": true,
                     "sequence": {
                       "Commands": [
@@ -2481,7 +2481,7 @@
                       1
                     ],
                     "Id": 5246,
-                    "Option": "Sie hat mich immer in den Garten mitgenommen, wenn es mir schlecht ging.",
+                    "Option": "Sie hat mich immer in den Garten mitgenommen, wenn es mir schlecht ging. [Hinausschauen]",
                     "NextNode": {
                       "$type": "conscious.DataHolderThoughtNode, conscious",
                       "IsRoot": false,
@@ -2867,7 +2867,7 @@
                         }
                       ]
                     },
-                    "Option": "Schauen wir mal in das Adressbuch neben dem Telefon."
+                    "Option": "Schauen wir mal in das Adressbuch neben dem Telefon. [Lesen]"
                   },
                   {
                     "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -2970,7 +2970,7 @@
                       0
                     ],
                     "Id": 5458,
-                    "Option": "Ist der Fleck wegen mir hier?",
+                    "Option": "Ist der Fleck wegen mir hier? [Untersuchen]",
                     "NextNode": {
                       "$type": "conscious.DataHolderThoughtNode, conscious",
                       "IsRoot": false,
@@ -3082,7 +3082,7 @@
         "EventThought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
           "Id": 1750,
-          "Thought": "Mein Handy klingelt. Auch das noch...",
+          "Thought": "Mein Handy klingelt. Auch das noch... [Anruf annehmen]",
           "IsRoot": true,
           "IsInnerDialog": false,
           "ThingId": 1291,
@@ -3737,59 +3737,6 @@
                       "ThingId": 9434,
                       "Links": [
                         {
-                          "$type": "conscious.DataHolderThoughtLink, conscious",
-                          "IsLocked": false,
-                          "ValidMoods": [
-                            0
-                          ],
-                          "Id": 9187,
-                          "NextNode": {
-                            "$type": "conscious.DataHolderThoughtNode, conscious",
-                            "IsRoot": false,
-                            "LinkageId": 0,
-                            "Id": 6362,
-                            "Thought": "Gefrorenes Gem\u00fcse. Keine wirkliche Malzeit. Aber warte. Das kenne ich noch: Nudeln mit Gorgonzola-Sahne-Sauce! Das war mein Lieblingsgericht. Das hat mir meine Mutter bestimmt zwei oder drei Mal die Woche zubereitet. Sie mochte es eigentlich nie.",
-                            "ThingId": 9434,
-                            "ThoughtPortrait": "clear_out/thought_portraits/marla_child_portrait_cut",
-                            "Links": [
-                              {
-                                "$type": "conscious.DataHolderThoughtLink, conscious",
-                                "IsLocked": false,
-                                "ValidMoods": [
-                                  0
-                                ],
-                                "Id": 9056,
-                                "Option": "Warum hatte sie es dann da?",
-                                "NextNode": {
-                                  "$type": "conscious.DataHolderThoughtNode, conscious",
-                                  "IsRoot": false,
-                                  "LinkageId": 0,
-                                  "Id": 6804,
-                                  "Thought": "Es ist als h\u00e4tte Lydia darauf gewartet, dass ich wieder komme, um es mir zuzubereiten.",
-                                  "ThingId": 9434,
-                                  "Links": [
-                                    {
-                                      "$type": "conscious.DataHolderFinalThoughtLink, conscious",
-                                      "IsLocked": false,
-                                      "ValidMoods": [
-                                        0
-                                      ],
-                                      "Id": 9901,
-                                      "Option": "Dann sollte ich das direkt tun!",
-                                      "IsFinal": true,
-                                      "sequence": null,
-                                      "Verb": 0,
-                                      "MoodChange": 0,
-                                      "NextNode": null
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "Option": "Vielleicht ist etwas im Gefrierfach."
-                        },
-                        {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
                           "IsLocked": false,
                           "ValidMoods": [
@@ -4343,7 +4290,7 @@
     "yLimStart": 770,
     "yLimEnd": 1080,
     "SoundFilePath": "Red_Curtains",
-    "LightMapPath": "light/living_room_light_mask",
+    "LightMapPath": "light/dream_room_small_tumor_sequence_light_mask",
     "WalkingSoundFilePath": "walking-parquet",
     "AtmoSoundFilePath": "",
     "EntrySequence": null,
@@ -4352,6 +4299,7 @@
       "Id": 5302,
       "Thought": "Hier ist es kalt und feucht. Es ist dunkel. Man sieht fast gar nichts.",
       "IsRoot": true,
+      "IsInnerDialog": true,
       "LinkageId": 0,
       "Links": [],
       "x": 40,
@@ -4506,7 +4454,7 @@
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
           "Id": 8491,
-          "Thought": "Ein Hohlraum in der Wand.",
+          "Thought": "Ein Hohlraum in der Wand. [Untersuchen]",
           "IsRoot": true,
           "IsInnerDialog": true,
           "ThingId": 5504,
@@ -4714,7 +4662,7 @@
                                   "IsRoot": false,
                                   "LinkageId": 0,
                                   "Id": 5080,
-                                  "Thought": "Ich vermisse meine Mutter. Ich w\u00fcnschte sie w\u00fcrde noch leben.",
+                                  "Thought": "Ich vermisse meine Mutter. Ich w\u00fcnschte sie w\u00fcrde noch leben. Was soll ich tun? Ich wei\u00df nicht wie ich weiter machen soll. Ich wei\u00df nicht was ich f\u00fchlen soll. Ich wei\u00df nicht was ich denken soll. Ich wei\u00df nicht Mal was ich bin.",
                                   "ThingId": 5504,
                                   "Links": [
                                     {
@@ -5678,7 +5626,7 @@
       {
         "$type": "conscious.DataHolderItem, conscious",
         "Id": 4830,
-        "Name": "Bild einer Sonnenblume",
+        "Name": "Bild einer Blume",
         "texturePath": "clear_out/rooms/bedroom/objects/flower_on_canvas",
         "Rotation": 0,
         "PositionX": 1344,
@@ -5686,7 +5634,7 @@
         "DrawOrder": 2,
         "Collidable": false,
         "CollisionBoxHeight": 20,
-        "ExamineText": "Das ist ein Bild von einer Sonnenblume.",
+        "ExamineText": "Das ist ein Bild von einer Blume.",
         "IsInInventory": false,
         "UseAble": false,
         "PickUpAble": false,
@@ -5707,7 +5655,7 @@
         "Thought": {
           "$type": "conscious.DataHolderThoughtNode, conscious",
           "Id": 10035,
-          "Thought": "Das ist ein Bild von einer Sonnenblume.",
+          "Thought": "Das ist ein Bild von einer Blume.",
           "IsRoot": true,
           "IsInnerDialog": true,
           "ThingId": 4830,
@@ -5750,7 +5698,7 @@
                       0
                     ],
                     "Id": 2975,
-                    "Option": "Ich habe das gezeichnet.",
+                    "Option": "Ich habe das gezeichnet. [Genauer anschauen]",
                     "NextNode": {
                       "$type": "conscious.DataHolderThoughtNode, conscious",
                       "IsRoot": false,
@@ -5960,7 +5908,7 @@
                       0
                     ],
                     "Id": 5378,
-                    "Option": "Ich kann sp\u00e4ter nochmal her kommen.",
+                    "Option": "Ich kann sp\u00e4ter nochmal her kommen. [\u00d6ffnen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -6116,7 +6064,7 @@
                         }
                       ]
                     },
-                    "Option": "Was ist hinter dem Bett?"
+                    "Option": "Was ist hinter dem Bett? [Untersuchen]"
                   },
                   {
                     "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -6282,6 +6230,7 @@
           "Id": 9986,
           "Thought": "In diesem B\u00fccherregal lag fr\u00fcher alles was ich in der Schule gemacht habe.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 5282,
           "LinkageId": 0,
           "Links": [
@@ -6410,7 +6359,7 @@
                         }
                       ]
                     },
-                    "Option": "In diesem B\u00fccherregal lag fr\u00fcher alles was ich in der Schule gemacht habe."
+                    "Option": "In diesem B\u00fccherregal lag fr\u00fcher alles was ich in der Schule gemacht habe. [Untersuchen]"
                   },
                   {
                     "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -6430,8 +6379,7 @@
               }
             }
           ],
-          "ThoughtPortrait": "",
-          "IsInnerDialog": true
+          "ThoughtPortrait": ""
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -6654,7 +6602,7 @@
                     ],
                     "Id": 2601,
                     "NextNode": null,
-                    "Option": "Schauen wir mal rein.",
+                    "Option": "Schauen wir mal rein. [\u00d6ffnen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -6745,7 +6693,7 @@
                       0
                     ],
                     "Id": 1427,
-                    "Option": "Gehen wir rein.",
+                    "Option": "Gehen wir rein. [\u00d6ffnen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -6934,7 +6882,7 @@
                       0
                     ],
                     "Id": 4300,
-                    "Option": "Na dann mal los.",
+                    "Option": "Na dann mal los. [\u00d6ffnen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -7026,7 +6974,7 @@
                       0
                     ],
                     "Id": 2845,
-                    "Option": "Auf zum Flur.",
+                    "Option": "Auf zum Flur. [\u00d6ffnen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -7119,7 +7067,7 @@
                     ],
                     "Id": 9034,
                     "NextNode": null,
-                    "Option": "Lass uns Mal nach oben schauen.",
+                    "Option": "Lass uns Mal nach oben schauen. [Hochgehen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -7260,7 +7208,7 @@
                       0
                     ],
                     "Id": 4524,
-                    "Option": "Lass uns das machen",
+                    "Option": "Lass uns das machen. [Hinuntergehen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -7398,7 +7346,7 @@
                     "Id": 9339,
                     "IsFinal": true,
                     "sequence": null,
-                    "Option": "Los gehts.",
+                    "Option": "Los gehts. [\u00d6ffnen]",
                     "Verb": 4,
                     "MoodChange": 0,
                     "IsSuccessEdge": false,
@@ -7553,6 +7501,7 @@
           "Id": 5302,
           "Thought": "Eine riesige Stahlt\u00fcr.",
           "IsRoot": true,
+          "IsInnerDialog": true,
           "ThingId": 10001,
           "LinkageId": 0,
           "Links": [
@@ -7586,6 +7535,7 @@
                       "LinkageId": 0,
                       "Id": 5812,
                       "Thought": "Ich glaube ich erinnere mich jetzt daran. Als ich noch sehr klein war und meine Gro\u00dfeltern hier gelebt hatten, da war die T\u00fcr noch vorhanden. Aber kurz nachdem meine Gro\u00dfeltern gestorben waren, stellte sie Kartons mit altem Kram meiner Gro\u00dfeltern hier hin und versperrte damit die T\u00fcr. Vielleicht war es sogar das erste was sie gemacht hatte.",
+                      "ThingId": 10001,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -7615,8 +7565,7 @@
                           "MoodChange": 0,
                           "NextNode": null
                         }
-                      ],
-                      "ThingId": 10001
+                      ]
                     }
                   },
                   {
@@ -7632,6 +7581,7 @@
                       "LinkageId": 0,
                       "Id": 1683,
                       "Thought": "Die muss schon in dem Ursprungsbau des Hauses eingebaud worden sein. Vermutlich ein Keller, der auch als Bunker genutzt werden konnte.",
+                      "ThingId": 10001,
                       "Links": [
                         {
                           "$type": "conscious.DataHolderFinalThoughtLink, conscious",
@@ -7640,7 +7590,7 @@
                             0
                           ],
                           "Id": 2520,
-                          "Option": "Schauen wir uns dort mal um.",
+                          "Option": "Schauen wir uns dort mal um. [\u00d6ffnen]",
                           "IsFinal": true,
                           "sequence": null,
                           "Verb": 4,
@@ -7661,16 +7611,14 @@
                           "MoodChange": 0,
                           "NextNode": null
                         }
-                      ],
-                      "ThingId": 10001
+                      ]
                     },
                     "Option": "Was ist das f\u00fcr eine T\u00fcr?"
                   }
                 ]
               }
             }
-          ],
-          "IsInnerDialog": true
+          ]
         },
         "EventThought": null,
         "DepressedTexture": "",
@@ -7754,7 +7702,7 @@
                     ],
                     "Id": 112,
                     "NextNode": null,
-                    "Option": "Das Pochen kommt aus dieser Richtung. Ich muss die Kartons wegschieben.",
+                    "Option": "Das Pochen kommt aus dieser Richtung. Ich muss die Kartons wegschieben. [Verschieben]",
                     "IsFinal": true,
                     "sequence": {
                       "Commands": [
@@ -8083,7 +8031,7 @@
                       0
                     ],
                     "Id": 8198,
-                    "Option": "Nope. Weiter gehts.",
+                    "Option": "Nope. Weiter gehts. [\u00d6ffnen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -8479,7 +8427,7 @@
                       0
                     ],
                     "Id": 6963,
-                    "Option": "Lass uns Mal nach oben schauen.",
+                    "Option": "Lass uns Mal nach oben schauen. [Hochgehen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -8657,7 +8605,7 @@
                     ],
                     "Id": 360,
                     "NextNode": null,
-                    "Option": "Los gehts.",
+                    "Option": "Los gehts. [\u00d6ffnen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
@@ -9171,6 +9119,7 @@
       "Id": 3121,
       "Thought": "Wo bin ich? Warum ist es so dunkel?",
       "IsRoot": true,
+      "IsInnerDialog": true,
       "LinkageId": 0,
       "Links": [
         {
@@ -9195,7 +9144,7 @@
                   0
                 ],
                 "Id": 996,
-                "Option": "Schauen wir uns mal um.",
+                "Option": "Schauen wir uns mal um. [Aufstehen]",
                 "IsFinal": true,
                 "sequence": null,
                 "Verb": 9,
@@ -9206,8 +9155,7 @@
             ]
           }
         }
-      ],
-      "IsInnerDialog": true
+      ]
     },
     "Things": [
       {
@@ -9272,7 +9220,7 @@
                     ],
                     "Id": 343,
                     "NextNode": null,
-                    "Option": "Auf geht's.",
+                    "Option": "Auf geht's. [\u00d6ffnen]",
                     "IsFinal": true,
                     "sequence": null,
                     "Verb": 4,
