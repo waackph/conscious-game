@@ -228,7 +228,7 @@ namespace conscious
             _dialogManager.FillEntityManager();
             _uiDisplayThoughtManager.FillEntityManager(_gameLoaded);
             _moodStateManager.FillEntityManager();
-            _scriptingProgress.FillEntityManager();
+            _scriptingProgress.FillEntityManager(_gameLoaded);
         }
 
         public DataHolderPlayer GetDataHolderPlayer()

@@ -408,9 +408,9 @@ namespace conscious
             _entityManager.AddEntity(_currentTask);
         }
 
-        public void FillEntityManager()
+        public void FillEntityManager(bool isGameLoaded)
         {
-            if (_isStartSequence)
+            if (_isStartSequence && isGameLoaded)
             {
                 _entityManager.AddEntity(_blackOverlay);
             }
