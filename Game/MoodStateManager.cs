@@ -18,7 +18,7 @@ namespace conscious
         public MoodState StateChange { get; set; }
         public event EventHandler<MoodStateChangeEventArgs> MoodChangeEvent;
 
-        public MoodStateManager(EntityManager entityManager, SpriteFont font, Texture2D transitionTexture, Texture2D pixel)
+        public MoodStateManager(EntityManager entityManager, SpriteFont font, Texture2D pixel)
         {
             _direction = Direction.None;
             moodState = MoodState.Regular;

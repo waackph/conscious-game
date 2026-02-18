@@ -53,7 +53,7 @@ namespace conscious
                                                    "Fortsetzen",
                                                    "Continue",
                                                    _content.Load<Texture2D>("clear_out/UI/button_background"),
-                                                   new Vector2(350, 250), 1);
+                                                   new Vector2(350, 300), 1);
 
             UIButton newButton = new UIButton(new EventHandler(NewButton_Click),
                                                    _displayFont,

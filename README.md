@@ -19,14 +19,19 @@ The game engine is implemented via the Monogame C# framework. To create own game
 The content tool is a react web application and can be found in this github project.
 
 ## Build games from the engine
-Linux: `dotnet publish -r linux-x64 -c Release --self-contained --output artifacts/linux`<br>
-OR: `dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained conscious.csproj`
+Linux: `dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained conscious.csproj`
 <br>
-Start game in unzipped folder with: ./conscious
+Find the publish folder here: `bin/Release/net9.0/linux-x64/publish`
+<br>
+Start game with: `./conscious`
 
-Windows: `dotnet publish -r win-x64 -c Release --self-contained --output artifacts/windows`
+Windows: `dotnet publish -c Release -r win-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained conscious.csproj`
 <br>
-Start game by executing the .exe file
+Start game by executing the `.exe` file
+
+Mac: ``
+<br>
+Start game by executing 
 
 To automate build process, see: https://learn-monogame.github.io/how-to/automate-release/
 

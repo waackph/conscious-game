@@ -147,9 +147,7 @@ namespace conscious
                                                 Content.Load<Effect>("Effects/entity-effect"),
                                                 _debugPixel);
 
-            // TODO: Change Transition Texture to something meaningful (also not in moodstatemanager, see to do in that class)
-            Texture2D transitionTexture = Content.Load<Texture2D>("light/light_gimp");
-            _moodStateManager = new MoodStateManager(_entityManager, Content.Load<SpriteFont>(GlobalData.HudFontName), transitionTexture, _debugPixel);
+            _moodStateManager = new MoodStateManager(_entityManager, Content.Load<SpriteFont>(GlobalData.HudFontName), _debugPixel);
 
             _audioManager = new AudioManager(Content);
 
