@@ -50,14 +50,14 @@ namespace conscious
 
             UIButton continueButton = new UIButton(new EventHandler(ContinueButton_Click),
                                                    _displayFont,
-                                                   "Fortsetzen",
+                                                   GlobalData.i18nText("Fortsetzen"),
                                                    "Continue",
                                                    _content.Load<Texture2D>("clear_out/UI/button_background"),
                                                    new Vector2(350, 300), 1);
 
             UIButton newButton = new UIButton(new EventHandler(NewButton_Click),
                                                    _displayFont,
-                                                   "Beginnen",
+                                                   GlobalData.i18nText("Beginnen"),
                                                    "New",
                                                    _content.Load<Texture2D>("clear_out/UI/button_background"),
                                                    new Vector2(350, 300), 1);
@@ -71,13 +71,13 @@ namespace conscious
 
             UIButton quitButton = new UIButton(new EventHandler(QuitButton_Click),
                                                _displayFont,
-                                               "Beenden",
+                                               GlobalData.i18nText("Beenden"),
                                                "Quit",
                                                _content.Load<Texture2D>("clear_out/UI/button_background"),
                                                new Vector2(350, 350), 1);
 
             UIText titleText = new UIText(_titleFont,
-                                          "Die Entrümpelung", "gameTitleText",
+                                          GlobalData.i18nText("Die Entrümpelung"), "gameTitleText",
                                           new Texture2D(graphicsDevice, 1, 1),
                                           new Vector2(350, 200), 5, Color.Black);
 

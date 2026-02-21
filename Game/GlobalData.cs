@@ -8,6 +8,7 @@ namespace conscious
         public static int ScreenHeight = 1080;
         public static int InitRoomId = 3;
         public static int PlayerDrawOrder = 10;
+        public static string language = "en";
         public static string ThoughtFontName = "Font/Thought_UI";
         public static string HudFontName = "Font/UI_Font";
         public static string DialogFontName = "Font/UI_Font";
@@ -20,6 +21,11 @@ namespace conscious
         public static string StandardSongSlowTransition = "Audio/Red_Curtains_slowing_down";
         public static string ThrobHeartSong = "Audio/heartbeat_sound";
         public static string ThoughtEmergedSoundEffect = "Audio/thought_emerged";
+
+        public static string i18nText(string txt)
+        {
+            return language == "de" ? txt : Translations.translation[txt];
+        }
 
         public static bool IsNotBackgroundOrPlayer(Entity entity)
         {

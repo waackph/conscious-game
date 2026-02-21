@@ -284,7 +284,7 @@ namespace conscious
             }
 
             // Room Data
-            Dictionary<int, DataHolderRoom> roomsData = JsonConvert.DeserializeObject<Dictionary<int, DataHolderRoom>>(File.ReadAllText(savePath + "_rooms_gct_extended.json"), settings);
+            Dictionary<int, DataHolderRoom> roomsData = JsonConvert.DeserializeObject<Dictionary<int, DataHolderRoom>>(File.ReadAllText(savePath + "_rooms_gct_extended_" + GlobalData.language + ".json"), settings);
             foreach (KeyValuePair<int, DataHolderRoom> entry in roomsData)
             {
                 DataHolderRoom dhRoom = entry.Value;

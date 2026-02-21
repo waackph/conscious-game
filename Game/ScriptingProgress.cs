@@ -108,9 +108,9 @@ namespace conscious
 
             VanishCommand vanish = new VanishCommand();
             WaitCommand wait = new WaitCommand(2000);
-            SayCommand firstLine = new SayCommand(_socManager, "Das Haus meiner Mutter.");
+            SayCommand firstLine = new SayCommand(_socManager, GlobalData.i18nText("Das Haus meiner Mutter."));
             WaitCommand wait2 = new WaitCommand(2000);
-            SayCommand secondLine = new SayCommand(_socManager, "Das Haus meiner Kindheit.");
+            SayCommand secondLine = new SayCommand(_socManager, GlobalData.i18nText("Das Haus meiner Kindheit."));
             WaitCommand wait3 = new WaitCommand(2000);
             List<Command> coms = new List<Command>()
             {
@@ -198,10 +198,10 @@ namespace conscious
             if (GlobalData.IsSameOrSubclass(typeof(SayCommand), e.sequenceCommand.GetType()))
             {
                 SayCommand sayCmd = (SayCommand)e.sequenceCommand;
-                if (sayCmd != null && sayCmd._thoughtText.StartsWith("Ich fühle mich schon besser. Im Traum war ich in meinem Kinderzimmer.")
+                if (sayCmd != null && sayCmd._thoughtText.StartsWith(GlobalData.i18nText("Ich fühle mich schon besser. Im Traum war ich in meinem Kinderzimmer."))
                     && _roomManager.CurrentRoomIndex == 3)
                 {
-                    UpdateCurrentTask("Vielleicht finde ich im Kinderzimmer etwas.");
+                    UpdateCurrentTask(GlobalData.i18nText("Vielleicht finde ich im Kinderzimmer etwas."));
                 }
             }
         }
@@ -221,23 +221,23 @@ namespace conscious
             // check for updating current task
             if (e.FinalOptionId == 211) // after phone call with boss
             {
-                UpdateCurrentTask("Ich will nur schlafen.");
+                UpdateCurrentTask(GlobalData.i18nText("Ich will nur schlafen."));
             }
             else if (e.FinalOptionId == 3761) // after checking behind bed
             {
-                UpdateCurrentTask("Ein Adressbuch finden (Kontakt mit Initial K).");
+                UpdateCurrentTask(GlobalData.i18nText("Ein Adressbuch finden (Kontakt mit Initial K)."));
             }
             else if (e.FinalOptionId == 369) // after checking address book
             {
-                UpdateCurrentTask("Vielleicht kann mich der Garten aufheitern.");
+                UpdateCurrentTask(GlobalData.i18nText("Vielleicht kann mich der Garten aufheitern."));
             }
             else if (e.FinalOptionId == 844) // after looking at the garden
             {
-                UpdateCurrentTask("Etwas über Lydia in ihrem Zimmer herausfinden.");
+                UpdateCurrentTask(GlobalData.i18nText("Etwas über Lydia in ihrem Zimmer herausfinden."));
             }
             else if (e.FinalOptionId == 4575) // after remembering drawings for Lydias
             {
-                UpdateCurrentTask("Gießkanne finden.");
+                UpdateCurrentTask(GlobalData.i18nText("Gießkanne finden."));
             }
             else if (e.RootThoughtId == 5862) // finishing final thought
             {
@@ -277,23 +277,14 @@ namespace conscious
             // disable tutorial flag
             _gameScreen.isTutorialActive = false;
             _roomManager.triggerThought();
-            UpdateCurrentTask("Im Haus umschauen.");
+            UpdateCurrentTask(GlobalData.i18nText("Im Haus umschauen."));
             _isStartSequence = false;
         }
 
         private void addTutorialThought()
         {
             ThoughtNode innerThought2 = new ThoughtNode(49,
-                "Hier denke ich über Dinge nach, reflektiere und treffe " +
-                "Entscheidungen über mein Handeln. Durch einen Klick auf Objekte " +
-                "lenke ich meine Aufmerksamkeit auf das Objekt. Ich bin hier um das " +
-                "Haus meiner verstorbenen Mutter zu entrümpeln. Das wird emotional " +
-                "nicht leicht. Wenn sich meine Stimmung verändert, ändert sich auch " +
-                "meine Sicht auf meine Umgebung und ich habe andere Gedanken." +
-                "Das Porträt links zeigt Personen mit denen ich spreche " +
-                "oder einen inneren Anteil von mir der mein Grundgefühl repräsentiert." +
-                "In einem inneren Dialog kann ich verschiedene Gedanken haben." +
-                "Gedanken mit einem [Aktion] am Ende zeigen mir Handlungsmöglichkeiten auf.",
+                GlobalData.i18nText("Hier denke ich über Dinge nach, reflektiere und treffe Entscheidungen über mein Handeln. Durch einen Klick auf Objekte lenke ich meine Aufmerksamkeit auf das Objekt. Ich bin hier um das Haus meiner verstorbenen Mutter zu entrümpeln. Das wird emotional nicht leicht. Wenn sich meine Stimmung verändert, ändert sich auch meine Sicht auf meine Umgebung und ich habe andere Gedanken.Das Porträt links zeigt Personen mit denen ich spreche oder einen inneren Anteil von mir der mein Grundgefühl repräsentiert.In einem inneren Dialog kann ich verschiedene Gedanken haben. Gedanken mit einem [Aktion] am Ende zeigen mir Handlungsmöglichkeiten auf."),
                 0, false, 0);
             innerThought2.AddLink(new FinalThoughtLink(MoodState.None,
                 Verb.None,
@@ -302,7 +293,7 @@ namespace conscious
                 0,
                 55,
                 null,
-                "Dann mal los. [Haustür öffnen]",
+                GlobalData.i18nText("Dann mal los. [Haustür öffnen]"),
                 false,
                 new MoodState[] { MoodState.None },
                 true));
@@ -313,14 +304,12 @@ namespace conscious
                 0,
                 55,
                 null,
-                "Gar kein Bock drauf. [Trotzdem Haustür öffnen]",
+                GlobalData.i18nText("Gar kein Bock drauf. [Trotzdem Haustür öffnen]"),
                 false,
                 new MoodState[] { MoodState.None },
                 false));
             ThoughtNode innerThought = new ThoughtNode(46,
-                "Das hier ist mein Gedankenprotokoll. Gedanken mit einem \">>\" " +
-                "am Anfang kennzeichnen einen inneren Dialog, der durch anklicken " +
-                "ausgelöst werden kann.",
+                GlobalData.i18nText("Das hier ist mein Gedankenprotokoll. Gedanken mit einem \">>\" am Anfang kennzeichnen einen inneren Dialog, der durch anklicken ausgelöst werden kann."),
                 0, true, 30);
             innerThought.AddLink(new ThoughtLink(45,
                 innerThought2,
@@ -339,7 +328,7 @@ namespace conscious
                 _HeartThrobDreamHappend = true;
                 _audioManager.PlayMusic(_throbHeartSong);
                 updateHeartThrobSoundVolume(roomId, throbSoundVolumeDream);
-                UpdateCurrentTask("Herausfinden woher dieses Pochen kommt.");
+                UpdateCurrentTask(GlobalData.i18nText("Herausfinden woher dieses Pochen kommt."));
             }
             // Check for exiting Heart Throb Dream
             else if (_isHeartThrobDream && roomId == 4)
@@ -349,7 +338,7 @@ namespace conscious
                 _audioManager.SetSoundVolume(.1f);
                 if (_entityManager.FlashlightOn)
                     _entityManager.ToggleFlashlight(); // turn off flashlight when waking up
-                UpdateCurrentTask("Ich brauche eine Dusche oder sowas.");
+                UpdateCurrentTask(GlobalData.i18nText("Ich brauche eine Dusche oder sowas."));
             }
         }
 
@@ -364,7 +353,7 @@ namespace conscious
                 updateHeartThrobSoundVolume(_roomManager.CurrentRoomIndex, throbSoundVolumeBasement);
                 // Add thought that says that there is the heartbeat sound again
                 WaitCommand wait = new WaitCommand(2000);
-                SayCommand sayHeartbeat = new SayCommand(_socManager, "Schon wieder dieses Pochen. Woher kommt es nur?");
+                SayCommand sayHeartbeat = new SayCommand(_socManager, GlobalData.i18nText("Schon wieder dieses Pochen. Woher kommt es nur?"));
                 List<Command> coms = new List<Command>()
                 {
                     wait,
@@ -372,7 +361,7 @@ namespace conscious
                 };
                 Sequence seq = new Sequence(coms, sequenceName: "sayHeartbeatInBasement");
                 _sequenceManager.StartSequence(seq, _player, MoodState.None);
-                UpdateCurrentTask("Herausfinden woher dieses Pochen kommt.");
+                UpdateCurrentTask(GlobalData.i18nText("Herausfinden woher dieses Pochen kommt."));
             }
         }
 
@@ -383,7 +372,7 @@ namespace conscious
                 _isHeartThrobBasement = false;
                 _audioManager.PlayMusic(_standardSong);
                 _audioManager.SetSoundVolume(.1f);
-                UpdateCurrentTask("Im Keller umschauen.");
+                UpdateCurrentTask(GlobalData.i18nText("Im Keller umschauen."));
             }
         }
 
@@ -403,7 +392,7 @@ namespace conscious
 
         private void UpdateCurrentTask(string task)
         {
-            _currentTask.UpdateText("Aufgabe: " + task);
+            _currentTask.UpdateText(GlobalData.i18nText("Aufgabe: ") + task);
 
             _entityManager.AddEntity(_currentTask);
         }

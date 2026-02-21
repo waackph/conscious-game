@@ -48,7 +48,7 @@ namespace conscious
 
         public Vuerbaz()
         {
-            Window.Title = "Die Entrümpelung";
+            Window.Title = "The clearout";
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = GlobalData.ScreenWidth;
             _graphics.PreferredBackBufferHeight = GlobalData.ScreenHeight;

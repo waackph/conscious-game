@@ -39,7 +39,7 @@ namespace conscious
 
             UIButton quitButton = new UIButton(new EventHandler(QuitButton_Click),
                                                _displayFont,
-                                               "Beenden",
+                                               GlobalData.i18nText("Beenden"),
                                                "Quit",
                                                _content.Load<Texture2D>("clear_out/UI/button_background"),
                                                new Vector2(1000, 800), 1);
