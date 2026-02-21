@@ -8,7 +8,7 @@ namespace conscious
         public static int ScreenHeight = 1080;
         public static int InitRoomId = 3;
         public static int PlayerDrawOrder = 10;
-        public static string language = "en";
+        public static string language = "de";
         public static string ThoughtFontName = "Font/Thought_UI";
         public static string HudFontName = "Font/UI_Font";
         public static string DialogFontName = "Font/UI_Font";
